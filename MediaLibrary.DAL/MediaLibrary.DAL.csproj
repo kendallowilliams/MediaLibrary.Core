@@ -22,4 +22,8 @@
     <Folder Include="DbContexts\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\MediaLibrary.Shared\MediaLibrary.Shared.csproj" />
+  </ItemGroup>
+
 </Project>

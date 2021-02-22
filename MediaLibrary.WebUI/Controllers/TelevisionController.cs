@@ -2,6 +2,7 @@
 using MediaLibrary.BLL.Services.Interfaces;
 using MediaLibrary.DAL.Models;
 using MediaLibrary.DAL.Services.Interfaces;
+using MediaLibrary.Shared.Services.Interfaces;
 using MediaLibrary.WebUI.ActionResults;
 using MediaLibrary.WebUI.Models;
 using MediaLibrary.WebUI.Models.Configurations;

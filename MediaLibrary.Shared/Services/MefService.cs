@@ -1,10 +1,10 @@
-﻿using MediaLibrary.BLL.Services.Interfaces;
+﻿using MediaLibrary.Shared.Services.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition.Hosting;
 using System.Text;
 
-namespace MediaLibrary.BLL.Services
+namespace MediaLibrary.Shared.Services
 {
     public class MefService : IMefService
     {

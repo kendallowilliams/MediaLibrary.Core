@@ -14,6 +14,7 @@ using static MediaLibrary.DAL.Enums;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Microsoft.Extensions.Configuration;
+using MediaLibrary.Shared.Services.Interfaces;
 
 namespace MediaLibrary.BLL.Services
 {
@@ -28,12 +29,12 @@ namespace MediaLibrary.BLL.Services
         private readonly IGenreService genreService;
         private readonly ITrackService trackService;
         private readonly ITransactionService transactionService;
-        private readonly IConfigurationRoot appConfig;
+        private readonly IConfigurationManager configurationManager;
 
         [ImportingConstructor]
         public FileService(IId3Service id3Service, IArtistService artistService, IAlbumService albumService,
                            IGenreService genreService, ITrackService trackService, ITransactionService transactionService,
-                           IDataService dataService)
+                           IDataService dataService, IConfigurationManager configurationManager)
         {
             this.id3Service = id3Service;
             this.artistService = artistService;
@@ -42,9 +43,7 @@ namespace MediaLibrary.BLL.Services
             this.trackService = trackService;
             this.transactionService = transactionService;
             this.dataService = dataService;
-            appConfig = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory())
-                                                  .AddJsonFile("appsettings.json")
-                                                  .Build();
+            this.configurationManager = configurationManager;
         }
 
         public string MusicFolder { get => Path.Combine(RootFolder, "Music"); }
@@ -86,7 +85,7 @@ namespace MediaLibrary.BLL.Services
         {
             try
             {
-                IEnumerable<string> fileTypes = appConfig["FileTypes"].Split(",".ToCharArray(), StringSplitOptions.RemoveEmptyEntries),
+                IEnumerable<string> fileTypes = configurationManager.GetValue("FileTypes").Split(",".ToCharArray(), StringSplitOptions.RemoveEmptyEntries),
                                     allFiles = EnumerateFiles(path, recursive: recursive);
                 var fileGroups = allFiles.Where(file => fileTypes.Contains(Path.GetExtension(file), StringComparer.OrdinalIgnoreCase))
                                          .GroupBy(file => Path.GetDirectoryName(file), StringComparer.OrdinalIgnoreCase);
@@ -123,7 +122,7 @@ namespace MediaLibrary.BLL.Services
                 IEnumerable<TrackPath> paths = await dataService.GetList<TrackPath>();
                 IEnumerable<Album> albumsToDelete = Enumerable.Empty<Album>();
                 IEnumerable<Artist> artistsToDelete = Enumerable.Empty<Artist>();
-                IEnumerable<string> fileTypes = appConfig["FileTypes"].Split(",".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
+                IEnumerable<string> fileTypes = configurationManager.GetValue("FileTypes").Split(",".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
 
                 foreach (TrackPath path in paths)
                 {

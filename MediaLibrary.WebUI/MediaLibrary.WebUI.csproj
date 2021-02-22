@@ -26,6 +26,7 @@
   <ItemGroup>
     <ProjectReference Include="..\MediaLibrary.BLL\MediaLibrary.BLL.csproj" />
     <ProjectReference Include="..\MediaLibrary.DAL\MediaLibrary.DAL.csproj" />
+    <ProjectReference Include="..\MediaLibrary.Shared\MediaLibrary.Shared.csproj" />
   </ItemGroup>
 
   <ItemGroup>

@@ -16,6 +16,7 @@ using System.ComponentModel.Composition;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Data.SqlClient;
 using MediaLibrary.DAL.DbContexts;
+using MediaLibrary.Shared.Services.Interfaces;
 
 namespace MediaLibrary.BLL.Services
 {
@@ -24,11 +25,29 @@ namespace MediaLibrary.BLL.Services
     public class DataService : IDataService
     {
         private int timeout;
+        private readonly IConfigurationManager configurationManager;
 
         [ImportingConstructor]
-        public DataService()
+        public DataService(IConfigurationManager configurationManager)
         {
             timeout = 120;
+            this.configurationManager = configurationManager;
+        }
+
+        private MediaLibraryEntities GetMediaLibraryEntities()
+        {
+            DbContextOptionsBuilder<MediaLibraryEntities> optionsBuilder = new DbContextOptionsBuilder<MediaLibraryEntities>();
+#if DEV
+            string connectionString = configurationManager.GetValue("ConnectionStrings:DEV");
+#elif DEBUG
+            string connectionString = configurationManager.GetValue("ConnectionStrings:DEBUG");
+#else
+            string connectionString = configurationManager.GetValue("ConnectionStrings:Release");
+#endif
+
+            optionsBuilder.UseSqlServer(connectionString);
+
+            return new MediaLibraryEntities(optionsBuilder.Options);
         }
 
         public async Task<IEnumerable<T>> GetList<T>(Expression<Func<T, bool>> expression = null, 
@@ -37,7 +56,7 @@ namespace MediaLibrary.BLL.Services
         {
             IEnumerable<T> results = Enumerable.Empty<T>();
 
-            using (var db = new MediaLibraryEntities())
+            using (var db = GetMediaLibraryEntities())
             {
                 IQueryable<T> query = db.Set<T>();
 
@@ -60,7 +79,7 @@ namespace MediaLibrary.BLL.Services
         {
             T result = default(T);
 
-            using (var db = new MediaLibraryEntities())
+            using (var db = GetMediaLibraryEntities())
             {
                 IQueryable<T> query = db.Set<T>();
 
@@ -83,7 +102,7 @@ namespace MediaLibrary.BLL.Services
         {
             IEnumerable<T> results = Enumerable.Empty<T>();
 
-            using (var db = new MediaLibraryEntities())
+            using (var db = GetMediaLibraryEntities())
             {
                 IQueryable<T> query = db.Set<T>();
 
@@ -106,7 +125,7 @@ namespace MediaLibrary.BLL.Services
         {
             T result = default(T);
 
-            using (var db = new MediaLibraryEntities())
+            using (var db = GetMediaLibraryEntities())
             {
                 IQueryable<T> query = db.Set<T>();
 
@@ -127,7 +146,7 @@ namespace MediaLibrary.BLL.Services
         {
             int result = default(int);
 
-            using (var db = new MediaLibraryEntities())
+            using (var db = GetMediaLibraryEntities())
             {
                 db.Database.SetCommandTimeout(timeout);
                 entity.ModifyDate = DateTime.Now;
@@ -144,7 +163,7 @@ namespace MediaLibrary.BLL.Services
             int result = default(int);
             IList<T> items = entities.ToList();
 
-            using (var db = new MediaLibraryEntities())
+            using (var db = GetMediaLibraryEntities())
             {
                 foreach (var item in items)
                 {
@@ -164,7 +183,7 @@ namespace MediaLibrary.BLL.Services
         {
             int result = default(int);
 
-            using (var db = new MediaLibraryEntities())
+            using (var db = GetMediaLibraryEntities())
             {
                 DbSet<T> set = null;
                 T entity = null;
@@ -190,7 +209,7 @@ namespace MediaLibrary.BLL.Services
 
             if (expression != null)
             {
-                using (var db = new MediaLibraryEntities())
+                using (var db = GetMediaLibraryEntities())
                 {
                     DbSet<T> set = null;
 
@@ -212,7 +231,7 @@ namespace MediaLibrary.BLL.Services
         {
             int result = default(int);
 
-            using (var db = new MediaLibraryEntities())
+            using (var db = GetMediaLibraryEntities())
             {
                 db.Database.SetCommandTimeout(timeout);
                 entity.ModifyDate = DateTime.Now;
@@ -227,7 +246,7 @@ namespace MediaLibrary.BLL.Services
         {
             int result = default(int);
 
-            using (var db = new MediaLibraryEntities())
+            using (var db = GetMediaLibraryEntities())
             {
                 db.Database.SetCommandTimeout(timeout);
                 result = expression != null ? await db.Set<T>().CountAsync(expression, token) : await db.Set<T>().CountAsync(token);
@@ -240,7 +259,7 @@ namespace MediaLibrary.BLL.Services
         {
             bool result = default(bool);
 
-            using (var db = new MediaLibraryEntities())
+            using (var db = GetMediaLibraryEntities())
             {
                 db.Database.SetCommandTimeout(timeout);
                 result = (expression != null ? await db.Set<T>().FirstOrDefaultAsync(expression, token) : await db.Set<T>().FirstOrDefaultAsync(token)) != null;
@@ -253,7 +272,7 @@ namespace MediaLibrary.BLL.Services
         {
             int result = default(int);
 
-            using (var db = new MediaLibraryEntities())
+            using (var db = GetMediaLibraryEntities())
             {
                 db.Database.SetCommandTimeout(timeout);
                 result = await db.Database.ExecuteSqlRawAsync(sql, token, parameters);

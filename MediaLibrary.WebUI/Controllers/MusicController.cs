@@ -26,6 +26,7 @@ using Microsoft.AspNetCore.Http;
 using System.Text.Json;
 using Microsoft.Extensions.Configuration;
 using Microsoft.AspNetCore.Authorization;
+using MediaLibrary.Shared.Services.Interfaces;
 
 namespace MediaLibrary.WebUI.Controllers
 {

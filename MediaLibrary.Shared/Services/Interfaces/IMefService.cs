@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace MediaLibrary.BLL.Services.Interfaces
+namespace MediaLibrary.Shared.Services.Interfaces
 {
     public interface IMefService : IDisposable
     {
