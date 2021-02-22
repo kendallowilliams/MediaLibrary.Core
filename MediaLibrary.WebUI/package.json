@@ -1,0 +1,21 @@
+{
+  "version": "1.0.0",
+  "name": "asp.net",
+  "private": true,
+  "devDependencies": {
+    "gulp": "4.0.2",
+    "gulp-typescript": "5.0.1",
+    "typescript": "3.7.5",
+    "@types/jquery": "latest",
+    "@types/jqueryui": "latest",
+    "@types/bootstrap": "4.5.1"
+  },
+  "dependencies": {
+    "gulp": "4.0.2",
+    "gulp-typescript": "5.0.1",
+    "typescript": "3.7.5",
+    "@types/jquery": "latest",
+    "@types/jqueryui": "latest",
+    "@types/bootstrap": "4.5.1"
+  }
+}

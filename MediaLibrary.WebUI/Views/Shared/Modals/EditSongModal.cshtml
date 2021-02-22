@@ -1,0 +1,49 @@
+﻿<div class="modal fade" id="@(HtmlControlsRepository.EditSongModalId)" role="dialog" aria-labelledby="modalEditSongTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalEditSongTitle">Edit <span id="txtEditSongTitle">Song</span></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" id="" style="width: 75px">@(nameof(Song.Title))</span>
+                    </div>
+                    @Html.TextBox(nameof(Song.Title), string.Empty, new { @class = "form-control", id = $"txtEdit{nameof(Song.Title)}" })
+                </div>
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" id="" style="width: 75px">@(nameof(Song.Album))</span>
+                    </div>
+                    @Html.TextBox(nameof(Song.Album), string.Empty, new { @class = "form-control", id = $"txtEdit{nameof(Song.Album)}" })
+                </div>
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" id="" style="width: 75px">@(nameof(Song.Artist))</span>
+                    </div>
+                    @Html.TextBox(nameof(Song.Artist), string.Empty, new { @class = "form-control", id = $"txtEdit{nameof(Song.Artist)}" })
+                </div>
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" id="" style="width: 75px">@(nameof(Song.Genre))</span>
+                    </div>
+                    @Html.TextBox(nameof(Song.Genre), string.Empty, new { @class = "form-control", id = $"txtEdit{nameof(Song.Genre)}" })
+                </div>
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" id="" style="width: 75px">@(nameof(Song.Position))</span>
+                    </div>
+                    @Html.TextBox(nameof(Song.Position), string.Empty, new { @class = "form-control", id = $"txtEdit{nameof(Song.Position)}", type = "number", pattern = "[0-9]*", min = "0" })
+                </div>
+                @Html.Hidden(nameof(Song.Id), string.Empty, new { id = $"txtEdit{nameof(Song.Id)}" })
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-primary" data-song-action="save" data-tooltip="tooltip" title="Save song">Save</button>
+                <button type="button" class="btn btn-outline-secondary" data-dismiss="modal" data-tooltip="tooltip" title="Cancel">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>

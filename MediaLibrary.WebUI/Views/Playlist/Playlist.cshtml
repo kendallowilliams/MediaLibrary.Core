@@ -1,0 +1,159 @@
+﻿@model MediaLibrary.WebUI.Models.PlaylistViewModel
+
+<div class="d-flex flex-column" style="flex: 1 1 auto; overflow-y: auto">
+    <div style="flex: 0 0 auto">
+        <div class="d-flex flex-row">
+            <div style="flex: 0 1 auto; overflow-x: auto">
+                <h4 class="text-truncate">@(Model.SelectedPlaylist.Name) playlist</h4>
+            </div>
+        </div>
+        <div class="p-1">
+            <button class="btn btn-sm btn-outline-secondary" data-back-button="playlist" data-tooltip="tooltip" title="Go back"><i class="fa fa-arrow-circle-left"></i></button>
+            @if (Model.SelectedPlaylist.Id > 0)
+            {
+                <button class="btn btn-sm btn-outline-secondary" title="Edit playlist" data-toggle="modal" data-target="#@(HtmlControlsRepository.EdiPlaylistModalId)" data-item-id="@(Model.SelectedPlaylist.Id)"
+                        data-item-name="@(Model.SelectedPlaylist.Name)" data-tooltip="tooltip">
+                    <i class="fa fa-edit"></i>
+                </button>
+            }
+            @if (Model.SelectedPlaylist.PlaylistTracks.Any() || Model.SelectedPlaylist.PlaylistEpisodes.Any() || Model.SelectedPlaylist.PlaylistPodcastItems.Any())
+            {
+                <button class="btn btn-sm btn-outline-secondary" data-href="@Url.Action("GetM3UPlaylist", "Playlist", new { Model.SelectedPlaylist.Id })"
+                        data-random-href="@Url.Action("GetM3UPlaylist", "Playlist", new { Model.SelectedPlaylist.Id, random = true })"
+                        data-toggle="modal" data-target="#@(HtmlControlsRepository.DownloadM3UPlaylistModalId)"
+                        data-tooltip="tooltip" title="Download M3U playlist" data-playlist-name="@(Model.SelectedPlaylist.Name)">
+                    <i class="fa fa-download"></i>
+                </button>
+            }
+            @if (Model.SelectedPlaylist.Id > 0)
+            {
+                <button class="btn btn-sm btn-outline-danger" data-playlist-action="delete" data-item-id="@(Model.SelectedPlaylist.Id)" data-tooltip="tooltip" title="Delete playlist">
+                    <i class="fa fa-trash"></i>
+                </button>
+            }
+        </div>
+        <hr />
+    </div>
+    <div class="card" style="flex: 1 1 auto; overflow-y: auto">
+        <div class="card-header p-0" id="heading-playlist-@(Model.SelectedPlaylist.Id)">
+            <h5 class="mb-0">
+                @if (Model.SelectedPlaylist.Type == (int)UIEnums.PlaylistTabs.Music)
+                { <button class="btn btn-sm btn-link">Songs</button> }
+                else if (Model.SelectedPlaylist.Type == (int)UIEnums.PlaylistTabs.Podcast)
+                { <button class="btn btn-sm btn-link">Episodes</button> }
+                else if (Model.SelectedPlaylist.Type == (int)UIEnums.PlaylistTabs.Television)
+                { <button class="btn btn-sm btn-link">Episodes</button> }
+            </h5>
+        </div>
+        <div class="card-body m-0 p-0" style="flex: 1 1 auto; overflow-y: auto">
+            @if (Model.SelectedPlaylist.PlaylistTracks.Any())
+            {
+                <ul class="list-group list-group-flush">
+                    @foreach (var list in Model.SelectedPlaylist.PlaylistTracks.OrderBy(item => item.CreateDate))
+                    {
+                        <li class="list-group-item" data-song-id="@(list.Track.Id)">
+                            <div class="media">
+                                <img class="mr-3 track-img" src="@(Url.Content("~/images/audio.png"))" title="@(list.Track.Title)">
+                                <div class="media-body d-flex flex-column" style="overflow-x: auto">
+                                    <span class="mt-0 text-truncate font-weight-bold" style="flex: 0 0 auto">@(list.Track.Title)</span>
+                                    <div style="flex: 0 0 auto">
+                                        <small data-album-id="@(list.Track.Album?.Id)" style="cursor: pointer">@(list.Track.Album?.Title ?? "Unknown Album")</small> - <small data-artist-id="@(list.Track.Artist?.Id)" style="cursor: pointer" class="text-muted">@(list.Track.Artist?.Name ?? "Unknown Artist")</small>
+                                    </div>
+                                </div>
+                                <div>
+                                    <button class="btn btn-sm btn-outline-secondary" data-play-id="@(list.Track.Id)" data-tooltip="tooltip" title="Play">
+                                        <i class="fa fa-play"></i>
+                                    </button>
+                                    @if (Model.SelectedPlaylist.Id > 0)
+                                    {
+                                        <button class="btn btn-sm btn-outline-danger" data-delete-action="@(Url.Action("RemovePlaylistItem", "Playlist", new { list.Id, list.PlaylistId }))"
+                                                data-tooltip="tooltip" title="Remove song" data-delete-type="song" data-refresh-view="@(nameof(UIEnums.MediaPages.Playlist))"
+                                                data-toggle="modal" data-target="#@(HtmlControlsRepository.DeleteModalId)">
+                                            <i class="fa fa-trash"></i>
+                                        </button>
+                                    }
+                                </div>
+                            </div>
+                        </li>
+                    }
+                </ul>
+            }
+            else if (Model.SelectedPlaylist.PlaylistPodcastItems.Any())
+            {
+                <ul class="list-group list-group-flush">
+                    @foreach (var list in Model.SelectedPlaylist.PlaylistPodcastItems.OrderBy(item => item.CreateDate))
+                    {
+                        <li class="list-group-item" data-song-id="@(list.PodcastItem.Id)">
+                            <div class="media">
+                                <img class="mr-3 track-img" src="@(Url.Content("~/images/audio.png"))" title="@(list.PodcastItem.Title)">
+                                <div class="media-body d-flex flex-column" style="overflow-x: auto">
+                                    <span class="mt-0 text-truncate font-weight-bold" style="flex: 0 0 auto">@(list.PodcastItem.Title)</span>
+                                    <div style="flex: 0 0 auto">
+                                        <small data-podcast-id="@(list.PodcastItem.PodcastId)" style="cursor: pointer">@(list.PodcastItem.Podcast?.Title ?? "Unknown Podcast")</small>
+                                    </div>
+                                </div>
+                                <div>
+                                    <button class="btn btn-sm btn-outline-secondary" data-play-id="@(list.PodcastItem.Id)" data-tooltip="tooltip" title="Play">
+                                        <i class="fa fa-play"></i>
+                                    </button>
+                                    @if (Model.SelectedPlaylist.Id > 0)
+                                    {
+                                        <button class="btn btn-sm btn-outline-danger" data-delete-action="@(Url.Action("RemovePlaylistItem", "Playlist", new { list.Id, list.PlaylistId }))"
+                                                data-tooltip="tooltip" title="Remove song" data-delete-type="song" data-refresh-view="@(nameof(UIEnums.MediaPages.Playlist))"
+                                                data-toggle="modal" data-target="#@(HtmlControlsRepository.DeleteModalId)">
+                                            <i class="fa fa-trash"></i>
+                                        </button>
+                                    }
+                                </div>
+                            </div>
+                        </li>
+                    }
+                </ul>
+            }
+            else if (Model.SelectedPlaylist.PlaylistEpisodes.Any())
+            {
+                <ul class="list-group list-group-flush">
+                    @foreach (var list in Model.SelectedPlaylist.PlaylistEpisodes.OrderBy(item => item.CreateDate))
+                    {
+                        <li class="list-group-item" data-song-id="@(list.Episode.Id)">
+                            <div class="media">
+                                <img class="mr-3 track-img" src="@(Url.Content("~/images/audio.png"))" title="@(list.Episode.Title)">
+                                <div class="media-body d-flex flex-column" style="overflow-x: auto">
+                                    <span class="mt-0 text-truncate font-weight-bold" style="flex: 0 0 auto">@(list.Episode.Title)</span>
+                                    <div style="flex: 0 0 auto">
+                                        <small data-series-id="@(list.Episode.SeriesId)" style="cursor: pointer">@(list.Episode.Series?.Title ?? "Unknown Series")</small>
+                                    </div>
+                                </div>
+                                <div>
+                                    <button class="btn btn-sm btn-outline-secondary" data-play-id="@(list.Episode.Id)" data-tooltip="tooltip" title="Play">
+                                        <i class="fa fa-play"></i>
+                                    </button>
+                                    @if (Model.SelectedPlaylist.Id > 0)
+                                    {
+                                        <button class="btn btn-sm btn-outline-danger" data-delete-action="@(Url.Action("RemovePlaylistItem", "Playlist", new { list.Id, list.PlaylistId }))"
+                                                data-tooltip="tooltip" title="Remove song" data-delete-type="song" data-refresh-view="@(nameof(UIEnums.MediaPages.Playlist))"
+                                                data-toggle="modal" data-target="#@(HtmlControlsRepository.DeleteModalId)">
+                                            <i class="fa fa-trash"></i>
+                                        </button>
+                                    }
+                                </div>
+                            </div>
+                        </li>
+                    }
+                </ul>
+            }
+            else
+            {
+                if (Model.SelectedPlaylist.Type == (int)UIEnums.PlaylistTabs.Music)
+                {<span>No songs added.</span> }
+                else if (Model.SelectedPlaylist.Type == (int)UIEnums.PlaylistTabs.Podcast)
+                { <span>No episodes added.</span> }
+                else if (Model.SelectedPlaylist.Type == (int)UIEnums.PlaylistTabs.Television)
+                { <span>No episodes added.</span>}
+            }
+        </div>
+    </div>
+</div>
+
+<partial name="~/Views/Shared/Modals/EditPlaylistModal.cshtml" />
+<partial name="~/Views/Shared/Modals/DownloadM3UPlaylistModal.cshtml" />

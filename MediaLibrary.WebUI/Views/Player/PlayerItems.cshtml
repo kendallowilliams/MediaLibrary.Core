@@ -1,0 +1,82 @@
+﻿@model MediaLibrary.WebUI.Models.PlayerViewModel
+
+@if (Model.Configuration.SelectedMediaType == Enums.MediaTypes.Song && Model.Songs.Any())
+{
+    <ul class="list-group list-group-flush">
+        @foreach (var item in Model.Songs.Select((song, index) => new { Song = song, Index = index }))
+        {
+            <li class="list-group-item list-group-item-action @(item.Index == Model.Configuration.CurrentItemIndex ? "active" : string.Empty)" data-play-url="@Url.Action("File", "Music", new { item.Song.Id })"
+                data-play-index="@(item.Index)" data-item-id="@(item.Song.Id)" data-title="@(item.Song.Title)" data-current-time="@(item.Song.Progress)">
+                <div class="media">
+                    <div class="media-body d-flex flex-column" style="overflow-x: auto">
+                        <span class="mt-0 text-truncate font-weight-bold" style="flex: 0 0 auto">@(item.Song.Title)</span>
+                        <div style="flex: 0 0 auto">
+                            <small data-album-id="@(item.Song.Album?.Id)" style="cursor: pointer">@(item.Song.Album?.Title ?? "Unknown Album")</small> - <small data-artist-id="@(item.Song.Artist?.Id)" style="cursor: pointer" class="text-muted">@(item.Song.Artist?.Name ?? "Unknown Artist")</small>
+                        </div>
+                    </div>
+                    <div>
+                        <button type="button" class="btn btn-sm btn-outline-secondary" data-item-index="@(item.Index)" data-tooltip="tooltip" title="Play">
+                            <i class="fa fa-play"></i>
+                        </button>
+                        <button type="button" class="btn btn-sm btn-outline-secondary d-none d-lg-inline-block" data-toggle="modal" data-target="#@(HtmlControlsRepository.EditSongModalId)" data-item-id="@(item.Song.Id)" data-tooltip="tooltip"
+                                title="Edit">
+                            <i class="fa fa-edit"></i>
+                        </button>
+                    </div>
+                </div>
+            </li>
+        }
+    </ul>
+}
+else if (Model.Configuration.SelectedMediaType == Enums.MediaTypes.Podcast && Model.PodcastItems.Any())
+{
+    <ul class="list-group list-group-flush">
+        @foreach (var item in Model.PodcastItems.Select((podcastItem, index) => new { PodcastItem = podcastItem, Index = index }))
+        {
+            <li class="list-group-item list-group-item-action @(item.Index == Model.Configuration.CurrentItemIndex ? "active" : string.Empty)" data-play-url="@Url.Action("File", "Podcast", new { item.PodcastItem.Id })"
+                data-play-index="@(item.Index)" data-item-id="@(item.PodcastItem.Id)" data-title="@(item.PodcastItem.Title)" data-current-time="@(item.PodcastItem.Progress)">
+                <div class="media">
+                    <div class="media-body d-flex flex-column" style="overflow-x: auto">
+                        <span class="mt-0 text-truncate font-weight-bold" style="flex: 0 0 auto">@(item.PodcastItem.Title)</span>
+                        <div style="flex: 0 0 auto">
+                            <small data-podcast-id="@(item.PodcastItem.PodcastId)" style="cursor: pointer">@(item.PodcastItem.Podcast?.Title ?? "Unknown Podcast")</small> - <small class="text-muted">@(item.PodcastItem?.Podcast?.Author ?? "Unknown Author")</small>
+                        </div>
+                    </div>
+                    <div>
+                        <button type="button" class="btn btn-sm btn-outline-secondary" data-item-index="@(item.Index)" data-tooltip="tooltip" title="Play">
+                            <i class="fa fa-play"></i>
+                        </button>
+                    </div>
+                </div>
+            </li>
+        }
+    </ul>
+}
+else if (Model.Configuration.SelectedMediaType == Enums.MediaTypes.Television && Model.Episodes.Any())
+{
+    <ul class="list-group list-group-flush">
+        @foreach (var item in Model.Episodes.Select((episode, index) => new { Episode = episode, Index = index }))
+        {
+            <li class="list-group-item list-group-item-action @(item.Index == Model.Configuration.CurrentItemIndex ? "active" : string.Empty)" data-play-url="@Url.Action("File", "Television", new { item.Episode.Id })"
+                data-play-index="@(item.Index)" data-item-id="@(item.Episode.Id)" data-title="@(item.Episode.Title)" data-current-time="@(item.Episode.Progress)">
+                <div class="media">
+                    <div class="media-body d-flex flex-column" style="overflow-x: auto">
+                        <span class="mt-0 text-truncate font-weight-bold" style="flex: 0 0 auto">@(item.Episode.Title)</span>
+                        <div style="flex: 0 0 auto">
+                            <small data-series-id="@(item.Episode.SeriesId)" style="cursor: pointer">@(item.Episode.Series?.Title ?? "Unknown Series")</small> - <small class="text-muted">@(item.Episode.Season.HasValue ? $"Season {item.Episode.Season.Value}" : "Unknown Season")</small>
+                        </div>
+                    </div>
+                    <div>
+                        <button type="button" class="btn btn-sm btn-outline-secondary" data-item-index="@(item.Index)" data-tooltip="tooltip" title="Play">
+                            <i class="fa fa-play"></i>
+                        </button>
+                    </div>
+                </div>
+            </li>
+        }
+    </ul>
+}
+else
+{
+    <div>No now playing items.</div>
+}

@@ -1,0 +1,14 @@
+{
+  "compilerOptions": {
+    "noImplicitAny": false,
+    "noEmitOnError": true,
+    "removeComments": false,
+    "target": "ES2017",
+    "module": "AMD",
+    "outFile": "app.js",
+    "moduleResolution": "Node"
+  },
+  "exclude": [
+    "node_modules"
+  ]
+}

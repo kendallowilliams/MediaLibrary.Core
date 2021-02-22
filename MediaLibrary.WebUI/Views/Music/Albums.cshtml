@@ -1,0 +1,60 @@
+﻿@model MediaLibrary.WebUI.Models.MusicViewModel
+
+@if (Model.AlbumGroups.Any())
+{
+    <div id="accordion-albums" class="accordion">
+        @foreach (var item in Model.AlbumGroups.Select((group, index) => new { Index = index, Group = group }))
+        {
+            <div class="card">
+                <div class="card-header p-0" id="heading-albums-@(item.Index)">
+                    <h5 class="mb-0">
+                        @if (Model.IsSearchResponse)
+                        {
+                            <button class="btn btn-sm ui-state-disabled" disabled="disabled">@(item.Group.Key)</button>
+                        }
+                        else
+                        {
+                            <button class="btn btn-sm btn-link w-100 text-left" data-toggle="collapse" data-target="#collapse-albums-@(item.Index)" aria-expanded="@(item.Index == 0 ? "true" : "false")" aria-controls="collapse-albums-@(item.Index)">
+                                @(item.Group.Key)
+                            </button>
+                        }
+                    </h5>
+                </div>
+
+                <div id="collapse-albums-@(item.Index)" class="collapse @(item.Index == 0 ? "show" : "")" aria-labelledby="heading-albums-@(item.Index)" data-parent="#accordion-albums">
+                    <ul class="list-group list-group-flush">
+                        @foreach (var album in item.Group.OrderBy(a => a.Title))
+                        {
+                            <li class="list-group-item">
+                                <div class="media">
+                                    <img class="mr-3 track-img" src="@(Url.Content("~/images/audio.png"))" title="@(album.Title)">
+                                    <div class="media-body d-flex flex-column" style="overflow-x: auto">
+                                        <span class="mt-0 text-truncate font-weight-bold" style="flex: 0 0 auto">@(album.Title)</span>
+                                        <small data-artist-id="@(album.Artist?.Id)" style="cursor: pointer; flex: 0 0 auto">@(album.Artist?.Name ?? "Unknown Artist")</small>
+                                    </div>
+                                    <div>
+                                        <button class="btn btn-sm btn-outline-secondary" data-tooltip="tooltip" title="View album" data-album-id="@(album.Id)">
+                                            <i class="fa fa-list"></i>
+                                        </button>
+                                        @if (Model.Playlists.Any())
+                                        {
+                                        <button type="button" class="btn btn-sm btn-outline-secondary" data-playlist-url="@(Url.Action("AddAlbumToPlaylist", "Music"))"
+                                                data-item-id="@(album.Id)" data-toggle="modal" data-target="#@(HtmlControlsRepository.AddToPlaylistModalId)" data-tooltip="tooltip" title="Add to playlist"
+                                                data-playlist-type="@(nameof(UIEnums.PlaylistTabs.Music))">
+                                            <i class="fa fa-plus"></i>
+                                        </button>
+                                        }
+                                    </div>
+                                </div>
+                            </li>
+                        }
+                    </ul>
+                </div>
+            </div>
+        }
+    </div>
+}
+else
+{
+    <div>No albums.</div>
+}

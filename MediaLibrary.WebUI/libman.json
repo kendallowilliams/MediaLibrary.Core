@@ -1,0 +1,56 @@
+{
+  "version": "1.0",
+  "defaultProvider": "cdnjs",
+  "libraries": [
+    {
+      "library": "jquery@3.5.1",
+      "destination": "wwwroot/lib/jquery/"
+    },
+    {
+      "library": "font-awesome@5.15.2",
+      "destination": "wwwroot/lib/font-awesome/",
+      "files": [
+        "css/all.min.css",
+        "css/all.css",
+        "js/all.js",
+        "js/all.min.js",
+        "webfonts/fa-brands-400.eot",
+        "webfonts/fa-brands-400.svg",
+        "webfonts/fa-brands-400.ttf",
+        "webfonts/fa-brands-400.woff",
+        "webfonts/fa-brands-400.woff2",
+        "webfonts/fa-regular-400.eot",
+        "webfonts/fa-regular-400.svg",
+        "webfonts/fa-regular-400.ttf",
+        "webfonts/fa-regular-400.woff",
+        "webfonts/fa-regular-400.woff2",
+        "webfonts/fa-solid-900.eot",
+        "webfonts/fa-solid-900.svg",
+        "webfonts/fa-solid-900.ttf",
+        "webfonts/fa-solid-900.woff",
+        "webfonts/fa-solid-900.woff2"
+      ]
+    },
+    {
+      "provider": "unpkg",
+      "library": "bootstrap@4.6.0",
+      "destination": "wwwroot/lib/bootstrap/",
+      "files": [
+        "dist/css/bootstrap.css",
+        "dist/css/bootstrap.min.css",
+        "dist/js/bootstrap.bundle.js",
+        "dist/js/bootstrap.bundle.min.js",
+        "dist/js/bootstrap.js",
+        "dist/js/bootstrap.min.js"
+      ]
+    },
+    {
+      "library": "require.js@2.3.6",
+      "destination": "wwwroot/lib/require.js/"
+    },
+    {
+      "library": "jqueryui@1.12.1",
+      "destination": "wwwroot/lib/jqueryui/"
+    }
+  ]
+}
