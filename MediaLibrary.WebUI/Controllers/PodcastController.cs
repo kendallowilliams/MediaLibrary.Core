@@ -31,14 +31,12 @@ namespace MediaLibrary.WebUI.Controllers
         private readonly Lazy<IDataService> lazyDataService;
         private readonly Lazy<PodcastViewModel> lazyPodcastViewModel;
         private readonly Lazy<IPodcastService> lazyPodcastService;
-        private readonly Lazy<IControllerService> lazyControllerService;
         private readonly Lazy<ITransactionService> lazyTransactionService;
         private readonly Lazy<IFileService> lazyFileService;
         private IPodcastUIService podcastUIService => lazyPodcastUIService.Value;
         private IDataService dataService => lazyDataService.Value;
         private PodcastViewModel podcastViewModel => lazyPodcastViewModel.Value;
         private IPodcastService podcastService => lazyPodcastService.Value;
-        private IControllerService controllerService => lazyControllerService.Value;
         private ITransactionService transactionService => lazyTransactionService.Value;
         private IFileService fileService => lazyFileService.Value;
 
@@ -48,7 +46,6 @@ namespace MediaLibrary.WebUI.Controllers
             this.lazyDataService = mefService.GetExport<IDataService>();
             this.lazyPodcastViewModel = mefService.GetExport<PodcastViewModel>();
             this.lazyPodcastService = mefService.GetExport<IPodcastService>();
-            this.lazyControllerService = mefService.GetExport<IControllerService>();
             this.lazyTransactionService = mefService.GetExport<ITransactionService>();
             this.lazyFileService = mefService.GetExport<IFileService>();
         }
@@ -170,7 +167,8 @@ namespace MediaLibrary.WebUI.Controllers
 
                 if (!existingTransaction)
                 {
-                    await controllerService.QueueBackgroundWorkItem(ct => podcastService.AddPodcastFile(transaction, id), transaction);
+                    await transactionService.UpdateTransactionInProcess(transaction);
+                    _ = Task.Run(() => podcastService.AddPodcastFile(transaction, id));
                 }
                 else
                 {

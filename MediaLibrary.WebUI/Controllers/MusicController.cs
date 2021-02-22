@@ -36,14 +36,12 @@ namespace MediaLibrary.WebUI.Controllers
         private readonly Lazy<MusicViewModel> lazyMusicViewModel;
         private readonly Lazy<ITrackService> lazyTrackService;
         private readonly Lazy<IFileService> lazyFileService;
-        private readonly Lazy<IControllerService> lazyControllerService;
         private readonly Lazy<ITransactionService> lazyTransactionService;
         private IDataService dataService => lazyDataService.Value;
         private IMusicUIService musicService => lazyMusicService.Value;
         private MusicViewModel musicViewModel => lazyMusicViewModel.Value;
         private ITrackService trackService => lazyTrackService.Value;
         private IFileService fileService => lazyFileService.Value;
-        private IControllerService controllerService => lazyControllerService.Value;
         private ITransactionService transactionService => lazyTransactionService.Value;
         private readonly IConfiguration appConfig;
 
@@ -54,7 +52,6 @@ namespace MediaLibrary.WebUI.Controllers
             this.lazyMusicViewModel = mefService.GetExport<MusicViewModel>();
             this.lazyTrackService = mefService.GetExport<ITrackService>();
             this.lazyFileService = mefService.GetExport<IFileService>();
-            this.lazyControllerService = mefService.GetExport<IControllerService>();
             this.lazyTransactionService = mefService.GetExport<ITransactionService>();
             this.appConfig = appConfig;
         }
@@ -242,9 +239,8 @@ namespace MediaLibrary.WebUI.Controllers
                         IEnumerable<string> directories = fileService.EnumerateDirectories(request.Path, recursive: request.Recursive);
 
                         transaction.Message = JsonConvert.SerializeObject(request.Recursive ? directories : Enumerable.Empty<string>().Append(request.Path));
-                        await dataService.Update(transaction);
-                        await controllerService.QueueBackgroundWorkItem(ct => fileService.ReadDirectory(transaction, request.Path, request.Recursive).ContinueWith(task => musicService.ClearData()),
-                                                                              transaction);
+                        await transactionService.UpdateTransactionInProcess(transaction);
+                        _ = Task.Run(() => fileService.ReadDirectory(transaction, request.Path, request.Recursive).ContinueWith(task => musicService.ClearData()));
                     }
                     else
                     {
