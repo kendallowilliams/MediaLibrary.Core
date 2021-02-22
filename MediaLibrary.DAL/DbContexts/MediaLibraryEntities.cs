@@ -37,7 +37,7 @@ namespace MediaLibrary.DAL.DbContexts
         {
             if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseSqlServer("Data Source=kserver;Initial Catalog=MediaLibrary_DEV;User ID=kserver_sql_dev;Password=kserver_sql_dev;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False");
+                optionsBuilder.UseSqlServer("Data Source=kserver;Initial Catalog=MediaLibrary_DEBUG;User ID=kserver_sql_debug;Password=kserver_sql_debug;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False");
             }
         }
 
