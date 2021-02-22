@@ -6,6 +6,7 @@ using MediaLibrary.WebUI.ActionResults;
 using MediaLibrary.WebUI.Models;
 using MediaLibrary.WebUI.Models.Configurations;
 using MediaLibrary.WebUI.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System;

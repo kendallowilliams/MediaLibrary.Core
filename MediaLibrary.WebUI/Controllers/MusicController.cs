@@ -25,6 +25,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
 using System.Text.Json;
 using Microsoft.Extensions.Configuration;
+using Microsoft.AspNetCore.Authorization;
 
 namespace MediaLibrary.WebUI.Controllers
 {
@@ -58,9 +59,6 @@ namespace MediaLibrary.WebUI.Controllers
             this.appConfig = appConfig;
         }
 
-#if !DEBUG && !DEV
-        [CompressContent]
-#endif
         public async Task<IActionResult> Index()
         {
             IActionResult result = null;
@@ -103,9 +101,6 @@ namespace MediaLibrary.WebUI.Controllers
             return result;
         }
 
-#if !DEBUG && !DEV
-        [CompressContent]
-#endif
         public async Task<IActionResult> GetSongGroup(string key, SongSort sort)
         {
             IGrouping<string, Track> group = default;
@@ -383,9 +378,6 @@ namespace MediaLibrary.WebUI.Controllers
             }
         }
 
-#if !DEBUG && !DEV
-        [CompressContent]
-#endif
         public async Task<IActionResult> GetAlbums()
         {
             Configuration configuration = await dataService.Get<Configuration>(item => item.Type == nameof(MediaPages.Music));
@@ -397,9 +389,6 @@ namespace MediaLibrary.WebUI.Controllers
             return PartialView("Albums", musicViewModel);
         }
 
-#if !DEBUG && !DEV
-        [CompressContent]
-#endif
         public async Task<IActionResult> GetArtists()
         {
             Configuration configuration = await dataService.Get<Configuration>(item => item.Type == nameof(MediaPages.Music));
@@ -411,9 +400,6 @@ namespace MediaLibrary.WebUI.Controllers
             return PartialView("Artists", musicViewModel);
         }
 
-#if !DEBUG && !DEV
-        [CompressContent]
-#endif
         public async Task<IActionResult> GetSongs()
         {
             Configuration configuration = await dataService.Get<Configuration>(item => item.Type == nameof(MediaPages.Music));
@@ -437,9 +423,6 @@ namespace MediaLibrary.WebUI.Controllers
             return Json(musicViewModel.Configuration, new JsonSerializerOptions { PropertyNamingPolicy = null });
         }
 
-#if !DEBUG && !DEV
-        [CompressContent]
-#endif
         public async Task<IActionResult> SearchAlbums(string query)
         {
             IEnumerable<IGrouping<string, Album>> albumGroups = await musicService.GetAlbumGroups(AlbumSort.None);
@@ -452,9 +435,6 @@ namespace MediaLibrary.WebUI.Controllers
             return PartialView("Albums", musicViewModel);
         }
 
-#if !DEBUG && !DEV
-        [CompressContent]
-#endif
         public async Task<IActionResult> SearchArtists(string query)
         {
             IEnumerable<IGrouping<string, Artist>> artistGroups = await musicService.GetArtistGroups(ArtistSort.None);
@@ -467,9 +447,6 @@ namespace MediaLibrary.WebUI.Controllers
             return PartialView("Artists", musicViewModel);
         }
 
-#if !DEBUG && !DEV
-        [CompressContent]
-#endif
         public async Task<IActionResult> SearchSongs(string query)
         {
             IEnumerable<IGrouping<string, Track>> songGroups = await musicService.GetSongGroups(SongSort.None);
@@ -482,9 +459,6 @@ namespace MediaLibrary.WebUI.Controllers
             return PartialView("Songs", musicViewModel);
         }
 
-#if !DEBUG && !DEV
-        [CompressContent]
-#endif
         public async Task<IActionResult> GetMusicDirectory(string path)
         {
             MusicDirectory musicDirectory = await musicService.GetMusicDirectory(path);

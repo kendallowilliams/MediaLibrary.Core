@@ -42,9 +42,6 @@ namespace MediaLibrary.WebUI.Controllers
             this.lazyPlayerService = mefService.GetExport<IPlayerService>();
         }
 
-#if !DEBUG
-        [CompressContent]
-#endif
         public async Task<IActionResult> Index()
         {
             Configuration configuration = await dataService.Get<Configuration>(item => item.Type == nameof(MediaPages.Player));
@@ -78,9 +75,6 @@ namespace MediaLibrary.WebUI.Controllers
             }
         }
 
-#if !DEBUG
-        [CompressContent]
-#endif
         public async Task<IActionResult> GetPlayerItems()
         {
             Configuration configuration = await dataService.Get<Configuration>(item => item.Type == nameof(MediaPages.Player));
