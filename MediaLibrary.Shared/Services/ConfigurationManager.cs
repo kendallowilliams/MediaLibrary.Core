@@ -18,7 +18,13 @@ namespace MediaLibrary.Shared.Services
         public ConfigurationManager()
         {
             appConfig = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory())
+#if DEV
+                                                  .AddJsonFile("appsettings.DEV.json")
+#elif DEBUG
+                                                  .AddJsonFile("appsettings.DEBUG.json")
+#else
                                                   .AddJsonFile("appsettings.json")
+#endif
                                                   .Build();
         }
 
