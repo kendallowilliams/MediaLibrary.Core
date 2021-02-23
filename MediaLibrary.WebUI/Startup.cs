@@ -51,8 +51,8 @@ namespace MediaLibrary.WebUI
             app.UseStaticFiles();
 
             app.UseRouting();
+
             app.UseResponseCompression();
-            app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
