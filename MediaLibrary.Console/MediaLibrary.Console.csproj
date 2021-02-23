@@ -11,6 +11,15 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Include="appsettings.DEBUG.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="appsettings.DEV.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\MediaLibrary.BLL\MediaLibrary.BLL.csproj" />
     <ProjectReference Include="..\MediaLibrary.Shared\MediaLibrary.Shared.csproj" />
   </ItemGroup>
