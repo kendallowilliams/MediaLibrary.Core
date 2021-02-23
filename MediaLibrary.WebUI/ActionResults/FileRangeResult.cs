@@ -12,16 +12,14 @@ namespace MediaLibrary.WebUI.ActionResults
 {
     public class FileRangeResult : ActionResult
     {
-        private string mediaType,
-                       fileName;
+        private string fileName;
         private long? from,
                       to;
         private bool hasValidRange = false;
 
-        public FileRangeResult(string fileName, string range, string mediaType)
+        public FileRangeResult(string fileName, string range)
         {
             this.fileName = fileName;
-            this.mediaType = mediaType;
             hasValidRange = RangeHeaderValue.TryParse(range, out RangeHeaderValue header);
 
             if (hasValidRange)
@@ -41,7 +39,6 @@ namespace MediaLibrary.WebUI.ActionResults
             bool isPartial = hasValidRange && !(from == 0 && (to == info.Length - 1 || !to.HasValue));
 
             response.StatusCode = isPartial ? 206 : 200;
-            response.ContentType = mediaType;
             response.Headers.Add("Accept-Ranges", "bytes");
 
             if (isPartial)

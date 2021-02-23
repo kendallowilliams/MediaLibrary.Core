@@ -250,7 +250,7 @@ namespace MediaLibrary.WebUI.Controllers
                     }
                     else
                     {
-                        result = new FileRangeResult(podcastItem.File, Request.Headers["Range"], "");
+                        result = new FileRangeResult(podcastItem.File, Request.Headers["Range"]);
                     }
                     await transactionService.UpdateTransactionCompleted(transaction);
                 }

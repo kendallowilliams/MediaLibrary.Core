@@ -122,9 +122,7 @@ namespace MediaLibrary.WebUI.Controllers
 
             if (track != null && IO_File.Exists(Path.Combine(track.Path.Location, track.FileName)))
             {
-                result = new FileRangeResult(Path.Combine(track.Path.Location, track.FileName),
-                                             Request.Headers["Range"], 
-                                             "");
+                result = new FileRangeResult(Path.Combine(track.Path.Location, track.FileName), Request.Headers["Range"]);
             }
             else
             {

@@ -104,9 +104,7 @@ namespace MediaLibrary.WebUI.Controllers
 
             if (episode != null)
             {
-                result = new FileRangeResult(episode.Path,
-                                             Request.Headers["Range"],
-                                             "");
+                result = new FileRangeResult(episode.Path, Request.Headers["Range"]);
             }
             else
             {
