@@ -31,6 +31,7 @@ namespace MediaLibrary.WebUI
             services.AddHostedService<BackgroundQueueHostedService>();
             services.AddSingleton(typeof(IMefService), new MefService(AppDomain.CurrentDomain.BaseDirectory));
             services.AddSingleton(typeof(IBackgroundTaskQueue), typeof(BackgroundTaskQueue));
+            services.AddResponseCompression();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -50,7 +51,7 @@ namespace MediaLibrary.WebUI
             app.UseStaticFiles();
 
             app.UseRouting();
-
+            app.UseResponseCompression();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
