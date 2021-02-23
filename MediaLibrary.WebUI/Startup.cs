@@ -5,6 +5,7 @@ using MediaLibrary.WebUI.Utilities.Interfaces;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Server.IISIntegration;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -30,7 +31,9 @@ namespace MediaLibrary.WebUI
             services.AddControllersWithViews();
             services.AddHostedService<BackgroundQueueHostedService>();
             services.AddSingleton(typeof(IMefService), new MefService(AppDomain.CurrentDomain.BaseDirectory));
-            services.AddSingleton(typeof(IBackgroundTaskQueue), typeof(BackgroundTaskQueue));
+            services.AddSingleton(typeof(IBackgroundTaskQueue), typeof(BackgroundTaskQueue)); 
+            services.AddAuthentication(IISDefaults.AuthenticationScheme);
+            services.AddAuthorization();
             services.AddResponseCompression();
         }
 
@@ -51,6 +54,8 @@ namespace MediaLibrary.WebUI
             app.UseStaticFiles();
 
             app.UseRouting();
+            app.UseAuthentication();
+            app.UseAuthorization();
 
             app.UseResponseCompression();
 
