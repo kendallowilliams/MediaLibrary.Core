@@ -6,6 +6,7 @@ using MediaLibrary.WebUI.ActionResults;
 using MediaLibrary.WebUI.Models;
 using MediaLibrary.WebUI.Models.Configurations;
 using MediaLibrary.WebUI.Services.Interfaces;
+using MediaLibrary.WebUI.Utilities.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
@@ -34,6 +35,7 @@ namespace MediaLibrary.WebUI.Controllers
         private readonly Lazy<IPodcastService> lazyPodcastService;
         private readonly Lazy<ITransactionService> lazyTransactionService;
         private readonly Lazy<IFileService> lazyFileService;
+        private readonly IBackgroundTaskQueue backgroundTaskQueue;
         private IPodcastUIService podcastUIService => lazyPodcastUIService.Value;
         private IDataService dataService => lazyDataService.Value;
         private PodcastViewModel podcastViewModel => lazyPodcastViewModel.Value;
@@ -41,7 +43,7 @@ namespace MediaLibrary.WebUI.Controllers
         private ITransactionService transactionService => lazyTransactionService.Value;
         private IFileService fileService => lazyFileService.Value;
 
-        public PodcastController(IMefService mefService)
+        public PodcastController(IMefService mefService, IBackgroundTaskQueue backgroundTaskQueue)
         {
             this.lazyPodcastUIService = mefService.GetExport<IPodcastUIService>();
             this.lazyDataService = mefService.GetExport<IDataService>();
@@ -49,6 +51,7 @@ namespace MediaLibrary.WebUI.Controllers
             this.lazyPodcastService = mefService.GetExport<IPodcastService>();
             this.lazyTransactionService = mefService.GetExport<ITransactionService>();
             this.lazyFileService = mefService.GetExport<IFileService>();
+            this.backgroundTaskQueue = backgroundTaskQueue;
         }
 
         public async Task<IActionResult> Index()
@@ -169,7 +172,7 @@ namespace MediaLibrary.WebUI.Controllers
                 if (!existingTransaction)
                 {
                     await transactionService.UpdateTransactionInProcess(transaction);
-                    _ = Task.Run(() => podcastService.AddPodcastFile(transaction, id));
+                    backgroundTaskQueue.QueueBackgroundWorkItem(async task => await podcastService.AddPodcastFile(transaction, id));
                 }
                 else
                 {

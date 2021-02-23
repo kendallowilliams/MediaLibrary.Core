@@ -2,6 +2,7 @@
 using MediaLibrary.BLL.Services.Interfaces;
 using MediaLibrary.DAL.Models;
 using MediaLibrary.DAL.Services.Interfaces;
+using MediaLibrary.Shared.Services.Interfaces;
 using MediaLibrary.WebUI.Models.Configurations;
 using MediaLibrary.WebUI.Models.Data;
 using MediaLibrary.WebUI.Services.Interfaces;
@@ -32,17 +33,16 @@ namespace MediaLibrary.WebUI.Services
         private IEnumerable<Track> songs;
         private IEnumerable<Artist> artists;
         private IEnumerable<Album> albums;
-        private readonly IConfigurationRoot appConfig;
+        private readonly IConfigurationManager configurationManager;
 
         [ImportingConstructor]
-        public MusicUIService(Lazy<IDataService> dataService, Lazy<IFileService> fileService, Lazy<ITransactionService> transactionService) : base()
+        public MusicUIService(Lazy<IDataService> dataService, Lazy<IFileService> fileService, Lazy<ITransactionService> transactionService,
+                              IConfigurationManager configurationManager) : base()
         {
             this.lazyDataService = dataService;
             this.lazyFileService = fileService;
             this.lazyTransactionService = transactionService;
-            appConfig = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory())
-                                                  .AddJsonFile("appsettings.json")
-                                                  .Build();
+            this.configurationManager = configurationManager;
         }
 
         public async Task<IEnumerable<Track>> Songs() => songs ?? await dataService.GetList<Track>();
@@ -154,7 +154,7 @@ namespace MediaLibrary.WebUI.Services
                                 activeDirectories = transactionData.SelectMany(item => item.Directories);
             IEnumerable<TrackPath> includedTrackPaths = Enumerable.Empty<TrackPath>();
             MusicDirectory musicDirectory = default;
-            string rootPath = appConfig["RootPath"],
+            string rootPath = configurationManager.GetValue("RootPath"),
                    targetPath = string.IsNullOrWhiteSpace(path) ? rootPath : path;
             DirectoryInfo rootPathInfo = new DirectoryInfo(rootPath),
                           targetPathInfo = new DirectoryInfo(targetPath);
@@ -171,7 +171,7 @@ namespace MediaLibrary.WebUI.Services
             foreach (var directory in musicDirectory.SubDirectories)
             {
                 IEnumerable<string> allFiles = fileService.EnumerateFiles(directory.Path, recursive: false),
-                                    fileTypes = appConfig["FileTypes"].Split(",".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
+                                    fileTypes = configurationManager.GetValue("FileTypes").Split(",".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
 
                 directory.HasFiles = allFiles.Where(file => fileTypes.Contains(Path.GetExtension(file), StringComparer.OrdinalIgnoreCase)).Any();
                 directory.IsLoading = activeDirectories.Contains(directory.Path, StringComparer.OrdinalIgnoreCase);

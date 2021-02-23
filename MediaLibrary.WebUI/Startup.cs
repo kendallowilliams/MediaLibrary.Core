@@ -1,5 +1,7 @@
 using MediaLibrary.Shared.Services;
 using MediaLibrary.Shared.Services.Interfaces;
+using MediaLibrary.WebUI.Utilities;
+using MediaLibrary.WebUI.Utilities.Interfaces;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -26,7 +28,9 @@ namespace MediaLibrary.WebUI
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
+            services.AddHostedService<BackgroundQueueHostedService>();
             services.AddSingleton(typeof(IMefService), new MefService(AppDomain.CurrentDomain.BaseDirectory));
+            services.AddSingleton(typeof(IBackgroundTaskQueue), typeof(BackgroundTaskQueue));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

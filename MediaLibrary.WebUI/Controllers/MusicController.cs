@@ -27,6 +27,7 @@ using System.Text.Json;
 using Microsoft.Extensions.Configuration;
 using Microsoft.AspNetCore.Authorization;
 using MediaLibrary.Shared.Services.Interfaces;
+using MediaLibrary.WebUI.Utilities.Interfaces;
 
 namespace MediaLibrary.WebUI.Controllers
 {
@@ -38,6 +39,7 @@ namespace MediaLibrary.WebUI.Controllers
         private readonly Lazy<ITrackService> lazyTrackService;
         private readonly Lazy<IFileService> lazyFileService;
         private readonly Lazy<ITransactionService> lazyTransactionService;
+        private readonly IBackgroundTaskQueue backgroundTaskQueue;
         private IDataService dataService => lazyDataService.Value;
         private IMusicUIService musicService => lazyMusicService.Value;
         private MusicViewModel musicViewModel => lazyMusicViewModel.Value;
@@ -46,7 +48,7 @@ namespace MediaLibrary.WebUI.Controllers
         private ITransactionService transactionService => lazyTransactionService.Value;
         private readonly IConfiguration appConfig;
 
-        public MusicController(IMefService mefService, IConfiguration appConfig)
+        public MusicController(IMefService mefService, IConfiguration appConfig, IBackgroundTaskQueue backgroundTaskQueue)
         {
             this.lazyDataService = mefService.GetExport<IDataService>();
             this.lazyMusicService = mefService.GetExport<IMusicUIService>();
@@ -55,6 +57,7 @@ namespace MediaLibrary.WebUI.Controllers
             this.lazyFileService = mefService.GetExport<IFileService>();
             this.lazyTransactionService = mefService.GetExport<ITransactionService>();
             this.appConfig = appConfig;
+            this.backgroundTaskQueue = backgroundTaskQueue;
         }
 
         public async Task<IActionResult> Index()
@@ -241,7 +244,8 @@ namespace MediaLibrary.WebUI.Controllers
 
                         transaction.Message = JsonConvert.SerializeObject(request.Recursive ? directories : Enumerable.Empty<string>().Append(request.Path));
                         await transactionService.UpdateTransactionInProcess(transaction);
-                        _ = Task.Run(() => fileService.ReadDirectory(transaction, request.Path, request.Recursive).ContinueWith(task => musicService.ClearData()));
+                        backgroundTaskQueue.QueueBackgroundWorkItem(async task => await fileService.ReadDirectory(transaction, request.Path, request.Recursive)
+                                                                                                   .ContinueWith(task => musicService.ClearData()));
                     }
                     else
                     {
