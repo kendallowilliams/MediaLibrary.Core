@@ -178,7 +178,7 @@ export default class Podcast extends BaseClass implements IView {
                 const id = $(element).attr('data-episode-id');
 
                 $.get('Podcast/IsDownloading?id=' + id, data => {
-                    if (data && (data as string).toLowerCase() === 'true') {
+                    if (data) {
                         this.refreshPodcastDownloads();
                     } else {
                         $(element).removeAttr('data-active-download');

@@ -147,7 +147,7 @@ namespace MediaLibrary.BLL.Services
                     {
                         string path = Path.Combine(fileService.PodcastFolder, podcastItem.Podcast.Title);
 
-                        foreach (char c in Path.GetInvalidPathChars()) { path.Replace(c.ToString(), string.Empty); }
+                        foreach (char c in Path.GetInvalidFileNameChars()) { path = path.Replace(c.ToString(), string.Empty); }
                         if (!Directory.Exists(path)) { Directory.CreateDirectory(path); }
                         fileName = Path.Combine(path, Path.GetFileName((new Uri(podcastItem.Url)).LocalPath));
                         podcastItem.File = fileName;
