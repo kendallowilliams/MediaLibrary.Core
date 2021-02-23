@@ -12,6 +12,7 @@ using System.Linq.Expressions;
 using MediaLibrary.DAL.Models;
 using System.Configuration;
 using Newtonsoft.Json.Linq;
+using MediaLibrary.Shared.Services.Interfaces;
 
 namespace MediaLibrary.BLL.Services
 {
@@ -20,11 +21,13 @@ namespace MediaLibrary.BLL.Services
     public class TransactionService : ITransactionService
     {
         private readonly IDataService dataService;
+        private readonly IConfigurationManager configurationManager;
 
         [ImportingConstructor]
-        public TransactionService(IDataService dataService)
+        public TransactionService(IDataService dataService, IConfigurationManager configurationManager)
         {
             this.dataService = dataService;
+            this.configurationManager = configurationManager;
         }
 
         public async Task<Transaction> GetNewTransaction(TransactionTypes transactionType)
@@ -78,9 +81,7 @@ namespace MediaLibrary.BLL.Services
 
         public async Task CleanUpTransactions()
         {
-            Configuration configuration = await dataService.Get<Configuration>(item => item.Type == "MediaLibrary");
-            JObject mlConfiguration = JObject.Parse(configuration.JsonData);
-            int transactionExpirationDays = mlConfiguration.TryGetValue("TransactionExpirationAge", out JToken jToken) ? jToken.Value<int>() : 30;
+            int.TryParse(configurationManager.GetValue("TransactionExpirationAge"), out int transactionExpirationDays);
             DateTime expirationDate = DateTime.Now.Date.AddDays(-transactionExpirationDays);
             await dataService.DeleteAll<Transaction>(transaction => transaction.CreateDate < expirationDate);
         }

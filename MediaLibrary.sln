@@ -9,7 +9,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MediaLibrary.BLL", "MediaLi
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MediaLibrary.WebUI", "MediaLibrary.WebUI\MediaLibrary.WebUI.csproj", "{DA9D5224-78E5-4FCF-BE62-C94114AF5AB0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MediaLibrary.Shared", "MediaLibrary.Shared\MediaLibrary.Shared.csproj", "{3D49FE51-60BA-4577-9CEF-C1D8CAA9F1D4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MediaLibrary.Shared", "MediaLibrary.Shared\MediaLibrary.Shared.csproj", "{3D49FE51-60BA-4577-9CEF-C1D8CAA9F1D4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MediaLibrary.Console", "MediaLibrary.Console\MediaLibrary.Console.csproj", "{E40456E5-1A56-46F0-AFB9-778CFA878F4F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -42,6 +44,12 @@ Global
 		{3D49FE51-60BA-4577-9CEF-C1D8CAA9F1D4}.DEV|Any CPU.Build.0 = DEV|Any CPU
 		{3D49FE51-60BA-4577-9CEF-C1D8CAA9F1D4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3D49FE51-60BA-4577-9CEF-C1D8CAA9F1D4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E40456E5-1A56-46F0-AFB9-778CFA878F4F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E40456E5-1A56-46F0-AFB9-778CFA878F4F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E40456E5-1A56-46F0-AFB9-778CFA878F4F}.DEV|Any CPU.ActiveCfg = DEV|Any CPU
+		{E40456E5-1A56-46F0-AFB9-778CFA878F4F}.DEV|Any CPU.Build.0 = DEV|Any CPU
+		{E40456E5-1A56-46F0-AFB9-778CFA878F4F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E40456E5-1A56-46F0-AFB9-778CFA878F4F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

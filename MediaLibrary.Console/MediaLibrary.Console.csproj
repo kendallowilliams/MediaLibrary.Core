@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <Configurations>Debug;Release;DEV</Configurations>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='DEV|AnyCPU'">
+    <DefineConstants>TRACE;DEV</DefineConstants>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\MediaLibrary.BLL\MediaLibrary.BLL.csproj" />
+    <ProjectReference Include="..\MediaLibrary.Shared\MediaLibrary.Shared.csproj" />
+  </ItemGroup>
+
+</Project>
