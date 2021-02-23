@@ -48,6 +48,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="FodyWeavers.xsd" />
     <None Include="wwwroot\favicon.ico" />
   </ItemGroup>
 

@@ -20,6 +20,14 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="ConfigureAwait.Fody" Version="3.3.1" />
+    <PackageReference Include="Fody" Version="6.3.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\MediaLibrary.BLL\MediaLibrary.BLL.csproj" />
     <ProjectReference Include="..\MediaLibrary.Shared\MediaLibrary.Shared.csproj" />
   </ItemGroup>

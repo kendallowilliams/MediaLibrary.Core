@@ -1,4 +1,5 @@
-﻿using MediaLibrary.BLL.Services.Interfaces;
+﻿using Fody;
+using MediaLibrary.BLL.Services.Interfaces;
 using MediaLibrary.Shared.Services;
 using MediaLibrary.Shared.Services.Interfaces;
 using System;
@@ -7,6 +8,7 @@ using System.Threading.Tasks;
 
 namespace MediaLibrary.Console
 {
+    [ConfigureAwait(false)]
     class Program
     {
         static async Task Main(string[] args)
