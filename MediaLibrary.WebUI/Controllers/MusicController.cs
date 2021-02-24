@@ -48,7 +48,7 @@ namespace MediaLibrary.WebUI.Controllers
         private ITransactionService transactionService => lazyTransactionService.Value;
         private readonly IConfigurationManager configurationManager;
 
-        public MusicController(IMefService mefService, IConfigurationManager configurationManager, IBackgroundTaskQueue backgroundTaskQueue)
+        public MusicController(IMefService mefService, IBackgroundTaskQueue backgroundTaskQueue)
         {
             this.lazyDataService = mefService.GetExport<IDataService>();
             this.lazyMusicService = mefService.GetExport<IMusicUIService>();
@@ -56,7 +56,7 @@ namespace MediaLibrary.WebUI.Controllers
             this.lazyTrackService = mefService.GetExport<ITrackService>();
             this.lazyFileService = mefService.GetExport<IFileService>();
             this.lazyTransactionService = mefService.GetExport<ITransactionService>();
-            this.configurationManager = configurationManager;
+            this.configurationManager = mefService.GetExportedValue<IConfigurationManager>();
             this.backgroundTaskQueue = backgroundTaskQueue;
         }
 
@@ -404,6 +404,8 @@ namespace MediaLibrary.WebUI.Controllers
                     {
                         ModelState.AddModelError("Message", $"'{viewModel.MusicPath}' not found or does not exist");
                     }
+
+                    result = new BadRequestObjectResult(ModelState);
                 }
             }
             else
