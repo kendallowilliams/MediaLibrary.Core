@@ -366,7 +366,7 @@ namespace MediaLibrary.WebUI.Controllers
 
         public async Task<IActionResult> Upload(AddNewSongModalViewModel viewModel)
         {
-            IActionResult result;
+            IActionResult result = default(IActionResult);
 
             if (ModelState.IsValid)
             {
