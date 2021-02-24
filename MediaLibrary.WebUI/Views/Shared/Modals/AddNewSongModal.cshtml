@@ -1,24 +1,31 @@
-﻿@model MediaLibrary.WebUI.Models.MusicViewModel
+﻿@model AddNewSongModalViewModel
 
 <div class="modal fade" id="@(HtmlControlsRepository.NewSongModalId)" role="dialog" aria-labelledby="modalAddNewSongTitle" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="modalAddNewSongTitle">Upload Song</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <div class="custom-file">
-                    @Html.TextBox("SongFile", string.Empty, new { @class = "custom-file-input", type = "file", id = "inpNewSong", accept = ".mp3" })
-                    @Html.Label("inpNewSong", "Choose file...", new { @class = "custom-file-label" })
+            @using (Html.BeginForm(nameof(MusicController.Upload), "Music", FormMethod.Post, new { enctype = "multipart/form-data" }))
+            {
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalAddNewSongTitle">Upload Song</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
                 </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-outline-primary" data-song-action="upload" data-tooltip="tooltip" title="Upload song">Upload</button>
-                <button type="button" class="btn btn-outline-secondary" data-dismiss="modal" data-tooltip="tooltip" title="Cancel">Cancel</button>
-            </div>
+                <div class="modal-body">
+                    <div class="custom-file mb-3">
+                        @Html.TextBoxFor(x => x.MusicFile, null, new { @class = "custom-file-input", type = "file", accept = ".mp3" })
+                        @Html.LabelFor(x => x.MusicFile, "Choose file...", new { @class = "custom-file-label" })
+                    </div>
+                    @Html.HiddenFor(x => x.MusicPath, new { data_field = "MusicPath" })
+                    <div data-container="NewSongDirectorySelector">
+
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-primary" data-song-action="upload" data-tooltip="tooltip" title="Upload song">Upload</button>
+                    <button type="button" class="btn btn-outline-secondary" data-dismiss="modal" data-tooltip="tooltip" title="Cancel">Cancel</button>
+                </div>
+            }
         </div>
     </div>
 </div>

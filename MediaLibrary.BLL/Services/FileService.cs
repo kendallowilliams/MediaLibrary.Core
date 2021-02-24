@@ -46,8 +46,6 @@ namespace MediaLibrary.BLL.Services
             this.configurationManager = configurationManager;
         }
 
-        public string MusicFolder { get => Path.Combine(RootFolder, "Music"); }
-
         public string PodcastFolder { get => Path.Combine(RootFolder, "Podcast"); }
 
         public string RootFolder { get => Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonMusic, Environment.SpecialFolderOption.Create), "MediaLibrary"); }

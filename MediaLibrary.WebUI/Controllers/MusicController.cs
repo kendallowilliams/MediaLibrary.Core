@@ -46,9 +46,9 @@ namespace MediaLibrary.WebUI.Controllers
         private ITrackService trackService => lazyTrackService.Value;
         private IFileService fileService => lazyFileService.Value;
         private ITransactionService transactionService => lazyTransactionService.Value;
-        private readonly IConfiguration appConfig;
+        private readonly IConfigurationManager configurationManager;
 
-        public MusicController(IMefService mefService, IConfiguration appConfig, IBackgroundTaskQueue backgroundTaskQueue)
+        public MusicController(IMefService mefService, IConfigurationManager configurationManager, IBackgroundTaskQueue backgroundTaskQueue)
         {
             this.lazyDataService = mefService.GetExport<IDataService>();
             this.lazyMusicService = mefService.GetExport<IMusicUIService>();
@@ -56,7 +56,7 @@ namespace MediaLibrary.WebUI.Controllers
             this.lazyTrackService = mefService.GetExport<ITrackService>();
             this.lazyFileService = mefService.GetExport<IFileService>();
             this.lazyTransactionService = mefService.GetExport<ITransactionService>();
-            this.appConfig = appConfig;
+            this.configurationManager = configurationManager;
             this.backgroundTaskQueue = backgroundTaskQueue;
         }
 
@@ -364,19 +364,54 @@ namespace MediaLibrary.WebUI.Controllers
             }
         }
 
-        public async Task Upload(IFormFile file)
+        public async Task<IActionResult> Upload(AddNewSongModalViewModel viewModel)
         {
-            if (file != null)
-            {
-                string dtFormat = "yyyyMMddHHmmss",
-                       newFile = $"{Path.GetFileNameWithoutExtension(file.FileName)}_{DateTime.Now.ToString(dtFormat)}{Path.GetExtension(file.FileName)}",
-                       filePath = Path.Combine(fileService.MusicFolder, newFile);
+            IActionResult result;
 
-                Directory.CreateDirectory(fileService.MusicFolder);
-                using (Stream stream = System.IO.File.OpenWrite(filePath)) { await file.CopyToAsync(stream); }
-                await fileService.ReadMediaFile(filePath);
-                musicService.ClearData();
+            if (ModelState.IsValid)
+            {
+                string fileName = viewModel.MusicFile.FileName,
+                       filePath = Path.Combine(viewModel.MusicPath, fileName),
+                       rootPath = configurationManager.GetValue("RootPath");
+
+                if (Directory.Exists(viewModel.MusicPath) && !System.IO.File.Exists(filePath))
+                {
+                    DirectoryInfo rootPathInfo = new DirectoryInfo(rootPath),
+                                  targetPathInfo = new DirectoryInfo(viewModel.MusicPath);
+                    bool isSafePath = fileService.EnumerateDirectories(rootPathInfo.FullName, recursive: true)
+                                                 .Any(item => item.Equals(targetPathInfo.FullName));
+
+                    if (isSafePath)
+                    {
+                        using (Stream stream = System.IO.File.OpenWrite(filePath)) { await viewModel.MusicFile.CopyToAsync(stream); }
+                        await fileService.ReadMediaFile(filePath);
+                        musicService.ClearData();
+                        result = NoContent();
+                    }
+                    else
+                    {
+                        ModelState.AddModelError("Message", $"'{viewModel.MusicPath}' is not a valid path");
+                        result = new BadRequestObjectResult(ModelState);
+                    }
+                }
+                else
+                {
+                    if (Directory.Exists(viewModel.MusicPath))
+                    {
+                        ModelState.AddModelError("Message", $"'{fileName}' already exists in the '{viewModel.MusicPath}'");
+                    }
+                    else
+                    {
+                        ModelState.AddModelError("Message", $"'{viewModel.MusicPath}' not found or does not exist");
+                    }
+                }
             }
+            else
+            {
+                result = new BadRequestObjectResult(ModelState);
+            }
+
+            return result;
         }
 
         public async Task<IActionResult> GetAlbums()
@@ -465,6 +500,13 @@ namespace MediaLibrary.WebUI.Controllers
             MusicDirectory musicDirectory = await musicService.GetMusicDirectory(path);
 
             return PartialView("~/Views/Shared/Controls/MusicDirectory.cshtml", musicDirectory);
+        }
+
+        public async Task<IActionResult> GetDirectorySelector(string path)
+        {
+            MusicDirectory musicDirectory = await musicService.GetMusicDirectory(path);
+
+            return PartialView("~/Views/Shared/Controls/DirectorySelector.cshtml", musicDirectory);
         }
 
         public async Task<bool> IsScanCompleted(int id)

@@ -9,8 +9,6 @@ namespace MediaLibrary.BLL.Services.Interfaces
 {
     public interface IFileService
     {
-        string MusicFolder { get; }
-
         string PodcastFolder { get; }
 
         string RootFolder { get; }
