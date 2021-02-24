@@ -47,7 +47,7 @@ namespace MediaLibrary.WebUI.Controllers
             return View(mediaLibraryViewModel);
         }
 
-        public async Task UpdateConfiguration(MediaLibraryConfiguration mediaLibraryConfiguration)
+        public async Task<IActionResult> UpdateConfiguration(MediaLibraryConfiguration mediaLibraryConfiguration)
         {
             if (ModelState.IsValid)
             {
@@ -68,6 +68,8 @@ namespace MediaLibrary.WebUI.Controllers
                     await dataService.Update(configuration);
                 }
             }
+
+            return NoContent();
         }
 
         public async Task<IActionResult> MediaLibraryConfiguration()

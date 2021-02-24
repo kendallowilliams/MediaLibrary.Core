@@ -287,7 +287,7 @@ namespace MediaLibrary.WebUI.Controllers
             return result;
         }
 
-        public async Task UpdateConfiguration(MusicConfiguration musicConfiguration)
+        public async Task<IActionResult> UpdateConfiguration(MusicConfiguration musicConfiguration)
         {
             if (ModelState.IsValid)
             {
@@ -304,6 +304,8 @@ namespace MediaLibrary.WebUI.Controllers
                     await dataService.Update(configuration);
                 }
             }
+            
+            return NoContent();
         }
 
         public async Task<JsonResult> GetSong(int id)

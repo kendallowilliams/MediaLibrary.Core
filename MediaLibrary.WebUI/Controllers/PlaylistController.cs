@@ -183,7 +183,7 @@ namespace MediaLibrary.WebUI.Controllers
             return lines;
         }
 
-        public async Task UpdateConfiguration(PlaylistConfiguration playlistConfiguration)
+        public async Task<IActionResult> UpdateConfiguration(PlaylistConfiguration playlistConfiguration)
         {
             if (ModelState.IsValid)
             {
@@ -200,6 +200,8 @@ namespace MediaLibrary.WebUI.Controllers
                     await dataService.Update(configuration);
                 }
             }
+
+            return NoContent();
         }
 
         public async Task<IActionResult> PlaylistConfiguration()

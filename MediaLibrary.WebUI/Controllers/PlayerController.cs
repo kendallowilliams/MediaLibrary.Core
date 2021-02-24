@@ -57,7 +57,7 @@ namespace MediaLibrary.WebUI.Controllers
             return PartialView(playerViewModel);
         }
 
-        public async Task UpdateConfiguration(PlayerConfiguration playerConfiguration)
+        public async Task<IActionResult> UpdateConfiguration(PlayerConfiguration playerConfiguration)
         {
             if (ModelState.IsValid)
             {
@@ -74,6 +74,8 @@ namespace MediaLibrary.WebUI.Controllers
                     await dataService.Update(configuration);
                 }
             }
+
+            return NoContent();
         }
 
         public async Task<IActionResult> GetPlayerItems()

@@ -75,7 +75,7 @@ namespace MediaLibrary.WebUI.Controllers
             return PartialView("Series", televisionViewModel);
         }
 
-        public async Task UpdateConfiguration(TelevisionConfiguration televisionConfiguration)
+        public async Task<IActionResult> UpdateConfiguration(TelevisionConfiguration televisionConfiguration)
         {
             if (ModelState.IsValid)
             {
@@ -92,6 +92,8 @@ namespace MediaLibrary.WebUI.Controllers
                     await dataService.Update(configuration);
                 }
             }
+
+            return NoContent();
         }
 
 #if !DEBUG && !DEV

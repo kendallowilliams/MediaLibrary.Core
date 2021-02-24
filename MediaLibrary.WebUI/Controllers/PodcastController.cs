@@ -269,7 +269,7 @@ namespace MediaLibrary.WebUI.Controllers
             return result;
         }
 
-        public async Task UpdateConfiguration(PodcastConfiguration podcastConfiguration)
+        public async Task<IActionResult> UpdateConfiguration(PodcastConfiguration podcastConfiguration)
         {
             if (ModelState.IsValid)
             {
@@ -286,6 +286,8 @@ namespace MediaLibrary.WebUI.Controllers
                     await dataService.Update(configuration);
                 }
             }
+
+            return NoContent();
         }
 
         public async Task<IActionResult> PodcastConfiguration()
