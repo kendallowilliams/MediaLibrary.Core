@@ -43,7 +43,7 @@ namespace MediaLibrary.WebUI.ActionResults
             contentTypeProvider.TryGetContentType(this.fileName, out string contentType);
             response.StatusCode = isPartial ? 206 : 200;
             response.Headers.Add("Accept-Ranges", "bytes");
-            if (!string.IsNullOrWhiteSpace(contentType)) /*then*/ response.Headers.Add("Content-Type", contentType);
+            if (!string.IsNullOrWhiteSpace(contentType)) /*then*/ response.ContentType = contentType;
 
             if (isPartial)
             {
