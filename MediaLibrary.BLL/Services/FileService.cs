@@ -165,14 +165,14 @@ namespace MediaLibrary.BLL.Services
                             foreach(string file in _files) { await ReadMediaFile(file); }
                     }
 
-                    albumsToDelete = await dataService.GetList<Album>(album => album.Tracks.Count() == 0, default, album => album.Tracks);
-                    artistsToDelete = await dataService.GetList<Artist>(artist => artist.Tracks.Count() == 0, default, artist => artist.Tracks);
-                    foreach (Album album in albumsToDelete) { await dataService.Delete<Album>(album.Id); }
-                    foreach (Artist artist in artistsToDelete) { await dataService.Delete<Artist>(artist.Id); }
                     path.LastScanDate = DateTime.Now;
                     await dataService.Update(path);
                 }
 
+                albumsToDelete = await dataService.GetList<Album>(album => album.Tracks.Count() == 0, default, album => album.Tracks);
+                artistsToDelete = await dataService.GetList<Artist>(artist => artist.Tracks.Count() == 0, default, artist => artist.Tracks);
+                foreach (Album album in albumsToDelete) { await dataService.Delete<Album>(album.Id); }
+                foreach (Artist artist in artistsToDelete) { await dataService.Delete<Artist>(artist.Id); }
                 await transactionService.UpdateTransactionCompleted(transaction);
             }
             catch (Exception ex)

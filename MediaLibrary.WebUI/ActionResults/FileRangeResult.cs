@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.StaticFiles;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -36,10 +37,13 @@ namespace MediaLibrary.WebUI.ActionResults
             HttpResponse response = context.HttpContext.Response;
 
             FileInfo info = new FileInfo(this.fileName);
+            FileExtensionContentTypeProvider contentTypeProvider = new FileExtensionContentTypeProvider();
             bool isPartial = hasValidRange && !(from == 0 && (to == info.Length - 1 || !to.HasValue));
 
+            contentTypeProvider.TryGetContentType(this.fileName, out string contentType);
             response.StatusCode = isPartial ? 206 : 200;
             response.Headers.Add("Accept-Ranges", "bytes");
+            if (!string.IsNullOrWhiteSpace(contentType)) /*then*/ response.ContentType = contentType;
 
             if (isPartial)
             {
