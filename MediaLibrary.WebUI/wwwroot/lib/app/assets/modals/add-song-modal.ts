@@ -23,17 +23,15 @@ export default class AddNewSongModal {
             const $fileLabel = $modal.find('label[for="' + $file.attr('id') + '"]'),
                 selectedFile = $(e.target).prop('files')[0] as File;
 
-            $fileLabel.text(selectedFile.name);
+            $fileLabel.text(selectedFile?.name || 'Choose file...');
         });
         this.directorySelector = new DirectorySelector($directorySelectorContainer.get(0), value => $musicPath.val(value));
         $(this.modal).on('show.bs.modal', e => {
             const $modal = $(e.currentTarget),
-                $file = $modal.find('input[type="file"]'),
-                $label = $modal.find('label[for="' + $file.attr('id') + '"]');
+                $file = $modal.find('input[type="file"]');
 
             $file.val('');
             $modal.find('input[data-field="MusicPath"]').val('');
-            $label.text('Choose file...');
             this.directorySelector.loadMusicDirectory();
         });
 
