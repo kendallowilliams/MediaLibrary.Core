@@ -130,14 +130,14 @@ namespace MediaLibrary.WebUI.Controllers
         public async Task<IActionResult> GetM3UPlaylist(int seriesId, int season)
         {
             IEnumerable<Episode> episodes = await dataService.GetList<Episode>(episode => episode.SeriesId == seriesId && episode.Season == season);
-            string path = $"{Request.Scheme}://{Request.Host}/{Request.PathBase}";
+            string path = $"{Request.Scheme}://{Request.Host}{Request.PathBase}";
             IEnumerable<string> lines = episodes.Select(episode => $"#EXTINF:0,{episode.Title}{Environment.NewLine}{$"{path}/Television/File/{episode.Id}"}");
             Series series = await dataService.Get<Series>(item => item.Id == seriesId);
             string data = $"#EXTM3U{Environment.NewLine}{string.Join(Environment.NewLine, lines)}";
             byte[] content = Encoding.UTF8.GetBytes(data);
             string timestamp = DateTime.Now.ToString("yyyyMMddHHmmss");
 
-            return File(content, "audio/mpegurl", $"{series.Title.Trim()}_S{season}_{timestamp}");
+            return File(content, "audio/mpegurl", $"{series.Title.Trim()}_S{season}_{timestamp}.m3u");
         }
         
         public async Task<IActionResult> TelevisionConfiguration()

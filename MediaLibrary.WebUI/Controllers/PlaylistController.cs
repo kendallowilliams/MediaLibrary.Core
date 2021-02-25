@@ -154,7 +154,7 @@ namespace MediaLibrary.WebUI.Controllers
             IEnumerable<Track> tracks = playlistTracks.Select(list => list.Track);
             IEnumerable<PodcastItem> podcastItems = playlistPodcastItems.Select(list => list.PodcastItem);
             IEnumerable<Episode> episodes = playlistEpisodes.Select(list => list.Episode);
-            string path = $"{Request.Scheme}://{Request.Host}/{Request.PathBase}";
+            string path = $"{Request.Scheme}://{Request.Host}{Request.PathBase}";
             IEnumerable<string> lines = GetM3UPlaylistLines((PlaylistTabs)playlist.Type, path, tracks, podcastItems, episodes);
             string data = $"#EXTM3U{Environment.NewLine}{string.Join(Environment.NewLine, lines)}";
             byte[] content = Encoding.UTF8.GetBytes(data);
