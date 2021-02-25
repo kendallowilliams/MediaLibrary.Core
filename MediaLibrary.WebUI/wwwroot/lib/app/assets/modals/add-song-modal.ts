@@ -16,14 +16,24 @@ export default class AddNewSongModal {
     private initializeControls(): void {
         const $modal = $(this.modal),
             $directorySelectorContainer = $modal.find('[data-container="NewSongDirectorySelector"]'),
-            $musicPath = $modal.find('input[data-field="MusicPath"]');
+            $musicPath = $modal.find('input[data-field="MusicPath"]'),
+            $file = $modal.find('input[type="file"]');
 
+        $file.on('change', e => {
+            const $fileLabel = $modal.find('label[for="' + $file.attr('id') + '"]'),
+                selectedFile = $(e.target).prop('files')[0] as File;
+
+            $fileLabel.text(selectedFile.name);
+        });
         this.directorySelector = new DirectorySelector($directorySelectorContainer.get(0), value => $musicPath.val(value));
         $(this.modal).on('show.bs.modal', e => {
-            const $modal = $(e.currentTarget);
+            const $modal = $(e.currentTarget),
+                $file = $modal.find('input[type="file"]'),
+                $label = $modal.find('label[for="' + $file.attr('id') + '"]');
 
+            $file.val('');
             $modal.find('input[data-field="MusicPath"]').val('');
-            $modal.find('input[type="file"]').val('');
+            $label.text('Choose file...');
             this.directorySelector.loadMusicDirectory();
         });
 
