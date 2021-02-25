@@ -26,12 +26,12 @@ export default class ManageDirectoriesModal {
         });
     }
 
-    private loadMusicDirectory(path: string = null, callback: () => void = () => null): void {
+    private loadMusicDirectory(_path: string = null, callback: () => void = () => null): void {
         const $modal = $(this.modal);
 
         LoadingModal.showLoading();
         disposeTooltips(this.modal);
-        $modal.find('.modal-body').load('Music/GetMusicDirectory?path=' + path, () => {
+        $modal.find('.modal-body').load('Music/GetMusicDirectory?path='.concat(_path || ''), () => {
             const $modal = $(this.modal);
 
             $modal.find('[data-directory-action="get"]').on('click', e => {

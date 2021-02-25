@@ -5,10 +5,10 @@ export default class DirectorySelector {
     constructor(private container: HTMLElement, private onSelectionChanged: (value: string) => any) {
     }
 
-    public loadMusicDirectory(path: string = null): void {
+    public loadMusicDirectory(_path: string = null): void {
         LoadingModal.showLoading();
         disposeTooltips(this.container);
-        $(this.container).load('Music/GetDirectorySelector?path=' + path, () => {
+        $(this.container).load('Music/GetDirectorySelector?path='.concat(_path || ''), () => {
             const $container = $(this.container);
 
             $container.find('[data-directory-action="get"]').on('click', e => {
