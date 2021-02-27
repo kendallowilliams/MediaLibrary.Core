@@ -2,13 +2,13 @@
 using MediaLibrary.DAL.Models;
 using MediaLibrary.DAL.Services.Interfaces;
 using MediaLibrary.Shared.Services.Interfaces;
-using MediaLibrary.WebUI.ActionResults;
 using MediaLibrary.WebUI.Models;
 using MediaLibrary.WebUI.Models.Configurations;
 using MediaLibrary.WebUI.Services.Interfaces;
 using MediaLibrary.WebUI.Utilities.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.StaticFiles;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -250,7 +250,10 @@ namespace MediaLibrary.WebUI.Controllers
                     }
                     else
                     {
-                        result = new FileRangeResult(podcastItem.File, Request.Headers["Range"]);
+                        FileExtensionContentTypeProvider contentTypeProvider = new FileExtensionContentTypeProvider();
+
+                        contentTypeProvider.TryGetContentType(podcastItem.File, out string contentType);
+                        result = File(podcastItem.File, contentType, true);
                     }
                     await transactionService.UpdateTransactionCompleted(transaction);
                 }
