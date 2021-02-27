@@ -3,12 +3,12 @@ using MediaLibrary.BLL.Services.Interfaces;
 using MediaLibrary.DAL.Models;
 using MediaLibrary.DAL.Services.Interfaces;
 using MediaLibrary.Shared.Services.Interfaces;
-using MediaLibrary.WebUI.ActionResults;
 using MediaLibrary.WebUI.Models;
 using MediaLibrary.WebUI.Models.Configurations;
 using MediaLibrary.WebUI.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.StaticFiles;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -106,7 +106,10 @@ namespace MediaLibrary.WebUI.Controllers
 
             if (episode != null)
             {
-                result = new FileRangeResult(episode.Path, Request.Headers["Range"]);
+                FileExtensionContentTypeProvider contentTypeProvider = new FileExtensionContentTypeProvider();
+
+                contentTypeProvider.TryGetContentType(episode.Path, out string contentType);
+                result = File(episode.Path, contentType, true);
             }
             else
             {

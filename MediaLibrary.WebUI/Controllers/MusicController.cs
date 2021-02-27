@@ -1,7 +1,6 @@
 ﻿using MediaLibrary.BLL.Services.Interfaces;
 using MediaLibrary.DAL.Models;
 using MediaLibrary.DAL.Services.Interfaces;
-using MediaLibrary.WebUI.ActionResults;
 using MediaLibrary.WebUI.Models;
 using MediaLibrary.WebUI.Services.Interfaces;
 using System;
@@ -28,6 +27,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.AspNetCore.Authorization;
 using MediaLibrary.Shared.Services.Interfaces;
 using MediaLibrary.WebUI.Utilities.Interfaces;
+using Microsoft.AspNetCore.StaticFiles;
 
 namespace MediaLibrary.WebUI.Controllers
 {
@@ -122,7 +122,11 @@ namespace MediaLibrary.WebUI.Controllers
 
             if (track != null && IO_File.Exists(Path.Combine(track.Path.Location, track.FileName)))
             {
-                result = new FileRangeResult(Path.Combine(track.Path.Location, track.FileName), Request.Headers["Range"]);
+                FileExtensionContentTypeProvider contentTypeProvider = new FileExtensionContentTypeProvider();
+                string filePath = Path.Combine(track.Path.Location, track.FileName);
+
+                contentTypeProvider.TryGetContentType(filePath, out string contentType);
+                result = File(filePath, contentType, true);
             }
             else
             {
