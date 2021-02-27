@@ -126,7 +126,7 @@ namespace MediaLibrary.WebUI.Controllers
                 string filePath = Path.Combine(track.Path.Location, track.FileName);
 
                 contentTypeProvider.TryGetContentType(filePath, out string contentType);
-                result = File(filePath, contentType, true);
+                result = File(IO_File.OpenRead(filePath), contentType, true);
             }
             else
             {

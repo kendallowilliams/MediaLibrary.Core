@@ -13,7 +13,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
-using System.IO;
+using IO_File = System.IO.File;
 using System.Linq;
 using System.Net;
 using System.Text;
@@ -109,7 +109,7 @@ namespace MediaLibrary.WebUI.Controllers
                 FileExtensionContentTypeProvider contentTypeProvider = new FileExtensionContentTypeProvider();
 
                 contentTypeProvider.TryGetContentType(episode.Path, out string contentType);
-                result = File(episode.Path, contentType, true);
+                result = File(IO_File.OpenRead(episode.Path), contentType, true);
             }
             else
             {

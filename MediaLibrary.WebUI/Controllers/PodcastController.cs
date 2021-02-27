@@ -13,7 +13,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
-using System.IO;
+using IO_File = System.IO.File;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -253,7 +253,7 @@ namespace MediaLibrary.WebUI.Controllers
                         FileExtensionContentTypeProvider contentTypeProvider = new FileExtensionContentTypeProvider();
 
                         contentTypeProvider.TryGetContentType(podcastItem.File, out string contentType);
-                        result = File(podcastItem.File, contentType, true);
+                        result = File(IO_File.OpenRead(podcastItem.File), contentType, true);
                     }
                     await transactionService.UpdateTransactionCompleted(transaction);
                 }
