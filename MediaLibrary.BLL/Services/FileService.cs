@@ -130,8 +130,7 @@ namespace MediaLibrary.BLL.Services
                                         deletedFiles = existingFiles.Where(file => !File.Exists(file)),
                                         existingDirectories = paths.Where(_path => !path.Equals(_path) && 
                                                                                    _path.Location.StartsWith(path.Location))
-                                                                   .Select(_path => _path.Location),
-                                        directories = EnumerateDirectories(path.Location, recursive: true);
+                                                                   .Select(_path => _path.Location);
 
                     foreach (string file in files.Except(existingFiles))
                     {
@@ -156,13 +155,6 @@ namespace MediaLibrary.BLL.Services
                         {
                             await transactionService.UpdateTransactionErrored(deleteTransaction, ex);
                         }
-                    }
-
-                    foreach (string directory in directories.Except(existingDirectories))
-                    {
-                            IEnumerable<string> _files = EnumerateFiles(directory, recursive: true).Where(file => fileTypes.Contains(Path.GetExtension(file), StringComparer.OrdinalIgnoreCase));
-
-                            foreach(string file in _files) { await ReadMediaFile(file); }
                     }
 
                     path.LastScanDate = DateTime.Now;
