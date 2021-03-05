@@ -128,11 +128,12 @@ namespace MediaLibrary.BLL.Services
                     IEnumerable<string> existingFiles = tracks.Select(track => Path.Combine(path.Location, track.FileName)),
                                         files = EnumerateFiles(path.Location).Where(file => fileTypes.Contains(Path.GetExtension(file), StringComparer.OrdinalIgnoreCase)),
                                         deletedFiles = existingFiles.Where(file => !File.Exists(file)),
+                                        newFiles = files.Except(existingFiles),
                                         existingDirectories = paths.Where(_path => !path.Equals(_path) && 
                                                                                    _path.Location.StartsWith(path.Location))
                                                                    .Select(_path => _path.Location);
 
-                    foreach (string file in files.Except(existingFiles))
+                    foreach (string file in newFiles)
                     {
                         await ReadMediaFile(file);
                     }
