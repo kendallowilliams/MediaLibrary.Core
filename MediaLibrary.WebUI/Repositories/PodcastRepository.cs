@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
-using static MediaLibrary.WebUI.UIEnums;
+using static MediaLibrary.Shared.Enums;
 
 namespace MediaLibrary.WebUI.Repositories
 {

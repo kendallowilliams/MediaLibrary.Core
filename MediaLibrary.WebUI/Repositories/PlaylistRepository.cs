@@ -2,12 +2,12 @@
 using MediaLibrary.BLL.Models.Interfaces;
 using MediaLibrary.DAL.DbContexts;
 using MediaLibrary.DAL.Models.Interfaces;
-using MediaLibrary.WebUI.Models.Configurations;
+using MediaLibrary.Shared.Models.Configurations;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
-using static MediaLibrary.WebUI.UIEnums;
+using static MediaLibrary.Shared.Enums;
 
 namespace MediaLibrary.WebUI.Repositories
 {

@@ -10,11 +10,11 @@ using System.Threading.Tasks;
 using System.Web;
 using MediaLibrary.DAL.Models;
 using MediaLibrary.DAL.Services.Interfaces;
-using static MediaLibrary.DAL.Enums;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Microsoft.Extensions.Configuration;
 using MediaLibrary.Shared.Services.Interfaces;
+using static MediaLibrary.Shared.Enums;
 
 namespace MediaLibrary.BLL.Services
 {

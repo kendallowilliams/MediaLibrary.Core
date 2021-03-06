@@ -1,6 +1,6 @@
 ﻿using MediaLibrary.BLL.Models.Interfaces;
 using MediaLibrary.DAL.Models;
-using MediaLibrary.WebUI.Models.Configurations;
+using MediaLibrary.Shared.Models.Configurations;
 using MediaLibrary.WebUI.Repositories;
 using MediaLibrary.WebUI.Services;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -9,7 +9,7 @@ using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Linq;
 using System.Web;
-using static MediaLibrary.WebUI.UIEnums;
+using static MediaLibrary.Shared.Enums;
 
 namespace MediaLibrary.WebUI.Models
 {

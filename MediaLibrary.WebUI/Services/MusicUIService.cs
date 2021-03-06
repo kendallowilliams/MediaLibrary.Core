@@ -3,8 +3,7 @@ using MediaLibrary.BLL.Services.Interfaces;
 using MediaLibrary.DAL.Models;
 using MediaLibrary.DAL.Services.Interfaces;
 using MediaLibrary.Shared.Services.Interfaces;
-using MediaLibrary.WebUI.Models.Configurations;
-using MediaLibrary.WebUI.Models.Data;
+using MediaLibrary.Shared.Models.Configurations;
 using MediaLibrary.WebUI.Services.Interfaces;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
@@ -15,8 +14,8 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
-using static MediaLibrary.DAL.Enums;
-using static MediaLibrary.WebUI.UIEnums;
+using static MediaLibrary.Shared.Enums;
+using MediaLibrary.Shared.Models;
 
 namespace MediaLibrary.WebUI.Services
 {

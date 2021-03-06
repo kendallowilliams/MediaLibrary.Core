@@ -1,12 +1,11 @@
-﻿using MediaLibrary.DAL.DbContexts;
-using MediaLibrary.WebUI.Models.Interfaces;
+﻿using MediaLibrary.Shared.Models.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
-using static MediaLibrary.WebUI.UIEnums;
+using static MediaLibrary.Shared.Enums;
 
-namespace MediaLibrary.WebUI.Models.Configurations
+namespace MediaLibrary.Shared.Models.Configurations
 {
     public class MusicConfiguration : BaseConfiguration
     {

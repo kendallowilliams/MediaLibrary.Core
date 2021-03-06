@@ -1,4 +1,4 @@
-﻿using MediaLibrary.WebUI.Models.Configurations;
+﻿using MediaLibrary.Shared.Models.Configurations;
 using MediaLibrary.WebUI.Models.Interfaces;
 using System;
 using System.Collections.Generic;

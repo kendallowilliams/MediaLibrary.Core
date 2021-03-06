@@ -7,11 +7,11 @@ using System.ComponentModel.Composition;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
-using static MediaLibrary.WebUI.UIEnums;
+using static MediaLibrary.Shared.Enums;
 using Fody;
 using MediaLibrary.WebUI.Models;
 using MediaLibrary.WebUI.Repositories;
-using MediaLibrary.WebUI.Models.Configurations;
+using MediaLibrary.Shared.Models.Configurations;
 using System.Linq.Expressions;
 
 namespace MediaLibrary.WebUI.Services

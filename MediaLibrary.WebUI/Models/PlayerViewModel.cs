@@ -1,11 +1,11 @@
 ﻿using MediaLibrary.DAL.Models;
-using MediaLibrary.WebUI.Models.Configurations;
+using MediaLibrary.Shared.Models.Configurations;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Linq;
 using System.Web;
-using static MediaLibrary.WebUI.UIEnums;
+using static MediaLibrary.Shared.Enums;
 
 namespace MediaLibrary.WebUI.Models
 {

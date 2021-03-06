@@ -1,11 +1,9 @@
-﻿using MediaLibrary.DAL.Models;
+﻿using MediaLibrary.Shared.Models.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
-using IO_Path = System.IO.Path;
 
-namespace MediaLibrary.WebUI.Models.Data
+namespace MediaLibrary.Shared.Models
 {
     public class MusicDirectory
     {
@@ -22,7 +20,7 @@ namespace MediaLibrary.WebUI.Models.Data
                                               .ToList();
         }
 
-        public MusicDirectory(string path, IEnumerable<string> subDirectoryPaths, IEnumerable<TrackPath> includedTrackPaths) : this(path)
+        public MusicDirectory(string path, IEnumerable<string> subDirectoryPaths, IEnumerable<ITrackPath> includedTrackPaths) : this(path)
         {
             SubDirectories = subDirectoryPaths.OrderBy(item => item)
                                               .Select(item => new MusicDirectory(item)

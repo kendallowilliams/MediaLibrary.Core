@@ -10,7 +10,7 @@ using MediaLibrary.DAL.Models;
 using MediaLibrary.BLL.Services.Interfaces;
 using MediaLibrary.DAL.Services.Interfaces;
 using System.Linq.Expressions;
-using static MediaLibrary.DAL.Enums;
+using static MediaLibrary.Shared.Enums;
 
 namespace MediaLibrary.BLL.Services
 {

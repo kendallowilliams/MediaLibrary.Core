@@ -7,7 +7,7 @@ using System.ComponentModel.Composition;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using static MediaLibrary.DAL.Enums;
+using static MediaLibrary.Shared.Enums;
 
 namespace MediaLibrary.BLL.Services
 {

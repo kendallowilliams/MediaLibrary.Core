@@ -29,6 +29,7 @@
 
   <ItemGroup>
     <Folder Include="DbContexts\" />
+    <Folder Include="Enums\" />
   </ItemGroup>
 
   <ItemGroup>

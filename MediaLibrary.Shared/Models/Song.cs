@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace MediaLibrary.WebUI.Models.Data
+namespace MediaLibrary.Shared.Models
 {
     public class Song
     {

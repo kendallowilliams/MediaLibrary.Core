@@ -5,17 +5,17 @@
         <h4>Music</h4>
         <div class="nav d-block p-1" id="@(HtmlControlsRepository.MusicTabListId)" role="tablist">
             <a class="btn btn-sm btn-outline-secondary" id="@(HtmlControlsRepository.AlbumsContainerId)-tab" data-toggle="tab"
-               role="tab" aria-controls="@(HtmlControlsRepository.AlbumsContainerId)" aria-selected="true" title="@(nameof(UIEnums.MusicTabs.Albums))" data-music-tab="@(nameof(UIEnums.MusicTabs.Albums))"
+               role="tab" aria-controls="@(HtmlControlsRepository.AlbumsContainerId)" aria-selected="true" title="@(nameof(Enums.MusicTabs.Albums))" data-music-tab="@(nameof(Enums.MusicTabs.Albums))"
                data-tooltip="tooltip" href="#@(HtmlControlsRepository.AlbumsContainerId)">
                 <i class="fa fa-compact-disc"></i>
             </a>
             <a class="btn btn-sm btn-outline-secondary" id="@(HtmlControlsRepository.ArtistsContainerId)-tab" data-toggle="tab"
-               role="tab" aria-controls="@(HtmlControlsRepository.ArtistsContainerId)" aria-selected="false" title="@(nameof(UIEnums.MusicTabs.Artists))" data-music-tab="@(nameof(UIEnums.MusicTabs.Artists))"
+               role="tab" aria-controls="@(HtmlControlsRepository.ArtistsContainerId)" aria-selected="false" title="@(nameof(Enums.MusicTabs.Artists))" data-music-tab="@(nameof(Enums.MusicTabs.Artists))"
                data-tooltip="tooltip" href="#@(HtmlControlsRepository.ArtistsContainerId)">
                 <i class="fa fa-user"></i>
             </a>
             <a class="btn btn-sm btn-outline-secondary" id="@(HtmlControlsRepository.SongsContainerId)-tab" data-toggle="tab"
-               role="tab" aria-controls="@(HtmlControlsRepository.SongsContainerId)" aria-selected="false" title="@(nameof(UIEnums.MusicTabs.Songs))" data-music-tab="@(nameof(UIEnums.MusicTabs.Songs))"
+               role="tab" aria-controls="@(HtmlControlsRepository.SongsContainerId)" aria-selected="false" title="@(nameof(Enums.MusicTabs.Songs))" data-music-tab="@(nameof(Enums.MusicTabs.Songs))"
                data-tooltip="tooltip" href="#@(HtmlControlsRepository.SongsContainerId)">
                 <i class="fa fa-music"></i>
             </a>
@@ -33,7 +33,7 @@
                                       null,
                                       new
                                            {
-                                               @class = "form-control border border-secondary form-control-sm align-middle" + (Model.Configuration.SelectedMusicTab == UIEnums.MusicTabs.Albums ? "" : " d-none"),
+                                               @class = "form-control border border-secondary form-control-sm align-middle" + (Model.Configuration.SelectedMusicTab == Enums.MusicTabs.Albums ? "" : " d-none"),
                                           style = "width: 135px",
                                           title = "Sort by",
                                           data_sort_tab = $"{HtmlControlsRepository.AlbumsContainerId}-tab",
@@ -45,7 +45,7 @@
                                       null,
                                       new
                                            {
-                                               @class = "form-control form-control-sm border border-secondary align-middle" + (Model.Configuration.SelectedMusicTab == UIEnums.MusicTabs.Artists ? "" : " d-none"),
+                                               @class = "form-control form-control-sm border border-secondary align-middle" + (Model.Configuration.SelectedMusicTab == Enums.MusicTabs.Artists ? "" : " d-none"),
                                           style = "width: 135px",
                                           title = "Sort by",
                                           data_sort_tab = $"{HtmlControlsRepository.ArtistsContainerId}-tab",
@@ -57,7 +57,7 @@
                                       null,
                                       new
                                            {
-                                               @class = "form-control form-control-sm border border-secondary align-middle" + (Model.Configuration.SelectedMusicTab == UIEnums.MusicTabs.Songs ? "" : " d-none"),
+                                               @class = "form-control form-control-sm border border-secondary align-middle" + (Model.Configuration.SelectedMusicTab == Enums.MusicTabs.Songs ? "" : " d-none"),
                                           style = "width: 135px",
                                           title = "Sort by",
                                           data_sort_tab = $"{HtmlControlsRepository.SongsContainerId}-tab",

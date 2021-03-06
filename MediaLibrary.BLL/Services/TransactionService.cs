@@ -7,12 +7,12 @@ using System.Web;
 using Fody;
 using MediaLibrary.BLL.Services.Interfaces;
 using MediaLibrary.DAL.Services.Interfaces;
-using static MediaLibrary.DAL.Enums;
 using System.Linq.Expressions;
 using MediaLibrary.DAL.Models;
 using System.Configuration;
 using Newtonsoft.Json.Linq;
 using MediaLibrary.Shared.Services.Interfaces;
+using static MediaLibrary.Shared.Enums;
 
 namespace MediaLibrary.BLL.Services
 {

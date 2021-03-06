@@ -9,12 +9,9 @@ using System.ComponentModel.Composition;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
-using MediaLibrary.WebUI.DataContracts;
-using static MediaLibrary.DAL.Enums;
 using Newtonsoft.Json;
-using static MediaLibrary.WebUI.UIEnums;
-using MediaLibrary.WebUI.Models.Configurations;
-using MediaLibrary.WebUI.Models.Data;
+using static MediaLibrary.Shared.Enums;
+using MediaLibrary.Shared.Models.Configurations;
 using System.Web;
 using System.IO;
 using IO_File = System.IO.File;
@@ -28,6 +25,7 @@ using Microsoft.AspNetCore.Authorization;
 using MediaLibrary.Shared.Services.Interfaces;
 using MediaLibrary.WebUI.Utilities.Interfaces;
 using Microsoft.AspNetCore.StaticFiles;
+using MediaLibrary.Shared.Models;
 
 namespace MediaLibrary.WebUI.Controllers
 {

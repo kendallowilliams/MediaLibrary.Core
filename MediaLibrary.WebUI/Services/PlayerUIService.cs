@@ -7,7 +7,7 @@ using System.ComponentModel.Composition;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
-using static MediaLibrary.WebUI.UIEnums;
+using static MediaLibrary.Shared.Enums;
 using Fody;
 using MediaLibrary.WebUI.Models;
 using MediaLibrary.WebUI.Controllers;
@@ -15,7 +15,6 @@ using System.IO;
 using Newtonsoft.Json;
 using MediaLibrary.BLL.Models;
 using MediaLibrary.BLL.Services.Interfaces;
-using static MediaLibrary.BLL.Enums;
 
 namespace MediaLibrary.WebUI.Services
 {

@@ -1,5 +1,5 @@
 ﻿using MediaLibrary.DAL.Models;
-using MediaLibrary.WebUI.Models.Configurations;
+using MediaLibrary.Shared.Models.Configurations;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;

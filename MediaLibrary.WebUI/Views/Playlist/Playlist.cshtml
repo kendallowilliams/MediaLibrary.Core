@@ -37,11 +37,11 @@
     <div class="card" style="flex: 1 1 auto; overflow-y: auto">
         <div class="card-header p-0" id="heading-playlist-@(Model.SelectedPlaylist.Id)">
             <h5 class="mb-0">
-                @if (Model.SelectedPlaylist.Type == (int)UIEnums.PlaylistTabs.Music)
+                @if (Model.SelectedPlaylist.Type == (int)Enums.PlaylistTabs.Music)
                 { <button class="btn btn-sm btn-link">Songs</button> }
-                else if (Model.SelectedPlaylist.Type == (int)UIEnums.PlaylistTabs.Podcast)
+                else if (Model.SelectedPlaylist.Type == (int)Enums.PlaylistTabs.Podcast)
                 { <button class="btn btn-sm btn-link">Episodes</button> }
-                else if (Model.SelectedPlaylist.Type == (int)UIEnums.PlaylistTabs.Television)
+                else if (Model.SelectedPlaylist.Type == (int)Enums.PlaylistTabs.Television)
                 { <button class="btn btn-sm btn-link">Episodes</button> }
             </h5>
         </div>
@@ -67,7 +67,7 @@
                                     @if (Model.SelectedPlaylist.Id > 0)
                                     {
                                         <button class="btn btn-sm btn-outline-danger" data-delete-action="@(Url.Action("RemovePlaylistItem", "Playlist", new { list.Id, list.PlaylistId }))"
-                                                data-tooltip="tooltip" title="Remove song" data-delete-type="song" data-refresh-view="@(nameof(UIEnums.MediaPages.Playlist))"
+                                                data-tooltip="tooltip" title="Remove song" data-delete-type="song" data-refresh-view="@(nameof(Enums.MediaPages.Playlist))"
                                                 data-toggle="modal" data-target="#@(HtmlControlsRepository.DeleteModalId)">
                                             <i class="fa fa-trash"></i>
                                         </button>
@@ -99,7 +99,7 @@
                                     @if (Model.SelectedPlaylist.Id > 0)
                                     {
                                         <button class="btn btn-sm btn-outline-danger" data-delete-action="@(Url.Action("RemovePlaylistItem", "Playlist", new { list.Id, list.PlaylistId }))"
-                                                data-tooltip="tooltip" title="Remove song" data-delete-type="song" data-refresh-view="@(nameof(UIEnums.MediaPages.Playlist))"
+                                                data-tooltip="tooltip" title="Remove song" data-delete-type="song" data-refresh-view="@(nameof(Enums.MediaPages.Playlist))"
                                                 data-toggle="modal" data-target="#@(HtmlControlsRepository.DeleteModalId)">
                                             <i class="fa fa-trash"></i>
                                         </button>
@@ -131,7 +131,7 @@
                                     @if (Model.SelectedPlaylist.Id > 0)
                                     {
                                         <button class="btn btn-sm btn-outline-danger" data-delete-action="@(Url.Action("RemovePlaylistItem", "Playlist", new { list.Id, list.PlaylistId }))"
-                                                data-tooltip="tooltip" title="Remove song" data-delete-type="song" data-refresh-view="@(nameof(UIEnums.MediaPages.Playlist))"
+                                                data-tooltip="tooltip" title="Remove song" data-delete-type="song" data-refresh-view="@(nameof(Enums.MediaPages.Playlist))"
                                                 data-toggle="modal" data-target="#@(HtmlControlsRepository.DeleteModalId)">
                                             <i class="fa fa-trash"></i>
                                         </button>
@@ -144,11 +144,11 @@
             }
             else
             {
-                if (Model.SelectedPlaylist.Type == (int)UIEnums.PlaylistTabs.Music)
+                if (Model.SelectedPlaylist.Type == (int)Enums.PlaylistTabs.Music)
                 {<span>No songs added.</span> }
-                else if (Model.SelectedPlaylist.Type == (int)UIEnums.PlaylistTabs.Podcast)
+                else if (Model.SelectedPlaylist.Type == (int)Enums.PlaylistTabs.Podcast)
                 { <span>No episodes added.</span> }
-                else if (Model.SelectedPlaylist.Type == (int)UIEnums.PlaylistTabs.Television)
+                else if (Model.SelectedPlaylist.Type == (int)Enums.PlaylistTabs.Television)
                 { <span>No episodes added.</span>}
             }
         </div>

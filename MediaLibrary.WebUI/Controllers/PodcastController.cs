@@ -3,7 +3,7 @@ using MediaLibrary.DAL.Models;
 using MediaLibrary.DAL.Services.Interfaces;
 using MediaLibrary.Shared.Services.Interfaces;
 using MediaLibrary.WebUI.Models;
-using MediaLibrary.WebUI.Models.Configurations;
+using MediaLibrary.Shared.Models.Configurations;
 using MediaLibrary.WebUI.Services.Interfaces;
 using MediaLibrary.WebUI.Utilities.Interfaces;
 using Microsoft.AspNetCore.Authorization;
@@ -22,8 +22,7 @@ using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 using System.Web;
-using static MediaLibrary.DAL.Enums;
-using static MediaLibrary.WebUI.UIEnums;
+using static MediaLibrary.Shared.Enums;
 
 namespace MediaLibrary.WebUI.Controllers
 {

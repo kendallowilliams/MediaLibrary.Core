@@ -1,5 +1,5 @@
 ﻿using MediaLibrary.DAL.Models;
-using MediaLibrary.WebUI.Models.Configurations;
+using MediaLibrary.Shared.Models.Configurations;
 using MediaLibrary.WebUI.Repositories;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
