@@ -117,14 +117,16 @@ namespace MediaLibrary.BLL.Services
         {
             try
             {
-                IEnumerable<TrackPath> paths = await dataService.GetList<TrackPath>();
+                IEnumerable<TrackPath> paths = await dataService.GetList<TrackPath>(includes: path => path.Tracks),
+                                       validPaths = paths.Where(_path => _path.Tracks.Any()),
+                                       invalidPaths = paths.Where(_path => !_path.Tracks.Any());
                 IEnumerable<Album> albumsToDelete = Enumerable.Empty<Album>();
                 IEnumerable<Artist> artistsToDelete = Enumerable.Empty<Artist>();
                 IEnumerable<string> fileTypes = configurationManager.GetValue("FileTypes").Split(",".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
 
-                foreach (TrackPath path in paths)
+                foreach (TrackPath path in validPaths)
                 {
-                    IEnumerable<Track> tracks = await dataService.GetList<Track>(track => track.PathId == path.Id);
+                    IEnumerable<Track> tracks = path.Tracks;
                     IEnumerable<string> existingFiles = tracks.Select(track => Path.Combine(path.Location, track.FileName)),
                                         files = EnumerateFiles(path.Location).Where(file => fileTypes.Contains(Path.GetExtension(file), StringComparer.OrdinalIgnoreCase)),
                                         deletedFiles = existingFiles.Where(file => !File.Exists(file)),
@@ -144,7 +146,7 @@ namespace MediaLibrary.BLL.Services
 
                         try
                         {
-                            Track song = tracks.FirstOrDefault(track => track.FileName == Path.GetFileName(file));
+                            Track song = tracks.FirstOrDefault(track => track.FileName.Equals(Path.GetFileName(file), StringComparison.OrdinalIgnoreCase));
 
                             deleteTransaction = await transactionService.GetNewTransaction(TransactionTypes.RemoveTrack);
                             deleteTransaction.Message = $"Attempting to remove song [ID: {song?.Id}]...";
@@ -162,6 +164,7 @@ namespace MediaLibrary.BLL.Services
                     await dataService.Update(path);
                 }
 
+                foreach (TrackPath path in invalidPaths) { await dataService.Delete<TrackPath>(path.Id); }
                 albumsToDelete = await dataService.GetList<Album>(album => album.Tracks.Count() == 0, default, album => album.Tracks);
                 artistsToDelete = await dataService.GetList<Artist>(artist => artist.Tracks.Count() == 0, default, artist => artist.Tracks);
                 foreach (Album album in albumsToDelete) { await dataService.Delete<Album>(album.Id); }
