@@ -323,7 +323,7 @@ namespace MediaLibrary.WebUI.Controllers
                 Position = track.Position
             };
 
-            return Json(song);
+            return Json(song, new JsonSerializerOptions { PropertyNamingPolicy = null });
         }
 
         public async Task UpdateSong(Song song)
