@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MediaLibrary.BLL.Models.Interfaces
+namespace MediaLibrary.Shared.Models.Interfaces
 {
     public interface IListItem<T_ID, T_Value>
     {

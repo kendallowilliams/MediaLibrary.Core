@@ -1,4 +1,4 @@
-﻿using MediaLibrary.BLL.Models.Interfaces;
+﻿using MediaLibrary.Shared.Models.Interfaces;
 using MediaLibrary.DAL.Models;
 using MediaLibrary.Shared.Models.Configurations;
 using MediaLibrary.WebUI.Repositories;

@@ -1,5 +1,6 @@
 ﻿import { MediaTypes, RepeatTypes, PlayerPages } from "../enums/enums";
 import IConfiguration from "./configuration-interface";
+import IListItem from "./list-item-interface";
 
 export default interface IPlayerConfiguration extends IConfiguration {
     SelectedMediaType: MediaTypes;
@@ -13,4 +14,5 @@ export default interface IPlayerConfiguration extends IConfiguration {
     AudioVisualizerEnabled: boolean;
     SkipForwardSeconds: number;
     SkipBackwardSeconds: number;
+    NowPlayingList: IListItem<number, number>[];
 }

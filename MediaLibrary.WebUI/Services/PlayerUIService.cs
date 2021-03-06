@@ -13,7 +13,6 @@ using MediaLibrary.WebUI.Models;
 using MediaLibrary.WebUI.Controllers;
 using System.IO;
 using Newtonsoft.Json;
-using MediaLibrary.BLL.Models;
 using MediaLibrary.BLL.Services.Interfaces;
 
 namespace MediaLibrary.WebUI.Services

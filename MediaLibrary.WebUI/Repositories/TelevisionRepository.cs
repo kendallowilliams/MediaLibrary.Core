@@ -1,5 +1,5 @@
-﻿using MediaLibrary.BLL.Models;
-using MediaLibrary.BLL.Models.Interfaces;
+﻿using MediaLibrary.Shared.Models;
+using MediaLibrary.Shared.Models.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;

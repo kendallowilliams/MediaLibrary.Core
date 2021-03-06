@@ -1,11 +1,11 @@
-﻿using MediaLibrary.BLL.Models.Interfaces;
+﻿using MediaLibrary.Shared.Models.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MediaLibrary.BLL.Models
+namespace MediaLibrary.Shared.Models
 {
     public class ListItem<T_ID, T_Value> : IListItem<T_ID, T_Value>
     {

@@ -1,4 +1,4 @@
-﻿using MediaLibrary.BLL.Models;
+﻿using MediaLibrary.Shared.Models;
 using MediaLibrary.BLL.Services.Interfaces;
 using MediaLibrary.DAL.Models;
 using MediaLibrary.DAL.Services.Interfaces;

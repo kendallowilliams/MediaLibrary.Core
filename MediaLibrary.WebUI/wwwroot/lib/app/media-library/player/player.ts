@@ -11,6 +11,7 @@ import LoadingModal from '../../assets/modals/loading-modal';
 import IPlayerLoadFunctions from "../../assets/interfaces/player-load-functions-interface";
 import { getRepeatTypesEnumString, getPlayerPageEnum, getMediaTypesEnumString, getMediaTypesEnum } from "../../assets/enums/enum-functions";
 import * as MessageBox from '../../assets/utilities/message-box';
+import IListItem from "../../assets/interfaces/list-item-interface";
 
 export default class Player extends BaseClass implements IView {
     private players: { VideoPlayer: HTMLMediaElement, MusicPlayer: HTMLMediaElement };
@@ -255,7 +256,8 @@ export default class Player extends BaseClass implements IView {
                 message = 'Are you sure you want to clear now playing?';
 
             MessageBox.confirm(title, message, true, () => {
-                $.post('Player/ClearNowPlaying', null, () => this.reload(() => this.loadItem()));
+                this.playerConfiguration.properties.NowPlayingList = [];
+                this.playerConfiguration.updateConfiguration(() => this.reload(() => this.loadItem()));
             });
         });
     }
@@ -491,44 +493,35 @@ export default class Player extends BaseClass implements IView {
                 if (this.playerConfiguration.properties.SelectedMediaType === MediaTypes.Television) /*then*/ loadPlayer();
                 LoadingModal.hideLoading();
             }),
-            mediaType = $(btn).attr('data-media-type') || getMediaTypesEnumString(MediaTypes.Song),
-            data = new FormData();
-        let $playData = null;
+            mediaType = $(btn).attr('data-media-type') || getMediaTypesEnumString(MediaTypes.Song);
+        let playData: IListItem<number, number>[] = [],
+            currentItem: IListItem<number, number> = null;
 
         LoadingModal.showLoading();
 
         if (playSingleItem) {
-            $playData = $([{ Id: 0, Value: parseInt($(btn).attr('data-play-id')), IsSelected: true }]);
+            playData = [{ Id: 0, Value: parseInt($(btn).attr('data-play-id')), IsSelected: true }];
         }
         else if ($playGroups.length > 0) {
-            $playData = $playGroups.map((index, element) => ($(element).attr('data-play-ids').split(',')))
+            playData = $playGroups.map((index, element) => ($(element).attr('data-play-ids').split(',')))
                 .map((index, element) => ({
                     Id: index,
                     Value: parseInt(element),
                     IsSelected: $(btn).attr('data-play-id') === element
-                })
-                );
+                })).toArray();
         } else {
-            $playData = $playButtons.map((index, _btn) => ({
+            playData = $playButtons.map((index, _btn) => ({
                 Id: index,
                 Value: parseInt($(_btn).attr('data-play-id')),
                 IsSelected: btn.isSameNode(_btn)
-            }));
+            })).toArray();
         }
-        data.append('mediaType', mediaType);
-        data.append('itemsJSON', JSON.stringify($playData.get()));
+
+        currentItem = playData.find((item, index) => item.IsSelected);
+        this.playerConfiguration.properties.CurrentItemIndex = currentItem ? currentItem.Id : 0;
         this.playerConfiguration.properties.SelectedMediaType = getMediaTypesEnum(mediaType);
-        this.playerConfiguration.updateConfiguration(function () {
-            $.ajax({
-                type: 'POST',
-                url: 'Player/UpdateNowPlaying',
-                data: data,
-                contentType: false,
-                success: success,
-                processData: false,
-                traditional: true
-            });
-        });
+        this.playerConfiguration.properties.NowPlayingList = playData;
+        this.playerConfiguration.updateConfiguration(success);
     }
 
     public getCurrentlyLoadedId(): number {

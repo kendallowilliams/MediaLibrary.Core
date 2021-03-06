@@ -1,5 +1,4 @@
-﻿using MediaLibrary.BLL.Models;
-using MediaLibrary.BLL.Services.Interfaces;
+﻿using MediaLibrary.BLL.Services.Interfaces;
 using MediaLibrary.DAL.Models;
 using MediaLibrary.DAL.Services.Interfaces;
 using MediaLibrary.Shared.Services.Interfaces;
@@ -106,41 +105,6 @@ namespace MediaLibrary.WebUI.Controllers
             else if (playerViewModel.Configuration.SelectedMediaType == MediaTypes.Television)
             {
                 playerViewModel.Episodes = await playerService.GetNowPlayingEpisodes();
-            }
-        }
-
-        public async Task UpdateNowPlaying(string itemsJSON, MediaTypes mediaType)
-        {
-            var items = JsonConvert.DeserializeObject<IEnumerable<ListItem<int, int>>>(itemsJSON);
-            Configuration configuration = await dataService.Get<Configuration>(item => item.Type == nameof(MediaPages.Player));
-            PlayerConfiguration playerConfiguration = new PlayerConfiguration();
-
-            if (configuration == null)
-            {
-                configuration = new Configuration() { Type = nameof(MediaPages.Player), JsonData = JsonConvert.SerializeObject(playerConfiguration) };
-                await dataService.Insert(configuration);
-            }
-            else
-            {
-                playerConfiguration = JsonConvert.DeserializeObject<PlayerConfiguration>(configuration.JsonData) ?? new PlayerConfiguration();
-            }
-
-            playerConfiguration.CurrentItemIndex = items.FirstOrDefault((item) => item.IsSelected)?.Id ?? 0;
-            playerConfiguration.SelectedMediaType = mediaType;
-            configuration.JsonData = JsonConvert.SerializeObject(playerConfiguration);
-            await dataService.Update(configuration);
-            if (items != null) /*then*/ playerService.UpdateNowPlaying(items, mediaType);
-        }
-
-        public async Task ClearNowPlaying()
-        {
-            Configuration configuration = await dataService.Get<Configuration>(item => item.Type == nameof(MediaPages.Player));
-            PlayerConfiguration playerConfiguration = null;
-
-            if (configuration != null)
-            {
-                playerConfiguration = JsonConvert.DeserializeObject<PlayerConfiguration>(configuration.JsonData) ?? new PlayerConfiguration();
-                playerService.ClearNowPlaying(playerConfiguration.SelectedMediaType);
             }
         }
 
