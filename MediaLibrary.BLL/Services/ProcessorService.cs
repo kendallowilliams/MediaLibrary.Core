@@ -11,6 +11,7 @@ using MediaLibrary.BLL.Services.Interfaces;
 using MediaLibrary.DAL.Services.Interfaces;
 using System.Linq.Expressions;
 using static MediaLibrary.Shared.Enums;
+using System.Threading;
 
 namespace MediaLibrary.BLL.Services
 {
@@ -22,15 +23,17 @@ namespace MediaLibrary.BLL.Services
         private readonly IPodcastService podcastService;
         private readonly IFileService fileService;
         private readonly ITransactionService transactionService;
+        private readonly ITPLService tplService;
 
         [ImportingConstructor]
         public ProcessorService(IDataService dataService, IPodcastService podcastService, IFileService fileService,
-                                ITransactionService transactionService)
+                                ITransactionService transactionService, ITPLService tplService)
         {
             this.dataService = dataService;
             this.podcastService = podcastService;
             this.fileService = fileService;
             this.transactionService = transactionService;
+            this.tplService = tplService;
         }
 
         public async Task RefreshPodcasts()
@@ -44,7 +47,8 @@ namespace MediaLibrary.BLL.Services
                 transaction = await transactionService.GetNewTransaction(TransactionTypes.RefreshPodcast);
                 podcasts = await dataService.GetList<Podcast>();
                 tasks = podcasts.Select(podcast => podcastService.RefreshPodcast(podcast));
-                await Task.WhenAll(tasks);
+                await tplService.ConcurrentAsync(async podcast => await podcastService.RefreshPodcast(podcast), podcasts, 4, default(CancellationToken));
+                await transactionService.UpdateTransactionCompleted(transaction);
             }
             catch (Exception ex)
             {
