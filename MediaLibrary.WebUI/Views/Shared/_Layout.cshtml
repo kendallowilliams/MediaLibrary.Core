@@ -96,7 +96,7 @@
             deps: ['jquery', 'jquery-ui', 'bootstrap']
         });
 
-        requirejs(['app'], function (App) {
+        requirejs(['jquery', 'jquery-ui', 'bootstrap', 'app'], function (jquery, jquery_ui, bootstrap, App) {
             let app = new App.default();
         });
     </script>
