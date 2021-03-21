@@ -14,6 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Remove="wwwroot\lib\app\app.js" />
     <Content Remove="wwwroot\lib\app\app.ts" />
   </ItemGroup>
 
