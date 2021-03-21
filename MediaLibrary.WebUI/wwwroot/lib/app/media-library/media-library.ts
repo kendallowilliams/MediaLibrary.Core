@@ -7,7 +7,7 @@ import HtmlControls from '../assets/controls/html-controls';
 import Configurations from '../assets/models/configurations/configurations';
 import BaseClass from '../assets/models/base-class';
 import LoadingModal from '../assets/modals/loading-modal';
-import { MediaPages } from '../assets/enums/enums';
+import { MediaPages, MediaTypes } from '../assets/enums/enums';
 import HomeConfiguration from '../assets/models/configurations/home-configuration';
 import MediaLibraryConfiguration from '../assets/models/configurations/media-library-configuration';
 import PlayerConfiguration from '../assets/models/configurations/player-configuration';
@@ -56,26 +56,26 @@ export default class MediaLibrary extends BaseClass {
 
     private load(): void {
         const loadFunctions: IPlayerLoadFunctions = {
-                loadArtist: (id) => this.music.loadArtist(id, this.loadView.bind(this, MediaPages.Music)),
-                loadAlbum: (id) => this.music.loadAlbum(id, this.loadView.bind(this, MediaPages.Music)),
-                loadPodcast: (id) => this.podcast.loadPodcast(id, this.loadView.bind(this, MediaPages.Podcast)),
-                loadSeries: (id) => this.television.loadSeries(id, this.loadView.bind(this, MediaPages.Television))
-            },
+            loadArtist: (id) => this.music.loadArtist(id, this.loadView.bind(this, MediaPages.Music)),
+            loadAlbum: (id) => this.music.loadAlbum(id, this.loadView.bind(this, MediaPages.Music)),
+            loadPodcast: (id) => this.podcast.loadPodcast(id, this.loadView.bind(this, MediaPages.Podcast)),
+            loadSeries: (id) => this.television.loadSeries(id, this.loadView.bind(this, MediaPages.Television))
+        },
             success: () => void = () => {
-            LoadingModal.showLoading();
-            this.loadStaticViews(() => {
-                LoadingModal.hideLoading();
-                this.editSongModal = new EditSongModal(this.mediaLibraryConfiguration, this.loadView.bind(this));
-                this.addToPlaylistModal = new AddToPlaylistModal();
-                this.home = new Home(this.homeConfiguration);
-                this.music = new Music(this.musicConfiguration, this.playWrapper.bind(this), this.updateActiveMedia.bind(this));
-                this.playlist = new Playlist(this.playlistConfiguration, this.playWrapper.bind(this), this.updateActiveMedia.bind(this), loadFunctions);
-                this.podcast = new Podcast(this.podcastConfiguration, this.playWrapper.bind(this), this.updateActiveMedia.bind(this));
-                this.television = new Television(this.televisionConfiguration, this.playWrapper.bind(this), this.updateActiveMedia.bind(this));
-                this.player = new Player(this.playerConfiguration, loadFunctions, this.updateActiveMedia.bind(this));
-                this.loadView(this.mediaLibraryConfiguration.properties.SelectedMediaPage);
-            });
-        };
+                LoadingModal.showLoading();
+                this.loadStaticViews(() => {
+                    LoadingModal.hideLoading();
+                    this.editSongModal = new EditSongModal(this.mediaLibraryConfiguration, this.loadView.bind(this));
+                    this.addToPlaylistModal = new AddToPlaylistModal();
+                    this.home = new Home(this.homeConfiguration);
+                    this.music = new Music(this.musicConfiguration, this.playWrapper.bind(this), this.updateActiveMedia.bind(this));
+                    this.playlist = new Playlist(this.playlistConfiguration, this.playWrapper.bind(this), this.updateActiveMedia.bind(this), loadFunctions);
+                    this.podcast = new Podcast(this.podcastConfiguration, this.playWrapper.bind(this), this.updateActiveMedia.bind(this));
+                    this.television = new Television(this.televisionConfiguration, this.playWrapper.bind(this), this.updateActiveMedia.bind(this));
+                    this.player = new Player(this.playerConfiguration, loadFunctions, this.updateActiveMedia.bind(this));
+                    this.loadView(this.mediaLibraryConfiguration.properties.SelectedMediaPage);
+                });
+            };
 
         this.loadConfigurations(success);
     }
@@ -86,15 +86,20 @@ export default class MediaLibrary extends BaseClass {
 
     private updateActiveMedia(): void {
         const $mediaView: JQuery<HTMLElement> = $(this.mainViews.MediaView),
-              currentId: number = this.player.getCurrentlyLoadedId();
+            currentId: number = this.player.getCurrentlyLoadedId();
 
-        if (this.mediaLibraryConfiguration.properties.SelectedMediaPage === MediaPages.Music ||
-            this.mediaLibraryConfiguration.properties.SelectedMediaPage === MediaPages.Playlist) {
-            $mediaView.find('.list-group-item[data-song-id].active').removeClass('active');
+        $mediaView.find('.list-group-item[data-song-id].active').removeClass('active');
+        $mediaView.find('.list-group-item[data-episode-id].active').removeClass('active');
+
+        if (this.playerConfiguration.properties.SelectedMediaType === MediaTypes.Song &&
+            (this.mediaLibraryConfiguration.properties.SelectedMediaPage === MediaPages.Music ||
+                this.mediaLibraryConfiguration.properties.SelectedMediaPage === MediaPages.Playlist)) {
             $mediaView.find('.list-group-item[data-song-id="' + currentId + '"]').addClass('active');
-        } else if (this.mediaLibraryConfiguration.properties.SelectedMediaPage === MediaPages.Podcast ||
-                   this.mediaLibraryConfiguration.properties.SelectedMediaPage === MediaPages.Television) {
-            $mediaView.find('.list-group-item[data-episode-id].active').removeClass('active');
+        } else if (this.playerConfiguration.properties.SelectedMediaType === MediaTypes.Television &&
+            this.mediaLibraryConfiguration.properties.SelectedMediaPage === MediaPages.Television) {
+            $mediaView.find('.list-group-item[data-episode-id="' + currentId + '"]').addClass('active');
+        } else if (this.playerConfiguration.properties.SelectedMediaType === MediaTypes.Podcast &&
+            this.mediaLibraryConfiguration.properties.SelectedMediaPage === MediaPages.Podcast) {
             $mediaView.find('.list-group-item[data-episode-id="' + currentId + '"]').addClass('active');
         }
     }
