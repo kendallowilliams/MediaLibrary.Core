@@ -115,7 +115,7 @@ export default class Podcast extends BaseClass implements IView {
                     $options = $('[data-podcast-item-options=' + id + ']');
 
                 $element.popover({
-                    trigger: 'focus',
+                    trigger: 'hover',
                     content: $options.get(0),
                     sanitize: false,
                     html: true,
@@ -152,6 +152,7 @@ export default class Podcast extends BaseClass implements IView {
                     message = $btn.attr('data-message');
 
                 MessageBox.alert(title, message, true);
+                $(this.podcastView).find('[data-podcast-item-options-popover]').popover('hide');
             });
             this.updateActiveMediaFunc();
             LoadingModal.hideLoading();
