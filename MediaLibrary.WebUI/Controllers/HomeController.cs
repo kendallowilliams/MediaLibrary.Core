@@ -40,10 +40,7 @@ namespace MediaLibrary.WebUI.Controllers
         {
             Configuration configuration = await dataService.Get<Configuration>(item => item.Type == nameof(MediaPages.Home));
 
-            if (configuration != null)
-            {
-                homeViewModel.Configuration = JsonConvert.DeserializeObject<HomeConfiguration>(configuration.JsonData) ?? new HomeConfiguration();
-            }
+            homeViewModel.Configuration = configuration?.GetConfigurationObject<HomeConfiguration>() ?? new HomeConfiguration();
 
             return Json(homeViewModel.Configuration, new JsonSerializerOptions { PropertyNamingPolicy = null });
         }

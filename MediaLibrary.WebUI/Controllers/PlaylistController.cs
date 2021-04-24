@@ -45,10 +45,7 @@ namespace MediaLibrary.WebUI.Controllers
             IActionResult result = null;
             Configuration configuration = await dataService.Get<Configuration>(item => item.Type == nameof(MediaPages.Playlist));
 
-            if (configuration != null)
-            {
-                playlistViewModel.Configuration = JsonConvert.DeserializeObject<PlaylistConfiguration>(configuration.JsonData);
-            }
+            playlistViewModel.Configuration = configuration?.GetConfigurationObject<PlaylistConfiguration>() ?? new PlaylistConfiguration();
 
             if (playlistViewModel.Configuration.SelectedPlaylistPage == PlaylistPages.Playlist &&
                 (playlistViewModel.Configuration.SelectedPlaylistId < 0 ||
@@ -76,7 +73,7 @@ namespace MediaLibrary.WebUI.Controllers
 
                 if (configuration != null)
                 {
-                    playlistViewModel.Configuration = JsonConvert.DeserializeObject<PlaylistConfiguration>(configuration.JsonData);
+                    playlistViewModel.Configuration = configuration.GetConfigurationObject<PlaylistConfiguration>();
                     playlistViewModel.Configuration.SelectedPlaylistId = playlist.Id;
                     playlistViewModel.Configuration.SelectedPlaylistPage = PlaylistPages.Playlist;
                     configuration.JsonData = JsonConvert.SerializeObject(playlistViewModel.Configuration);
@@ -93,7 +90,7 @@ namespace MediaLibrary.WebUI.Controllers
 
             if (configuration != null)
             {
-                PlaylistConfiguration playlistConfiguration = JsonConvert.DeserializeObject<PlaylistConfiguration>(configuration.JsonData);
+                PlaylistConfiguration playlistConfiguration = configuration.GetConfigurationObject<PlaylistConfiguration>();
 
                 playlistConfiguration.SelectedPlaylistPage = PlaylistPages.Index;
                 configuration.JsonData = JsonConvert.SerializeObject(playlistConfiguration);
@@ -208,10 +205,7 @@ namespace MediaLibrary.WebUI.Controllers
         {
             Configuration configuration = await dataService.Get<Configuration>(item => item.Type == nameof(MediaPages.Playlist));
 
-            if (configuration != null)
-            {
-                playlistViewModel.Configuration = JsonConvert.DeserializeObject<PlaylistConfiguration>(configuration.JsonData) ?? new PlaylistConfiguration();
-            }
+            playlistViewModel.Configuration = configuration?.GetConfigurationObject<PlaylistConfiguration>() ?? new PlaylistConfiguration();
 
             return Json(playlistViewModel.Configuration, new JsonSerializerOptions { PropertyNamingPolicy = null });
         }

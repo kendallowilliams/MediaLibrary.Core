@@ -13,6 +13,7 @@ namespace MediaLibrary.WebUI.Repositories
         public static string MediaViewId { get => "media-view"; }
         public static string PodcastViewId { get => "podcast-view"; }
         public static string SeasonViewId { get => "season-view"; }
+        public static string SettingsViewId { get => "settings-view"; }
         #endregion View Ids
 
         #region Player Ids
@@ -64,6 +65,12 @@ namespace MediaLibrary.WebUI.Repositories
         public static string SearchSongsContainerId { get => "search-songs-container"; }
         public static string SearchArtistsContainerId { get => "search-artists-container"; }
         public static string SearchAlbumsContainerId { get => "search-albums-container"; }
+        public static string GeneralSettingsContainerId { get => "general-settings-container"; }
+        public static string MusicSettingsContainerId { get => "music-settings-container"; }
+        public static string PlaylistSettingsContainerId { get => "playlist-settings-container"; }
+        public static string TelevisionSettingsContainerId { get => "television-settings-container"; }
+        public static string PodcastSettingsContainerId { get => "podcast-settings-container"; }
+        public static string PlayerSettingsContainerId { get => "player-settings-container"; }
         #endregion Container Ids
 
         #region UI Control Ids

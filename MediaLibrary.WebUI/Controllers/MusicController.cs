@@ -63,11 +63,7 @@ namespace MediaLibrary.WebUI.Controllers
             IActionResult result = null;
             Configuration configuration = await dataService.Get<Configuration>(item => item.Type == nameof(MediaPages.Music));
 
-            if (configuration != null)
-            {
-                musicViewModel.Configuration = JsonConvert.DeserializeObject<MusicConfiguration>(configuration.JsonData) ?? new MusicConfiguration();
-            }
-
+            musicViewModel.Configuration = configuration?.GetConfigurationObject<MusicConfiguration>() ?? new MusicConfiguration();
             await dataService.GetList<Playlist>().ContinueWith(task => musicViewModel.Playlists = task.Result);
 
             if (musicViewModel.Configuration.SelectedMusicPage == MusicPages.Album &&
@@ -197,7 +193,7 @@ namespace MediaLibrary.WebUI.Controllers
         {
             Configuration configuration = await dataService.Get<Configuration>(item => item.Type == nameof(MediaPages.Music));
 
-            musicViewModel.Configuration = JsonConvert.DeserializeObject<MusicConfiguration>(configuration.JsonData) ?? new MusicConfiguration();
+            musicViewModel.Configuration = configuration?.GetConfigurationObject<MusicConfiguration>() ?? new MusicConfiguration();
             musicViewModel.SelectedAlbum = await dataService.GetAlt<Album>(album => album.Id == id, default, "Tracks.Artist");
             musicViewModel.SelectedAlbum.Tracks = musicViewModel.SelectedAlbum.Tracks?.OrderBy(song => song.Position).ThenBy(song => song.Title).ToList();
 
@@ -208,7 +204,7 @@ namespace MediaLibrary.WebUI.Controllers
         {
             Configuration configuration = await dataService.Get<Configuration>(item => item.Type == nameof(MediaPages.Music));
 
-            musicViewModel.Configuration = JsonConvert.DeserializeObject<MusicConfiguration>(configuration.JsonData) ?? new MusicConfiguration();
+            musicViewModel.Configuration = configuration?.GetConfigurationObject<MusicConfiguration>() ?? new MusicConfiguration();
             musicViewModel.SelectedArtist = await dataService.GetAlt<Artist>(artist => artist.Id == id, default, "Albums.Tracks");
             return PartialView("Artist", musicViewModel);
         }
@@ -422,7 +418,7 @@ namespace MediaLibrary.WebUI.Controllers
         {
             Configuration configuration = await dataService.Get<Configuration>(item => item.Type == nameof(MediaPages.Music));
 
-            musicViewModel.Configuration = JsonConvert.DeserializeObject<MusicConfiguration>(configuration.JsonData) ?? new MusicConfiguration();
+            musicViewModel.Configuration = configuration?.GetConfigurationObject<MusicConfiguration>() ?? new MusicConfiguration();
             musicViewModel.AlbumGroups = await musicService.GetAlbumGroups(musicViewModel.Configuration.SelectedAlbumSort);
             musicViewModel.Playlists = await dataService.GetList<Playlist>();
 
@@ -433,7 +429,7 @@ namespace MediaLibrary.WebUI.Controllers
         {
             Configuration configuration = await dataService.Get<Configuration>(item => item.Type == nameof(MediaPages.Music));
 
-            musicViewModel.Configuration = JsonConvert.DeserializeObject<MusicConfiguration>(configuration.JsonData) ?? new MusicConfiguration();
+            musicViewModel.Configuration = configuration?.GetConfigurationObject<MusicConfiguration>() ?? new MusicConfiguration();
             musicViewModel.ArtistGroups = await musicService.GetArtistGroups(musicViewModel.Configuration.SelectedArtistSort);
             musicViewModel.Playlists = await dataService.GetList<Playlist>();
 
@@ -444,7 +440,7 @@ namespace MediaLibrary.WebUI.Controllers
         {
             Configuration configuration = await dataService.Get<Configuration>(item => item.Type == nameof(MediaPages.Music));
 
-            musicViewModel.Configuration = JsonConvert.DeserializeObject<MusicConfiguration>(configuration.JsonData) ?? new MusicConfiguration();
+            musicViewModel.Configuration = configuration?.GetConfigurationObject<MusicConfiguration>() ?? new MusicConfiguration();
             musicViewModel.SongGroups = await musicService.GetSongGroups(musicViewModel.Configuration.SelectedSongSort);
             musicViewModel.Playlists = await dataService.GetList<Playlist>();
 
@@ -455,10 +451,7 @@ namespace MediaLibrary.WebUI.Controllers
         {
             Configuration configuration = await dataService.Get<Configuration>(item => item.Type == nameof(MediaPages.Music));
 
-            if (configuration != null)
-            {
-                musicViewModel.Configuration = JsonConvert.DeserializeObject<MusicConfiguration>(configuration.JsonData) ?? new MusicConfiguration();
-            }
+            musicViewModel.Configuration = configuration?.GetConfigurationObject<MusicConfiguration>() ?? new MusicConfiguration();
 
             return Json(musicViewModel.Configuration, new JsonSerializerOptions { PropertyNamingPolicy = null });
         }

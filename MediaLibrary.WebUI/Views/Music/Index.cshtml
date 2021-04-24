@@ -5,17 +5,17 @@
         <h4>Music</h4>
         <div class="nav d-block p-1" id="@(HtmlControlsRepository.MusicTabListId)" role="tablist">
             <a class="btn btn-sm btn-outline-secondary" id="@(HtmlControlsRepository.AlbumsContainerId)-tab" data-toggle="tab"
-               role="tab" aria-controls="@(HtmlControlsRepository.AlbumsContainerId)" aria-selected="true" title="@(nameof(Enums.MusicTabs.Albums))" data-music-tab="@(nameof(Enums.MusicTabs.Albums))"
+               role="tab" title="@(nameof(Enums.MusicTabs.Albums))" data-music-tab="@(nameof(Enums.MusicTabs.Albums))"
                data-tooltip="tooltip" href="#@(HtmlControlsRepository.AlbumsContainerId)">
                 <i class="fa fa-compact-disc"></i>
             </a>
             <a class="btn btn-sm btn-outline-secondary" id="@(HtmlControlsRepository.ArtistsContainerId)-tab" data-toggle="tab"
-               role="tab" aria-controls="@(HtmlControlsRepository.ArtistsContainerId)" aria-selected="false" title="@(nameof(Enums.MusicTabs.Artists))" data-music-tab="@(nameof(Enums.MusicTabs.Artists))"
+               role="tab" title="@(nameof(Enums.MusicTabs.Artists))" data-music-tab="@(nameof(Enums.MusicTabs.Artists))"
                data-tooltip="tooltip" href="#@(HtmlControlsRepository.ArtistsContainerId)">
                 <i class="fa fa-user"></i>
             </a>
             <a class="btn btn-sm btn-outline-secondary" id="@(HtmlControlsRepository.SongsContainerId)-tab" data-toggle="tab"
-               role="tab" aria-controls="@(HtmlControlsRepository.SongsContainerId)" aria-selected="false" title="@(nameof(Enums.MusicTabs.Songs))" data-music-tab="@(nameof(Enums.MusicTabs.Songs))"
+               role="tab" title="@(nameof(Enums.MusicTabs.Songs))" data-music-tab="@(nameof(Enums.MusicTabs.Songs))"
                data-tooltip="tooltip" href="#@(HtmlControlsRepository.SongsContainerId)">
                 <i class="fa fa-music"></i>
             </a>
@@ -69,9 +69,9 @@
         <hr />
     </div>
     <div class="tab-content" style="flex: 1 1 auto; overflow-y: auto">
-        <div class="tab-pane fade" id="@(HtmlControlsRepository.AlbumsContainerId)" role="tabpanel" aria-labelledby="@(HtmlControlsRepository.AlbumsContainerId)-tab" data-load-url="@Url.Action("GetAlbums", "Music")"></div>
-        <div class="tab-pane fade" id="@(HtmlControlsRepository.ArtistsContainerId)" role="tabpanel" aria-labelledby="@(HtmlControlsRepository.ArtistsContainerId)-tab" data-load-url="@Url.Action("GetArtists", "Music")"></div>
-        <div class="tab-pane fade" id="@(HtmlControlsRepository.SongsContainerId)" role="tabpanel" aria-labelledby="@(HtmlControlsRepository.SongsContainerId)-tab" data-load-url="@Url.Action("GetSongs", "Music")"></div>
+        <div class="tab-pane fade" id="@(HtmlControlsRepository.AlbumsContainerId)" role="tabpanel" data-load-url="@Url.Action("GetAlbums", "Music")"></div>
+        <div class="tab-pane fade" id="@(HtmlControlsRepository.ArtistsContainerId)" role="tabpanel" data-load-url="@Url.Action("GetArtists", "Music")"></div>
+        <div class="tab-pane fade" id="@(HtmlControlsRepository.SongsContainerId)" role="tabpanel" data-load-url="@Url.Action("GetSongs", "Music")"></div>
     </div>
 </div>
 

@@ -8,7 +8,7 @@ using System.Web;
 
 namespace MediaLibrary.WebUI.Models
 {
-    [Export]
+    [Export, PartCreationPolicy(CreationPolicy.NonShared)]
     public class MediaLibraryViewModel : ViewModel<MediaLibraryConfiguration>
     {
         [ImportingConstructor]

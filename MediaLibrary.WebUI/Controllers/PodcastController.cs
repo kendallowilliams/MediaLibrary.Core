@@ -58,11 +58,7 @@ namespace MediaLibrary.WebUI.Controllers
             IActionResult result = null;
             Configuration configuration = await dataService.Get<Configuration>(item => item.Type == nameof(MediaPages.Podcast));
 
-            if (configuration != null)
-            {
-                podcastViewModel.Configuration = JsonConvert.DeserializeObject<PodcastConfiguration>(configuration.JsonData);
-            }
-
+            podcastViewModel.Configuration = configuration?.GetConfigurationObject<PodcastConfiguration>() ?? new PodcastConfiguration();
             podcastViewModel.PodcastGroups = await podcastUIService.GetPodcastGroups(podcastViewModel.Configuration.SelectedPodcastSort);
 
             if (podcastViewModel.Configuration.SelectedPodcastPage == PodcastPages.Podcast &&
@@ -87,7 +83,7 @@ namespace MediaLibrary.WebUI.Controllers
 
             if (configuration != null)
             {
-                podcastViewModel.Configuration = JsonConvert.DeserializeObject<PodcastConfiguration>(configuration.JsonData);
+                podcastViewModel.Configuration = configuration.GetConfigurationObject<PodcastConfiguration>();
                 podcastViewModel.Configuration.SelectedPodcastId = podcast.Id;
                 podcastViewModel.Configuration.SelectedPodcastPage = PodcastPages.Podcast;
                 configuration.JsonData = JsonConvert.SerializeObject(podcastViewModel.Configuration);
@@ -107,7 +103,7 @@ namespace MediaLibrary.WebUI.Controllers
 
             if (configuration != null)
             {
-                PodcastConfiguration podcastConfiguration = JsonConvert.DeserializeObject<PodcastConfiguration>(configuration.JsonData);
+                PodcastConfiguration podcastConfiguration = configuration.GetConfigurationObject<PodcastConfiguration>();
 
                 podcastConfiguration.SelectedPodcastPage = PodcastPages.Index;
                 configuration.JsonData = JsonConvert.SerializeObject(podcastConfiguration);
@@ -296,10 +292,7 @@ namespace MediaLibrary.WebUI.Controllers
         {
             Configuration configuration = await dataService.Get<Configuration>(item => item.Type == nameof(MediaPages.Podcast));
 
-            if (configuration != null)
-            {
-                podcastViewModel.Configuration = JsonConvert.DeserializeObject<PodcastConfiguration>(configuration.JsonData) ?? new PodcastConfiguration();
-            }
+            podcastViewModel.Configuration = configuration?.GetConfigurationObject<PodcastConfiguration>() ?? new PodcastConfiguration();
 
             return Json(podcastViewModel.Configuration, new JsonSerializerOptions { PropertyNamingPolicy = null });
         }

@@ -45,11 +45,7 @@ namespace MediaLibrary.WebUI.Controllers
         {
             Configuration configuration = await dataService.Get<Configuration>(item => item.Type == nameof(MediaPages.Player));
 
-            if (configuration != null)
-            {
-                playerViewModel.Configuration = JsonConvert.DeserializeObject<PlayerConfiguration>(configuration.JsonData) ?? new PlayerConfiguration();
-            }
-
+            playerViewModel.Configuration = configuration?.GetConfigurationObject<PlayerConfiguration>() ?? new PlayerConfiguration();
             await LoadPlayerViewModel();
 
             return PartialView(playerViewModel);
@@ -80,11 +76,7 @@ namespace MediaLibrary.WebUI.Controllers
         {
             Configuration configuration = await dataService.Get<Configuration>(item => item.Type == nameof(MediaPages.Player));
 
-            if (configuration != null)
-            {
-                playerViewModel.Configuration = JsonConvert.DeserializeObject<PlayerConfiguration>(configuration.JsonData) ?? new PlayerConfiguration();
-            }
-
+            playerViewModel.Configuration = configuration?.GetConfigurationObject<PlayerConfiguration>() ?? new PlayerConfiguration();
             await LoadPlayerViewModel();
 
             return PartialView("~/Views/Player/PlayerItems.cshtml", playerViewModel);
@@ -117,10 +109,7 @@ namespace MediaLibrary.WebUI.Controllers
         {
             Configuration configuration = await dataService.Get<Configuration>(item => item.Type == nameof(MediaPages.Player));
 
-            if (configuration != null)
-            {
-                playerViewModel.Configuration = JsonConvert.DeserializeObject<PlayerConfiguration>(configuration.JsonData) ?? new PlayerConfiguration();
-            }
+            playerViewModel.Configuration = configuration?.GetConfigurationObject<PlayerConfiguration>() ?? new PlayerConfiguration();
 
             return Json(playerViewModel.Configuration, new JsonSerializerOptions { PropertyNamingPolicy = null });
         }

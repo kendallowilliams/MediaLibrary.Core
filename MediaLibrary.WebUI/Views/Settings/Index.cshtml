@@ -1,0 +1,68 @@
+﻿@model SettingsViewModel
+
+@{
+}
+
+<div class="d-flex flex-column flex-fill overflow-auto">
+    <h4>Settings</h4>
+    <div class="d-flex flex-column flex-fill overflow-auto p-1">
+        <ul class="nav nav-tabs" role="tablist">
+            <li class="nav-item" role="presentation">
+                <a class="nav-link @(Model.CurrentSettingsTab == Enums.SettingsTabs.General ? "active" : string.Empty)"
+                   id="@(HtmlControlsRepository.GeneralSettingsContainerId)-tab" data-toggle="tab" href="#@(HtmlControlsRepository.GeneralSettingsContainerId)"
+                   role="tab">General</a>
+            </li>
+            <li class="nav-item" role="presentation">
+                <a class="nav-link @(Model.CurrentSettingsTab == Enums.SettingsTabs.Music ? "active" : string.Empty)"
+                   id="@(HtmlControlsRepository.MusicSettingsContainerId)-tab" data-toggle="tab" href="#@(HtmlControlsRepository.MusicSettingsContainerId)"
+                   role="tab">Music</a>
+            </li>
+            <li class="nav-item" role="presentation">
+                <a class="nav-link @(Model.CurrentSettingsTab == Enums.SettingsTabs.Podcast ? "active" : string.Empty)"
+                   id="@(HtmlControlsRepository.PodcastSettingsContainerId)-tab" data-toggle="tab" href="#@(HtmlControlsRepository.PodcastSettingsContainerId)"
+                   role="tab">Podcast</a>
+            </li>
+            <li class="nav-item" role="presentation">
+                <a class="nav-link @(Model.CurrentSettingsTab == Enums.SettingsTabs.Television ? "active" : string.Empty)"
+                   id="@(HtmlControlsRepository.TelevisionSettingsContainerId)-tab" data-toggle="tab" href="#@(HtmlControlsRepository.TelevisionSettingsContainerId)"
+                   role="tab">Television</a>
+            </li>
+            <li class="nav-item" role="presentation">
+                <a class="nav-link @(Model.CurrentSettingsTab == Enums.SettingsTabs.Playlist ? "active" : string.Empty)"
+                   id="@(HtmlControlsRepository.PlaylistSettingsContainerId)-tab" data-toggle="tab" href="#@(HtmlControlsRepository.PlaylistSettingsContainerId)"
+                   role="tab">Playlist</a>
+            </li>
+            <li class="nav-item" role="presentation">
+                <a class="nav-link @(Model.CurrentSettingsTab == Enums.SettingsTabs.Player ? "active" : string.Empty)"
+                   id="@(HtmlControlsRepository.PlayerSettingsContainerId)-tab" data-toggle="tab" href="#@(HtmlControlsRepository.PlayerSettingsContainerId)"
+                   role="tab">Player</a>
+            </li>
+        </ul>
+        <div class="tab-content flex-fill overflow-auto">
+            <div class="tab-pane fade @(Model.CurrentSettingsTab == Enums.SettingsTabs.General ? "show active" : string.Empty)"
+                 id="@(HtmlControlsRepository.GeneralSettingsContainerId)" role="tabpanel">
+                <partial name="~/Views/Settings/General.cshtml" model="Model.MediaLibraryConfiguration" />
+            </div>
+            <div class="tab-pane fade @(Model.CurrentSettingsTab == Enums.SettingsTabs.Music ? "show active" : string.Empty)"
+                 id="@(HtmlControlsRepository.MusicSettingsContainerId)" role="tabpanel">
+                <partial name="~/Views/Settings/Music.cshtml" model="Model.MusicConfiguration" />
+            </div>
+            <div class="tab-pane fade @(Model.CurrentSettingsTab == Enums.SettingsTabs.Podcast ? "show active" : string.Empty)"
+                 id="@(HtmlControlsRepository.PodcastSettingsContainerId)" role="tabpanel">
+                <partial name="~/Views/Settings/Podcast.cshtml" model="Model.PodcastConfiguration" />
+            </div>
+            <div class="tab-pane fade @(Model.CurrentSettingsTab == Enums.SettingsTabs.Television ? "show active" : string.Empty)"
+                 id="@(HtmlControlsRepository.TelevisionSettingsContainerId)" role="tabpanel">
+                <partial name="~/Views/Settings/Television.cshtml" model="Model.TelevisionConfiguration" />
+            </div>
+            <div class="tab-pane fade @(Model.CurrentSettingsTab == Enums.SettingsTabs.Playlist ? "show active" : string.Empty)"
+                 id="@(HtmlControlsRepository.PlaylistSettingsContainerId)" role="tabpanel">
+                <partial name="~/Views/Settings/Playlist.cshtml" model="Model.PlaylistConfiguration" />
+            </div>
+            <div class="tab-pane fade @(Model.CurrentSettingsTab == Enums.SettingsTabs.Player ? "show active" : string.Empty)"
+                 id="@(HtmlControlsRepository.PlayerSettingsContainerId)" role="tabpanel">
+                <partial name="~/Views/Settings/Player.cshtml" model="Model.PlayerConfiguration" />
+            </div>
+        </div>
+    </div>
+</div>

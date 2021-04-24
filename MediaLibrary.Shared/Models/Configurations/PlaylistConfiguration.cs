@@ -11,8 +11,10 @@ namespace MediaLibrary.Shared.Models.Configurations
     {
         public PlaylistConfiguration()
         {
+            MaxSystemPlaylistItems = 25;
         }
 
+        public int MaxSystemPlaylistItems { get; set; }
         public int SelectedPlaylistId { get; set; }
         public PlaylistPages SelectedPlaylistPage { get; set; }
         public PlaylistSort SelectedMusicPlaylistSort { get; set; }

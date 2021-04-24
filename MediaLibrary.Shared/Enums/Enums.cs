@@ -78,8 +78,12 @@ namespace MediaLibrary.Shared
 
         public enum TelevisionPages { Index = 0, Series }
 
-        public enum MediaPages { Home = 0, Music, Playlist, Podcast, Player, Television }
+        public enum MediaPages { Home = 0, Music, Playlist, Podcast, Player, Television, Settings }
 
         public enum RepeatTypes { None = 0, RepeatOne, RepeatAll }
+
+        public enum AppWidth { Normal = 0, Wide}
+
+        public enum SettingsTabs { General = 0, Music, Podcast, Television, Playlist, Player }
     }
 }

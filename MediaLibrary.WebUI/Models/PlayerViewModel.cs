@@ -9,7 +9,7 @@ using static MediaLibrary.Shared.Enums;
 
 namespace MediaLibrary.WebUI.Models
 {
-    [Export]
+    [Export, PartCreationPolicy(CreationPolicy.NonShared)]
     public class PlayerViewModel : ViewModel<PlayerConfiguration>
     {
         [ImportingConstructor]

@@ -20,6 +20,7 @@ import EditSongModal from '../assets/modals/edit-song-modal';
 import { getMediaPagesEnum, getMediaPagesEnumString } from '../assets/enums/enum-functions';
 import AddToPlaylistModal from '../assets/modals/add-to-playlist-modal';
 import IPlayerLoadFunctions from '../assets/interfaces/player-load-functions-interface';
+import Settings from './settings/settings';
 
 export default class MediaLibrary extends BaseClass {
     private home: Home;
@@ -28,6 +29,7 @@ export default class MediaLibrary extends BaseClass {
     private playlist: Playlist;
     private television: Television;
     private podcast: Podcast;
+    private settings: Settings;
     private homeConfiguration: HomeConfiguration;
     private mediaLibraryConfiguration: MediaLibraryConfiguration;
     private playerConfiguration: PlayerConfiguration;
@@ -35,7 +37,7 @@ export default class MediaLibrary extends BaseClass {
     private podcastConfiguration: PodcastConfiguration;
     private televisionConfiguration: TelevisionConfiguration;
     private musicConfiguration: MusicConfiguration;
-    private mainViews: { HomeView: HTMLElement, MediaView: HTMLElement, PlayerView: HTMLElement };
+    private mainViews: { HomeView: HTMLElement, MediaView: HTMLElement, PlayerView: HTMLElement, SettingsView: HTMLElement };
     private editSongModal: EditSongModal;
     private addToPlaylistModal: AddToPlaylistModal;
 
@@ -73,6 +75,7 @@ export default class MediaLibrary extends BaseClass {
                     this.podcast = new Podcast(this.podcastConfiguration, this.playWrapper.bind(this), this.updateActiveMedia.bind(this));
                     this.television = new Television(this.televisionConfiguration, this.playWrapper.bind(this), this.updateActiveMedia.bind(this));
                     this.player = new Player(this.playerConfiguration, loadFunctions, this.updateActiveMedia.bind(this));
+                    this.settings = new Settings();
                     this.loadView(this.mediaLibraryConfiguration.properties.SelectedMediaPage);
                 });
             };
@@ -138,7 +141,7 @@ export default class MediaLibrary extends BaseClass {
         this.mediaLibraryConfiguration.updateConfiguration(() => {
             this.prepareViews();
             this.showMainView(mediaPage);
-
+            
             switch (mediaPage) {
                 case MediaPages.Music:
                     this.music.loadView(() => LoadingModal.hideLoading());
@@ -156,6 +159,9 @@ export default class MediaLibrary extends BaseClass {
                 case MediaPages.Television:
                     this.television.loadView(() => LoadingModal.hideLoading());
                     break;
+                case MediaPages.Settings:
+                    this.settings.loadView(() => LoadingModal.hideLoading());
+                    break;
                 case MediaPages.Home:
                 default:
                     this.home.loadView(() => LoadingModal.hideLoading());
@@ -165,7 +171,7 @@ export default class MediaLibrary extends BaseClass {
     }
 
     private prepareViews(): void {
-        $([this.mainViews.HomeView, this.mainViews.MediaView, this.mainViews.PlayerView]).addClass('d-none');
+        $([this.mainViews.HomeView, this.mainViews.MediaView, this.mainViews.PlayerView, this.mainViews.SettingsView]).addClass('d-none');
     }
 
     private showMainView(mediaPage: MediaPages): void {
@@ -175,6 +181,9 @@ export default class MediaLibrary extends BaseClass {
                 break;
             case MediaPages.Player:
                 $(this.mainViews.PlayerView).removeClass('d-none');
+                break;
+            case MediaPages.Settings:
+                $(this.mainViews.SettingsView).removeClass('d-none');
                 break;
             default:
                 $(this.mainViews.MediaView).removeClass('d-none');

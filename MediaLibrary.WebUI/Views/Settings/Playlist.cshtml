@@ -1,0 +1,24 @@
+﻿@model PlaylistConfiguration
+
+<div class="d-flex flex-column flex-fill overflow-auto pt-3 p-1">
+    <form>
+        <div class="row m-0 p-0 mb-3">
+            <div class="col-2 border-right">
+                <h6>Interface</h6>
+            </div>
+            <div class="col-10">
+                <div class="row">
+                    <div class="col">
+                        <div class="input-group input-group-sm">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text" style="width: 200px">Max Count (System Playlist)</div>
+                            </div>
+                            @Html.TextBoxFor(x => x.MaxSystemPlaylistItems, new { @class = "form-control", type = "number", step = "1", min = "1" })
+                        </div>
+                    </div>
+                    <div class="col"></div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

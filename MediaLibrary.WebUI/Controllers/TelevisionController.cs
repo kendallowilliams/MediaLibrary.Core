@@ -48,10 +48,7 @@ namespace MediaLibrary.WebUI.Controllers
             IActionResult result = null;
             Configuration configuration = await dataService.Get<Configuration>(item => item.Type == nameof(MediaPages.Television));
 
-            if (configuration != null)
-            {
-                televisionViewModel.Configuration = JsonConvert.DeserializeObject<TelevisionConfiguration>(configuration.JsonData);
-            }
+            televisionViewModel.Configuration = configuration?.GetConfigurationObject<TelevisionConfiguration>() ?? new TelevisionConfiguration();
 
             if (televisionViewModel.Configuration.SelectedTelevisionPage == TelevisionPages.Series &&
                 await dataService.Exists<Series>(item => item.Id == televisionViewModel.Configuration.SelectedSeriesId))
@@ -146,10 +143,7 @@ namespace MediaLibrary.WebUI.Controllers
         {
             Configuration configuration = await dataService.Get<Configuration>(item => item.Type == nameof(MediaPages.Television));
 
-            if (configuration != null)
-            {
-                televisionViewModel.Configuration = JsonConvert.DeserializeObject<TelevisionConfiguration>(configuration.JsonData) ?? new TelevisionConfiguration();
-            }
+            televisionViewModel.Configuration = configuration?.GetConfigurationObject<TelevisionConfiguration>() ?? new TelevisionConfiguration();
 
             return Json(televisionViewModel.Configuration, new JsonSerializerOptions { PropertyNamingPolicy = null });
         }

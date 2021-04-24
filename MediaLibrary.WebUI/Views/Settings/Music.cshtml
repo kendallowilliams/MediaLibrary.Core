@@ -1,0 +1,45 @@
+﻿@model MusicConfiguration
+
+@{
+    SelectList albumSortList = new SelectList(MusicRepository.GetAlbumSortItems(), "Value", "Name"),
+               artistSortList = new SelectList(MusicRepository.GetArtistSortItems(), "Value", "Name"),
+               songSortList = new SelectList(MusicRepository.GetSongSortItems(), "Value", "Name");
+}
+
+<div class="d-flex flex-column flex-fill overflow-auto pt-3 p-1">
+    <form>
+        <div class="row m-0 p-0 mb-3">
+            <div class="col-2 border-right">
+                <h6>Interface</h6>
+            </div>
+            <div class="col-10">
+                <div class="row">
+                    <div class="col">
+                        <div class="input-group input-group-sm">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text" style="width: 100px">Album Sort</div>
+                            </div>
+                            @Html.DropDownListFor(x => x.SelectedAlbumSort, albumSortList, null, new { @class = "custom-select" })
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="input-group input-group-sm">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text" style="width: 100px">Artist Sort</div>
+                            </div>
+                            @Html.DropDownListFor(x => x.SelectedArtistSort, artistSortList, null, new { @class = "custom-select" })
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="input-group input-group-sm">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text" style="width: 100px">Song Sort</div>
+                            </div>
+                            @Html.DropDownListFor(x => x.SelectedSongSort, songSortList, null, new { @class = "custom-select" })
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

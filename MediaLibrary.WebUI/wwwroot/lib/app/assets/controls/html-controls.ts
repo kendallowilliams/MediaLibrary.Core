@@ -4,7 +4,8 @@
         PlayerView: document.getElementById('player-view'),
         MediaView: document.getElementById('media-view'),
         PodcastView: document.getElementById('podcast-view'),
-        SeasonView: document.getElementById('season-view')
+        SeasonView: document.getElementById('season-view'),
+        SettingsView: document.getElementById('settings-view')
     }),
     Players: () => ({
         MusicPlayer: document.getElementById('music-player') as HTMLMediaElement,
@@ -52,7 +53,13 @@
         EpisodePlaylistContainer: document.getElementById('episode-playlist-container'),
         SearchSongsContainer: document.getElementById('search-songs-container'),
         SearchArtistsContainer: document.getElementById('search-artists-container'),
-        SearchAlbumsContainer: document.getElementById('search-albums-container')
+        SearchAlbumsContainer: document.getElementById('search-albums-container'),
+        GeneralSettingsContainer: document.getElementById('general-settings-container'),
+        MusicSettingsContainer: document.getElementById('music-settings-container'),
+        PlaylistSettingsContainer: document.getElementById('playlist-settings-container'),
+        TelevisionSettingsContainer: document.getElementById('television-settings-container'),
+        PodcastSettingsContainer: document.getElementById('podcast-settings-container'),
+        PlayerSettingsContainer: document.getElementById('player-settings-container')
     }),
     UIControls: () => ({
         PlayerSlider: document.getElementById('player-slider'),

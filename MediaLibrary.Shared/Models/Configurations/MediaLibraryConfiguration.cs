@@ -15,5 +15,7 @@ namespace MediaLibrary.Shared.Models.Configurations
         }
 
         public MediaPages SelectedMediaPage { get; set; }
+
+        public AppWidth AppWidth { get; set; }
     }
 }
