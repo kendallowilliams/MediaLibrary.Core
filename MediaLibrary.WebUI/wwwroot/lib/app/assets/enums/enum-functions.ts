@@ -1,4 +1,4 @@
-﻿import { MediaPages, SeriesSort, AlbumSort, ArtistSort, MusicTabs, SongSort, MediaTypes, RepeatTypes, PlayerPages, PlaylistSort, PodcastSort, PodcastFilter, PlaylistTabs } from "./enums";
+﻿import { MediaPages, SeriesSort, AlbumSort, ArtistSort, MusicTabs, SongSort, MediaTypes, RepeatTypes, PlayerPages, PlaylistSort, PodcastSort, PodcastFilter, PlaylistTabs, AppWidth } from "./enums";
 
 export function getMediaPagesEnum(page: string): MediaPages {
     let mediaPage: MediaPages;
@@ -348,4 +348,36 @@ export function getPlaylistTabEnum(tab: string): PlaylistTabs {
     }
 
     return playlistTab;
+};
+
+export function getAppWidthEnum(size: string): AppWidth {
+    let appWidth: AppWidth;
+
+    switch (size) {
+        case 'Wide':
+            appWidth = AppWidth.Wide;
+            break;
+        case 'Normal':
+        default:
+            appWidth = AppWidth.Normal;
+            break;
+    }
+
+    return appWidth;
+};
+
+export function getAppWidthEnumString(size: AppWidth): string {
+    let appWidth: string;
+
+    switch (size) {
+        case AppWidth.Wide:
+            appWidth = 'Wide';
+            break;
+        case AppWidth.Normal:
+        default:
+            appWidth = 'Normal';
+            break;
+    }
+
+    return appWidth;
 };

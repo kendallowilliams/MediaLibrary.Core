@@ -80,3 +80,8 @@ export const enum RepeatTypes {
     RepeatOne,
     RepeatAll
 }
+
+export const enum AppWidth {
+    Normal = 0,
+    Wide
+}

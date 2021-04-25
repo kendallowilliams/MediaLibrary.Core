@@ -21,6 +21,7 @@ import { getMediaPagesEnum, getMediaPagesEnumString } from '../assets/enums/enum
 import AddToPlaylistModal from '../assets/modals/add-to-playlist-modal';
 import IPlayerLoadFunctions from '../assets/interfaces/player-load-functions-interface';
 import Settings from './settings/settings';
+import IConfigurations from '../assets/interfaces/configurations-interface';
 
 export default class MediaLibrary extends BaseClass {
     private home: Home;
@@ -64,6 +65,16 @@ export default class MediaLibrary extends BaseClass {
             loadSeries: (id) => this.television.loadSeries(id, this.loadView.bind(this, MediaPages.Television))
         },
             success: () => void = () => {
+                const configurations: IConfigurations = {
+                    MediaLibary: this.mediaLibraryConfiguration,
+                    Music: this.musicConfiguration,
+                    Player: this.playerConfiguration,
+                    Podcast: this.podcastConfiguration,
+                    Playlist: this.playlistConfiguration,
+                    Television: this.televisionConfiguration,
+                    Home: this.homeConfiguration
+                };
+
                 LoadingModal.showLoading();
                 this.loadStaticViews(() => {
                     LoadingModal.hideLoading();
@@ -75,7 +86,7 @@ export default class MediaLibrary extends BaseClass {
                     this.podcast = new Podcast(this.podcastConfiguration, this.playWrapper.bind(this), this.updateActiveMedia.bind(this));
                     this.television = new Television(this.televisionConfiguration, this.playWrapper.bind(this), this.updateActiveMedia.bind(this));
                     this.player = new Player(this.playerConfiguration, loadFunctions, this.updateActiveMedia.bind(this));
-                    this.settings = new Settings();
+                    this.settings = new Settings(configurations);
                     this.loadView(this.mediaLibraryConfiguration.properties.SelectedMediaPage);
                 });
             };
