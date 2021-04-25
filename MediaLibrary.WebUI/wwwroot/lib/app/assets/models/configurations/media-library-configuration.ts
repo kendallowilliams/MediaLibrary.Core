@@ -17,10 +17,7 @@ export default class MediaLibraryConfiguration extends BaseConfiguration<IMediaL
     private applyConfiguration(): void {
         const $container = $(document.body).find('div').first();
 
-        if (this.properties.AppWidth === AppWidth.Normal) {
-            $container.removeClass('container-fluid').addClass('container');
-        } else {
-            $container.removeClass('container').addClass('container-fluid');
-        }
+        $container.removeClass('container-fluid container');
+        $container.addClass(this.properties.AppWidth === AppWidth.Normal ? 'container' : 'container-fluid');
     }
 }
