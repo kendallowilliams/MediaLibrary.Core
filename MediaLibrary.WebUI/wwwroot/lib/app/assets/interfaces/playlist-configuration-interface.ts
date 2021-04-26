@@ -8,4 +8,5 @@ export default interface IPlaylistConfiguration extends IConfiguration {
     SelectedPodcastPlaylistSort: PlaylistSort;
     SelectedTelevisionPlaylistSort: PlaylistSort;
     SelectedPlaylistTab: PlaylistTabs;
+    MaxSystemPlaylistItems: number;
 }
