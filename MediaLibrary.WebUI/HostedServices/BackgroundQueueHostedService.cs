@@ -1,4 +1,4 @@
-﻿using MediaLibrary.WebUI.Utilities.Interfaces;
+﻿using MediaLibrary.WebUI.Services.Interfaces;
 using Microsoft.Extensions.Hosting;
 using System;
 using System.Collections.Generic;
@@ -6,16 +6,16 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace MediaLibrary.WebUI.Utilities
+namespace MediaLibrary.WebUI.HostedServices
 {
     public class BackgroundQueueHostedService : BackgroundService
     {
-        public BackgroundQueueHostedService(IBackgroundTaskQueue taskQueue)
+        public BackgroundQueueHostedService(IBackgroundTaskQueueService taskQueue)
         {
             TaskQueue = taskQueue;
         }
 
-        public IBackgroundTaskQueue TaskQueue { get; }
+        public IBackgroundTaskQueueService TaskQueue { get; }
 
         protected async override Task ExecuteAsync(CancellationToken cancellationToken)
         {

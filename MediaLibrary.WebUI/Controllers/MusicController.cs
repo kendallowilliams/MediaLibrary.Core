@@ -23,7 +23,6 @@ using System.Text.Json;
 using Microsoft.Extensions.Configuration;
 using Microsoft.AspNetCore.Authorization;
 using MediaLibrary.Shared.Services.Interfaces;
-using MediaLibrary.WebUI.Utilities.Interfaces;
 using Microsoft.AspNetCore.StaticFiles;
 using MediaLibrary.Shared.Models;
 
@@ -37,7 +36,7 @@ namespace MediaLibrary.WebUI.Controllers
         private readonly Lazy<ITrackService> lazyTrackService;
         private readonly Lazy<IFileService> lazyFileService;
         private readonly Lazy<ITransactionService> lazyTransactionService;
-        private readonly IBackgroundTaskQueue backgroundTaskQueue;
+        private readonly IBackgroundTaskQueueService backgroundTaskQueue;
         private readonly IConfiguration configuration;
         private IDataService dataService => lazyDataService.Value;
         private IMusicUIService musicService => lazyMusicService.Value;
@@ -46,7 +45,7 @@ namespace MediaLibrary.WebUI.Controllers
         private IFileService fileService => lazyFileService.Value;
         private ITransactionService transactionService => lazyTransactionService.Value;
 
-        public MusicController(IMefService mefService, IBackgroundTaskQueue backgroundTaskQueue, IConfiguration configuration)
+        public MusicController(IMefService mefService, IBackgroundTaskQueueService backgroundTaskQueue, IConfiguration configuration)
         {
             this.lazyDataService = mefService.GetExport<IDataService>();
             this.lazyMusicService = mefService.GetExport<IMusicUIService>();

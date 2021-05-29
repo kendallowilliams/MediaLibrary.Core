@@ -4,9 +4,9 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace MediaLibrary.WebUI.Utilities.Interfaces
+namespace MediaLibrary.WebUI.Services.Interfaces
 {
-    public interface IBackgroundTaskQueue
+    public interface IBackgroundTaskQueueService
     {
         void QueueBackgroundWorkItem(Func<CancellationToken, Task> workItem);
 

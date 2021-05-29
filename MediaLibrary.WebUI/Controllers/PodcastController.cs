@@ -5,7 +5,6 @@ using MediaLibrary.Shared.Services.Interfaces;
 using MediaLibrary.WebUI.Models;
 using MediaLibrary.Shared.Models.Configurations;
 using MediaLibrary.WebUI.Services.Interfaces;
-using MediaLibrary.WebUI.Utilities.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.StaticFiles;
@@ -34,7 +33,7 @@ namespace MediaLibrary.WebUI.Controllers
         private readonly Lazy<IPodcastService> lazyPodcastService;
         private readonly Lazy<ITransactionService> lazyTransactionService;
         private readonly Lazy<IFileService> lazyFileService;
-        private readonly IBackgroundTaskQueue backgroundTaskQueue;
+        private readonly IBackgroundTaskQueueService backgroundTaskQueue;
         private IPodcastUIService podcastUIService => lazyPodcastUIService.Value;
         private IDataService dataService => lazyDataService.Value;
         private PodcastViewModel podcastViewModel => lazyPodcastViewModel.Value;
@@ -42,7 +41,7 @@ namespace MediaLibrary.WebUI.Controllers
         private ITransactionService transactionService => lazyTransactionService.Value;
         private IFileService fileService => lazyFileService.Value;
 
-        public PodcastController(IMefService mefService, IBackgroundTaskQueue backgroundTaskQueue)
+        public PodcastController(IMefService mefService, IBackgroundTaskQueueService backgroundTaskQueue)
         {
             this.lazyPodcastUIService = mefService.GetExport<IPodcastUIService>();
             this.lazyDataService = mefService.GetExport<IDataService>();
