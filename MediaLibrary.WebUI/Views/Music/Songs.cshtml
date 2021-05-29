@@ -26,7 +26,7 @@
                      data-play-ids="@(string.Join(",", item.Group.Select(song => song.Id)))">
                     @if (Model.IsSearchResponse)
                     {
-                        Html.RenderPartial("~/Views/Music/SongGroup.cshtml", (Model.SongGroups.FirstOrDefault(), Model.Playlists.Any()));
+                        <partial name="~/Views/Music/SongGroup.cshtml" model="(Model.SongGroups.FirstOrDefault(), Model.Playlists.Any())" />
                     }
                 </div>
             </div>

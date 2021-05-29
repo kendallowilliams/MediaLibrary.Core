@@ -1,6 +1,8 @@
 ﻿using MediaLibrary.Shared.Services.Interfaces;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Composition;
 using System.ComponentModel.Composition.Hosting;
 using System.Text;
 
@@ -10,11 +12,12 @@ namespace MediaLibrary.Shared.Services
     {
         private readonly CompositionContainer container;
 
-        public MefService(string path)
+        public MefService(string path, IConfiguration configuration)
         {
             DirectoryCatalog catalog = new DirectoryCatalog(path);
 
             container = new CompositionContainer(catalog);
+            container.ComposeExportedValue(configuration);
         }
 
         public Lazy<T> GetExport<T>()

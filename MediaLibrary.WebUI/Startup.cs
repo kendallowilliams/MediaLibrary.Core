@@ -28,9 +28,11 @@ namespace MediaLibrary.WebUI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            MefService mefService = new MefService(AppDomain.CurrentDomain.BaseDirectory, Configuration);
+
             services.AddControllersWithViews();
             services.AddHostedService<BackgroundQueueHostedService>();
-            services.AddSingleton(typeof(IMefService), new MefService(AppDomain.CurrentDomain.BaseDirectory));
+            services.AddSingleton(typeof(IMefService), mefService);
             services.AddSingleton(typeof(IBackgroundTaskQueue), typeof(BackgroundTaskQueue)); 
             services.AddAuthentication(IISDefaults.AuthenticationScheme);
             services.AddAuthorization();

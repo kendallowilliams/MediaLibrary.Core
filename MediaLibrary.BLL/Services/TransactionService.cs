@@ -3,16 +3,12 @@ using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Web;
 using Fody;
 using MediaLibrary.BLL.Services.Interfaces;
 using MediaLibrary.DAL.Services.Interfaces;
-using System.Linq.Expressions;
 using MediaLibrary.DAL.Models;
-using System.Configuration;
-using Newtonsoft.Json.Linq;
-using MediaLibrary.Shared.Services.Interfaces;
 using static MediaLibrary.Shared.Enums;
+using Microsoft.Extensions.Configuration;
 
 namespace MediaLibrary.BLL.Services
 {
@@ -21,13 +17,13 @@ namespace MediaLibrary.BLL.Services
     public class TransactionService : ITransactionService
     {
         private readonly IDataService dataService;
-        private readonly IConfigurationManager configurationManager;
+        private readonly IConfiguration configuration;
 
         [ImportingConstructor]
-        public TransactionService(IDataService dataService, IConfigurationManager configurationManager)
+        public TransactionService(IDataService dataService, IConfiguration configuration)
         {
             this.dataService = dataService;
-            this.configurationManager = configurationManager;
+            this.configuration = configuration;
         }
 
         public async Task<Transaction> GetNewTransaction(TransactionTypes transactionType)
@@ -81,7 +77,7 @@ namespace MediaLibrary.BLL.Services
 
         public async Task CleanUpTransactions()
         {
-            int.TryParse(configurationManager.GetValue("TransactionExpirationAge"), out int transactionExpirationDays);
+            int.TryParse(configuration["TransactionExpirationAge"], out int transactionExpirationDays);
             DateTime expirationDate = DateTime.Now.Date.AddDays(-transactionExpirationDays);
             await dataService.DeleteAll<Transaction>(transaction => transaction.CreateDate < expirationDate);
         }

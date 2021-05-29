@@ -1,7 +1,10 @@
 ﻿using Fody;
 using MediaLibrary.BLL.Services.Interfaces;
+using MediaLibrary.Console.HostedServices;
 using MediaLibrary.Shared.Services;
 using MediaLibrary.Shared.Services.Interfaces;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using System;
 using System.IO;
 using System.Threading.Tasks;
@@ -13,21 +16,15 @@ namespace MediaLibrary.Console
     {
         static async Task Main(string[] args)
         {
-            Program program = new Program();
+            await Host.CreateDefaultBuilder(args)
+                      .ConfigureServices((context, services) => 
+                      {
+                          MefService mefService = new MefService(AppDomain.CurrentDomain.BaseDirectory, context.Configuration);
 
-            await program.Run();
-        }
-
-        public async Task Run()
-        {
-            string dllPath = Path.GetDirectoryName(typeof(Program).Assembly.Location);
-
-            using (IMefService mefService = new MefService(dllPath))
-            {
-                IProcessorService processorService = mefService.GetExportedValue<IProcessorService>();
-
-                await Task.WhenAll(processorService.RefreshMusic(), processorService.RefreshPodcasts(), processorService.PerformCleanup());
-            }
+                          services.AddHostedService<AppHostedService>();
+                          services.AddSingleton<IMefService>(mefService);
+                      })
+                      .RunConsoleAsync();
         }
     }
 }

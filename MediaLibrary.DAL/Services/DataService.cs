@@ -17,6 +17,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Data.SqlClient;
 using MediaLibrary.DAL.DbContexts;
 using MediaLibrary.Shared.Services.Interfaces;
+using Microsoft.Extensions.Configuration;
 
 namespace MediaLibrary.BLL.Services
 {
@@ -25,27 +26,20 @@ namespace MediaLibrary.BLL.Services
     public class DataService : IDataService
     {
         private int timeout;
-        private readonly IConfigurationManager configurationManager;
+        private readonly IConfiguration configuration;
 
         [ImportingConstructor]
-        public DataService(IConfigurationManager configurationManager)
+        public DataService(IConfiguration configuration)
         {
             timeout = 120;
-            this.configurationManager = configurationManager;
+            this.configuration = configuration;
         }
 
         private MediaLibraryEntities GetMediaLibraryEntities()
         {
             DbContextOptionsBuilder<MediaLibraryEntities> optionsBuilder = new DbContextOptionsBuilder<MediaLibraryEntities>();
-#if DEV
-            string connectionString = configurationManager.GetValue("ConnectionStrings:DEV");
-#elif DEBUG
-            string connectionString = configurationManager.GetValue("ConnectionStrings:DEBUG");
-#else
-            string connectionString = configurationManager.GetValue("ConnectionStrings:Release");
-#endif
 
-            optionsBuilder.UseSqlServer(connectionString);
+            optionsBuilder.UseSqlServer(configuration["ConnectionStrings:MediaLibrary"]);
 
             return new MediaLibraryEntities(optionsBuilder.Options);
         }

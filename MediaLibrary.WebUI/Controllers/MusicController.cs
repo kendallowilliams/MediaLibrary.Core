@@ -38,15 +38,15 @@ namespace MediaLibrary.WebUI.Controllers
         private readonly Lazy<IFileService> lazyFileService;
         private readonly Lazy<ITransactionService> lazyTransactionService;
         private readonly IBackgroundTaskQueue backgroundTaskQueue;
+        private readonly IConfiguration configuration;
         private IDataService dataService => lazyDataService.Value;
         private IMusicUIService musicService => lazyMusicService.Value;
         private MusicViewModel musicViewModel => lazyMusicViewModel.Value;
         private ITrackService trackService => lazyTrackService.Value;
         private IFileService fileService => lazyFileService.Value;
         private ITransactionService transactionService => lazyTransactionService.Value;
-        private readonly IConfigurationManager configurationManager;
 
-        public MusicController(IMefService mefService, IBackgroundTaskQueue backgroundTaskQueue)
+        public MusicController(IMefService mefService, IBackgroundTaskQueue backgroundTaskQueue, IConfiguration configuration)
         {
             this.lazyDataService = mefService.GetExport<IDataService>();
             this.lazyMusicService = mefService.GetExport<IMusicUIService>();
@@ -54,7 +54,7 @@ namespace MediaLibrary.WebUI.Controllers
             this.lazyTrackService = mefService.GetExport<ITrackService>();
             this.lazyFileService = mefService.GetExport<IFileService>();
             this.lazyTransactionService = mefService.GetExport<ITransactionService>();
-            this.configurationManager = mefService.GetExportedValue<IConfigurationManager>();
+            this.configuration = configuration;
             this.backgroundTaskQueue = backgroundTaskQueue;
         }
 
@@ -370,7 +370,7 @@ namespace MediaLibrary.WebUI.Controllers
             {
                 string fileName = viewModel.MusicFile.FileName,
                        filePath = Path.Combine(viewModel.MusicPath, fileName),
-                       rootPath = configurationManager.GetValue("RootPath");
+                       rootPath = configuration["RootPath"];
 
                 if (Directory.Exists(viewModel.MusicPath) && !System.IO.File.Exists(filePath))
                 {

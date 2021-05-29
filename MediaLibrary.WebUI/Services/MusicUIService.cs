@@ -26,22 +26,22 @@ namespace MediaLibrary.WebUI.Services
         private readonly Lazy<IDataService> lazyDataService;
         private readonly Lazy<IFileService> lazyFileService;
         private readonly Lazy<ITransactionService> lazyTransactionService;
+        private readonly IConfiguration configuration;
         private IDataService dataService => lazyDataService.Value;
         private IFileService fileService => lazyFileService.Value;
         private ITransactionService transactionService => lazyTransactionService.Value;
         private IEnumerable<Track> songs;
         private IEnumerable<Artist> artists;
         private IEnumerable<Album> albums;
-        private readonly IConfigurationManager configurationManager;
 
         [ImportingConstructor]
         public MusicUIService(Lazy<IDataService> dataService, Lazy<IFileService> fileService, Lazy<ITransactionService> transactionService,
-                              IConfigurationManager configurationManager) : base()
+                              IConfiguration configuration) : base()
         {
             this.lazyDataService = dataService;
             this.lazyFileService = fileService;
             this.lazyTransactionService = transactionService;
-            this.configurationManager = configurationManager;
+            this.configuration = configuration;
         }
 
         public async Task<IEnumerable<Track>> Songs() => songs ?? await dataService.GetList<Track>();
@@ -153,7 +153,7 @@ namespace MediaLibrary.WebUI.Services
                                 activeDirectories = transactionData.SelectMany(item => item.Directories);
             IEnumerable<TrackPath> includedTrackPaths = Enumerable.Empty<TrackPath>();
             MusicDirectory musicDirectory = default;
-            string rootPath = configurationManager.GetValue("RootPath"),
+            string rootPath = configuration["RootPath"],
                    targetPath = string.IsNullOrWhiteSpace(path) ? rootPath : path;
             DirectoryInfo rootPathInfo = new DirectoryInfo(rootPath),
                           targetPathInfo = new DirectoryInfo(targetPath);
@@ -170,7 +170,7 @@ namespace MediaLibrary.WebUI.Services
             foreach (var directory in musicDirectory.SubDirectories)
             {
                 IEnumerable<string> allFiles = fileService.EnumerateFiles(directory.Path, recursive: false),
-                                    fileTypes = configurationManager.GetValue("FileTypes").Split(",".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
+                                    fileTypes = configuration["FileTypes"].Split(",".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
 
                 directory.HasFiles = allFiles.Where(file => fileTypes.Contains(Path.GetExtension(file), StringComparer.OrdinalIgnoreCase)).Any();
                 directory.IsLoading = activeDirectories.Contains(directory.Path, StringComparer.OrdinalIgnoreCase);
