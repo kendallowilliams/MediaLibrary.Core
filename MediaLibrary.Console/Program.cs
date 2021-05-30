@@ -24,7 +24,8 @@ namespace MediaLibrary.Console
                           services.AddHostedService<AppHostedService>();
                           services.AddSingleton<IMefService>(mefService);
                       })
-                      .RunConsoleAsync();
+                      .Build()
+                      .RunAsync();
         }
     }
 }
