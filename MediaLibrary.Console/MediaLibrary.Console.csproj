@@ -19,6 +19,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <DependentUpon>appsettings.json</DependentUpon>
     </Content>
+    <Content Include="appsettings.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
   <ItemGroup>
@@ -34,12 +37,6 @@
   <ItemGroup>
     <ProjectReference Include="..\MediaLibrary.BLL\MediaLibrary.BLL.csproj" />
     <ProjectReference Include="..\MediaLibrary.Shared\MediaLibrary.Shared.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Update="appsettings.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
   </ItemGroup>
 
 </Project>
