@@ -18,6 +18,11 @@ namespace MediaLibrary.WebUI
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
+#if DEBUG
+                .UseEnvironment("Debug")
+#elif DEV
+                .UseEnvironment("DEV")
+#endif
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseStartup<Startup>();
