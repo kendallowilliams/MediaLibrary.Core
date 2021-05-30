@@ -31,6 +31,7 @@ namespace MediaLibrary.Console.HostedServices
 
         public async Task StopAsync(CancellationToken cancellationToken)
         {
+            await Task.CompletedTask;
         }
     }
 }
