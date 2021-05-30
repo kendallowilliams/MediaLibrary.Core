@@ -17,6 +17,11 @@ namespace MediaLibrary.Console
         static async Task Main(string[] args)
         {
             await Host.CreateDefaultBuilder(args)
+#if DEBUG
+                      .UseEnvironment("Debug")
+#elif DEV
+                      .UseEnvironment("DEV")
+#endif
                       .ConfigureServices((context, services) => 
                       {
                           MefService mefService = new MefService(AppDomain.CurrentDomain.BaseDirectory, context.Configuration);
