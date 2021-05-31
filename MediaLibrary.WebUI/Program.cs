@@ -22,6 +22,8 @@ namespace MediaLibrary.WebUI
                 .UseEnvironment("Debug")
 #elif DEV
                 .UseEnvironment("DEV")
+#else
+                .UseEnvironment("Release")
 #endif
                 .ConfigureWebHostDefaults(webBuilder =>
                 {

@@ -21,6 +21,8 @@ namespace MediaLibrary.Console
                       .UseEnvironment("Debug")
 #elif DEV
                       .UseEnvironment("DEV")
+#else
+                      .UseEnvironment("Release")
 #endif
                       .ConfigureServices((context, services) => 
                       {
