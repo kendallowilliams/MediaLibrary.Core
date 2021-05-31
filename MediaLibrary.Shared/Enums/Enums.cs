@@ -36,7 +36,7 @@ namespace MediaLibrary.Shared
             Read = 301, ResetData = 302, RefreshMusic = 303,
 
             /* Audit Logging */
-            LogInfo = 901, LogWarning = 902, LogError = 903,
+            LogInfo = 901, LogWarn = 902, LogError = 903, LogObject = 904, LogTrace = 905, LogFatal = 906, LogDebug = 907,
 
             None = -1
         }

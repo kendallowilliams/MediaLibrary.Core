@@ -75,7 +75,5 @@ namespace MediaLibrary.WebUI.Controllers
 
             return Json(mediaLibraryViewModel.Configuration, new JsonSerializerOptions { PropertyNamingPolicy = null });
         }
-
-        public async Task Log(TransactionTypes transactionType, string message) => await logService.Log(transactionType, message);
     }
 }
