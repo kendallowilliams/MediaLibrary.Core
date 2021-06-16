@@ -52,5 +52,17 @@ export default class Settings extends BaseClass implements IView {
             this.configurations.Playlist.properties.MaxSystemPlaylistItems = max;
             this.configurations.Playlist.updateConfiguration();
         });
+        $(this.settingsView).find('input[name="SkipBackwardSeconds"]').on('change', e => {
+            const seconds = $(e.currentTarget).val() as number;
+
+            this.configurations.Player.properties.SkipBackwardSeconds = seconds;
+            this.configurations.Player.updateConfiguration();
+        });
+        $(this.settingsView).find('input[name="SkipForwardSeconds"]').on('change', e => {
+            const seconds = $(e.currentTarget).val() as number;
+
+            this.configurations.Player.properties.SkipForwardSeconds = seconds;
+            this.configurations.Player.updateConfiguration();
+        });
     }
 }
