@@ -1,5 +1,4 @@
 ﻿using Fody;
-using MediaLibrary.BLL.Services.Interfaces;
 using MediaLibrary.Console.HostedServices;
 using MediaLibrary.Shared.Services;
 using MediaLibrary.Shared.Services.Interfaces;
@@ -17,13 +16,6 @@ namespace MediaLibrary.Console
         static async Task Main(string[] args)
         {
             await Host.CreateDefaultBuilder(args)
-#if DEBUG
-                      .UseEnvironment("Debug")
-#elif DEV
-                      .UseEnvironment("DEV")
-#else
-                      .UseEnvironment("Release")
-#endif
                       .ConfigureServices((context, services) => 
                       {
                           MefService mefService = new MefService(AppDomain.CurrentDomain.BaseDirectory, context.Configuration);

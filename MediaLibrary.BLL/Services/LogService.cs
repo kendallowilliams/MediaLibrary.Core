@@ -30,25 +30,36 @@ namespace MediaLibrary.BLL.Services
             Transaction transaction = await transactionService.GetNewTransaction(TransactionTypes.LogObject);
             var data = new { Message = message, Object = JsonConvert.SerializeObject(entity) };
 
-            transaction.Message = JsonConvert.SerializeObject(data);
-            await transactionService.UpdateTransactionCompleted(transaction);
+            await transactionService.UpdateTransactionCompleted(transaction, JsonConvert.SerializeObject(data));
+        }
+
+        public async Task Log<TOld, TNew>(TOld oldEntity, TNew newEntity, string message) 
+            where TOld : class 
+            where TNew : class
+        {
+            if (oldEntity != newEntity)
+            {
+                Transaction transaction = await transactionService.GetNewTransaction(TransactionTypes.LogObjectUpdate);
+                var data = new { Message = message, Old = JsonConvert.SerializeObject(oldEntity), New = JsonConvert.SerializeObject(newEntity) };
+
+                await transactionService.UpdateTransactionCompleted(transaction, JsonConvert.SerializeObject(data));
+            }
         }
 
         public async Task Error(string message)
         {
             Transaction transaction = await transactionService.GetNewTransaction(TransactionTypes.LogError);
 
-            transaction.ErrorMessage = message;
-            await transactionService.UpdateTransactionCompleted(transaction);
+            await transactionService.UpdateTransactionCompleted(transaction, message);
         }
 
         public async Task Error(Exception ex)
         {
             Transaction transaction = await transactionService.GetNewTransaction(TransactionTypes.LogError);
-            
-            transaction.ErrorMessage = ex.Message;
-            if (ex.InnerException != null) /*then*/ transaction.ErrorMessage = $"{transaction.ErrorMessage} [{ex.InnerException.Message}]";
-            await transactionService.UpdateTransactionCompleted(transaction);
+            string errorMessage = ex.Message;
+
+            if (ex.InnerException != null) /*then*/ errorMessage = $"{transaction.ErrorMessage} [{ex.InnerException.Message}]";
+            await transactionService.UpdateTransactionCompleted(transaction, errorMessage);
         }
 
         public async Task Error(AggregateException ex)
@@ -57,41 +68,37 @@ namespace MediaLibrary.BLL.Services
             IEnumerable<string> errors = ex.InnerExceptions.Select(item => item.Message);
             string separator = string.Join(string.Empty, Enumerable.Repeat(Environment.NewLine, 2));
 
-            transaction.ErrorMessage = string.Join(separator, errors);
-            await transactionService.UpdateTransactionCompleted(transaction);
+            await transactionService.UpdateTransactionCompleted(transaction, string.Join(separator, errors));
         }
 
         public async Task Info(string message)
         {
             Transaction transaction = await transactionService.GetNewTransaction(TransactionTypes.LogInfo);
 
-            transaction.Message = message;
-            await transactionService.UpdateTransactionCompleted(transaction);
+            await transactionService.UpdateTransactionCompleted(transaction, message);
         }
 
         public async Task Warn(string message)
         {
             Transaction transaction = await transactionService.GetNewTransaction(TransactionTypes.LogWarn);
 
-            transaction.Message = message;
-            await transactionService.UpdateTransactionCompleted(transaction);
+            await transactionService.UpdateTransactionCompleted(transaction, message);
         }
 
         public async Task Fatal(string message)
         {
             Transaction transaction = await transactionService.GetNewTransaction(TransactionTypes.LogFatal);
 
-            transaction.ErrorMessage = message;
-            await transactionService.UpdateTransactionCompleted(transaction);
+            await transactionService.UpdateTransactionCompleted(transaction, message);
         }
 
         public async Task Fatal(Exception ex)
         {
             Transaction transaction = await transactionService.GetNewTransaction(TransactionTypes.LogFatal);
+            string errorMessage = ex.Message;
 
-            transaction.ErrorMessage = ex.Message;
             if (ex.InnerException != null) /*then*/ transaction.ErrorMessage = $"{transaction.ErrorMessage} [{ex.InnerException.Message}]";
-            await transactionService.UpdateTransactionCompleted(transaction);
+            await transactionService.UpdateTransactionCompleted(transaction, errorMessage);
         }
 
         public async Task Fatal(AggregateException ex)
@@ -100,8 +107,7 @@ namespace MediaLibrary.BLL.Services
             IEnumerable<string> errors = ex.InnerExceptions.Select(item => item.Message);
             string separator = string.Join(string.Empty, Enumerable.Repeat(Environment.NewLine, 2));
 
-            transaction.ErrorMessage = string.Join(separator, errors);
-            await transactionService.UpdateTransactionCompleted(transaction);
+            await transactionService.UpdateTransactionCompleted(transaction, string.Join(separator, errors));
         }
 
         public async Task Debug(string message)
@@ -109,8 +115,7 @@ namespace MediaLibrary.BLL.Services
 #if TRACE || DEBUG
             Transaction transaction = await transactionService.GetNewTransaction(TransactionTypes.LogDebug);
 
-            transaction.Message = message;
-            await transactionService.UpdateTransactionCompleted(transaction);
+            await transactionService.UpdateTransactionCompleted(transaction, message);
             Diagnostics.Debug.WriteLine(message);
 #else
             await Task.CompletedTask;
@@ -122,8 +127,7 @@ namespace MediaLibrary.BLL.Services
 #if TRACE
             Transaction transaction = await transactionService.GetNewTransaction(TransactionTypes.LogTrace);
 
-            transaction.Message = message;
-            await transactionService.UpdateTransactionCompleted(transaction);
+            await transactionService.UpdateTransactionCompleted(transaction, message);
             Diagnostics.Trace.WriteLine(message);
 #else
             await Task.CompletedTask;

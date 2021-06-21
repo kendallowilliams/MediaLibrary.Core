@@ -30,5 +30,9 @@ namespace MediaLibrary.BLL.Services.Interfaces
         Task Fatal(AggregateException ex);
 
         Task Log<T>(T entity, string message);
+
+        Task Log<TOld, TNew>(TOld oldEntity, TNew newEntity, string message)
+            where TOld : class
+            where TNew : class;
     }
 }
