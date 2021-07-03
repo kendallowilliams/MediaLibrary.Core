@@ -59,7 +59,8 @@
         PlaylistSettingsContainer: document.getElementById('playlist-settings-container'),
         TelevisionSettingsContainer: document.getElementById('television-settings-container'),
         PodcastSettingsContainer: document.getElementById('podcast-settings-container'),
-        PlayerSettingsContainer: document.getElementById('player-settings-container')
+        PlayerSettingsContainer: document.getElementById('player-settings-container'),
+        PlaylistListContainer: document.getElementById('playlist-list-container')
     }),
     UIControls: () => ({
         PlayerSlider: document.getElementById('player-slider'),

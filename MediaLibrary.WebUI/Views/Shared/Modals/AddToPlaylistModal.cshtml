@@ -10,17 +10,9 @@
                 </button>
             </div>
             <div class="modal-body m-0 p-0">
-                <div class="d-none">
-                    <input id="txtPlaylistUrl" type="hidden" value="" />
-                    <input id="txtPlaylistItemId" type="hidden" value="" />
-                </div>
-                <ul class="list-group list-group-flush">
-                    @foreach (var playlist in Model.Playlists.Where(playlist => playlist.Id > 0))
-                    {
-                        <li data-playlist-item="enabled" data-playlist-id="@(playlist.Id)" class="list-group-item list-group-item-action" data-tooltip="tooltip" title="@(playlist.Name)"
-                            data-playlist-action="add" data-playlist-type="@((Enums.PlaylistTabs)playlist.Type)">@(playlist.Name)</li>
-                        }
-                </ul>
+                <input id="txtPlaylistUrl" type="hidden" value="" />
+                <input id="txtPlaylistItemId" type="hidden" value="" />
+                <div id="@(HtmlControlsRepository.PlaylistListContainerId)"></div>
             </div>
         </div>
     </div>

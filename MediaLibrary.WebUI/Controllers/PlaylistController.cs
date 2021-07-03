@@ -62,6 +62,13 @@ namespace MediaLibrary.WebUI.Controllers
             return result;
         }
 
+        public async Task<IActionResult> PlaylistList(PlaylistTabs type)
+        {
+            IEnumerable<Playlist> playlists = await dataService.GetList<Playlist>(item => item.Type == (int)type);
+
+            return PartialView(playlists);
+        }
+
         public async Task AddPlaylist(string playlistName, PlaylistTabs playlistType)
         {
             if (!string.IsNullOrWhiteSpace(playlistName))

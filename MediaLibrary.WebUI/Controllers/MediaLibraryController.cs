@@ -37,7 +37,6 @@ namespace MediaLibrary.WebUI.Controllers
             Configuration configuration = await dataService.Get<Configuration>(item => item.Type == nameof(MediaLibraryController).Replace(nameof(Controller), string.Empty));
 
             mediaLibraryViewModel.Configuration = configuration?.GetConfigurationObject<MediaLibraryConfiguration>() ?? new MediaLibraryConfiguration();
-            mediaLibraryViewModel.Playlists = await dataService.GetList<Playlist>();
 
             return View(mediaLibraryViewModel);
         }
