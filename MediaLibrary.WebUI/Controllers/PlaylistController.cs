@@ -126,9 +126,22 @@ namespace MediaLibrary.WebUI.Controllers
             return PartialView("Playlist", playlistViewModel);
         }
 
-        public async Task RemovePlaylistItem(int id, int playlistId)
+        public async Task RemovePlaylistItem(int id, PlaylistTabs playlistType)
         {
-            await dataService.Delete<PlaylistTrack>(id);
+            switch(playlistType)
+            {
+                case PlaylistTabs.Music:
+                    await dataService.Delete<PlaylistTrack>(id);
+                    break;
+                case PlaylistTabs.Podcast:
+                    await dataService.Delete<PlaylistPodcastItem>(id);
+                    break;
+                case PlaylistTabs.Television:
+                    await dataService.Delete<PlaylistEpisode>(id);
+                    break;
+                default:
+                    break;
+            }
         }
 
 #if !DEBUG && !DEV

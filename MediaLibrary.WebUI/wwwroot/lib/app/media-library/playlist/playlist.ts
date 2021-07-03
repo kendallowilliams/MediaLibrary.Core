@@ -75,12 +75,13 @@ export default class Playlist extends BaseClass implements IView {
             const $btn = $(e.currentTarget),
                 id = $btn.attr('data-item-id'),
                 playlistId = $btn.attr('data-playlist-id'),
+                playlistType = $btn.attr('data-playlist-type'),
                 title = 'Delete playlist item',
                 message = 'Are you sure you want to delete this item from the playlist?';
 
             MessageBox.confirm(title, message, true, () => {
                 LoadingModal.showLoading();
-                $.post('Playlist/RemovePlaylistItem', { id: id, playlistId: playlistId }, () => this.loadView(() => LoadingModal.hideLoading()));
+                $.post('Playlist/RemovePlaylistItem', { id: id, playlistType: playlistType }, () => this.loadView(() => LoadingModal.hideLoading()));
             });
         });
 

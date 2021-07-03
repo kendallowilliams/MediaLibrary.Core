@@ -67,7 +67,7 @@
                                     @if (Model.SelectedPlaylist.Id > 0)
                                     {
                                         <button class="btn btn-sm btn-outline-danger" data-item-id="@(list.Id)" data-playlist-id="@(Model.SelectedPlaylist.Id)" data-playlist-action="remove-item"
-                                                data-tooltip="tooltip" title="Remove song">
+                                                data-tooltip="tooltip" data-playlist-type="@(Enums.PlaylistTabs.Music)" title="Remove song">
                                             <i class="fa fa-trash"></i>
                                         </button>
                                     }
@@ -98,7 +98,7 @@
                                     @if (Model.SelectedPlaylist.Id > 0)
                                     {
                                         <button class="btn btn-sm btn-outline-danger" data-item-id="@(list.Id)" data-playlist-id="@(Model.SelectedPlaylist.Id)" data-playlist-action="remove-item"
-                                                data-tooltip="tooltip" title="Remove episode">
+                                                data-tooltip="tooltip" data-playlist-type="@(Enums.PlaylistTabs.Podcast)" title="Remove episode">
                                             <i class="fa fa-trash"></i>
                                         </button>
                                     }
@@ -129,7 +129,7 @@
                                     @if (Model.SelectedPlaylist.Id > 0)
                                     {
                                         <button class="btn btn-sm btn-outline-danger" data-item-id="@(list.Id)" data-playlist-id="@(Model.SelectedPlaylist.Id)" data-playlist-action="remove-item" 
-                                                data-tooltip="tooltip" title="Remove episode">
+                                                data-tooltip="tooltip" data-playlist-type="@(Enums.PlaylistTabs.Television)" title="Remove episode">
                                             <i class="fa fa-trash"></i>
                                         </button>
                                     }
