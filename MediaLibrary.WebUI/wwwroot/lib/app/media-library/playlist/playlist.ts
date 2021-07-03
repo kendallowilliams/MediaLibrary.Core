@@ -74,7 +74,6 @@ export default class Playlist extends BaseClass implements IView {
         $(this.mediaView).find('*[data-playlist-action="remove-item"]').on('click', e => {
             const $btn = $(e.currentTarget),
                 id = $btn.attr('data-item-id'),
-                playlistId = $btn.attr('data-playlist-id'),
                 playlistType = $btn.attr('data-playlist-type'),
                 title = 'Delete playlist item',
                 message = 'Are you sure you want to delete this item from the playlist?';
