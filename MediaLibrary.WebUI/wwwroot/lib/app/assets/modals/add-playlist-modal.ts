@@ -1,17 +1,20 @@
 ﻿import htmlControls from "../controls/html-controls";
+import PlaylistConfiguration from "../models/configurations/playlist-configuration";
 import LoadingModal from "./loading-modal";
+import { getPlaylistTabEnumString } from "../enums/enum-functions";
 
 export default class AddNewPlaylistModal {
     private modal: HTMLElement;
 
-    constructor(private loadFunc: (callback: () => void) => void = () => null) {
+    constructor(private loadFunc: (callback: () => void) => void = () => null, private playlistConfiguration: PlaylistConfiguration) {
         this.modal = htmlControls.Modals().NewPlaylistModal;
         this.initializeControls();
     }
 
     private initializeControls(): void {
-        $(this.modal).on('show.bs.modal', function (e) {
+        $(this.modal).on('show.bs.modal', e => {
             $('#txtNewPlaylist').val('');
+            $('#ddlPlaylistType').val(getPlaylistTabEnumString(this.playlistConfiguration.properties.SelectedPlaylistTab)).prop('disabled', true);
         });
 
         $(this.modal).find('*[data-playlist-action="save"]').on('click', e => {

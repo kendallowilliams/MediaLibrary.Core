@@ -30,7 +30,7 @@ export default class Playlist extends BaseClass implements IView {
 
     loadView(callback: () => void = () => null): void {
         const success: () => void = () => {
-            this.addPlaylistModal = new AddNewPlaylistModal(this.loadView.bind(this));
+            this.addPlaylistModal = new AddNewPlaylistModal(this.loadView.bind(this), this.playlistConfiguration);
             this.editPlaylistModal = new EditPlaylistModal(this.loadView.bind(this));
             this.downloadM3UPlaylistModal = new DownloadM3UPlaylistModal();
             this.initializeControls();
