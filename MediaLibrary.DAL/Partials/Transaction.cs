@@ -24,5 +24,7 @@ namespace MediaLibrary.DAL.Models
             StatusMessage = TransactionStatus.Created.ToString();
             Type = (int)transactionType;
         }
+
+        public TransactionTypes GetTransactionType() => (TransactionTypes)Type;
     }
 }

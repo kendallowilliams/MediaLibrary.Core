@@ -33,7 +33,7 @@ namespace MediaLibrary.Shared
             GetPodcastItems = 258, RefreshPodcast = 259, GetPodcastFile = 260, RemoveEpisodeDownload = 261,
 
             /* Music: 301 - 350 */
-            Read = 301, ResetData = 302, RefreshMusic = 303,
+            Read = 301, ResetData = 302, RefreshMusic = 303, RefreshMusicWithDelete = 304,
 
             /* Audit Logging */
             LogInfo = 901, LogWarn = 902, LogError = 903, LogObject = 904, LogTrace = 905, LogFatal = 906, LogDebug = 907, LogObjectUpdate = 908,

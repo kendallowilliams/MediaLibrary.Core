@@ -139,23 +139,26 @@ namespace MediaLibrary.BLL.Services
                         await ReadMediaFile(file);
                     }
 
-                    foreach (string file in deletedFiles)
+                    if (transaction.GetTransactionType() == TransactionTypes.RefreshMusicWithDelete)
                     {
-                        Transaction deleteTransaction = null;
-
-                        try
+                        foreach (string file in deletedFiles)
                         {
-                            Track song = tracks.FirstOrDefault(track => track.FileName.Equals(Path.GetFileName(file), StringComparison.OrdinalIgnoreCase));
+                            Transaction deleteTransaction = null;
 
-                            deleteTransaction = await transactionService.GetNewTransaction(TransactionTypes.RemoveTrack);
-                            deleteTransaction.Message = $"Attempting to remove song [ID: {song?.Id}]...";
-                            await dataService.Update(deleteTransaction);
-                            await dataService.Delete(song);
-                            await transactionService.UpdateTransactionCompleted(deleteTransaction, $"Song [ID: {song?.Id}] removed.");
-                        }
-                        catch(Exception ex)
-                        {
-                            await transactionService.UpdateTransactionErrored(deleteTransaction, ex);
+                            try
+                            {
+                                Track song = tracks.FirstOrDefault(track => track.FileName.Equals(Path.GetFileName(file), StringComparison.OrdinalIgnoreCase));
+
+                                deleteTransaction = await transactionService.GetNewTransaction(TransactionTypes.RemoveTrack);
+                                deleteTransaction.Message = $"Attempting to remove song [ID: {song?.Id}]...";
+                                await dataService.Update(deleteTransaction);
+                                await dataService.Delete(song);
+                                await transactionService.UpdateTransactionCompleted(deleteTransaction, $"Song [ID: {song?.Id}] removed.");
+                            }
+                            catch (Exception ex)
+                            {
+                                await transactionService.UpdateTransactionErrored(deleteTransaction, ex);
+                            }
                         }
                     }
 
