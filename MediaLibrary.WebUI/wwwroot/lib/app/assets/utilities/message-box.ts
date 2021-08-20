@@ -76,7 +76,7 @@ export function showWarning(title: string, message: string): void {
     $modal.modal('show');
 }
 
-export function confirm(title: string, message: string, showYesNo: boolean, callback: () => void): void {
+export function confirm(title: string, message: string, showYesNo: boolean, positiveCallback: () => void, negativeCallback: () => void = () => null): void {
     const $modal = $(HtmlControls.Modals().ConfirmModal),
         $title = $modal.find('.modal-title'),
         $body = $modal.find('.modal-body'),
@@ -87,9 +87,16 @@ export function confirm(title: string, message: string, showYesNo: boolean, call
     if ($modal.attr('data-initialized') !== 'true') /*then*/ initialize();
     $title.text(title);
     $body.text(message);
-    $btnContainer.find('[data-button="callback"]').off('click').on('click', () => {
+    $btnContainer.find('[data-button="yes-callback"]').off('click').on('click', () => {
         $modal.on('hide.bs.modal', () => {
-            callback();
+            positiveCallback();
+            $modal.off('hide.bs.modal');
+        });
+        $modal.modal('hide');
+    });
+    $btnContainer.find('[data-button="no-callback"]').off('click').on('click', () => {
+        $modal.on('hide.bs.modal', () => {
+            negativeCallback();
             $modal.off('hide.bs.modal');
         });
         $modal.modal('hide');

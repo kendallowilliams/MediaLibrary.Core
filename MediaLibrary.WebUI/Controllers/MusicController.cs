@@ -265,14 +265,14 @@ namespace MediaLibrary.WebUI.Controllers
             return result;
         }
 
-        public async Task<IActionResult> Refresh()
+        public async Task<IActionResult> Refresh(bool deleteFiles = false)
         {
             Transaction transaction = null;
             StatusCodeResult result = new StatusCodeResult((int)HttpStatusCode.Accepted);
 
             try
             {
-                transaction = await transactionService.GetNewTransaction(TransactionTypes.RefreshMusic);
+                transaction = await transactionService.GetNewTransaction(deleteFiles ? TransactionTypes.RefreshMusicWithDelete : TransactionTypes.RefreshMusic);
                 await fileService.CheckForMusicUpdates(transaction).ContinueWith(task => musicService.ClearData());
             }
             catch (Exception ex)

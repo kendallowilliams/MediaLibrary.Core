@@ -12,6 +12,7 @@ import AddNewSongModal from "../../assets/modals/add-song-modal";
 import { getMusicTabEnumString, getMusicTabEnum, getSongSortEnum, getArtistSortEnum, getAlbumSortEnum } from "../../assets/enums/enum-functions";
 import Search from "./search";
 import ManageDirectoriesModal from "../../assets/modals/manage-directories-modal";
+import * as MessageBox from "../../assets/utilities/message-box";
 
 export default class Music extends BaseClass implements IView {
     private readonly mediaView: HTMLElement;
@@ -132,8 +133,18 @@ export default class Music extends BaseClass implements IView {
         });
 
         $('[data-music-action="refresh"]').on('click', e => {
-            LoadingModal.showLoading();
-            $.post('Music/Refresh', () => this.loadView(() => LoadingModal.hideLoading()));
+            const title = 'Refresh Music',
+                question = 'Do you want the refresh to delete missing/invalid files?',
+                yesCallback = () => {
+                    LoadingModal.showLoading();
+                    $.post('Music/Refresh?deleteFiles=true', () => this.loadView(() => LoadingModal.hideLoading()));
+                },
+                noCallback = () => {
+                    LoadingModal.showLoading();
+                    $.post('Music/Refresh', () => this.loadView(() => LoadingModal.hideLoading()));
+                };
+
+            MessageBox.confirm(title, question, true, yesCallback, noCallback);
         });
 
         $('[data-music-action="search"]').on('click', e => {
