@@ -5,7 +5,7 @@
   "devDependencies": {
     "gulp": "latest",
     "gulp-typescript": "latest",
-    "typescript": "3.7.5",
+    "typescript": "latest",
     "@types/jquery": "latest",
     "@types/jqueryui": "latest",
     "@types/bootstrap": "4.5.1"
@@ -13,7 +13,7 @@
   "dependencies": {
     "gulp": "latest",
     "gulp-typescript": "latest",
-    "typescript": "3.7.5",
+    "typescript": "latest",
     "@types/jquery": "latest",
     "@types/jqueryui": "latest",
     "@types/bootstrap": "4.5.1"
