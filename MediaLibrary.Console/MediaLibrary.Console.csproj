@@ -51,4 +51,8 @@
     <ProjectReference Include="..\MediaLibrary.Shared\MediaLibrary.Shared.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Properties\PublishProfiles\" />
+  </ItemGroup>
+
 </Project>
