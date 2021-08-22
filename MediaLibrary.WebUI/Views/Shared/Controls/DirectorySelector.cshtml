@@ -1,48 +1,56 @@
 ﻿@model MusicDirectory
 
 @{
-    bool canGoBack = Model.SubDirectories.Any(item => item.Path.EndsWith(".."));
+    bool hasFolders = Model.SubDirectories.Any(),
+         canGoBack = Model.SubDirectories.Any(item => item.Path.EndsWith(".."));
 }
 
-@if (canGoBack)
+@if (hasFolders)
 {
-    MusicDirectory directory = Model.SubDirectories.FirstOrDefault(item => item.Path.EndsWith(".."));
-
-    <div>
-        <div class="input-group input-group-sm">
-            <div class="input-group-prepend">
-                <button type="button" class="btn btn-sm btn-outline-secondary" data-directory-action="get" data-directory-path="@(directory.Path)"
-                        data-tooltip="tooltip" title="Go back">
-                    <i class="fa fa-arrow-left fa-1x"></i>
-                </button>
-            </div>
-            <input class="form-control font-weight-bold text-truncate text-right" readonly="readonly" value="@(Model.Path)" />
-        </div>
-        <hr />
-    </div>
-}
-
-<div class="p-1">
-    @foreach (var item in Model.SubDirectories.Where(item => !item.Path.EndsWith("..")))
+    @if (canGoBack)
     {
-        string directoryName = item.Path.Split(new char[] { System.IO.Path.DirectorySeparatorChar }, StringSplitOptions.RemoveEmptyEntries).LastOrDefault();
+        MusicDirectory directory = Model.SubDirectories.FirstOrDefault(item => item.Path.EndsWith(".."));
 
-        <div class="input-group input-group-sm mb-1">
-            <div class="input-group-prepend">
-                <div class="input-group-text">
-                    @Html.TextBox(nameof(MusicDirectory.SubDirectories), item.Path, new { type = "radio", id = $"rad{Guid.NewGuid().ToString("N")}" })
-                </div>
-            </div>
-            <input class="form-control font-weight-bold text-truncate" readonly="readonly" value="@(directoryName)" />
-            @if (item.HasDirectories)
-            {
-                <div class="input-group-append">
-                    <button type="button" class="btn btn-outline-secondary" data-directory-action="get" data-directory-path="@(item.Path)"
-                            data-tooltip="tooltip" title="Browse">
-                        <i class="fa fa-arrow-right"></i>
+        <div>
+            <div class="input-group input-group-sm">
+                <div class="input-group-prepend">
+                    <button type="button" class="btn btn-sm btn-outline-secondary" data-directory-action="get" data-directory-path="@(directory.Path)"
+                            data-tooltip="tooltip" title="Go back">
+                        <i class="fa fa-arrow-left fa-1x"></i>
                     </button>
                 </div>
-            }
+                <input class="form-control font-weight-bold text-truncate text-right" readonly="readonly" value="@(Model.Path)" />
+            </div>
+            <hr />
         </div>
     }
-</div>
+
+    <div class="p-1">
+        @foreach (var item in Model.SubDirectories.Where(item => !item.Path.EndsWith("..")))
+        {
+            string directoryName = item.Path.Split(new char[] { System.IO.Path.DirectorySeparatorChar }, StringSplitOptions.RemoveEmptyEntries).LastOrDefault();
+
+            <div class="input-group input-group-sm mb-1">
+                <div class="input-group-prepend">
+                    <div class="input-group-text">
+                        @Html.TextBox(nameof(MusicDirectory.SubDirectories), item.Path, new { type = "radio", id = $"rad{Guid.NewGuid().ToString("N")}" })
+                    </div>
+                </div>
+                <input class="form-control font-weight-bold text-truncate" readonly="readonly" value="@(directoryName)" />
+                @if (item.HasDirectories)
+                {
+                    <div class="input-group-append">
+                        <button type="button" class="btn btn-outline-secondary" data-directory-action="get" data-directory-path="@(item.Path)"
+                                data-tooltip="tooltip" title="Browse">
+                            <i class="fa fa-arrow-right"></i>
+                        </button>
+                    </div>
+                }
+            </div>
+        }
+    </div>
+}
+else
+{
+    <div class="p-1">No folders found.</div>
+}
