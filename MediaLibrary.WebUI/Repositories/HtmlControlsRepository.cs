@@ -22,17 +22,6 @@ namespace MediaLibrary.WebUI.Repositories
         #endregion Player Ids
 
         #region Button Ids
-        public static string HeaderControlsContainerId { get => "header-controls-container"; }
-        public static string HeaderPlayButtonId { get => "btn-header-play"; }
-        public static string HeaderPreviousButtonId { get => "btn-header-previous"; }
-        public static string HeaderBackwardButtonId { get => "btn-header-backward"; }
-        public static string HeaderForwardButtonId { get => "btn-header-forward"; }
-        public static string HeaderNextButtonId { get => "btn-header-next"; }
-        public static string HeaderPauseButtonId { get => "btn-header-pause"; }
-        public static string HeaderShuffleButtonId { get => "btn-header-shuffle"; }
-        public static string HeaderRepeatButtonId { get => "btn-header-repeat"; }
-        public static string HeaderRepeatOneButtonId { get => "btn-header-repeat-one"; }
-        public static string HeaderRepeatAllButtonId { get => "btn-header-repeat-all"; }
         public static string PlayerPlayButtonId { get => "btn-player-play"; }
         public static string PlayerPreviousButtonId { get => "btn-player-previous"; }
         public static string PlayerBackwardButtonId { get => "btn-player-backward"; }
@@ -72,6 +61,7 @@ namespace MediaLibrary.WebUI.Repositories
         public static string PodcastSettingsContainerId { get => "podcast-settings-container"; }
         public static string PlayerSettingsContainerId { get => "player-settings-container"; }
         public static string PlaylistListContainerId { get => "playlist-list-container"; }
+        public static string MainControlsContainerId { get => "main-controls-container"; }
         #endregion Container Ids
 
         #region UI Control Ids

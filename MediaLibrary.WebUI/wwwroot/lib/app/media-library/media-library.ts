@@ -142,7 +142,7 @@ export default class MediaLibrary extends BaseClass {
     }
 
     private loadView(mediaPage: MediaPages): void {
-        const container: HTMLElement = HtmlControls.Containers().HeaderControlsContainer;
+        const container: HTMLElement = HtmlControls.Containers().MainControlsContainer;
 
         LoadingModal.showLoading();
         $('#divNavbar').collapse('hide');
@@ -171,10 +171,12 @@ export default class MediaLibrary extends BaseClass {
                     this.television.loadView(() => LoadingModal.hideLoading());
                     break;
                 case MediaPages.Settings:
+                    $(container).addClass('d-none');
                     this.settings.loadView(() => LoadingModal.hideLoading());
                     break;
                 case MediaPages.Home:
                 default:
+                    $(container).addClass('d-none');
                     this.home.loadView(() => LoadingModal.hideLoading());
                     break;
             }
