@@ -134,11 +134,11 @@ export default class PlayerControls {
         const buttons = HtmlControls.Buttons();
 
         if (isPlaying) {
-            $(buttons.PlayerPauseButtons).addClass('d-none');
-            $(buttons.PlayerPlayButtons).removeClass('d-none');
-        } else {
             $(buttons.PlayerPlayButtons).addClass('d-none');
             $(buttons.PlayerPauseButtons).removeClass('d-none');
+        } else {
+            $(buttons.PlayerPauseButtons).addClass('d-none');
+            $(buttons.PlayerPlayButtons).removeClass('d-none');
         }
     }
 

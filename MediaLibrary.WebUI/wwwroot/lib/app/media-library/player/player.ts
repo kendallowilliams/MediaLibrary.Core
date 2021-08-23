@@ -108,7 +108,7 @@ export default class Player extends BaseClass implements IView {
         });
 
         $(this.getPlayers()).on('pause', e => {
-            this.playerControls.playingChanged(true);
+            this.playerControls.playingChanged(false);
             this.audioVisualizer.stop();
         });
 
