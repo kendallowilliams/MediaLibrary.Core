@@ -65,8 +65,6 @@ export default class Player extends BaseClass implements IView {
     }
 
     private initMediaPlayers(): void {
-        const controls = HtmlControls.UIControls();
-
         $(this.getPlayers()).on('loadedmetadata', e => {
             const currentIndex = this.playerConfiguration.properties.CurrentItemIndex,
                 player: HTMLMediaElement = e.currentTarget as HTMLMediaElement;

@@ -19,15 +19,15 @@
         PlayerFullscreenButton: document.getElementById('btn-player-fullscreen'),
         PlayerClearButton: document.getElementById('btn-player-clear'),
         PlayerAudioVisualizerButton: document.getElementById('btn-audio-visualizer'),
-        PlayerPlayButtons: document.getElementsByClassName(''),
-        PlayerPauseButtons: document.getElementsByClassName(''),
-        PlayerNextButtons: document.getElementsByClassName(''),
-        PlayerPreviousButtons: document.getElementsByClassName(''),
-        PlayerBackwardButtons: document.getElementsByClassName(''),
-        PlayerForwardButtons: document.getElementsByClassName(''),
-        PlayerShuffleButtons: document.getElementsByClassName(''),
-        PlayerVolumeButtons: document.getElementsByClassName(''),
-        PlayerMuteButtons: document.getElementsByClassName('')
+        PlayerPlayButtons: document.getElementsByClassName('btn-player-play'),
+        PlayerPauseButtons: document.getElementsByClassName('btn-player-pause'),
+        PlayerNextButtons: document.getElementsByClassName('btn-player-next'),
+        PlayerPreviousButtons: document.getElementsByClassName('btn-player-previous'),
+        PlayerBackwardButtons: document.getElementsByClassName('btn-player-backward'),
+        PlayerForwardButtons: document.getElementsByClassName('btn-player-forward'),
+        PlayerShuffleButtons: document.getElementsByClassName('btn-player-shuffle'),
+        PlayerVolumeButtons: document.getElementsByClassName('btn-player-volume'),
+        PlayerMuteButtons: document.getElementsByClassName('btn-player-mute')
     }),
     Containers: () => ({
         MainControlsContainer: document.getElementById('main-controls-container'),
@@ -50,16 +50,16 @@
         PodcastSettingsContainer: document.getElementById('podcast-settings-container'),
         PlayerSettingsContainer: document.getElementById('player-settings-container'),
         PlaylistListContainer: document.getElementById('playlist-list-container'),
-        PlayerVolumeContainers: document.getElementsByClassName('')
+        PlayerVolumeContainers: document.getElementsByClassName('player-volume-container')
     }),
     UIControls: () => ({
         AudioVisualizer: document.getElementById('audio-visualizer') as HTMLCanvasElement,
         MusicTabList: document.getElementById('music-tab-list'),
         PlaylistTabList: document.getElementById('playlist-tab-list'),
         SearchQuery: document.getElementById('search-query') as HTMLInputElement,
-        PlayerSliders: document.getElementsByClassName(''),
-        VolumeSliders: document.getElementsByClassName(''),
-        PlayerTimes: document.getElementsByClassName('')
+        PlayerSliders: document.getElementsByClassName('player-slider'),
+        VolumeSliders: document.getElementsByClassName('volume-slider'),
+        PlayerTimes: document.getElementsByClassName('player-time')
     }),
     UIFields: () => ({
         NowPlayingTitle: document.getElementById('player-title')

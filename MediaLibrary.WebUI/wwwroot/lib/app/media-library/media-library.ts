@@ -148,7 +148,7 @@ export default class MediaLibrary extends BaseClass {
         $('#divNavbar').collapse('hide');
         this.mediaLibraryConfiguration.properties.SelectedMediaPage = mediaPage;
         this.disableNavItem(getMediaPagesEnumString(mediaPage));
-        $(container).removeClass('d-none');
+        $(container).addClass('d-flex').removeClass('d-none');
         this.mediaLibraryConfiguration.updateConfiguration(() => {
             this.prepareViews();
             this.showMainView(mediaPage);
@@ -158,7 +158,7 @@ export default class MediaLibrary extends BaseClass {
                     this.music.loadView(() => LoadingModal.hideLoading());
                     break;
                 case MediaPages.Player:
-                    $(container).addClass('d-none');
+                    $(container).removeClass('d-flex').addClass('d-none');
                     this.player.loadView(() => LoadingModal.hideLoading());
                     break;
                 case MediaPages.Playlist:
@@ -171,7 +171,7 @@ export default class MediaLibrary extends BaseClass {
                     this.television.loadView(() => LoadingModal.hideLoading());
                     break;
                 case MediaPages.Settings:
-                    $(container).addClass('d-none');
+                    $(container).removeClass('d-flex').addClass('d-none');
                     this.settings.loadView(() => LoadingModal.hideLoading());
                     break;
                 case MediaPages.Home:

@@ -8,12 +8,12 @@ export default class PlayerControls {
     private volumeSliders: HTMLElement[];
 
     constructor(private controlsFunctions: IPlayerControlsFunctions, private playerConfiguration: PlayerConfiguration) {
+        this.volumeSliders = [];
         this.initialize();
     }
 
     private initialize(): void {
         this.initializeControls();
-        this.volumeSliders = [];
     }
 
     private initializeControls(): void {
@@ -23,7 +23,7 @@ export default class PlayerControls {
             $muteVolumeButtons = $(Array.from(buttons.PlayerMuteButtons).concat(Array.from(buttons.PlayerVolumeButtons)));
 
         $('button[data-repeat-type="' + getRepeatTypesEnumString(this.playerConfiguration.properties.Repeat) + '"]').removeClass('d-none');
-
+        $muteVolumeButtons.attr('data-volume', this.playerConfiguration.properties.Volume);
         if (this.playerConfiguration.properties.Muted) /*then*/ $(buttons.PlayerMuteButtons).removeClass('d-none');
         else $(buttons.PlayerVolumeButtons).removeClass('d-none');
 
@@ -77,7 +77,7 @@ export default class PlayerControls {
         $(buttons.PlayerPreviousButtons).on('click', e => this.controlsFunctions.previous());
         $(buttons.PlayerPlayButtons).on('click', e => this.controlsFunctions.play());
         $(buttons.PlayerPauseButtons).on('click', e => this.controlsFunctions.pause());
-        $(buttons.PlayerShuffleButtons).on('click', e => () => {
+        $(buttons.PlayerShuffleButtons).on('click', e => {
             const shuffle = this.playerConfiguration.properties.Shuffle,
                 $btns = $(buttons.PlayerShuffleButtons);
 
@@ -99,11 +99,11 @@ export default class PlayerControls {
 
             $muteVolumeButtons.addClass('d-none');
 
-            if ($.inArray(e.currentTarget, Array.from(buttons.PlayerVolumeButtons))) {
+            if ($.inArray(e.currentTarget, Array.from(buttons.PlayerVolumeButtons)) > 0) {
                 $(buttons.PlayerMuteButtons).removeClass('d-none');
                 $(this.volumeSliders).slider('value', 0);
                 muted = true;
-            } else if ($.inArray(e.currentTarget, Array.from(buttons.PlayerMuteButtons))) {
+            } else if ($.inArray(e.currentTarget, Array.from(buttons.PlayerMuteButtons)) > 0) {
                 $(buttons.PlayerVolumeButtons).removeClass('d-none');
                 $(this.volumeSliders).slider('value', previousVolume);
             }
