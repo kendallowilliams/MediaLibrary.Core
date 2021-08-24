@@ -41,6 +41,7 @@ namespace MediaLibrary.WebUI.Repositories
         #endregion Button Ids
 
         #region Container Ids
+        public static string NavBarContainerId { get => "navbar-container"; }
         public static string PlayerVideoContainerId { get => "video-container"; }
         public static string PlayerAudioContainerId { get => "audio-container"; }
         public static string PlayerItemsContainerId { get => "player-items-container"; }

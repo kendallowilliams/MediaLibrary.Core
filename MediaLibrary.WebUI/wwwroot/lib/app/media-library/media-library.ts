@@ -41,6 +41,7 @@ export default class MediaLibrary extends BaseClass {
     private mainViews: { HomeView: HTMLElement, MediaView: HTMLElement, PlayerView: HTMLElement, SettingsView: HTMLElement };
     private editSongModal: EditSongModal;
     private addToPlaylistModal: AddToPlaylistModal;
+    private navBarTimeOut: number;
 
     constructor() {
         super();
@@ -54,6 +55,8 @@ export default class MediaLibrary extends BaseClass {
     }
 
     private initializeControls(): void {
+        $(HtmlControls.Containers().NavBarContainer).on('shown.bs.collapse', e => this.autoCloseNavBar());
+        $(HtmlControls.Containers().NavBarContainer).on('hidden.bs.collapse', e => window.clearTimeout(this.navBarTimeOut));
         $('[data-media-page]').on('click', e => this.loadView.call(this, getMediaPagesEnum($(e.currentTarget).attr('data-media-page'))));
     }
 
@@ -210,6 +213,16 @@ export default class MediaLibrary extends BaseClass {
         $('a.nav-link[data-media-page]:not([href])').addClass('d-none');
         $('a.nav-link[data-media-page="' + view + '"][href]').addClass('d-none');
         $('a.nav-link[data-media-page="' + view + '"]:not([href])').removeClass('d-none');
+    }
+
+    private autoCloseNavBar(): void {
+        const $navBar = $(HtmlControls.Containers().NavBarContainer);
+
+        window.clearTimeout(this.navBarTimeOut);
+
+        if (!$navBar.hasClass('collapsed')) {
+            this.navBarTimeOut = window.setTimeout(() => $navBar.collapse('hide'), this.mediaLibraryConfiguration.properties.NavBarTimeOut * 1000);
+        }
     }
 }
 
