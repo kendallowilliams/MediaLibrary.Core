@@ -70,26 +70,29 @@ namespace MediaLibrary.BLL.Services
 
         public async Task UpdatePlayerProgress(int id, MediaTypes mediaType, int progess)
         {
-            if (mediaType == MediaTypes.Podcast)
+            if (id > 0)
             {
-                PodcastItem podcastItem = await dataService.Get<PodcastItem>(item => item.Id == id);
+                if (mediaType == MediaTypes.Podcast)
+                {
+                    PodcastItem podcastItem = await dataService.Get<PodcastItem>(item => item.Id == id);
 
-                podcastItem.Progress = progess;
-                await dataService.Update(podcastItem);
-            }
-            else if (mediaType == MediaTypes.Song)
-            {
-                Track song = await dataService.Get<Track>(item => item.Id == id);
+                    podcastItem.Progress = progess;
+                    await dataService.Update(podcastItem);
+                }
+                else if (mediaType == MediaTypes.Song)
+                {
+                    Track song = await dataService.Get<Track>(item => item.Id == id);
 
-                song.Progress = progess;
-                await dataService.Update(song);
-            }
-            else if (mediaType == MediaTypes.Television)
-            {
-                Episode episode = await dataService.Get<Episode>(item => item.Id == id);
+                    song.Progress = progess;
+                    await dataService.Update(song);
+                }
+                else if (mediaType == MediaTypes.Television)
+                {
+                    Episode episode = await dataService.Get<Episode>(item => item.Id == id);
 
-                episode.Progress = progess;
-                await dataService.Update(episode);
+                    episode.Progress = progess;
+                    await dataService.Update(episode);
+                }
             }
         }
 

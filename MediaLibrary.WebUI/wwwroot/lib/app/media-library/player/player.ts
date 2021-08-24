@@ -36,7 +36,8 @@ export default class Player extends BaseClass implements IView {
         setPlayerVolume: (volume) => $(this.getPlayers()).prop('volume', volume / 100.0).prop('muted', volume === 0),
         setCurrentTime: (time) => $(this.getPlayer()).prop('currentTime', time),
         getPlaybackTime: this.getPlaybackTime.bind(this),
-        updatePlayerProgress: this.updatePlayerProgress.bind(this)
+        updatePlayerProgress: this.updatePlayerProgress.bind(this),
+        nowPlayingEmpty: () => this.playerConfiguration.properties.NowPlayingList.length === 0
     };
 
     constructor(private playerConfiguration: PlayerConfiguration, private loadFunctions: IPlayerLoadFunctions, private updateActiveMedia: () => void = () => null) {
@@ -112,7 +113,13 @@ export default class Player extends BaseClass implements IView {
             this.audioVisualizer.stop();
         });
 
-        $(this.getPlayers()).on('error', e => null);
+        $(this.getPlayers()).on('error', e => {
+            const player = e.currentTarget as HTMLMediaElement,
+                err = player.error,
+                message = 'Error: ' + err.code + ', Message: ' + err.message;
+
+            MessageBox.showError('Media error', message);
+        });
     }
 
     private initPlayerControls(): void {
@@ -171,6 +178,7 @@ export default class Player extends BaseClass implements IView {
             MessageBox.confirm(title, message, true, () => {
                 this.playerConfiguration.properties.NowPlayingList = [];
                 this.playerConfiguration.updateConfiguration(() => this.reload(() => this.loadItem()));
+                this.playerControls.showHideMainControls(false);
             });
         });
     }
@@ -390,7 +398,7 @@ export default class Player extends BaseClass implements IView {
         }
     }
 
-    play(btn: HTMLButtonElement, playSingleItem: boolean = false, loadPlayer: () => void = () => null): void {
+    public play(btn: HTMLButtonElement, playSingleItem: boolean = false, loadPlayer: () => void = () => null): void {
         const $playButtons = $('button[data-play-id]'),
             $playGroups = $('div[data-play-ids]'),
             success = () => this.reload(() => {
@@ -434,16 +442,16 @@ export default class Player extends BaseClass implements IView {
     }
 
     private updatePlayerProgress(progress: number): void {
-        const id: number = parseInt($('[data-play-index="' + this.playerConfiguration.properties.CurrentItemIndex + '"]').attr('data-item-id')),
+        const currentIndex: number = this.playerConfiguration.properties.CurrentItemIndex,
+            id: number = parseInt($('[data-play-index="' + currentIndex + '"]').attr('data-item-id')),
             mediaType: MediaTypes = this.playerConfiguration.properties.SelectedMediaType,
             data = {
                 id: id, mediaType: mediaType, progress: progress
             },
-            currentIndex: number = this.playerConfiguration.properties.CurrentItemIndex;
+            $currentItem = $('[data-play-index="' + currentIndex + '"]');
 
-        if ($('[data-play-index="' + currentIndex + '"]').attr('data-current-time') !== progress.toString() &&
-            progress % 5 === 0) {
-            $('[data-play-index="' + currentIndex + '"]').attr('data-current-time', progress);
+        if ($currentItem.attr('data-current-time') !== progress.toString() && progress % 5 === 0 && !isNaN(id)) {
+            $currentItem.attr('data-current-time', progress);
             $.post('Player/UpdatePlayerProgress', data);
         }
     }
@@ -463,5 +471,9 @@ export default class Player extends BaseClass implements IView {
 
         if (updatedTime < 0) /*then*/ player.currentTime = 0;
         else /*then*/ player.currentTime = updatedTime;
+    }
+
+    public getPlayerControls(): PlayerControls {
+        return this.playerControls;
     }
 }
