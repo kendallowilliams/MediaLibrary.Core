@@ -14,6 +14,7 @@ import * as MessageBox from '../../assets/utilities/message-box';
 import IListItem from "../../assets/interfaces/list-item-interface";
 import PlayerControls from "../../assets/controls/player-controls";
 import IPlayerControlsFunctions from "../../assets/interfaces/player-controls-functions-interface";
+import Error from "../../assets/data/error";
 
 export default class Player extends BaseClass implements IView {
     private players: { VideoPlayer: HTMLMediaElement, MusicPlayer: HTMLMediaElement };
@@ -115,10 +116,12 @@ export default class Player extends BaseClass implements IView {
 
         $(this.getPlayers()).on('error', e => {
             const player = e.currentTarget as HTMLMediaElement,
-                err = player.error,
-                message = 'Error: ' + err.code + ', Message: ' + err.message;
+                error = player.error,
+                message = 'Error: ' + error.code + ', Message: ' + error.message;
 
-            MessageBox.showError('Media error', message);
+            if (!Error.Ignored.includes(error.message)) {
+                MessageBox.showError('Player Error', message);
+            }
         });
     }
 
