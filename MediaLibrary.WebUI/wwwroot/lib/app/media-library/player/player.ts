@@ -404,6 +404,7 @@ export default class Player extends BaseClass implements IView {
             success = () => this.reload(() => {
                 this.loadItem(null, true);
                 if (this.playerConfiguration.properties.SelectedMediaType === MediaTypes.Television) /*then*/ loadPlayer();
+                this.playerControls.showHideMainControls(true);
                 LoadingModal.hideLoading();
             }),
             mediaType = $(btn).attr('data-media-type') || getMediaTypesEnumString(MediaTypes.Song);

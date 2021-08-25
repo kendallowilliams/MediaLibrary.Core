@@ -168,7 +168,6 @@ export default class PlayerControls {
     }
 
     public showHideMainControls(show: boolean): void {
-        debugger;
         if (show && !this.controlsFunctions.nowPlayingEmpty()) /*then*/ $(HtmlControls.Containers().MainControlsContainer).removeClass('d-none').addClass('d-flex');
         else $(HtmlControls.Containers().MainControlsContainer).removeClass('d-flex').addClass('d-none');
     }
