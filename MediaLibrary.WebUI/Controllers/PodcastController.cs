@@ -93,12 +93,8 @@ namespace MediaLibrary.WebUI.Controllers
         public async Task RemovePodcast(int id)
         {
             Configuration configuration = await dataService.Get<Configuration>(item => item.Type == nameof(MediaPages.Podcast));
-            Podcast podcast = await dataService.Get<Podcast>(item => item.Id == id, default, item => item.PodcastItems);
-            IEnumerable<string> episodes = podcast.PodcastItems.Where(item => !string.IsNullOrWhiteSpace(item.File))
-                                                               .Select(item => item.File);
 
-            foreach (string file in episodes) { fileService.Delete(file); }
-            await dataService.Delete<Podcast>(id);
+            await podcastService.RemovePodcast(id);
 
             if (configuration != null)
             {

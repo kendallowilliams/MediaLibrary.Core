@@ -38,6 +38,16 @@ namespace MediaLibrary.BLL.Services
 
         public async Task<Podcast> AddPodcast(string url) => await ParseRssFeed(new Podcast { Url = url });
 
+        public async Task RemovePodcast(int id)
+        {
+            Podcast podcast = await dataService.Get<Podcast>(item => item.Id == id, default, item => item.PodcastItems);
+            IEnumerable<string> episodes = podcast.PodcastItems.Where(item => !string.IsNullOrWhiteSpace(item.File))
+                                                               .Select(item => item.File);
+
+            foreach (string file in episodes) { fileService.Delete(file); }
+            await dataService.Delete<Podcast>(id);
+        }
+
         public async Task<Podcast> RefreshPodcast(Podcast podcast) => await ParseRssFeed(podcast, true);
 
         public async Task<Podcast> ParseRssFeed(Podcast podcastData, bool isUpdate = false)
