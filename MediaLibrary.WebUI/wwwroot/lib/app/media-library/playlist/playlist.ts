@@ -2,7 +2,7 @@
 import IView from "../../assets/interfaces/view-interface";
 import PlaylistConfiguration from "../../assets/models/configurations/playlist-configuration";
 import HtmlControls from '../../assets/controls/html-controls';
-import { PlaylistPages } from "../../assets/enums/enums";
+import { MessageBoxConfirmType, PlaylistPages } from "../../assets/enums/enums";
 import AddNewPlaylistModal from "../../assets/modals/add-playlist-modal";
 import LoadingModal from "../../assets/modals/loading-modal";
 import EditPlaylistModal from "../../assets/modals/edit-playlist-modal";
@@ -78,7 +78,7 @@ export default class Playlist extends BaseClass implements IView {
                 title = 'Delete playlist item',
                 message = 'Are you sure you want to delete this item from the playlist?';
 
-            MessageBox.confirm(title, message, true, () => {
+            MessageBox.confirm(title, message, MessageBoxConfirmType.YesNo, () => {
                 LoadingModal.showLoading();
                 $.post('Playlist/RemovePlaylistItem', { id: id, playlistType: playlistType }, () => this.loadView(() => LoadingModal.hideLoading()));
             });
@@ -90,7 +90,7 @@ export default class Playlist extends BaseClass implements IView {
                 title = 'Delete playlist',
                 message = 'Are you sure you want to delete this playlist?';
 
-            MessageBox.confirm(title, message, true, () => {
+            MessageBox.confirm(title, message, MessageBoxConfirmType.YesNo, () => {
                 LoadingModal.showLoading();
                 $.post('Playlist/RemovePlaylist', { id: id }, () => this.loadView(() => LoadingModal.hideLoading()));
             });

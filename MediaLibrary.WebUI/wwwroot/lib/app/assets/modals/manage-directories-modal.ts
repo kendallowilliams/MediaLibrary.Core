@@ -3,6 +3,7 @@ import MediaLibraryConfiguration from '../models/configurations/media-library-co
 import LoadingModal from './loading-modal';
 import { loadTooltips, disposeTooltips } from "../../assets/utilities/bootstrap-helper";
 import * as MessageBox from '../../assets/utilities/message-box';
+import { MessageBoxConfirmType } from '../enums/enums';
 
 export default class ManageDirectoriesModal {
     private modal: HTMLElement;
@@ -59,7 +60,7 @@ export default class ManageDirectoriesModal {
             title = 'Add directory',
             message = 'Are you sure you want to add '.concat(path).concat('?');
 
-        MessageBox.confirm(title, message, true, () => {
+        MessageBox.confirm(title, message, MessageBoxConfirmType.YesNo, () => {
             LoadingModal.showLoading();
             $(this.modal).modal('hide');
             $.post(action, { path: path }, () => {
@@ -75,7 +76,7 @@ export default class ManageDirectoriesModal {
             title = 'Remove directory',
             message = 'Are you sure you want to remove this directory?';
 
-        MessageBox.confirm(title, message, true, () => {
+        MessageBox.confirm(title, message, MessageBoxConfirmType.YesNo, () => {
             LoadingModal.showLoading();
             $(this.modal).modal('hide');
             $.post(action, { id: id }, () => this.loadFunc(() => LoadingModal.hideLoading()));

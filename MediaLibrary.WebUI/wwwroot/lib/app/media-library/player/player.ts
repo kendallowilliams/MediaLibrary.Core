@@ -2,7 +2,7 @@
 import IView from "../../assets/interfaces/view-interface";
 import PlayerConfiguration from "../../assets/models/configurations/player-configuration";
 import HtmlControls from '../../assets/controls/html-controls'
-import { MediaTypes, RepeatTypes, PlayerPages } from "../../assets/enums/enums";
+import { MediaTypes, RepeatTypes, PlayerPages, MessageBoxConfirmType } from "../../assets/enums/enums";
 import { getRandomInteger } from "../../assets/utilities/math";
 import AudioVisualizer from "../audio-visualizer/audio-visualizer";
 import { openFullscreen } from "../../assets/utilities/element";
@@ -178,7 +178,7 @@ export default class Player extends BaseClass implements IView {
             const title = 'Clear now playing',
                 message = 'Are you sure you want to clear now playing?';
 
-            MessageBox.confirm(title, message, true, () => {
+            MessageBox.confirm(title, message, MessageBoxConfirmType.YesNo, () => {
                 this.playerConfiguration.properties.NowPlayingList = [];
                 this.playerConfiguration.updateConfiguration(() => this.reload(() => this.loadItem()));
                 this.playerControls.showHideMainControls(false);

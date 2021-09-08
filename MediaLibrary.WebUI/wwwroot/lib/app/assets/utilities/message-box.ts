@@ -1,4 +1,6 @@
 ﻿import HtmlControls from '../controls/html-controls';
+import { getMessageBoxConfirmTypeEnumString } from '../enums/enum-functions';
+import { MessageBoxConfirmType } from '../enums/enums';
 
 function initialize(): void {
     const $alertModal = $(HtmlControls.Modals().AlertModal),
@@ -76,13 +78,15 @@ export function showWarning(title: string, message: string): void {
     $modal.modal('show');
 }
 
-export function confirm(title: string, message: string, showYesNo: boolean, positiveCallback: () => void, negativeCallback: () => void = () => null): void {
+export function confirm(title: string, message: string,
+    type: MessageBoxConfirmType = MessageBoxConfirmType.OkCancel,
+    positiveCallback: () => void,
+    negativeCallback: () => void = () => null): void {
     const $modal = $(HtmlControls.Modals().ConfirmModal),
         $title = $modal.find('.modal-title'),
         $body = $modal.find('.modal-body'),
-        $okCancelContainer = $modal.find('[data-buttons="OK/Cancel"]'),
-        $yesNoContainer = $modal.find('[data-buttons="Yes/No"]'),
-        $btnContainer = showYesNo ? $yesNoContainer : $okCancelContainer;
+        $btnContainers = $modal.find('[data-buttons]'),
+        $btnContainer = $btnContainers.filter('[data-buttons="' + getMessageBoxConfirmTypeEnumString(type) + '"]');
 
     if ($modal.attr('data-initialized') !== 'true') /*then*/ initialize();
     $title.text(title);
@@ -101,9 +105,7 @@ export function confirm(title: string, message: string, showYesNo: boolean, posi
         });
         $modal.modal('hide');
     });
-    $([$okCancelContainer, $yesNoContainer]).addClass('d-none');
-
-    if (showYesNo) /*then*/ $yesNoContainer.removeClass('d-none');
-    else /*then*/ $okCancelContainer.removeClass('d-none');
+    $btnContainers.addClass('d-none');
+    $btnContainer.removeClass('d-none');
     $modal.modal('show');
 }

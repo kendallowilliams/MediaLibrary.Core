@@ -1,4 +1,4 @@
-﻿import { MediaPages, SeriesSort, AlbumSort, ArtistSort, MusicTabs, SongSort, MediaTypes, RepeatTypes, PlayerPages, PlaylistSort, PodcastSort, PodcastFilter, PlaylistTabs, AppWidth } from "./enums";
+﻿import { MediaPages, SeriesSort, AlbumSort, ArtistSort, MusicTabs, SongSort, MediaTypes, RepeatTypes, PlayerPages, PlaylistSort, PodcastSort, PodcastFilter, PlaylistTabs, AppWidth, MessageBoxConfirmType } from "./enums";
 
 export function getMediaPagesEnum(page: string): MediaPages {
     let mediaPage: MediaPages;
@@ -380,4 +380,26 @@ export function getAppWidthEnumString(size: AppWidth): string {
     }
 
     return appWidth;
+};
+
+export function getMessageBoxConfirmTypeEnumString(type: MessageBoxConfirmType): string {
+    let confirmType: string;
+
+    switch (type) {
+        case MessageBoxConfirmType.TrueFalse:
+            confirmType = 'TrueFalse';
+            break;
+        case MessageBoxConfirmType.YesNo:
+            confirmType = 'YesNo';
+            break;
+        case MessageBoxConfirmType.YesNoCancel:
+            confirmType = 'YesNoCancel';
+            break;
+        case MessageBoxConfirmType.OkCancel:
+        default:
+            confirmType = 'OkCancel';
+            break;
+    }
+
+    return confirmType;
 };
