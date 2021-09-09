@@ -331,11 +331,8 @@ namespace MediaLibrary.WebUI.Controllers
         {
             PodcastItem podcastItem = await dataService.Get<PodcastItem>(item => item.Id == id);
 
-            if (!podcastItem.LastPlayedDate.HasValue)
-            {
-                podcastItem.LastPlayedDate = DateTime.Now;
-                await dataService.Update(podcastItem);
-            }
+            podcastItem.LastPlayedDate = DateTime.Now;
+            await dataService.Update(podcastItem);
         }
 
         public async Task MarkPodcastItemUnplayed(int id)

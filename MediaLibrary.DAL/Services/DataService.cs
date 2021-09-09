@@ -44,6 +44,20 @@ namespace MediaLibrary.BLL.Services
             return new MediaLibraryEntities(optionsBuilder.Options);
         }
 
+        public string GetDbServer()
+        {
+            SqlConnectionStringBuilder builder = new SqlConnectionStringBuilder(configuration["ConnectionStrings:MediaLibrary"]);
+
+            return builder.DataSource;
+        }
+
+        public string GetDbName()
+        {
+            SqlConnectionStringBuilder builder = new SqlConnectionStringBuilder(configuration["ConnectionStrings:MediaLibrary"]);
+
+            return builder.InitialCatalog;
+        }
+
         public async Task<IEnumerable<T>> GetList<T>(Expression<Func<T, bool>> expression = null, 
                                                      CancellationToken token = default(CancellationToken),
                                                      params Expression<Func<T, object>>[] includes) where T : class, IDataModel

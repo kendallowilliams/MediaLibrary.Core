@@ -14,6 +14,10 @@ namespace MediaLibrary.DAL.Services.Interfaces
 {
     public interface IDataService
     {
+        string GetDbName();
+
+        string GetDbServer();
+
         Task<T> Get<T>(Expression<Func<T, bool>> expression = null, CancellationToken token = default(CancellationToken), params Expression<Func<T, object>>[] includes) where T : class, IDataModel;
 
         Task<IEnumerable<T>> GetList<T>(Expression<Func<T, bool>> expression = null, CancellationToken token = default(CancellationToken), params Expression<Func<T, object>>[] includes) where T : class, IDataModel;
