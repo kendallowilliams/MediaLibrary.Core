@@ -28,6 +28,12 @@ export default class Settings extends BaseClass implements IView {
             this.configurations.MediaLibary.properties.AppWidth = getAppWidthEnum(width);
             this.configurations.MediaLibary.updateConfiguration();
         });
+        $(this.settingsView).find('input[name="NavBarTimeOut"]').on('change', e => {
+            const timeout = $(e.currentTarget).val() as number;
+
+            this.configurations.MediaLibary.properties.NavBarTimeOut = timeout;
+            this.configurations.MediaLibary.updateConfiguration();
+        });
         $(this.settingsView).find('select[name="SelectedAlbumSort"]').on('change', e => {
             const sort = $(e.currentTarget).val() as string;
 

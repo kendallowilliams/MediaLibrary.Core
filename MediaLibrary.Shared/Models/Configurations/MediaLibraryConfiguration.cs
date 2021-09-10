@@ -12,10 +12,13 @@ namespace MediaLibrary.Shared.Models.Configurations
         public MediaLibraryConfiguration()
         {
             SelectedMediaPage = MediaPages.Home;
+            NavBarTimeOut = 3;
         }
 
         public MediaPages SelectedMediaPage { get; set; }
 
         public AppWidth AppWidth { get; set; }
+
+        public byte NavBarTimeOut { get; set; }
     }
 }

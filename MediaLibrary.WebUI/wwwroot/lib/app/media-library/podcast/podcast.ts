@@ -2,7 +2,7 @@
 import IView from "../../assets/interfaces/view-interface";
 import PodcastConfiguration from "../../assets/models/configurations/podcast-configuration";
 import HtmlControls from '../../assets/controls/html-controls';
-import { PodcastPages } from "../../assets/enums/enums";
+import { MessageBoxConfirmType, PodcastPages } from "../../assets/enums/enums";
 import IPodcastConfiguration from "../../assets/interfaces/podcast-configuration-interface";
 import AddNewPodcastModal from "../../assets/modals/add-podcast-modal";
 import LoadingModal from "../../assets/modals/loading-modal";
@@ -88,7 +88,7 @@ export default class Podcast extends BaseClass implements IView {
                     $.post('Podcast/RemovePodcast', { id: id }, () => this.loadView(() => LoadingModal.hideLoading()));
                 };
 
-            MessageBox.confirm(title, message, true, callback);
+            MessageBox.confirm(title, message, MessageBoxConfirmType.YesNo, callback);
         });
     }
 

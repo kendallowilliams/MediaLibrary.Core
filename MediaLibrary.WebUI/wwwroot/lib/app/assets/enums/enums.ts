@@ -85,3 +85,10 @@ export const enum AppWidth {
     Normal = 0,
     Wide
 }
+
+export const enum MessageBoxConfirmType {
+    OkCancel = 0,
+    YesNo,
+    YesNoCancel,
+    TrueFalse
+}

@@ -19,10 +19,10 @@
                 <a class="navbar-brand" href="javascript: void(0)" data-media-page="@(nameof(Enums.MediaPages.Home))" )">
                     <img src="@(Url.Content("~/images/logo.png"))" title="KOW Moosic" />
                 </a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#divNavbar" aria-controls="divNavbar" aria-expanded="false" aria-label="Toggle navigation">
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#@(HtmlControlsRepository.NavBarContainerId)">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <div class="collapse navbar-collapse" id="divNavbar">
+                <div class="collapse navbar-collapse" id="@(HtmlControlsRepository.NavBarContainerId)">
                     <ul class="navbar-nav mr-auto">
                         <li class="nav-item">
                             <a class="nav-link" data-media-page="@(nameof(Enums.MediaPages.Music))" href="javascript: void(0)">@(nameof(Enums.MediaPages.Music))</a>
@@ -44,26 +44,11 @@
                             <a class="nav-link" data-media-page="@(nameof(Enums.MediaPages.Player))" href="javascript: void(0)">Now Playing</a>
                             <a class="nav-link d-none disabled font-italic font-weight-bold text-dark" data-media-page="@(nameof(Enums.MediaPages.Player))">Now Playing</a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link" data-media-page="@(nameof(Enums.MediaPages.Settings))" href="javascript: void(0)">Settings</a>
+                            <a class="nav-link d-none disabled font-italic font-weight-bold text-dark" data-media-page="@(nameof(Enums.MediaPages.Settings))">Settings</a>
+                        </li>
                     </ul>
-                    <div id="@(HtmlControlsRepository.HeaderControlsContainerId)">
-                        <hr class="d-lg-none" />
-                        <button id="@(HtmlControlsRepository.HeaderPreviousButtonId)" class="btn btn-sm btn-outline-secondary"><i class="fa fa-step-backward"></i></button>
-                        <button id="@(HtmlControlsRepository.HeaderBackwardButtonId)" class="btn btn-sm btn-outline-secondary"><i class="fa fa-backward"></i></button>
-                        <button id="@(HtmlControlsRepository.HeaderPlayButtonId)" class="btn btn-outline-secondary"><i class="fa fa-play"></i></button>
-                        <button id="@(HtmlControlsRepository.HeaderPauseButtonId)" class="btn btn-outline-secondary d-none"><i class="fa fa-pause"></i></button>
-                        <button id="@(HtmlControlsRepository.HeaderForwardButtonId)" class="btn btn-sm btn-outline-secondary"><i class="fa fa-forward"></i></button>
-                        <button id="@(HtmlControlsRepository.HeaderNextButtonId)" class="btn btn-sm btn-outline-secondary"><i class="fa fa-step-forward"></i></button>
-                        <button id="@(HtmlControlsRepository.HeaderShuffleButtonId)" class="btn btn-sm btn-outline-secondary ml-4"><i class="fa fa-random"></i></button>
-                        <button id="@(HtmlControlsRepository.HeaderRepeatButtonId)" data-repeat-type="@(nameof(Enums.RepeatTypes.None))" class="btn btn-sm btn-outline-secondary d-none">
-                            <i class="fa fa-sync"></i>
-                        </button>
-                        <button id="@(HtmlControlsRepository.HeaderRepeatOneButtonId)" data-repeat-type="@(nameof(Enums.RepeatTypes.RepeatOne))" class="btn btn-sm btn-outline-secondary active d-none">
-                            <i class="fa fa-xs fa-sync"><sub>1</sub></i>
-                        </button>
-                        <button id="@(HtmlControlsRepository.HeaderRepeatAllButtonId)" data-repeat-type="@(nameof(Enums.RepeatTypes.RepeatAll))" class="btn btn-sm btn-outline-secondary active d-none">
-                            <i class="fa fa-sync"></i>
-                        </button>
-                    </div>
                 </div>
             </nav>
         </header>

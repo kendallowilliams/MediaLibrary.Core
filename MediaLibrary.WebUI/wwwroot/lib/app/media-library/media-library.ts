@@ -41,6 +41,7 @@ export default class MediaLibrary extends BaseClass {
     private mainViews: { HomeView: HTMLElement, MediaView: HTMLElement, PlayerView: HTMLElement, SettingsView: HTMLElement };
     private editSongModal: EditSongModal;
     private addToPlaylistModal: AddToPlaylistModal;
+    private navBarTimeOut: number;
 
     constructor() {
         super();
@@ -54,6 +55,8 @@ export default class MediaLibrary extends BaseClass {
     }
 
     private initializeControls(): void {
+        $(HtmlControls.Containers().NavBarContainer).on('shown.bs.collapse', e => this.autoCloseNavBar());
+        $(HtmlControls.Containers().NavBarContainer).on('hidden.bs.collapse', e => window.clearTimeout(this.navBarTimeOut));
         $('[data-media-page]').on('click', e => this.loadView.call(this, getMediaPagesEnum($(e.currentTarget).attr('data-media-page'))));
     }
 
@@ -142,23 +145,21 @@ export default class MediaLibrary extends BaseClass {
     }
 
     private loadView(mediaPage: MediaPages): void {
-        const container: HTMLElement = HtmlControls.Containers().HeaderControlsContainer;
-
         LoadingModal.showLoading();
-        $('#divNavbar').collapse('hide');
+        $(HtmlControls.Containers().NavBarContainer).collapse('hide');
         this.mediaLibraryConfiguration.properties.SelectedMediaPage = mediaPage;
         this.disableNavItem(getMediaPagesEnumString(mediaPage));
-        $(container).removeClass('d-none');
         this.mediaLibraryConfiguration.updateConfiguration(() => {
             this.prepareViews();
             this.showMainView(mediaPage);
-            
+            this.player.getPlayerControls().showHideMainControls(true);
+
             switch (mediaPage) {
                 case MediaPages.Music:
                     this.music.loadView(() => LoadingModal.hideLoading());
                     break;
                 case MediaPages.Player:
-                    $(container).addClass('d-none');
+                    this.player.getPlayerControls().showHideMainControls(false);
                     this.player.loadView(() => LoadingModal.hideLoading());
                     break;
                 case MediaPages.Playlist:
@@ -171,10 +172,12 @@ export default class MediaLibrary extends BaseClass {
                     this.television.loadView(() => LoadingModal.hideLoading());
                     break;
                 case MediaPages.Settings:
+                    this.player.getPlayerControls().showHideMainControls(false);
                     this.settings.loadView(() => LoadingModal.hideLoading());
                     break;
                 case MediaPages.Home:
                 default:
+                    this.player.getPlayerControls().showHideMainControls(false);
                     this.home.loadView(() => LoadingModal.hideLoading());
                     break;
             }
@@ -208,6 +211,16 @@ export default class MediaLibrary extends BaseClass {
         $('a.nav-link[data-media-page]:not([href])').addClass('d-none');
         $('a.nav-link[data-media-page="' + view + '"][href]').addClass('d-none');
         $('a.nav-link[data-media-page="' + view + '"]:not([href])').removeClass('d-none');
+    }
+
+    private autoCloseNavBar(): void {
+        const $navBar = $(HtmlControls.Containers().NavBarContainer);
+
+        window.clearTimeout(this.navBarTimeOut);
+
+        if (!$navBar.hasClass('collapsed')) {
+            this.navBarTimeOut = window.setTimeout(() => $navBar.collapse('hide'), this.mediaLibraryConfiguration.properties.NavBarTimeOut * 1000);
+        }
     }
 }
 

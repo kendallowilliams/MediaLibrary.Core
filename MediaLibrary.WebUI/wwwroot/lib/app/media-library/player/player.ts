@@ -2,7 +2,7 @@
 import IView from "../../assets/interfaces/view-interface";
 import PlayerConfiguration from "../../assets/models/configurations/player-configuration";
 import HtmlControls from '../../assets/controls/html-controls'
-import { MediaTypes, RepeatTypes, PlayerPages } from "../../assets/enums/enums";
+import { MediaTypes, RepeatTypes, PlayerPages, MessageBoxConfirmType } from "../../assets/enums/enums";
 import { getRandomInteger } from "../../assets/utilities/math";
 import AudioVisualizer from "../audio-visualizer/audio-visualizer";
 import { openFullscreen } from "../../assets/utilities/element";
@@ -12,6 +12,9 @@ import IPlayerLoadFunctions from "../../assets/interfaces/player-load-functions-
 import { getRepeatTypesEnumString, getPlayerPageEnum, getMediaTypesEnumString, getMediaTypesEnum } from "../../assets/enums/enum-functions";
 import * as MessageBox from '../../assets/utilities/message-box';
 import IListItem from "../../assets/interfaces/list-item-interface";
+import PlayerControls from "../../assets/controls/player-controls";
+import IPlayerControlsFunctions from "../../assets/interfaces/player-controls-functions-interface";
+import Error from "../../assets/data/error";
 
 export default class Player extends BaseClass implements IView {
     private players: { VideoPlayer: HTMLMediaElement, MusicPlayer: HTMLMediaElement };
@@ -19,15 +22,35 @@ export default class Player extends BaseClass implements IView {
     private audioVisualizer: AudioVisualizer;
     private playerView: HTMLElement;
     private currentlyLoadedId: number;
+    private playerControls: PlayerControls;
+    private controlsFunctions: IPlayerControlsFunctions = {
+        next: this.loadNext.bind(this),
+        previous: this.loadPrevious.bind(this),
+        skipForward: this.skipForward.bind(this),
+        skipBackward: this.skipBackward.bind(this),
+        pause: () => $(this.getPlayer()).attr('data-playing', 'false').trigger('pause'),
+        play: () => { if (this.getPlayer().currentSrc) /*then*/ $(this.getPlayer()).trigger('play'); },
+        setUnPlayedShuffleIds: this.setUnPlayedShuffleIds.bind(this),
+        canPlayNext: this.canPlayNext.bind(this),
+        canPlayPrevious: this.canPlayPrevious.bind(this),
+        mutePlayers: (muted) => $(this.getPlayers()).each((index, element) => { (element as HTMLMediaElement).muted = muted; }),
+        setPlayerVolume: (volume) => $(this.getPlayers()).prop('volume', volume / 100.0).prop('muted', volume === 0),
+        setCurrentTime: (time) => $(this.getPlayer()).prop('currentTime', time),
+        getPlaybackTime: this.getPlaybackTime.bind(this),
+        updatePlayerProgress: this.updatePlayerProgress.bind(this),
+        nowPlayingEmpty: () => this.playerConfiguration.properties.NowPlayingList.length === 0
+    };
 
     constructor(private playerConfiguration: PlayerConfiguration, private loadFunctions: IPlayerLoadFunctions, private updateActiveMedia: () => void = () => null) {
         super();
+
         this.players = HtmlControls.Players();
         this.playerView = HtmlControls.Views().PlayerView;
         this.unPlayedShuffleIds = [];
         this.audioVisualizer = new AudioVisualizer(this.playerConfiguration, this.players.MusicPlayer);
         this.initPlayer();
         this.currentlyLoadedId = 0;
+        this.playerControls = new PlayerControls(this.controlsFunctions, this.playerConfiguration);
     }
 
     loadView(callback: () => void = () => null): void {
@@ -44,9 +67,6 @@ export default class Player extends BaseClass implements IView {
     }
 
     private initMediaPlayers(): void {
-        const buttons = HtmlControls.Buttons(),
-            controls = HtmlControls.UIControls();
-
         $(this.getPlayers()).on('loadedmetadata', e => {
             const currentIndex = this.playerConfiguration.properties.CurrentItemIndex,
                 player: HTMLMediaElement = e.currentTarget as HTMLMediaElement;
@@ -67,20 +87,14 @@ export default class Player extends BaseClass implements IView {
         $(this.getPlayers()).on('durationchange', e => {
             const player: HTMLMediaElement = e.currentTarget as HTMLMediaElement;
 
-            $(controls.PlayerSlider).slider('option', 'max', player.duration);
-            $(controls.PlayerTime).text(this.getPlaybackTime(player.currentTime, player.duration));
+            this.playerControls.durationChanged(player.duration, this.getPlaybackTime(player.currentTime, player.duration));
         });
 
         $(this.getPlayers()).on('timeupdate', e => {
             const player: HTMLMediaElement = e.currentTarget as HTMLMediaElement,
                 currentTime: number = Math.floor(player.currentTime);
 
-            this.enableDisablePreviousNext();
-            if ($(controls.PlayerSlider).attr('data-slide-started') !== 'true') {
-                $(controls.PlayerSlider).slider('value', currentTime);
-                $(controls.PlayerTime).text(this.getPlaybackTime(currentTime, player.duration));
-                if (currentTime > 0) /*then*/ this.updatePlayerProgress(currentTime);
-            }
+            this.playerControls.timeUpdated(currentTime, this.getPlaybackTime(currentTime, player.duration));
         });
 
         $(this.getPlayers()).on('play', e => {
@@ -88,8 +102,7 @@ export default class Player extends BaseClass implements IView {
 
             if (this.getPlayer().duration === Infinity) /*then*/ this.getPlayer().src = this.getPlayer().src;
             $(e.currentTarget).attr('data-playing', 'true');
-            $([buttons.PlayerPlayButton, buttons.HeaderPlayButton]).addClass('d-none');
-            $([buttons.PlayerPauseButton, buttons.HeaderPauseButton]).removeClass('d-none');
+            this.playerControls.playingChanged(true);
             if (mediaType !== MediaTypes.Television) {
                 if (!this.audioVisualizer.isInitialized()) /*then*/ this.audioVisualizer.init();
                 this.audioVisualizer.start();
@@ -97,116 +110,26 @@ export default class Player extends BaseClass implements IView {
         });
 
         $(this.getPlayers()).on('pause', e => {
-            $([buttons.PlayerPauseButton, buttons.HeaderPauseButton]).addClass('d-none');
-            $([buttons.PlayerPlayButton, buttons.HeaderPlayButton]).removeClass('d-none');
+            this.playerControls.playingChanged(false);
             this.audioVisualizer.stop();
         });
 
-        $(this.getPlayers()).on('error', e => null);
+        $(this.getPlayers()).on('error', e => {
+            const player = e.currentTarget as HTMLMediaElement,
+                error = player.error,
+                message = 'Error: ' + error.code + ', Message: ' + error.message;
+
+            if (!Error.Ignored.includes(error.message)) {
+                MessageBox.showError('Player Error', message);
+            }
+        });
     }
 
     private initPlayerControls(): void {
-        const $volumeSlider = $('<div id="volume-slider" class="m-1"></div>'),
-            buttons = HtmlControls.Buttons(),
-            containers = HtmlControls.Containers(),
-            controls = HtmlControls.UIControls();
+        const buttons = HtmlControls.Buttons(),
+            containers = HtmlControls.Containers();
 
-        $(controls.PlayerSlider).slider({ min: 0, max: 100 });
-        $volumeSlider.slider({
-            min: 0,
-            max: 100,
-            orientation: 'vertical',
-            value: this.playerConfiguration.properties.Muted ? 0 : this.playerConfiguration.properties.Volume
-        });
-        $(containers.PlayerVolumeContainer).popover({
-            trigger: 'hover',
-            content: $volumeSlider[0],
-            placement: 'top',
-            html: true,
-            container: containers.PlayerVolumeContainer
-        });
-        $volumeSlider.on('slide', (e, ui) => {
-            const volume = ui.value;
-
-            $([buttons.PlayerVolumeButton, buttons.PlayerMuteButton]).attr('data-volume', volume).addClass('d-none');
-            $(volume === 0 ? buttons.PlayerMuteButton : buttons.PlayerVolumeButton).removeClass('d-none');
-            this.playerConfiguration.properties.Volume = volume;
-            this.playerConfiguration.properties.Muted = volume === 0;
-            $(this.getPlayers()).prop('volume', volume / 100.0).prop('muted', volume === 0)
-        });
-        $volumeSlider.on('slidechange', (e, ui) => {
-            this.playerConfiguration.updateConfiguration();
-        });
-        $(controls.PlayerSlider).on('slide', (e, ui) => {
-            if ($(e.currentTarget).attr('data-slide-started') === 'true') {
-                $(this.getPlayer()).prop('currentTime', ui.value);
-                $(controls.PlayerTime).text(this.getPlaybackTime(ui.value, $(e.currentTarget).slider('option', 'max')));
-            }
-        });
-        $(controls.PlayerSlider).on('slidestart', (e, ui) => $(e.currentTarget).attr('data-slide-started', 'true'));
-        $(controls.PlayerSlider).on('slidestop', (e, ui) => $(e.currentTarget).attr('data-slide-started', 'false'));
-        $([buttons.HeaderNextButton, buttons.PlayerNextButton]).on('click', () => this.loadNext());
-        $([buttons.HeaderPreviousButton, buttons.PlayerPreviousButton]).on('click', () => this.loadPrevious());
-        $([buttons.HeaderBackwardButton, buttons.PlayerBackwardButton]).on('click', () => this.skipBackward());
-        $([buttons.HeaderForwardButton, buttons.PlayerForwardButton]).on('click', () => this.skipForward());
-        $([buttons.HeaderPauseButton, buttons.PlayerPauseButton]).on('click', () => $(this.getPlayer()).attr('data-playing', 'false').trigger('pause'));
-        $([buttons.HeaderPlayButton, buttons.PlayerPlayButton]).on('click', () => {
-            if (this.getPlayer().currentSrc) /*then*/ $(this.getPlayer()).trigger('play');
-        });
-        $([buttons.HeaderShuffleButton, buttons.PlayerShuffleButton]).addClass(this.playerConfiguration.properties.Shuffle ? 'active' : '');
-        $('button[data-repeat-type]').on('click', () => {
-            let repeat = this.playerConfiguration.properties.Repeat;
-
-            $('button[data-repeat-type]').addClass('d-none');
-
-            if (repeat === RepeatTypes.None) {
-                repeat = RepeatTypes.RepeatOne;
-            } else if (repeat === RepeatTypes.RepeatOne) {
-                repeat = RepeatTypes.RepeatAll;
-            } else if (repeat === RepeatTypes.RepeatAll) {
-                repeat = RepeatTypes.None;
-            }
-
-            $('button[data-repeat-type="' + getRepeatTypesEnumString(repeat) + '"]').removeClass('d-none');
-            this.playerConfiguration.properties.Repeat = repeat;
-            this.playerConfiguration.updateConfiguration(() => this.enableDisablePreviousNext());
-        });
-        $([buttons.HeaderShuffleButton, buttons.PlayerShuffleButton]).on('click', () => {
-            const shuffle = this.playerConfiguration.properties.Shuffle,
-                $btns = $([buttons.HeaderShuffleButton, buttons.PlayerShuffleButton]);
-
-            this.setUnPlayedShuffleIds(!shuffle);
-            this.playerConfiguration.properties.Shuffle = !shuffle;
-            this.playerConfiguration.updateConfiguration(() => {
-                if (!shuffle) {
-                    $btns.addClass('active');
-                } else {
-                    $btns.removeClass('active');
-                }
-                this.enableDisablePreviousNext();
-            });
-        });
-        $([buttons.PlayerMuteButton, buttons.PlayerVolumeButton]).on('click', e => {
-            const previousVolume = parseInt($(buttons.PlayerVolumeButton).attr('data-volume')),
-                $btn = $(e.currentTarget);
-            let muted = false;
-
-            $([buttons.PlayerMuteButton, buttons.PlayerVolumeButton]).addClass('d-none');
-
-            if ($btn.attr('id') === buttons.PlayerVolumeButton.id) {
-                $(buttons.PlayerMuteButton).removeClass('d-none');
-                $volumeSlider.slider('value', 0);
-                muted = true;
-            } else if ($btn.attr('id') === buttons.PlayerMuteButton.id) {
-                $(buttons.PlayerVolumeButton).removeClass('d-none');
-                $volumeSlider.slider('value', previousVolume);
-            }
-
-            this.playerConfiguration.properties.Muted = muted;
-            this.playerConfiguration.updateConfiguration(() => $(this.getPlayers()).each((index, element) => { (element as HTMLAudioElement).muted = muted; }));
-        });
         $(buttons.PlayerFullscreenButton).on('click', () => openFullscreen(this.getPlayer()));
-        $('button[data-repeat-type="' + getRepeatTypesEnumString(this.playerConfiguration.properties.Repeat) + '"]').removeClass('d-none');
         $(buttons.PlayerPlaylistToggleButton).on('click', e => {
             const $player = $(this.getPlayer()),
                 $playerItems = $(containers.PlayerItemsContainer),
@@ -255,9 +178,10 @@ export default class Player extends BaseClass implements IView {
             const title = 'Clear now playing',
                 message = 'Are you sure you want to clear now playing?';
 
-            MessageBox.confirm(title, message, true, () => {
+            MessageBox.confirm(title, message, MessageBoxConfirmType.YesNo, () => {
                 this.playerConfiguration.properties.NowPlayingList = [];
                 this.playerConfiguration.updateConfiguration(() => this.reload(() => this.loadItem()));
+                this.playerControls.showHideMainControls(false);
             });
         });
     }
@@ -295,7 +219,8 @@ export default class Player extends BaseClass implements IView {
                     }
                     $player.trigger('play');
                 }
-                this.enableDisablePreviousNext();
+
+                this.playerControls.enableDisablePreviousNext();
             });
         } else if ($('li[data-play-index].active').length === 1) {
             this.loadItem($('li[data-play-index].active')[0], triggerPlay);
@@ -331,8 +256,8 @@ export default class Player extends BaseClass implements IView {
             if ((shuffle && !shuffleEmpty) || (!shuffle && nextIndex < $('li[data-play-index]').length)) {
                 this.loadItem($item[0], this.isPlaying());
             } else {
-                $(HtmlControls.Buttons().PlayerPauseButton).trigger('click');
-                this.enableDisablePreviousNext();
+                this.controlsFunctions.pause();
+                this.playerControls.enableDisablePreviousNext();
             }
         }
     }
@@ -413,15 +338,6 @@ export default class Player extends BaseClass implements IView {
         this.unPlayedShuffleIds = shuffle && $items.length > 0 ? $.makeArray($items.map((index, element) => parseInt($(element).attr('data-play-index')))) : [];
     }
 
-    private enableDisablePreviousNext(): void {
-        const buttons = HtmlControls.Buttons(),
-            nextButtons = [buttons.HeaderNextButton, buttons.PlayerNextButton],
-            previousButtons = [buttons.HeaderPreviousButton, buttons.PlayerPreviousButton];
-
-        $(nextButtons).prop('disabled', !this.canPlayNext());
-        $(previousButtons).prop('disabled', !this.canPlayPrevious());
-    }
-
     private updatePlayCount(player: HTMLMediaElement, callback: () => void = () => null) {
         const id = $(player).attr('data-item-id');
 
@@ -485,12 +401,13 @@ export default class Player extends BaseClass implements IView {
         }
     }
 
-    play(btn: HTMLButtonElement, playSingleItem: boolean = false, loadPlayer: () => void = () => null): void {
+    public play(btn: HTMLButtonElement, playSingleItem: boolean = false, loadPlayer: () => void = () => null): void {
         const $playButtons = $('button[data-play-id]'),
             $playGroups = $('div[data-play-ids]'),
             success = () => this.reload(() => {
                 this.loadItem(null, true);
                 if (this.playerConfiguration.properties.SelectedMediaType === MediaTypes.Television) /*then*/ loadPlayer();
+                this.playerControls.showHideMainControls(true);
                 LoadingModal.hideLoading();
             }),
             mediaType = $(btn).attr('data-media-type') || getMediaTypesEnumString(MediaTypes.Song);
@@ -529,16 +446,16 @@ export default class Player extends BaseClass implements IView {
     }
 
     private updatePlayerProgress(progress: number): void {
-        const id: number = parseInt($('[data-play-index="' + this.playerConfiguration.properties.CurrentItemIndex + '"]').attr('data-item-id')),
+        const currentIndex: number = this.playerConfiguration.properties.CurrentItemIndex,
+            id: number = parseInt($('[data-play-index="' + currentIndex + '"]').attr('data-item-id')),
             mediaType: MediaTypes = this.playerConfiguration.properties.SelectedMediaType,
             data = {
                 id: id, mediaType: mediaType, progress: progress
             },
-            currentIndex: number = this.playerConfiguration.properties.CurrentItemIndex;
+            $currentItem = $('[data-play-index="' + currentIndex + '"]');
 
-        if ($('[data-play-index="' + currentIndex + '"]').attr('data-current-time') !== progress.toString() &&
-            progress % 5 === 0) {
-            $('[data-play-index="' + currentIndex + '"]').attr('data-current-time', progress);
+        if ($currentItem.attr('data-current-time') !== progress.toString() && progress % 5 === 0 && !isNaN(id)) {
+            $currentItem.attr('data-current-time', progress);
             $.post('Player/UpdatePlayerProgress', data);
         }
     }
@@ -558,5 +475,9 @@ export default class Player extends BaseClass implements IView {
 
         if (updatedTime < 0) /*then*/ player.currentTime = 0;
         else /*then*/ player.currentTime = updatedTime;
+    }
+
+    public getPlayerControls(): PlayerControls {
+        return this.playerControls;
     }
 }

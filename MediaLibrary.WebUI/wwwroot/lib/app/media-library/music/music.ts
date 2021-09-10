@@ -1,7 +1,7 @@
 ﻿import BaseClass from "../../assets/models/base-class";
 import IView from "../../assets/interfaces/view-interface";
 import MusicConfiguration from "../../assets/models/configurations/music-configuration";
-import { MusicPages, MusicTabs } from "../../assets/enums/enums";
+import { MessageBoxConfirmType, MusicPages, MusicTabs } from "../../assets/enums/enums";
 import HtmlControls from '../../assets/controls/html-controls';
 import Artist from "./artist";
 import Album from "./album";
@@ -144,7 +144,7 @@ export default class Music extends BaseClass implements IView {
                     $.post('Music/Refresh', () => this.loadView(() => LoadingModal.hideLoading()));
                 };
 
-            MessageBox.confirm(title, question, true, yesCallback, noCallback);
+            MessageBox.confirm(title, question, MessageBoxConfirmType.YesNoCancel, yesCallback, noCallback);
         });
 
         $('[data-music-action="search"]').on('click', e => {
