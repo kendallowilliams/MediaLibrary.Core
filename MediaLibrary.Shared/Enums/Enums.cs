@@ -85,5 +85,7 @@ namespace MediaLibrary.Shared
         public enum AppWidth { Normal = 0, Wide}
 
         public enum SettingsTabs { General = 0, Music, Podcast, Television, Playlist, Player }
+
+        public enum CacheKeys { Tracks, Albums, Artists }
     }
 }

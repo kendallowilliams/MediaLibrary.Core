@@ -16,6 +16,7 @@ using System.Threading.Tasks;
 using System.Web;
 using static MediaLibrary.Shared.Enums;
 using MediaLibrary.Shared.Models;
+using Microsoft.Extensions.Caching.Memory;
 
 namespace MediaLibrary.WebUI.Services
 {
@@ -30,32 +31,36 @@ namespace MediaLibrary.WebUI.Services
         private IDataService dataService => lazyDataService.Value;
         private IFileService fileService => lazyFileService.Value;
         private ITransactionService transactionService => lazyTransactionService.Value;
-        private IEnumerable<Track> songs;
-        private IEnumerable<Artist> artists;
-        private IEnumerable<Album> albums;
+        private readonly IMemoryCache memoryCache;
 
         [ImportingConstructor]
         public MusicUIService(Lazy<IDataService> dataService, Lazy<IFileService> fileService, Lazy<ITransactionService> transactionService,
-                              IConfiguration configuration) : base()
+                              IConfiguration configuration, IMemoryCache memoryCache) : base()
         {
             this.lazyDataService = dataService;
             this.lazyFileService = fileService;
             this.lazyTransactionService = transactionService;
             this.configuration = configuration;
+            this.memoryCache = memoryCache;
         }
 
-        public async Task<IEnumerable<Track>> Songs() => songs ?? await dataService.GetList<Track>();
-        public async Task<IEnumerable<Artist>> Artists() => artists ?? await dataService.GetList<Artist>();
-        public async Task<IEnumerable<Album>> Albums() => albums ?? await dataService.GetList<Album>();
+        public async Task<IEnumerable<Track>> Songs() => await dataService.GetList<Track>();
+        public async Task<IEnumerable<Artist>> Artists() => await dataService.GetList<Artist>();
+        public async Task<IEnumerable<Album>> Albums() => await dataService.GetList<Album>();
 
         public async Task<IEnumerable<IGrouping<string, Track>>> GetSongGroups(SongSort sort)
         {
             IEnumerable<IGrouping<string, Track>> groups = null;
+            memoryCache.TryGetValue(nameof(CacheKeys.Tracks), out IEnumerable<Track> songs);
 
-            if (songs == null) /*then*/ songs = (await dataService.GetList<Track>(default, default, 
-                song => song.Album, 
-                song => song.Artist,
-                song => song.Genre))?.OrderBy(song => song.Title);
+            if (songs == null)
+            {
+                songs = (await dataService.GetList<Track>(default, default,
+                                                          song => song.Album,
+                                                          song => song.Artist,
+                                                          song => song.Genre))?.OrderBy(song => song.Title);
+                memoryCache.Set(nameof(CacheKeys.Tracks), songs);
+            }
 
             switch(sort)
             {
@@ -85,9 +90,14 @@ namespace MediaLibrary.WebUI.Services
         public async Task<IEnumerable<IGrouping<string, Album>>> GetAlbumGroups(AlbumSort sort)
         {
             IEnumerable<IGrouping<string, Album>> groups = null;
+            memoryCache.TryGetValue(nameof(CacheKeys.Albums), out IEnumerable<Album> albums);
 
-            if (albums == null) /*then*/ albums = (await dataService.GetList<Album>(default, default, album => album.Artist, album => album.Tracks))
+            if (albums == null)
+            {
+                albums = (await dataService.GetList<Album>(default, default, album => album.Artist, album => album.Tracks))
                                                          .Where(album => album.Tracks.Any());
+                memoryCache.Set(nameof(CacheKeys.Albums), albums);
+            }
 
             switch (sort)
             {
@@ -105,9 +115,14 @@ namespace MediaLibrary.WebUI.Services
         public async Task<IEnumerable<IGrouping<string, Artist>>> GetArtistGroups(ArtistSort sort)
         {
             IEnumerable<IGrouping<string, Artist>> groups = null;
+            memoryCache.TryGetValue(nameof(CacheKeys.Artists), out IEnumerable<Artist> artists);
 
-            if (artists == null) /*then*/ artists = (await dataService.GetList<Artist>(default, default, artist => artist.Albums))
-                                                           .Where(artist => artist.Albums.Any());
+            if (artists == null)
+            {
+                artists = (await dataService.GetList<Artist>(default, default, artist => artist.Albums))
+                                            .Where(artist => artist.Albums.Any());
+                memoryCache.Set(nameof(CacheKeys.Artists), artists);
+            }
 
             switch (sort)
             {
@@ -139,9 +154,9 @@ namespace MediaLibrary.WebUI.Services
 
         public void ClearData()
         {
-            songs = null;
-            artists = null;
-            albums = null;
+            memoryCache.Remove(nameof(CacheKeys.Artists));
+            memoryCache.Remove(nameof(CacheKeys.Albums));
+            memoryCache.Remove(nameof(CacheKeys.Tracks));
         }
 
         public async Task<MusicDirectory> GetMusicDirectory(string path)
