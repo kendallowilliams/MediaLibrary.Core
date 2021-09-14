@@ -2,6 +2,7 @@
 using MediaLibrary.DAL.Models;
 using MediaLibrary.DAL.Services.Interfaces;
 using MediaLibrary.WebUI.Services.Interfaces;
+using Microsoft.Extensions.Caching.Memory;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
@@ -17,18 +18,25 @@ namespace MediaLibrary.WebUI.Services
     public class PodcastUIService : BaseUIService, IPodcastUIService
     {
         private readonly Lazy<IDataService> lazyDataService;
+        private readonly IMemoryCache memoryCache;
         private IDataService dataService => lazyDataService.Value;
 
         [ImportingConstructor]
-        public PodcastUIService(Lazy<IDataService> dataService) : base()
+        public PodcastUIService(Lazy<IDataService> dataService, IMemoryCache memoryCache) : base()
         {
             this.lazyDataService = dataService;
+            this.memoryCache = memoryCache;
         }
 
         public async Task<IEnumerable<IGrouping<string, Podcast>>> GetPodcastGroups(PodcastSort sort)
         {
             IEnumerable<IGrouping<string, Podcast>> groups = null;
-            IEnumerable<Podcast> podcasts = await dataService.GetList<Podcast>(default, default, podcast => podcast.PodcastItems);
+
+            if (!memoryCache.TryGetValue(nameof(CacheKeys.Podcasts), out IEnumerable<Podcast> podcasts))
+            {
+                podcasts = await dataService.GetList<Podcast>(default, default, podcast => podcast.PodcastItems);
+                memoryCache.Set(nameof(CacheKeys.Podcasts), podcasts);
+            }
 
             switch (sort)
             {
@@ -50,6 +58,11 @@ namespace MediaLibrary.WebUI.Services
         private IEnumerable<IGrouping<string, Podcast>> GetPodcastsAtoZ(IEnumerable<Podcast> podcasts)
         {
             return podcasts.GroupBy(podcast => getCharLabel(podcast.Title)).OrderBy(group => group.Key);
+        }
+
+        public void ClearPodcasts()
+        {
+            memoryCache.Remove(nameof(CacheKeys.Podcasts));
         }
     }
 }

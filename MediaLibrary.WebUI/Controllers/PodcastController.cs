@@ -77,8 +77,9 @@ namespace MediaLibrary.WebUI.Controllers
         {
             Podcast podcast = await dataService.Get<Podcast>(item => item.Url.Trim() == rssFeed.Trim()) ?? 
                               await podcastService.AddPodcast(rssFeed);
-
             Configuration configuration = await dataService.Get<Configuration>(item => item.Type == nameof(MediaPages.Podcast));
+
+            podcastUIService.ClearPodcasts();
 
             if (configuration != null)
             {
@@ -95,6 +96,7 @@ namespace MediaLibrary.WebUI.Controllers
             Configuration configuration = await dataService.Get<Configuration>(item => item.Type == nameof(MediaPages.Podcast));
 
             await podcastService.RemovePodcast(id);
+            podcastUIService.ClearPodcasts();
 
             if (configuration != null)
             {
@@ -162,7 +164,7 @@ namespace MediaLibrary.WebUI.Controllers
                 if (!existingTransaction)
                 {
                     await transactionService.UpdateTransactionInProcess(transaction);
-                    backgroundTaskQueue.QueueBackgroundWorkItem(async task => await podcastService.AddPodcastFile(transaction, id));
+                    backgroundTaskQueue.QueueBackgroundWorkItem(async task => await podcastService.AddPodcastFile(transaction, id).ContinueWith(_ => podcastUIService.ClearPodcasts()));
                 }
                 else
                 {
@@ -197,6 +199,7 @@ namespace MediaLibrary.WebUI.Controllers
 
                         podcastItem.File = null;
                         await dataService.Update(podcastItem);
+                        podcastUIService.ClearPodcasts();
                         await transactionService.UpdateTransactionCompleted(transaction);
                     }
                     else
@@ -218,6 +221,7 @@ namespace MediaLibrary.WebUI.Controllers
         public async Task RefreshPodcast(int id)
         {
             await podcastService.RefreshPodcast(await dataService.Get<Podcast>(item => item.Id == id));
+            podcastUIService.ClearPodcasts();
         }
 
 #if !DEBUG && !DEV
@@ -333,6 +337,7 @@ namespace MediaLibrary.WebUI.Controllers
 
             podcastItem.LastPlayedDate = DateTime.Now;
             await dataService.Update(podcastItem);
+            podcastUIService.ClearPodcasts();
         }
 
         public async Task MarkPodcastItemUnplayed(int id)
@@ -343,6 +348,7 @@ namespace MediaLibrary.WebUI.Controllers
             {
                 podcastItem.LastPlayedDate = null;
                 await dataService.Update(podcastItem);
+                podcastUIService.ClearPodcasts();
             }
         }
     }

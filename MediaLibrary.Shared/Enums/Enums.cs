@@ -86,6 +86,6 @@ namespace MediaLibrary.Shared
 
         public enum SettingsTabs { General = 0, Music, Podcast, Television, Playlist, Player }
 
-        public enum CacheKeys { Tracks, Albums, Artists }
+        public enum CacheKeys { None = 0, Tracks, Albums, Artists, Podcasts, Series }
     }
 }
