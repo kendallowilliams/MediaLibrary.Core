@@ -94,7 +94,9 @@ export default class Player extends BaseClass implements IView {
             const player: HTMLMediaElement = e.currentTarget as HTMLMediaElement,
                 currentTime: number = Math.floor(player.currentTime);
 
-            this.playerControls.timeUpdated(currentTime, this.getPlaybackTime(currentTime, player.duration));
+            if ($(player).attr('data-item-id') && !isNaN(player.duration)) {
+                this.playerControls.timeUpdated(currentTime, this.getPlaybackTime(currentTime, player.duration));
+            }
         });
 
         $(this.getPlayers()).on('play', e => {
@@ -191,7 +193,7 @@ export default class Player extends BaseClass implements IView {
             shuffleEnabled = this.playerConfiguration.properties.Shuffle,
             fields = HtmlControls.UIFields();
 
-        $(this.getPlayers()).prop('src', '').attr('data-item-id', '');
+        $(this.getPlayers()).attr('data-item-id', '').prop('src', '');
 
         if (item) {
             const $item = $(item),
