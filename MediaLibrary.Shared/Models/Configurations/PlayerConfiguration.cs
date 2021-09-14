@@ -16,6 +16,7 @@ namespace MediaLibrary.Shared.Models.Configurations
             Volume = 100;
             SkipForwardSeconds = SkipBackwardSeconds = 15;
             NowPlayingList = new List<ListItem<int, int>>();
+            ProgressUpdateInterval = 5;
         }
 
         public MediaTypes SelectedMediaType { get; set; }
@@ -41,5 +42,7 @@ namespace MediaLibrary.Shared.Models.Configurations
         public int SkipBackwardSeconds { get; set; }
 
         public IList<ListItem<int, int>> NowPlayingList { get; set; }
+
+        public int ProgressUpdateInterval { get; set; }
     }
 }

@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Server.IISIntegration;
+using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -29,11 +30,10 @@ namespace MediaLibrary.WebUI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            MefService mefService = new MefService(AppDomain.CurrentDomain.BaseDirectory, Configuration);
-
             services.AddControllersWithViews();
             services.AddHostedService<BackgroundQueueHostedService>();
-            services.AddSingleton(typeof(IMefService), mefService);
+            services.AddMemoryCache();
+            services.AddSingleton<IMefService>(serviceProvider => new MefService(AppDomain.CurrentDomain.BaseDirectory, Configuration, serviceProvider.GetService<IMemoryCache>()));
             services.AddSingleton(typeof(IBackgroundTaskQueueService), typeof(BackgroundTaskQueueService)); 
             services.AddAuthentication(IISDefaults.AuthenticationScheme);
             services.AddAuthorization();
