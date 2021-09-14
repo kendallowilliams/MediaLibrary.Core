@@ -52,7 +52,7 @@ namespace MediaLibrary.WebUI.Services
         {
             IEnumerable<IGrouping<string, Track>> groups = null;
 
-            if (memoryCache.TryGetValue(nameof(CacheKeys.Tracks), out IEnumerable<Track> songs))
+            if (!memoryCache.TryGetValue(nameof(CacheKeys.Tracks), out IEnumerable<Track> songs))
             {
                 songs = (await dataService.GetList<Track>(default, default,
                                                           song => song.Album,
@@ -90,7 +90,7 @@ namespace MediaLibrary.WebUI.Services
         {
             IEnumerable<IGrouping<string, Album>> groups = null;
 
-            if (memoryCache.TryGetValue(nameof(CacheKeys.Albums), out IEnumerable<Album> albums))
+            if (!memoryCache.TryGetValue(nameof(CacheKeys.Albums), out IEnumerable<Album> albums))
             {
                 albums = (await dataService.GetList<Album>(default, default, album => album.Artist, album => album.Tracks))
                                                          .Where(album => album.Tracks.Any());
@@ -114,7 +114,7 @@ namespace MediaLibrary.WebUI.Services
         {
             IEnumerable<IGrouping<string, Artist>> groups = null;
 
-            if (memoryCache.TryGetValue(nameof(CacheKeys.Artists), out IEnumerable<Artist> artists))
+            if (!memoryCache.TryGetValue(nameof(CacheKeys.Artists), out IEnumerable<Artist> artists))
             {
                 artists = (await dataService.GetList<Artist>(default, default, artist => artist.Albums))
                                             .Where(artist => artist.Albums.Any());
