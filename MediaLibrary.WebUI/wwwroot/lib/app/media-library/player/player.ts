@@ -454,9 +454,10 @@ export default class Player extends BaseClass implements IView {
             data = {
                 id: id, mediaType: mediaType, progress: progress
             },
-            $currentItem = $('[data-play-index="' + currentIndex + '"]');
+            $currentItem = $('[data-play-index="' + currentIndex + '"]'),
+            progressUpdateInterval = this.playerConfiguration.properties.ProgressUpdateInterval;
 
-        if ($currentItem.attr('data-current-time') !== progress.toString() && progress % 5 === 0 && !isNaN(id)) {
+        if ($currentItem.attr('data-current-time') !== progress.toString() && progress % progressUpdateInterval === 0 && !isNaN(id)) {
             $currentItem.attr('data-current-time', progress);
             $.post('Player/UpdatePlayerProgress', data);
         }

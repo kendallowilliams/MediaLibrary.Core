@@ -70,5 +70,11 @@ export default class Settings extends BaseClass implements IView {
             this.configurations.Player.properties.SkipForwardSeconds = seconds;
             this.configurations.Player.updateConfiguration();
         });
+        $(this.settingsView).find('input[name="ProgressUpdateInterval"]').on('change', e => {
+            const seconds = $(e.currentTarget).val() as number;
+
+            this.configurations.Player.properties.ProgressUpdateInterval = seconds;
+            this.configurations.Player.updateConfiguration();
+        });
     }
 }
