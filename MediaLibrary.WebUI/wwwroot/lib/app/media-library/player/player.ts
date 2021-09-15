@@ -38,7 +38,8 @@ export default class Player extends BaseClass implements IView {
         setCurrentTime: (time) => $(this.getPlayer()).prop('currentTime', time),
         getPlaybackTime: this.getPlaybackTime.bind(this),
         updatePlayerProgress: this.updatePlayerProgress.bind(this),
-        nowPlayingEmpty: () => this.playerConfiguration.properties.NowPlayingList.length === 0
+        nowPlayingEmpty: () => this.playerConfiguration.properties.NowPlayingList.length === 0,
+        getPlayer: this.getPlayer.bind(this)
     };
 
     constructor(private playerConfiguration: PlayerConfiguration, private loadFunctions: IPlayerLoadFunctions, private updateActiveMedia: () => void = () => null) {

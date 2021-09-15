@@ -118,5 +118,10 @@ namespace MediaLibrary.WebUI.Controllers
         {
             await playerService.UpdatePlayerProgress(id, mediaType, progress);
         }
+
+        public async Task<int> GetPlayerProgress(int id, MediaTypes mediaType)
+        {
+            return await playerService.GetPlayerProgress(id, mediaType);
+        }
     }
 }
