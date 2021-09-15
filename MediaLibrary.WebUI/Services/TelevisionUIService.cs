@@ -10,6 +10,7 @@ using System.Web;
 using static MediaLibrary.Shared.Enums;
 using Fody;
 using MediaLibrary.WebUI.Models;
+using Microsoft.Extensions.Caching.Memory;
 
 namespace MediaLibrary.WebUI.Services
 {
@@ -18,18 +19,25 @@ namespace MediaLibrary.WebUI.Services
     public class TelevisionUIService : BaseUIService, ITelevisionUIService
     {
         private readonly Lazy<IDataService> lazyDataService;
+        private readonly IMemoryCache memoryCache;
         private IDataService dataService => lazyDataService.Value;
 
         [ImportingConstructor]
-        public TelevisionUIService(Lazy<IDataService> dataService) : base()
+        public TelevisionUIService(Lazy<IDataService> dataService, IMemoryCache memoryCache) : base()
         {
             this.lazyDataService = dataService;
+            this.memoryCache = memoryCache;
         }
 
         public async Task<IEnumerable<IGrouping<string, Series>>> GetSeriesGroups(SeriesSort sort)
         {
             IEnumerable<IGrouping<string, Series>> groups = null;
-            IEnumerable<Series> series = await dataService.GetList<Series>(default, default, s => s.Episodes);
+
+            if (!memoryCache.TryGetValue(nameof(CacheKeys.Series), out IEnumerable<Series> series))
+            {
+                series = await dataService.GetList<Series>(default, default, s => s.Episodes);
+                memoryCache.Set(nameof(CacheKeys.Series), series);
+            }
 
             switch (sort)
             {

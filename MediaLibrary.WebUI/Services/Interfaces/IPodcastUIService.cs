@@ -11,5 +11,6 @@ namespace MediaLibrary.WebUI.Services.Interfaces
     public interface IPodcastUIService
     {
         Task<IEnumerable<IGrouping<string, Podcast>>> GetPodcastGroups(PodcastSort sort);
+        void ClearPodcasts();
     }
 }
