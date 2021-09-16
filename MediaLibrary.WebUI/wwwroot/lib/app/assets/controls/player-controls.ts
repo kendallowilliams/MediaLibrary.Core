@@ -184,7 +184,7 @@ export default class PlayerControls {
                 const savedProgress = data || 0;
 
                 if (this.playerConfiguration.properties.ProgressUpdateInterval < Math.abs(savedProgress - progress)) {
-                    this.controlsFunctions.setCurrentTime(data);
+                    this.controlsFunctions.setCurrentTime(savedProgress);
                 }
 
                 this.controlsFunctions.play();
