@@ -194,7 +194,7 @@ export default class Player extends BaseClass implements IView {
             shuffleEnabled = this.playerConfiguration.properties.Shuffle,
             fields = HtmlControls.UIFields();
 
-        $(this.getPlayers()).attr('data-item-id', '').prop('src', '');
+        $(this.getPlayers()).removeAttr('data-item-id').removeAttr('src');
 
         if (item) {
             const $item = $(item),
