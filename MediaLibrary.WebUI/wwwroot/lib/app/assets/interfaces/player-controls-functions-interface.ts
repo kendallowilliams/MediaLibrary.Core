@@ -13,5 +13,6 @@
     setCurrentTime: (time: number) => void,
     getPlaybackTime: (time: number, duration: number) => string,
     updatePlayerProgress: (time: number) => void,
-    nowPlayingEmpty: () => boolean
+    nowPlayingEmpty: () => boolean,
+    getPlayer: () => HTMLMediaElement
 }

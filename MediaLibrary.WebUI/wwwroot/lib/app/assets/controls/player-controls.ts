@@ -1,6 +1,6 @@
 ﻿import HtmlControls from '../controls/html-controls';
 import { getRepeatTypesEnumString } from '../enums/enum-functions';
-import { RepeatTypes } from '../enums/enums';
+import { MediaTypes, RepeatTypes } from '../enums/enums';
 import IPlayerControlsFunctions from '../interfaces/player-controls-functions-interface';
 import PlayerConfiguration from '../models/configurations/player-configuration';
 
@@ -75,7 +75,7 @@ export default class PlayerControls {
         $(buttons.PlayerForwardButtons).on('click', e => this.controlsFunctions.skipForward());
         $(buttons.PlayerNextButtons).on('click', e => this.controlsFunctions.next());
         $(buttons.PlayerPreviousButtons).on('click', e => this.controlsFunctions.previous());
-        $(buttons.PlayerPlayButtons).on('click', e => this.controlsFunctions.play());
+        $(buttons.PlayerPlayButtons).on('click', e => this.playClicked(e));
         $(buttons.PlayerPauseButtons).on('click', e => this.controlsFunctions.pause());
         $(buttons.PlayerShuffleButtons).on('click', e => {
             const shuffle = this.playerConfiguration.properties.Shuffle,
@@ -170,5 +170,25 @@ export default class PlayerControls {
     public showHideMainControls(show: boolean): void {
         if (show && !this.controlsFunctions.nowPlayingEmpty()) /*then*/ $(HtmlControls.Containers().MainControlsContainer).removeClass('d-none').addClass('d-flex');
         else $(HtmlControls.Containers().MainControlsContainer).removeClass('d-flex').addClass('d-none');
+    }
+
+    private playClicked(evt: JQuery.ClickEvent): void {
+        const player = this.controlsFunctions.getPlayer(),
+            id = $(player).attr('data-item-id'),
+            type = this.playerConfiguration.properties.SelectedMediaType,
+            progress = player.currentTime;
+
+        if (this.playerConfiguration.properties.SelectedMediaType === MediaTypes.Podcast ||
+            this.playerConfiguration.properties.SelectedMediaType === MediaTypes.Television) {
+            $.get('Player/GetPlayerProgress?id=' + id + '&mediaType=' + type, (data: number) => {
+                if (this.playerConfiguration.properties.ProgressUpdateInterval < Math.abs(data - (player.currentTime || 0))) {
+                    this.controlsFunctions.setCurrentTime(data);
+                }
+
+                this.controlsFunctions.play();
+            });
+        } else {
+            this.controlsFunctions.play();
+        }
     }
 }

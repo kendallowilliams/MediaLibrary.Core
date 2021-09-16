@@ -95,6 +95,29 @@ namespace MediaLibrary.BLL.Services
                 }
             }
         }
+        public async Task<int> GetPlayerProgress(int id, MediaTypes mediaType)
+        {
+            int progress = default;
+
+            if (id > 0)
+            {
+                if (mediaType == MediaTypes.Podcast)
+                {
+                    progress = await dataService.Get<PodcastItem>(item => item.Id == id).ContinueWith(task => task.Result.Progress);
+
+                }
+                else if (mediaType == MediaTypes.Song)
+                {
+                    progress = await dataService.Get<Track>(item => item.Id == id).ContinueWith(task => task.Result.Progress);
+                }
+                else if (mediaType == MediaTypes.Television)
+                {
+                    progress = await dataService.Get<Episode>(item => item.Id == id).ContinueWith(task => task.Result.Progress);
+                }
+            }
+
+            return progress;
+        }
 
         public async Task<IEnumerable<Track>> GetNowPlayingSongs()
         {
