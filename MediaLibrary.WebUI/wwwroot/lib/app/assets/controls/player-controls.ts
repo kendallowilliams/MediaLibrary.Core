@@ -176,12 +176,14 @@ export default class PlayerControls {
         const player = this.controlsFunctions.getPlayer(),
             id = $(player).attr('data-item-id'),
             type = this.playerConfiguration.properties.SelectedMediaType,
-            progress = player.currentTime;
+            progress = player.currentTime || 0;
 
         if (this.playerConfiguration.properties.SelectedMediaType === MediaTypes.Podcast ||
             this.playerConfiguration.properties.SelectedMediaType === MediaTypes.Television) {
             $.get('Player/GetPlayerProgress?id=' + id + '&mediaType=' + type, (data: number) => {
-                if (this.playerConfiguration.properties.ProgressUpdateInterval < Math.abs(data - (player.currentTime || 0))) {
+                const savedProgress = data || 0;
+
+                if (this.playerConfiguration.properties.ProgressUpdateInterval < Math.abs(savedProgress - progress)) {
                     this.controlsFunctions.setCurrentTime(data);
                 }
 
