@@ -145,6 +145,8 @@ export default class MediaLibrary extends BaseClass {
     }
 
     private loadView(mediaPage: MediaPages): void {
+        let showHideMainControls: boolean = true;
+
         LoadingModal.showLoading();
         $(HtmlControls.Containers().NavBarContainer).collapse('hide');
         this.mediaLibraryConfiguration.properties.SelectedMediaPage = mediaPage;
@@ -152,14 +154,13 @@ export default class MediaLibrary extends BaseClass {
         this.mediaLibraryConfiguration.updateConfiguration(() => {
             this.prepareViews();
             this.showMainView(mediaPage);
-            this.player.getPlayerControls().showHideMainControls(true);
 
             switch (mediaPage) {
                 case MediaPages.Music:
                     this.music.loadView(() => LoadingModal.hideLoading());
                     break;
                 case MediaPages.Player:
-                    this.player.getPlayerControls().showHideMainControls(false);
+                    showHideMainControls = false;
                     this.player.loadView(() => LoadingModal.hideLoading());
                     break;
                 case MediaPages.Playlist:
@@ -172,15 +173,17 @@ export default class MediaLibrary extends BaseClass {
                     this.television.loadView(() => LoadingModal.hideLoading());
                     break;
                 case MediaPages.Settings:
-                    this.player.getPlayerControls().showHideMainControls(false);
+                    showHideMainControls = false;
                     this.settings.loadView(() => LoadingModal.hideLoading());
                     break;
                 case MediaPages.Home:
                 default:
-                    this.player.getPlayerControls().showHideMainControls(false);
+                    showHideMainControls = false;
                     this.home.loadView(() => LoadingModal.hideLoading());
                     break;
             }
+
+            this.player.getPlayerControls().showHideMainControls(showHideMainControls);
         });
     }
 
