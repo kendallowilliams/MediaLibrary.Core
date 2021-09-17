@@ -60,7 +60,8 @@
         SearchQuery: document.getElementById('search-query') as HTMLInputElement,
         PlayerSliders: document.getElementsByClassName('player-slider'),
         VolumeSliders: document.getElementsByClassName('volume-slider'),
-        PlayerTimes: document.getElementsByClassName('player-time')
+        PlayerTimes: document.getElementsByClassName('player-time'),
+        PlayerShortTimes: document.getElementsByClassName('player-short-time')
     }),
     UIFields: () => ({
         NowPlayingTitle: document.getElementById('player-title')

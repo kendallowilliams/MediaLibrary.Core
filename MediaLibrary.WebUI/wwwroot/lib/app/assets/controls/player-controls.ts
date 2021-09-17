@@ -163,6 +163,7 @@ export default class PlayerControls {
         if ($(controls.PlayerSliders).attr('data-slide-started') !== 'true') {
             $(controls.PlayerSliders).slider('value', currentTime);
             $(controls.PlayerTimes).text(playbackTime);
+            $(controls.PlayerShortTimes).text(playbackTime.substring(0, playbackTime.indexOf('/')));
             this.controlsFunctions.updatePlayerProgress(currentTime);
         }
     }

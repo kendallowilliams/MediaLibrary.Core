@@ -336,7 +336,7 @@ export default class Player extends BaseClass implements IView {
             currentHours = Math.floor(adjustedTime / 3600),
             currentMinutes = Math.floor((adjustedTime - (currentHours * 3600)) / 60),
             currentSeconds = Math.floor((adjustedTime - (currentMinutes * 60 + currentHours * 3600)) % 60),
-            currentTime = (currentHours > 0 ? currentHours.toString().padStart(2, '0').concat(':') : '')
+            currentTime = (currentHours > 0 ? currentHours.toString().concat(':') : '')
                 .concat(currentMinutes.toString().padStart(2, '0').concat(':'))
                 .concat(currentSeconds.toString().padStart(2, '0'));
 
