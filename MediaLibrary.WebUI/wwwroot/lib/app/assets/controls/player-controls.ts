@@ -178,19 +178,21 @@ export default class PlayerControls {
             type = this.playerConfiguration.properties.SelectedMediaType,
             progress = player.currentTime || 0;
 
-        if (this.playerConfiguration.properties.SelectedMediaType === MediaTypes.Podcast ||
-            this.playerConfiguration.properties.SelectedMediaType === MediaTypes.Television) {
-            $.get('Player/GetPlayerProgress?id=' + id + '&mediaType=' + type, (data: number) => {
-                const savedProgress = data || 0;
+        if (id) {
+            if (this.playerConfiguration.properties.SelectedMediaType === MediaTypes.Podcast ||
+                this.playerConfiguration.properties.SelectedMediaType === MediaTypes.Television) {
+                $.get('Player/GetPlayerProgress?id=' + id + '&mediaType=' + type, (data: number) => {
+                    const savedProgress = data || 0;
 
-                if (this.playerConfiguration.properties.ProgressUpdateInterval < Math.abs(savedProgress - progress)) {
-                    this.controlsFunctions.setCurrentTime(savedProgress);
-                }
+                    if (this.playerConfiguration.properties.ProgressUpdateInterval < Math.abs(savedProgress - progress)) {
+                        this.controlsFunctions.setCurrentTime(savedProgress);
+                    }
 
+                    this.controlsFunctions.play();
+                });
+            } else {
                 this.controlsFunctions.play();
-            });
-        } else {
-            this.controlsFunctions.play();
+            }
         }
     }
 }
