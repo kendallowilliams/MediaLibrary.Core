@@ -16,4 +16,5 @@ export default interface IPlayerConfiguration extends IConfiguration {
     SkipBackwardSeconds: number;
     NowPlayingList: IListItem<number, number>[];
     ProgressUpdateInterval: number;
+    AudioVisualizerBarCount: number;
 }
