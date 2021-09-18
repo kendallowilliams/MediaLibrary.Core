@@ -11,14 +11,14 @@
      style="display: flex" data-action-url="@Url.Action("Index", "Settings")"></div>
 <div id="@(HtmlControlsRepository.MainControlsContainerId)" class="d-none flex-column">
     <div><hr /></div>
-    <div class="d-flex flex-row">
+    <div class="d-flex flex-row bg-dark rounded p-1">
         <div>
-            <button class="btn btn-sm btn-outline-secondary d-none d-md-inline-block @(HtmlControlsRepository.PlayerPreviousButtonsClass)"><i class="fa fa-step-backward"></i></button>
-            <button class="btn btn-sm btn-outline-secondary @(HtmlControlsRepository.PlayerBackwardButtonsClass)"><i class="fa fa-backward"></i></button>
-            <button class="btn btn-outline-secondary @(HtmlControlsRepository.PlayerPlayButtonsClass)"><i class="fa fa-play"></i></button>
-            <button class="btn btn-outline-secondary d-none @(HtmlControlsRepository.PlayerPauseButtonsClass)"><i class="fa fa-pause"></i></button>
-            <button class="btn btn-sm btn-outline-secondary @(HtmlControlsRepository.PlayerForwardButtonsClass)"><i class="fa fa-forward"></i></button>
-            <button class="btn btn-sm btn-outline-secondary d-none d-md-inline-block @(HtmlControlsRepository.PlayerNextButtonsClass)"><i class="fa fa-step-forward"></i></button>
+            <button class="btn btn-sm btn-outline-light d-md-inline-block @(HtmlControlsRepository.PlayerPreviousButtonsClass)"><i class="fa fa-step-backward"></i></button>
+            <button class="btn btn-sm btn-outline-light @(HtmlControlsRepository.PlayerBackwardButtonsClass)"><i class="fa fa-backward"></i></button>
+            <button class="btn btn-outline-light @(HtmlControlsRepository.PlayerPlayButtonsClass)"><i class="fa fa-play"></i></button>
+            <button class="btn btn-outline-light d-none @(HtmlControlsRepository.PlayerPauseButtonsClass)"><i class="fa fa-pause"></i></button>
+            <button class="btn btn-sm btn-outline-light @(HtmlControlsRepository.PlayerForwardButtonsClass)"><i class="fa fa-forward"></i></button>
+            <button class="btn btn-sm btn-outline-light d-none d-md-inline-block @(HtmlControlsRepository.PlayerNextButtonsClass)"><i class="fa fa-step-forward"></i></button>
         </div>
         <div class="d-flex mr-3 ml-3 flex-row align-items-center justify-content-center justify-content-lg-end flex-fill">
             <div class="mr-3 d-none d-lg-block @(HtmlControlsRepository.PlayerSlidersClass) flex-fill" data-slide-started="false"></div>
@@ -27,24 +27,24 @@
         </div>
         <div class="d-flex flex-row">
             <div class="d-flex align-items-center">
-                <button class="btn btn-sm btn-outline-secondary @(HtmlControlsRepository.PlayerShuffleButtonsClass)"><i class="fa fa-random"></i></button>&nbsp;
-                <button data-repeat-type="@(nameof(Enums.RepeatTypes.None))" class="btn btn-sm btn-outline-secondary d-none @(HtmlControlsRepository.PlayerRepeatButtonsClass)">
+                <button class="btn btn-sm btn-outline-light @(HtmlControlsRepository.PlayerShuffleButtonsClass)"><i class="fa fa-random"></i></button>&nbsp;
+                <button data-repeat-type="@(nameof(Enums.RepeatTypes.None))" class="btn btn-sm btn-outline-light d-none @(HtmlControlsRepository.PlayerRepeatButtonsClass)">
                     <i class="fa fa-sync"></i>
                 </button>
-                <button data-repeat-type="@(nameof(Enums.RepeatTypes.RepeatOne))" class="btn btn-sm btn-outline-secondary active d-none @(HtmlControlsRepository.PlayerRepeatOneButtonsClass)">
+                <button data-repeat-type="@(nameof(Enums.RepeatTypes.RepeatOne))" class="btn btn-sm btn-outline-light active d-none @(HtmlControlsRepository.PlayerRepeatOneButtonsClass)">
                     <i class="fa fa-xs fa-sync"><sub>1</sub></i>
                 </button>
-                <button data-repeat-type="@(nameof(Enums.RepeatTypes.RepeatAll))" class="btn btn-sm btn-outline-secondary active d-none @(HtmlControlsRepository.PlayerRepeatAllButtonsClass)">
+                <button data-repeat-type="@(nameof(Enums.RepeatTypes.RepeatAll))" class="btn btn-sm btn-outline-light active d-none @(HtmlControlsRepository.PlayerRepeatAllButtonsClass)">
                     <i class="fa fa-sync"></i>
                 </button>
             </div>
             &nbsp;
             <div class="d-flex align-items-center @(HtmlControlsRepository.PlayerVolumeContainersClass)">
-                <button class="btn btn-sm btn-outline-secondary d-none @(HtmlControlsRepository.PlayerVolumeButtonsClass)"
+                <button class="btn btn-sm btn-outline-light d-none @(HtmlControlsRepository.PlayerVolumeButtonsClass)"
                         data-volume="0">
                     <i class="fa fa-volume-up"></i>
                 </button>
-                <button class="btn btn-sm btn-outline-secondary active d-none @(HtmlControlsRepository.PlayerMuteButtonsClass)">
+                <button class="btn btn-sm btn-outline-light active d-none @(HtmlControlsRepository.PlayerMuteButtonsClass)">
                     <i class="fa fa-volume-mute"></i>
                 </button>
             </div>
