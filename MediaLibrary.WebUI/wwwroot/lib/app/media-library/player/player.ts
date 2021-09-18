@@ -328,7 +328,7 @@ export default class Player extends BaseClass implements IView {
     }
 
     private getPlaybackTime(time, duration): string {
-        return this.getFormattedTime(time).concat('/').concat(this.getFormattedTime(duration));
+        return this.getFormattedTime(time).concat(' / ').concat(this.getFormattedTime(duration));
     }
 
     private getFormattedTime(time): string {
