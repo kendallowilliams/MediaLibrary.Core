@@ -69,6 +69,7 @@ namespace MediaLibrary.WebUI.Repositories
         public static string PlayerSlidersClass { get => "player-slider"; }
         public static string VolumeSlidersClass { get => "volume-slider"; }
         public static string PlayerTimesClass { get => "player-time"; }
+        public static string PlayerShortTimesClass { get => "player-short-time"; }
         public static string AudioVisualizerId { get => "audio-visualizer"; }
         public static string MusicTabListId { get => "music-tab-list"; }
         public static string PlaylistTabListId { get => "playlist-tab-list"; }
