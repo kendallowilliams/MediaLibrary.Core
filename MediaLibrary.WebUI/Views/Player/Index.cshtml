@@ -23,25 +23,25 @@
         </div>
         <hr />
     </div>
-    <div class="card" style="flex: 1 1 auto; overflow-y: auto">
-        <div class="card-body d-flex m-0 p-0 rounded-top" style="flex: 1 1 auto; overflow-y: auto">
+    <div class="card flex-fill" style="overflow-y: auto">
+        <div class="card-body d-flex m-0 p-0 rounded-top flex-fill" style="overflow-y: auto">
             <div id="@(HtmlControlsRepository.PlayerItemsContainerId)" class="@(Model.Configuration.SelectedPlayerPage == Enums.PlayerPages.Index ? string.Empty : "d-none")" style="flex: 1 1 auto; overflow-y: auto"></div>
-            <div id="@(HtmlControlsRepository.PlayerAudioContainerId)" style="flex: 1 1 auto; display: flex; overflow-x: auto" class="@(Model.Configuration.SelectedPlayerPage == Enums.PlayerPages.Audio ? string.Empty : "d-none") flex-column">
+            <div id="@(HtmlControlsRepository.PlayerAudioContainerId)" style="display: flex; overflow-x: auto" class="@(Model.Configuration.SelectedPlayerPage == Enums.PlayerPages.Audio ? string.Empty : "d-none") flex-column flex-fill">
                 <audio id="@(HtmlControlsRepository.MusicPlayerId)" class="d-none" @(Model.Configuration.Muted ? "muted=\"muted\"" : string.Empty) preload="metadata" data-player-page="@(Enums.PlayerPages.Audio)"></audio>
                 <canvas id="@(HtmlControlsRepository.AudioVisualizerId)"></canvas>
             </div>
-            <div id="@(HtmlControlsRepository.PlayerVideoContainerId)" style="flex: 1 1 auto; background-color: black" class="embed-responsive @(Model.Configuration.SelectedPlayerPage == Enums.PlayerPages.Video ? string.Empty : "d-none")">
+            <div id="@(HtmlControlsRepository.PlayerVideoContainerId)" style="background-color: black" class="embed-responsive @(Model.Configuration.SelectedPlayerPage == Enums.PlayerPages.Video ? string.Empty : "d-none") flex-fill">
                 <video id="@(HtmlControlsRepository.VideoPlayerId)" @(Model.Configuration.Muted ? "muted=\"muted\"" : string.Empty) preload="metadata" data-player-page="@(Enums.PlayerPages.Video)" class="embed-responsive-item"></video>
             </div>
         </div>
-        <div class="card-footer d-flex align-items-center" style="flex: 0 0 auto">
+        <div class="card-footer d-flex align-items-center">
             <div>
-                <button class="btn btn-sm btn-outline-secondary @(HtmlControlsRepository.PlayerPreviousButtonsClass)"><i class="fa fa-step-backward"></i></button>
+                <button class="btn btn-sm btn-outline-secondary d-none d-md-inline-block @(HtmlControlsRepository.PlayerPreviousButtonsClass)"><i class="fa fa-step-backward"></i></button>
                 <button class="btn btn-sm btn-outline-secondary @(HtmlControlsRepository.PlayerBackwardButtonsClass)"><i class="fa fa-backward"></i></button>
                 <button class="btn btn-outline-secondary @(HtmlControlsRepository.PlayerPlayButtonsClass)"><i class="fa fa-play"></i></button>
                 <button class="btn btn-outline-secondary d-none @(HtmlControlsRepository.PlayerPauseButtonsClass)"><i class="fa fa-pause"></i></button>
                 <button class="btn btn-sm btn-outline-secondary @(HtmlControlsRepository.PlayerForwardButtonsClass)"><i class="fa fa-forward"></i></button>
-                <button class="btn btn-sm btn-outline-secondary @(HtmlControlsRepository.PlayerNextButtonsClass)"><i class="fa fa-step-forward"></i></button>
+                <button class="btn btn-sm btn-outline-secondary d-none d-md-inline-block @(HtmlControlsRepository.PlayerNextButtonsClass)"><i class="fa fa-step-forward"></i></button>
             </div>
             <div class="d-flex mr-3 ml-3 flex-row align-items-center justify-content-center justify-content-lg-end flex-fill">
                 <div class="mr-3 d-none d-lg-block @(HtmlControlsRepository.PlayerSlidersClass) flex-fill" data-slide-started="false"></div>
