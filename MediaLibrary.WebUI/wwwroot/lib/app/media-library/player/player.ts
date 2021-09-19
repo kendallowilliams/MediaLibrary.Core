@@ -56,7 +56,6 @@ export default class Player extends BaseClass implements IView {
 
     loadView(callback: () => void = () => null): void {
         this.audioVisualizer.prepareCanvas();
-        this.updateScrollTop();
         callback();
     }
 
@@ -219,7 +218,6 @@ export default class Player extends BaseClass implements IView {
                 this.currentlyLoadedId = parseInt(id);
                 $(fields.NowPlayingTitle).text(title.length > 0 ? ': ' + title : title);
                 if (shuffleEnabled && $.inArray(index, this.unPlayedShuffleIds) >= 0) /*then*/ this.unPlayedShuffleIds.splice(this.unPlayedShuffleIds.indexOf(index), 1);
-                this.updateScrollTop();
                 $player.prop('src', url);
                 this.updateActiveMedia();
                 this.audioVisualizer.stop();
@@ -316,16 +314,6 @@ export default class Player extends BaseClass implements IView {
     }
 
     private getPlayers(): HTMLElement[] { return [this.players.MusicPlayer, this.players.VideoPlayer]; }
-
-    private updateScrollTop(): void {
-        const $item = $('li[data-play-index].active');
-
-        if ($item.length > 0) {
-            const container = HtmlControls.Containers().PlayerItemsContainer;
-
-            $(container).scrollTop($(container).scrollTop() - $item.position().top * -1);
-        }
-    }
 
     private getPlaybackTime(time, duration): string {
         return this.getFormattedTime(time).concat(' / ').concat(this.getFormattedTime(duration));

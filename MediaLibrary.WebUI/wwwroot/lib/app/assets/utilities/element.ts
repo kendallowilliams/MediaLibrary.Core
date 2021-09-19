@@ -23,3 +23,12 @@ export function closeFullscreen(): void {
     //    document.msExitFullscreen();
     //}
 }
+
+export function scrollToTop(container: HTMLElement, scrollToTopElement: HTMLElement): void {
+    if (container && scrollToTopElement && container.contains(scrollToTopElement)) {
+        const $item = $(scrollToTopElement),
+            $container = $(container);
+
+        $container.scrollTop($(container).scrollTop() - $item.position().top * -1);
+    }
+}

@@ -67,7 +67,7 @@ export default class AudioVisualizer extends BaseClass {
     draw(id: number): void {
         let width = this.getWidth(),
             height = this.getHeight(),
-            numberOfBars = 128,
+            numberOfBars = this.playerConfiguration.properties.AudioVisualizerBarCount,
             barWidth = this.canvas.width / numberOfBars,
             barHeight = 0,
             discY = 0,
@@ -103,7 +103,7 @@ export default class AudioVisualizer extends BaseClass {
     reset(): void {
         let width = this.getWidth(),
             height = this.getHeight(),
-            numberOfBars = 128,
+            numberOfBars = this.playerConfiguration.properties.AudioVisualizerBarCount,
             barWidth = this.canvas.width / numberOfBars,
             barHeight = 0,
             discY = 0,

@@ -99,12 +99,12 @@ export default class PlayerControls {
 
             $muteVolumeButtons.addClass('d-none');
 
-            if ($.inArray(e.currentTarget, Array.from(buttons.PlayerVolumeButtons)) > 0) {
-                $(buttons.PlayerMuteButtons).removeClass('d-none');
+            if ($.inArray(e.currentTarget, Array.from(buttons.PlayerVolumeButtons)) > -1) {
+                $(Array.from(buttons.PlayerMuteButtons)).removeClass('d-none');
                 $(this.volumeSliders).slider('value', 0);
                 muted = true;
-            } else if ($.inArray(e.currentTarget, Array.from(buttons.PlayerMuteButtons)) > 0) {
-                $(buttons.PlayerVolumeButtons).removeClass('d-none');
+            } else if ($.inArray(e.currentTarget, Array.from(buttons.PlayerMuteButtons)) > -1) {
+                $(Array.from(buttons.PlayerVolumeButtons)).removeClass('d-none');
                 $(this.volumeSliders).slider('value', previousVolume);
             }
 
