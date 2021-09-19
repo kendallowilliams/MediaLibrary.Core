@@ -1,5 +1,6 @@
 ﻿import HtmlControls from "../controls/html-controls";
 import LoadingModal from './loading-modal';
+import * as MessageBox from '../utilities/message-box';
 
 export default class AddNewPodcastModal {
     private modal: HTMLElement;
@@ -19,6 +20,9 @@ export default class AddNewPodcastModal {
             $(this.modal).modal('hide').on('hidden.bs.modal', () => {
                 $.post('Podcast/AddPodcast', { rssFeed: $('#txtNewPodcast').val() }, () => {
                     this.loadFunc(() => LoadingModal.hideLoading());
+                }).fail(_ => {
+                    LoadingModal.hideLoading();
+                    MessageBox.showError('Error', 'Failed to load podcast feed.');
                 });
             });
         });
