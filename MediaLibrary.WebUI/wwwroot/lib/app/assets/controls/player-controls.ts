@@ -201,7 +201,13 @@ export default class PlayerControls {
 
                     LocalStorage.removeItem(localStorageKey);
                     this.controlsFunctions.play();
-                }).fail(_ => LocalStorage.set(localStorageKey, progress.toString()));
+                }).fail(_ => {
+                    if (this.playerConfiguration.properties.ProgressUpdateInterval < Math.abs(localStorageProgress - progress)) {
+                        this.controlsFunctions.setCurrentTime(localStorageProgress);
+                    }
+
+                    this.controlsFunctions.play();
+                });
             } else {
                 this.controlsFunctions.play();
             }
