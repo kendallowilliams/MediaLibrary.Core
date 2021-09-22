@@ -15,6 +15,7 @@ import IListItem from "../../assets/interfaces/list-item-interface";
 import PlayerControls from "../../assets/controls/player-controls";
 import IPlayerControlsFunctions from "../../assets/interfaces/player-controls-functions-interface";
 import Error from "../../assets/data/error";
+import * as LocalStorage from '../../assets/utilities/local_storage';
 
 export default class Player extends BaseClass implements IView {
     private players: { VideoPlayer: HTMLMediaElement, MusicPlayer: HTMLMediaElement };
@@ -448,15 +449,20 @@ export default class Player extends BaseClass implements IView {
         const currentIndex: number = this.playerConfiguration.properties.CurrentItemIndex,
             id: number = parseInt($('[data-play-index="' + currentIndex + '"]').attr('data-item-id')),
             mediaType: MediaTypes = this.playerConfiguration.properties.SelectedMediaType,
-            data = {
-                id: id, mediaType: mediaType, progress: progress
-            },
             $currentItem = $('[data-play-index="' + currentIndex + '"]'),
-            progressUpdateInterval = this.playerConfiguration.properties.ProgressUpdateInterval;
+            progressUpdateInterval = this.playerConfiguration.properties.ProgressUpdateInterval,
+            localStorageKey = LocalStorage.getPlayerProgressKey(id, mediaType),
+            localStorageProgress = LocalStorage.get(localStorageKey) || 0,
+            data = {
+                id: id,
+                mediaType: mediaType,
+                progress: progress > localStorageProgress ? progress : localStorageProgress
+            };
 
         if ($currentItem.attr('data-current-time') !== progress.toString() && progress % progressUpdateInterval === 0 && !isNaN(id)) {
             $currentItem.attr('data-current-time', progress);
-            $.post('Player/UpdatePlayerProgress', data);
+            $.post('Player/UpdatePlayerProgress', data, _ => LocalStorage.removeItem(localStorageKey))
+                .fail(_ => LocalStorage.set(localStorageKey, progress.toString()));
         }
     }
 

@@ -3,6 +3,7 @@ import { getRepeatTypesEnumString } from '../enums/enum-functions';
 import { MediaTypes, RepeatTypes } from '../enums/enums';
 import IPlayerControlsFunctions from '../interfaces/player-controls-functions-interface';
 import PlayerConfiguration from '../models/configurations/player-configuration';
+import * as LocalStorage from '../../assets/utilities/local_storage';
 
 export default class PlayerControls {
     private volumeSliders: HTMLElement[];
@@ -64,6 +65,11 @@ export default class PlayerControls {
         });
         $(controls.PlayerSliders).on('slide', (e, ui) => {
             if ($(e.currentTarget).attr('data-slide-started') === 'true') {
+                const player = this.controlsFunctions.getPlayer(),
+                    id = $(player).attr('data-item-id'),
+                    progressKey = LocalStorage.getPlayerProgressKey(id, this.playerConfiguration.properties.SelectedMediaType);
+
+                if (LocalStorage.containsKey(progressKey)) /*then*/ LocalStorage.removeItem(progressKey);
                 this.controlsFunctions.setCurrentTime(ui.value);
                 $(controls.PlayerTimes).text(this.controlsFunctions.getPlaybackTime(ui.value, $(e.currentTarget).slider('option', 'max')));
             }
@@ -177,23 +183,30 @@ export default class PlayerControls {
         const player = this.controlsFunctions.getPlayer(),
             id = $(player).attr('data-item-id'),
             type = this.playerConfiguration.properties.SelectedMediaType,
+            localStorageKey = LocalStorage.getPlayerProgressKey(id, type),
+            localStorageProgress = parseInt(LocalStorage.get(localStorageKey)) || 0,
             progress = player.currentTime || 0;
 
         if (id) {
             if (this.playerConfiguration.properties.SelectedMediaType === MediaTypes.Podcast ||
                 this.playerConfiguration.properties.SelectedMediaType === MediaTypes.Television) {
                 $.get('Player/GetPlayerProgress?id=' + id + '&mediaType=' + type, (data: number) => {
-                    const savedProgress = data || 0;
+                    let savedProgress = data || 0;
+
+                    savedProgress = savedProgress > localStorageProgress ? savedProgress : localStorageProgress;
 
                     if (this.playerConfiguration.properties.ProgressUpdateInterval < Math.abs(savedProgress - progress)) {
                         this.controlsFunctions.setCurrentTime(savedProgress);
                     }
 
+                    LocalStorage.removeItem(localStorageKey);
                     this.controlsFunctions.play();
-                });
+                }).fail(_ => LocalStorage.set(localStorageKey, progress.toString()));
             } else {
                 this.controlsFunctions.play();
             }
         }
     }
+
+    private getLocalStrage
 }
