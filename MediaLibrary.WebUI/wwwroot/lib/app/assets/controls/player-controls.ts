@@ -185,7 +185,14 @@ export default class PlayerControls {
             type = this.playerConfiguration.properties.SelectedMediaType,
             localStorageKey = LocalStorage.getPlayerProgressKey(id, type),
             localStorageProgress = parseInt(LocalStorage.get(localStorageKey)) || 0,
-            progress = player.currentTime || 0;
+            progress = player.currentTime || 0,
+            play = (currentProgress, updatedProgress) => {
+                if (this.playerConfiguration.properties.ProgressUpdateInterval < Math.abs(updatedProgress - currentProgress)) {
+                    this.controlsFunctions.setCurrentTime(updatedProgress);
+                }
+
+                this.controlsFunctions.play();
+            };
 
         if (id) {
             if (this.playerConfiguration.properties.SelectedMediaType === MediaTypes.Podcast ||
@@ -194,20 +201,9 @@ export default class PlayerControls {
                     let savedProgress = data || 0;
 
                     savedProgress = savedProgress > localStorageProgress ? savedProgress : localStorageProgress;
-
-                    if (this.playerConfiguration.properties.ProgressUpdateInterval < Math.abs(savedProgress - progress)) {
-                        this.controlsFunctions.setCurrentTime(savedProgress);
-                    }
-
+                    play(progress, savedProgress);
                     LocalStorage.removeItem(localStorageKey);
-                    this.controlsFunctions.play();
-                }).fail(_ => {
-                    if (this.playerConfiguration.properties.ProgressUpdateInterval < Math.abs(localStorageProgress - progress)) {
-                        this.controlsFunctions.setCurrentTime(localStorageProgress);
-                    }
-
-                    this.controlsFunctions.play();
-                });
+                }).fail(_ => play(progress, localStorageProgress));
             } else {
                 this.controlsFunctions.play();
             }

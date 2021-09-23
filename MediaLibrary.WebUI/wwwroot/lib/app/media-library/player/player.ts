@@ -209,7 +209,8 @@ export default class Player extends BaseClass implements IView {
                 url = $item.attr('data-play-url'),
                 index = parseInt($item.attr('data-play-index')),
                 id = $item.attr('data-item-id'),
-                title = $item.attr('data-title') || '';
+                title = $item.attr('data-title') || '',
+                mediaType = this.playerConfiguration.properties.SelectedMediaType;
 
             $('li[data-play-index].list-group-item').removeClass('active');
             this.playerConfiguration.properties.CurrentItemIndex = index;
@@ -223,11 +224,30 @@ export default class Player extends BaseClass implements IView {
                 this.updateActiveMedia();
                 this.audioVisualizer.stop();
                 if (triggerPlay) {
-                    if (this.playerConfiguration.properties.SelectedMediaType === MediaTypes.Television &&
+                    if (mediaType === MediaTypes.Television &&
                         this.playerConfiguration.properties.SelectedPlayerPage === PlayerPages.Index) {
                         $(HtmlControls.Buttons().PlayerPlaylistToggleButton).trigger('click');
                     }
-                    $player.trigger('play');
+
+                    if (mediaType === MediaTypes.Podcast || mediaType === MediaTypes.Television) {
+                        const localStorageKey = LocalStorage.getPlayerProgressKey(id, mediaType),
+                            localStorageProgress = parseInt(LocalStorage.get(localStorageKey)) || 0;
+
+                        $.get('Player/GetPlayerProgress?id=' + id + '&mediaType=' + mediaType, (data: number) => {
+                            let savedProgress = data || 0,
+                                currentProgress = $player.prop('currentTime') as number;
+
+                            savedProgress = savedProgress > localStorageProgress ? savedProgress : localStorageProgress;
+
+                            if (this.playerConfiguration.properties.ProgressUpdateInterval < Math.abs(currentProgress - savedProgress)) {
+                                this.controlsFunctions.setCurrentTime(savedProgress);
+                            }
+
+                            $player.trigger('play');
+                        });
+                    } else {
+                        $player.trigger('play');
+                    }
                 }
 
                 this.playerControls.enableDisablePreviousNext();
