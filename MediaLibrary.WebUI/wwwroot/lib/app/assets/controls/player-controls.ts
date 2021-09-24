@@ -175,8 +175,8 @@ export default class PlayerControls {
     }
 
     public showHideMainControls(show: boolean): void {
-        if (show && !this.controlsFunctions.nowPlayingEmpty()) /*then*/ $(HtmlControls.Containers().MainControlsContainer).removeClass('d-none').addClass('d-flex');
-        else $(HtmlControls.Containers().MainControlsContainer).removeClass('d-flex').addClass('d-none');
+        if (show && !this.controlsFunctions.nowPlayingEmpty()) /*then*/ $(HtmlControls.Containers().MainControlsContainers).removeClass('d-none').addClass('d-flex');
+        else $(HtmlControls.Containers().MainControlsContainers).removeClass('d-flex').addClass('d-none');
     }
 
     private playClicked(evt: JQuery.ClickEvent): void {

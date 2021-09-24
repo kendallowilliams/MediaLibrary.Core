@@ -61,7 +61,7 @@ namespace MediaLibrary.WebUI.Repositories
         public static string PodcastSettingsContainerId { get => "podcast-settings-container"; }
         public static string PlayerSettingsContainerId { get => "player-settings-container"; }
         public static string PlaylistListContainerId { get => "playlist-list-container"; }
-        public static string MainControlsContainerId { get => "main-controls-container"; }
+        public static string MainControlsContainersClass { get => "main-controls-container"; }
         public static string PlayerVolumeContainersClass { get => "player-volume-container"; }
         #endregion Container Ids
 
