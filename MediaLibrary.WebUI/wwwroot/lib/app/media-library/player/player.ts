@@ -70,11 +70,24 @@ export default class Player extends BaseClass implements IView {
     private initMediaPlayers(): void {
         $(this.getPlayers()).on('loadedmetadata', e => {
             const currentIndex = this.playerConfiguration.properties.CurrentItemIndex,
-                player: HTMLMediaElement = e.currentTarget as HTMLMediaElement;
+                player: HTMLMediaElement = e.currentTarget as HTMLMediaElement,
+                id = $(player).attr('data-item-id'),
+                mediaType = this.playerConfiguration.properties.SelectedMediaType;
 
-            if (this.playerConfiguration.properties.SelectedMediaType === MediaTypes.Podcast ||
-                this.playerConfiguration.properties.SelectedMediaType === MediaTypes.Television) {
-                player.currentTime = parseInt($('[data-play-index="' + currentIndex + '"]').attr('data-current-time'));
+            if (mediaType === MediaTypes.Podcast || mediaType === MediaTypes.Television) {
+                const localStorageKey = LocalStorage.getPlayerProgressKey(id, mediaType),
+                    localStorageProgress = parseInt(LocalStorage.get(localStorageKey)) || 0;
+
+                $.get('Player/GetPlayerProgress?id=' + id + '&mediaType=' + mediaType, (data: number) => {
+                    let savedProgress = data || 0,
+                        currentProgress = parseInt($('[data-play-index="' + currentIndex + '"]').attr('data-current-time')) as number;
+
+                    savedProgress = savedProgress > localStorageProgress ? savedProgress : localStorageProgress;
+
+                    if (this.playerConfiguration.properties.ProgressUpdateInterval < Math.abs(currentProgress - savedProgress)) {
+                        this.controlsFunctions.setCurrentTime(savedProgress);
+                    }
+                });
             }
         });
         $(this.getPlayers()).on('ended', e => {
@@ -229,25 +242,7 @@ export default class Player extends BaseClass implements IView {
                         $(HtmlControls.Buttons().PlayerPlaylistToggleButton).trigger('click');
                     }
 
-                    if (mediaType === MediaTypes.Podcast || mediaType === MediaTypes.Television) {
-                        const localStorageKey = LocalStorage.getPlayerProgressKey(id, mediaType),
-                            localStorageProgress = parseInt(LocalStorage.get(localStorageKey)) || 0;
-
-                        $.get('Player/GetPlayerProgress?id=' + id + '&mediaType=' + mediaType, (data: number) => {
-                            let savedProgress = data || 0,
-                                currentProgress = $player.prop('currentTime') as number;
-
-                            savedProgress = savedProgress > localStorageProgress ? savedProgress : localStorageProgress;
-
-                            if (this.playerConfiguration.properties.ProgressUpdateInterval < Math.abs(currentProgress - savedProgress)) {
-                                this.controlsFunctions.setCurrentTime(savedProgress);
-                            }
-
-                            $player.trigger('play');
-                        });
-                    } else {
-                        $player.trigger('play');
-                    }
+                    $player.trigger('play');
                 }
 
                 this.playerControls.enableDisablePreviousNext();

@@ -95,6 +95,7 @@ namespace MediaLibrary.BLL.Services
                 }
             }
         }
+
         public async Task<int> GetPlayerProgress(int id, MediaTypes mediaType)
         {
             int progress = default;
@@ -104,7 +105,6 @@ namespace MediaLibrary.BLL.Services
                 if (mediaType == MediaTypes.Podcast)
                 {
                     progress = await dataService.Get<PodcastItem>(item => item.Id == id).ContinueWith(task => task.Result.Progress);
-
                 }
                 else if (mediaType == MediaTypes.Song)
                 {
