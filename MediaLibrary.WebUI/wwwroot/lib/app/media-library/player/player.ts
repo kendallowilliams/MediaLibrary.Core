@@ -75,18 +75,12 @@ export default class Player extends BaseClass implements IView {
                 mediaType = this.playerConfiguration.properties.SelectedMediaType;
 
             if (mediaType === MediaTypes.Podcast || mediaType === MediaTypes.Television) {
-                const localStorageKey = LocalStorage.getPlayerProgressKey(id, mediaType),
-                    localStorageProgress = parseInt(LocalStorage.get(localStorageKey)) || 0;
-
                 $.get('Player/GetPlayerProgress?id=' + id + '&mediaType=' + mediaType, (data: number) => {
                     let savedProgress = data || 0,
                         currentProgress = parseInt($('[data-play-index="' + currentIndex + '"]').attr('data-current-time')) as number;
 
-                    savedProgress = savedProgress > localStorageProgress ? savedProgress : localStorageProgress;
-
-                    if (this.playerConfiguration.properties.ProgressUpdateInterval < Math.abs(currentProgress - savedProgress)) {
-                        this.controlsFunctions.setCurrentTime(savedProgress);
-                    }
+                    savedProgress = savedProgress > currentProgress ? savedProgress : currentProgress;
+                    player.currentTime = savedProgress;
                 });
             }
         });
@@ -104,14 +98,7 @@ export default class Player extends BaseClass implements IView {
             this.playerControls.durationChanged(player.duration, this.getPlaybackTime(player.currentTime, player.duration));
         });
 
-        $(this.getPlayers()).on('timeupdate', e => {
-            const player: HTMLMediaElement = e.currentTarget as HTMLMediaElement,
-                currentTime: number = Math.floor(player.currentTime);
-
-            if ($(player).attr('data-item-id') && !isNaN(player.duration)) {
-                this.playerControls.timeUpdated(currentTime, this.getPlaybackTime(currentTime, player.duration));
-            }
-        });
+        $(this.getPlayers()).off('timeupdate');
 
         $(this.getPlayers()).on('play', e => {
             const mediaType = this.playerConfiguration.properties.SelectedMediaType;
@@ -210,6 +197,7 @@ export default class Player extends BaseClass implements IView {
         $(this.getPlayers())
             .removeAttr('data-item-id')
             .removeAttr('src')
+            .off('timeupdate')
             .filter((index, element: HTMLMediaElement) => element.readyState !== 0)
             .each((index, element: HTMLMediaElement) => {
                 element.pause();
@@ -241,7 +229,6 @@ export default class Player extends BaseClass implements IView {
                         this.playerConfiguration.properties.SelectedPlayerPage === PlayerPages.Index) {
                         $(HtmlControls.Buttons().PlayerPlaylistToggleButton).trigger('click');
                     }
-
                     $player.trigger('play');
                 }
 
@@ -250,6 +237,8 @@ export default class Player extends BaseClass implements IView {
         } else if ($('li[data-play-index].active').length === 1) {
             this.loadItem($('li[data-play-index].active')[0], triggerPlay);
         }
+
+        $(this.getPlayers()).on('timeupdate', this.timeUpdated.bind(this));
     }
 
     private loadNext(): void {
@@ -476,6 +465,7 @@ export default class Player extends BaseClass implements IView {
 
         if ($currentItem.attr('data-current-time') !== progress.toString() && progress % progressUpdateInterval === 0 && !isNaN(id)) {
             $currentItem.attr('data-current-time', progress);
+
             $.post('Player/UpdatePlayerProgress', data, _ => LocalStorage.removeItem(localStorageKey))
                 .fail(_ => LocalStorage.set(localStorageKey, progress.toString()));
         }
@@ -500,5 +490,16 @@ export default class Player extends BaseClass implements IView {
 
     public getPlayerControls(): PlayerControls {
         return this.playerControls;
+    }
+
+    private timeUpdated(e: JQuery.TriggeredEvent<HTMLElement, undefined, HTMLElement, HTMLElement>): void {
+        const player: HTMLMediaElement = e.currentTarget as HTMLMediaElement,
+            currentTime: number = Math.floor(player.currentTime);
+
+        if ($(player).attr('data-item-id') && !isNaN(player.duration)) {
+            this.playerControls.timeUpdated(currentTime,
+                this.getPlaybackTime(currentTime, player.duration),
+                () => this.updatePlayerProgress(currentTime));
+        }
     }
 }

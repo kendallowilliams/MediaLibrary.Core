@@ -162,7 +162,7 @@ export default class PlayerControls {
         $(controls.PlayerTimes).text(playbackTime);
     }
 
-    public timeUpdated(currentTime: number, playbackTime: string): void {
+    public timeUpdated(currentTime: number, playbackTime: string, callback: () => void = () => null): void {
         const controls = HtmlControls.UIControls();
 
         this.enableDisablePreviousNext();
@@ -170,7 +170,7 @@ export default class PlayerControls {
             $(controls.PlayerSliders).slider('value', currentTime);
             $(controls.PlayerTimes).text(playbackTime);
             $(controls.PlayerShortTimes).text(playbackTime.substring(0, playbackTime.indexOf('/')));
-            this.controlsFunctions.updatePlayerProgress(currentTime);
+            callback();
         }
     }
 
