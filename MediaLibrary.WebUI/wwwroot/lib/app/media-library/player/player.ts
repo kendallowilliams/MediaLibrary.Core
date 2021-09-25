@@ -460,18 +460,18 @@ export default class Player extends BaseClass implements IView {
             $currentItem = $('[data-play-index="' + currentIndex + '"]'),
             progressUpdateInterval = this.playerConfiguration.properties.ProgressUpdateInterval,
             localStorageKey = LocalStorage.getPlayerProgressKey(id, mediaType),
-            localStorageProgress = LocalStorage.get(localStorageKey) || 0,
+            localStorageProgress = parseInt(LocalStorage.get(localStorageKey)) || 0,
             data = {
                 id: id,
                 mediaType: mediaType,
                 progress: progress > localStorageProgress ? progress : localStorageProgress
             };
 
-        if ($currentItem.attr('data-current-time') !== progress.toString() && progress % progressUpdateInterval === 0 && !isNaN(id)) {
-            $currentItem.attr('data-current-time', progress);
+        if ($currentItem.attr('data-current-time') !== data.progress.toString() && data.progress % progressUpdateInterval === 0 && !isNaN(id)) {
+            $currentItem.attr('data-current-time', data.progress);
 
             $.post('Player/UpdatePlayerProgress', data, _ => LocalStorage.removeItem(localStorageKey))
-                .fail(_ => LocalStorage.set(localStorageKey, progress.toString()));
+                .fail(_ => LocalStorage.set(localStorageKey, data.progress.toString()));
         }
     }
 
