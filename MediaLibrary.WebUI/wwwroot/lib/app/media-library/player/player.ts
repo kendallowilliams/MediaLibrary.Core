@@ -73,18 +73,19 @@ export default class Player extends BaseClass implements IView {
                 player: HTMLMediaElement = e.currentTarget as HTMLMediaElement,
                 id = $(player).attr('data-item-id'),
                 mediaType = this.playerConfiguration.properties.SelectedMediaType,
-                localStorageKey = LocalStorage.getPlayerProgressKey(id, mediaType),
-                localStorageProgress = parseInt(LocalStorage.get(localStorageKey)) || 0;
+                currentProgress = parseInt($('[data-play-index="' + currentIndex + '"]').attr('data-current-time')) || 0;
 
             if (mediaType === MediaTypes.Podcast || mediaType === MediaTypes.Television) {
                 $.get('Player/GetPlayerProgress?id=' + id + '&mediaType=' + mediaType, (data: number) => {
-                    let savedProgress = data || 0,
-                        currentProgress = parseInt($('[data-play-index="' + currentIndex + '"]').attr('data-current-time')) as number;
+                    let savedProgress = data || 0;
 
                     savedProgress = savedProgress > currentProgress ? savedProgress : currentProgress;
                     player.currentTime = savedProgress;
                 }).fail(_ => {
-                    if (LocalStorage.containsKey(localStorageKey)) /*then*/ player.currentTime = localStorageProgress;
+                    const localStorageKey = LocalStorage.getPlayerProgressKey(id, mediaType),
+                        localStorageProgress = parseInt(LocalStorage.get(localStorageKey)) || 0;
+
+                    player.currentTime = localStorageProgress > currentProgress ? localStorageProgress : currentProgress;
                 });
             }
         });
