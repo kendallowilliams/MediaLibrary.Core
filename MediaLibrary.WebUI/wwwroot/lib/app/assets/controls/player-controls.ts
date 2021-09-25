@@ -185,7 +185,7 @@ export default class PlayerControls {
             type = this.playerConfiguration.properties.SelectedMediaType,
             localStorageKey = LocalStorage.getPlayerProgressKey(id, type),
             localStorageProgress = parseInt(LocalStorage.get(localStorageKey)) || 0,
-            progress = player.currentTime || 0,
+            currentProgress = player.currentTime || 0,
             play = (currentProgress, updatedProgress) => {
                 if (this.playerConfiguration.properties.ProgressUpdateInterval < Math.abs(updatedProgress - currentProgress)) {
                     this.controlsFunctions.setCurrentTime(updatedProgress);
@@ -197,13 +197,19 @@ export default class PlayerControls {
         if (id) {
             if (this.playerConfiguration.properties.SelectedMediaType === MediaTypes.Podcast ||
                 this.playerConfiguration.properties.SelectedMediaType === MediaTypes.Television) {
-                $.get('Player/GetPlayerProgress?id=' + id + '&mediaType=' + type, (data: number) => {
-                    let savedProgress = data || 0;
+                $.get('Player/GetPlayerProgress?id=' + id + '&mediaType=' + type, (data: number) => Math.max(currentProgress, data, localStorageProgress))
+                    .done(_progress => {
+                        LocalStorage.removeItem(localStorageKey);
+                        return _progress;
+                    })
+                    .fail(_ => Math.max(currentProgress, localStorageProgress))
+                    .always(_updatedProgress => {
+                        if (this.playerConfiguration.properties.ProgressUpdateInterval < Math.abs(_updatedProgress - currentProgress)) {
+                            this.controlsFunctions.setCurrentTime(_updatedProgress);
+                        }
 
-                    savedProgress = savedProgress > localStorageProgress ? savedProgress : localStorageProgress;
-                    play(progress, savedProgress);
-                    LocalStorage.removeItem(localStorageKey);
-                }).fail(_ => play(progress, localStorageProgress));
+                        this.controlsFunctions.play();
+                    });
             } else {
                 this.controlsFunctions.play();
             }
