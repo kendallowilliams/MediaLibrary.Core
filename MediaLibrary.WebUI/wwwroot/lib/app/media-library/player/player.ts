@@ -22,7 +22,6 @@ export default class Player extends BaseClass implements IView {
     private unPlayedShuffleIds: number[];
     private audioVisualizer: AudioVisualizer;
     private playerView: HTMLElement;
-    private currentlyLoadedId: number;
     private playerControls: PlayerControls;
     private controlsFunctions: IPlayerControlsFunctions = {
         next: this.loadNext.bind(this),
@@ -51,7 +50,6 @@ export default class Player extends BaseClass implements IView {
         this.unPlayedShuffleIds = [];
         this.audioVisualizer = new AudioVisualizer(this.playerConfiguration, this.players.MusicPlayer);
         this.initPlayer();
-        this.currentlyLoadedId = 0;
         this.playerControls = new PlayerControls(this.controlsFunctions, this.playerConfiguration);
     }
 
@@ -211,12 +209,12 @@ export default class Player extends BaseClass implements IView {
                 title = $item.attr('data-title') || '',
                 mediaType = this.playerConfiguration.properties.SelectedMediaType;
 
+            this.updateActiveMedia();
             $('li[data-play-index].list-group-item').removeClass('active');
             this.playerConfiguration.properties.CurrentItemIndex = index;
             this.playerConfiguration.updateConfiguration(() => {
                 $item.addClass('active');
                 $player.attr('data-item-id', id);
-                this.currentlyLoadedId = parseInt(id);
                 $(fields.NowPlayingTitle).text(title.length > 0 ? ': ' + title : title);
                 if (shuffleEnabled && $.inArray(index, this.unPlayedShuffleIds) >= 0) /*then*/ this.unPlayedShuffleIds.splice(this.unPlayedShuffleIds.indexOf(index), 1);
                 $player.prop('src', url);
@@ -444,7 +442,7 @@ export default class Player extends BaseClass implements IView {
     }
 
     public getCurrentlyLoadedId(): number {
-        return this.currentlyLoadedId;
+        return parseInt($(this.getPlayer()).attr('data-item-id'));
     }
 
     private updatePlayerProgress(progress: number): void {
