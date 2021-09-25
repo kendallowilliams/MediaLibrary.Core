@@ -9,7 +9,7 @@
      style="display: flex"></div>
 <div id="@(HtmlControlsRepository.SettingsViewId)" class="@((Model.Configuration.SelectedMediaPage == Enums.MediaPages.Settings) ? "d-none" : string.Empty) flex-column flex-fill overflow-auto"
      style="display: flex" data-action-url="@Url.Action("Index", "Settings")"></div>
-<div id="@(HtmlControlsRepository.MainControlsContainerId)" class="d-none flex-column">
+<div class="@(HtmlControlsRepository.MainControlsContainersClass) d-none flex-column">
     <div><hr /></div>
     <div class="d-flex flex-row border rounded p-1 bg-light">
         <div>

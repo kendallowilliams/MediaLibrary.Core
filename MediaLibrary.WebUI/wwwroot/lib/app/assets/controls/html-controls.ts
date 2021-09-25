@@ -31,7 +31,7 @@
     }),
     Containers: () => ({
         NavBarContainer: document.getElementById('navbar-container'),
-        MainControlsContainer: document.getElementById('main-controls-container'),
+        MainControlsContainers: document.getElementsByClassName('main-controls-container'),
         PlayerVideoContainer: document.getElementById('video-container'),
         PlayerAudioContainer: document.getElementById('audio-container'),
         PlayerItemsContainer: document.getElementById('player-items-container'),

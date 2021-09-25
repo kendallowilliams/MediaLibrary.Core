@@ -15,13 +15,13 @@ import IListItem from "../../assets/interfaces/list-item-interface";
 import PlayerControls from "../../assets/controls/player-controls";
 import IPlayerControlsFunctions from "../../assets/interfaces/player-controls-functions-interface";
 import Error from "../../assets/data/error";
+import * as LocalStorage from '../../assets/utilities/local_storage';
 
 export default class Player extends BaseClass implements IView {
     private players: { VideoPlayer: HTMLMediaElement, MusicPlayer: HTMLMediaElement };
     private unPlayedShuffleIds: number[];
     private audioVisualizer: AudioVisualizer;
     private playerView: HTMLElement;
-    private currentlyLoadedId: number;
     private playerControls: PlayerControls;
     private controlsFunctions: IPlayerControlsFunctions = {
         next: this.loadNext.bind(this),
@@ -50,7 +50,6 @@ export default class Player extends BaseClass implements IView {
         this.unPlayedShuffleIds = [];
         this.audioVisualizer = new AudioVisualizer(this.playerConfiguration, this.players.MusicPlayer);
         this.initPlayer();
-        this.currentlyLoadedId = 0;
         this.playerControls = new PlayerControls(this.controlsFunctions, this.playerConfiguration);
     }
 
@@ -69,11 +68,16 @@ export default class Player extends BaseClass implements IView {
     private initMediaPlayers(): void {
         $(this.getPlayers()).on('loadedmetadata', e => {
             const currentIndex = this.playerConfiguration.properties.CurrentItemIndex,
-                player: HTMLMediaElement = e.currentTarget as HTMLMediaElement;
+                player: HTMLMediaElement = e.currentTarget as HTMLMediaElement,
+                id = $(player).attr('data-item-id'),
+                mediaType = this.playerConfiguration.properties.SelectedMediaType,
+                currentProgress = parseInt($('[data-play-index="' + currentIndex + '"]').attr('data-current-time')) || 0,
+                localStorageKey = LocalStorage.getPlayerProgressKey(id, mediaType);
 
-            if (this.playerConfiguration.properties.SelectedMediaType === MediaTypes.Podcast ||
-                this.playerConfiguration.properties.SelectedMediaType === MediaTypes.Television) {
-                player.currentTime = parseInt($('[data-play-index="' + currentIndex + '"]').attr('data-current-time'));
+            if (mediaType === MediaTypes.Podcast || mediaType === MediaTypes.Television) {
+                $.get('Player/GetPlayerProgress?id=' + id + '&mediaType=' + mediaType, (data: number) => Math.max(data, currentProgress))
+                    .fail(_ => Math.max(parseInt(LocalStorage.get(localStorageKey)) || 0, currentProgress))
+                    .always(_currentProgress => player.currentTime = _currentProgress);
             }
         });
         $(this.getPlayers()).on('ended', e => {
@@ -90,14 +94,7 @@ export default class Player extends BaseClass implements IView {
             this.playerControls.durationChanged(player.duration, this.getPlaybackTime(player.currentTime, player.duration));
         });
 
-        $(this.getPlayers()).on('timeupdate', e => {
-            const player: HTMLMediaElement = e.currentTarget as HTMLMediaElement,
-                currentTime: number = Math.floor(player.currentTime);
-
-            if ($(player).attr('data-item-id') && !isNaN(player.duration)) {
-                this.playerControls.timeUpdated(currentTime, this.getPlaybackTime(currentTime, player.duration));
-            }
-        });
+        $(this.getPlayers()).off('timeupdate');
 
         $(this.getPlayers()).on('play', e => {
             const mediaType = this.playerConfiguration.properties.SelectedMediaType;
@@ -196,6 +193,7 @@ export default class Player extends BaseClass implements IView {
         $(this.getPlayers())
             .removeAttr('data-item-id')
             .removeAttr('src')
+            .off('timeupdate')
             .filter((index, element: HTMLMediaElement) => element.readyState !== 0)
             .each((index, element: HTMLMediaElement) => {
                 element.pause();
@@ -208,21 +206,22 @@ export default class Player extends BaseClass implements IView {
                 url = $item.attr('data-play-url'),
                 index = parseInt($item.attr('data-play-index')),
                 id = $item.attr('data-item-id'),
-                title = $item.attr('data-title') || '';
+                title = $item.attr('data-title') || '',
+                mediaType = this.playerConfiguration.properties.SelectedMediaType;
 
+            this.updateActiveMedia();
             $('li[data-play-index].list-group-item').removeClass('active');
             this.playerConfiguration.properties.CurrentItemIndex = index;
             this.playerConfiguration.updateConfiguration(() => {
                 $item.addClass('active');
                 $player.attr('data-item-id', id);
-                this.currentlyLoadedId = parseInt(id);
                 $(fields.NowPlayingTitle).text(title.length > 0 ? ': ' + title : title);
                 if (shuffleEnabled && $.inArray(index, this.unPlayedShuffleIds) >= 0) /*then*/ this.unPlayedShuffleIds.splice(this.unPlayedShuffleIds.indexOf(index), 1);
                 $player.prop('src', url);
                 this.updateActiveMedia();
                 this.audioVisualizer.stop();
                 if (triggerPlay) {
-                    if (this.playerConfiguration.properties.SelectedMediaType === MediaTypes.Television &&
+                    if (mediaType === MediaTypes.Television &&
                         this.playerConfiguration.properties.SelectedPlayerPage === PlayerPages.Index) {
                         $(HtmlControls.Buttons().PlayerPlaylistToggleButton).trigger('click');
                     }
@@ -234,6 +233,8 @@ export default class Player extends BaseClass implements IView {
         } else if ($('li[data-play-index].active').length === 1) {
             this.loadItem($('li[data-play-index].active')[0], triggerPlay);
         }
+
+        $(this.getPlayers()).on('timeupdate', this.timeUpdated.bind(this));
     }
 
     private loadNext(): void {
@@ -441,22 +442,28 @@ export default class Player extends BaseClass implements IView {
     }
 
     public getCurrentlyLoadedId(): number {
-        return this.currentlyLoadedId;
+        return parseInt($(this.getPlayer()).attr('data-item-id'));
     }
 
     private updatePlayerProgress(progress: number): void {
         const currentIndex: number = this.playerConfiguration.properties.CurrentItemIndex,
             id: number = parseInt($('[data-play-index="' + currentIndex + '"]').attr('data-item-id')),
             mediaType: MediaTypes = this.playerConfiguration.properties.SelectedMediaType,
-            data = {
-                id: id, mediaType: mediaType, progress: progress
-            },
             $currentItem = $('[data-play-index="' + currentIndex + '"]'),
-            progressUpdateInterval = this.playerConfiguration.properties.ProgressUpdateInterval;
+            progressUpdateInterval = this.playerConfiguration.properties.ProgressUpdateInterval,
+            localStorageKey = LocalStorage.getPlayerProgressKey(id, mediaType),
+            localStorageProgress = parseInt(LocalStorage.get(localStorageKey)) || 0,
+            data = {
+                id: id,
+                mediaType: mediaType,
+                progress: progress > localStorageProgress ? progress : localStorageProgress
+            };
 
-        if ($currentItem.attr('data-current-time') !== progress.toString() && progress % progressUpdateInterval === 0 && !isNaN(id)) {
-            $currentItem.attr('data-current-time', progress);
-            $.post('Player/UpdatePlayerProgress', data);
+        if ($currentItem.attr('data-current-time') !== data.progress.toString() && data.progress % progressUpdateInterval === 0 && !isNaN(id)) {
+            $currentItem.attr('data-current-time', data.progress);
+
+            $.post('Player/UpdatePlayerProgress', data, _ => LocalStorage.removeItem(localStorageKey))
+                .fail(_ => LocalStorage.set(localStorageKey, data.progress.toString()));
         }
     }
 
@@ -479,5 +486,16 @@ export default class Player extends BaseClass implements IView {
 
     public getPlayerControls(): PlayerControls {
         return this.playerControls;
+    }
+
+    private timeUpdated(e: JQuery.TriggeredEvent<HTMLElement, undefined, HTMLElement, HTMLElement>): void {
+        const player: HTMLMediaElement = e.currentTarget as HTMLMediaElement,
+            currentTime: number = Math.floor(player.currentTime);
+
+        if ($(player).attr('data-item-id') && !isNaN(player.duration)) {
+            this.playerControls.timeUpdated(currentTime,
+                this.getPlaybackTime(currentTime, player.duration),
+                () => this.updatePlayerProgress(currentTime));
+        }
     }
 }

@@ -3,6 +3,7 @@ import { getRepeatTypesEnumString } from '../enums/enum-functions';
 import { MediaTypes, RepeatTypes } from '../enums/enums';
 import IPlayerControlsFunctions from '../interfaces/player-controls-functions-interface';
 import PlayerConfiguration from '../models/configurations/player-configuration';
+import * as LocalStorage from '../../assets/utilities/local_storage';
 
 export default class PlayerControls {
     private volumeSliders: HTMLElement[];
@@ -64,6 +65,11 @@ export default class PlayerControls {
         });
         $(controls.PlayerSliders).on('slide', (e, ui) => {
             if ($(e.currentTarget).attr('data-slide-started') === 'true') {
+                const player = this.controlsFunctions.getPlayer(),
+                    id = $(player).attr('data-item-id'),
+                    progressKey = LocalStorage.getPlayerProgressKey(id, this.playerConfiguration.properties.SelectedMediaType);
+
+                if (LocalStorage.containsKey(progressKey)) /*then*/ LocalStorage.removeItem(progressKey);
                 this.controlsFunctions.setCurrentTime(ui.value);
                 $(controls.PlayerTimes).text(this.controlsFunctions.getPlaybackTime(ui.value, $(e.currentTarget).slider('option', 'max')));
             }
@@ -156,7 +162,7 @@ export default class PlayerControls {
         $(controls.PlayerTimes).text(playbackTime);
     }
 
-    public timeUpdated(currentTime: number, playbackTime: string): void {
+    public timeUpdated(currentTime: number, playbackTime: string, callback: () => void = () => null): void {
         const controls = HtmlControls.UIControls();
 
         this.enableDisablePreviousNext();
@@ -164,36 +170,51 @@ export default class PlayerControls {
             $(controls.PlayerSliders).slider('value', currentTime);
             $(controls.PlayerTimes).text(playbackTime);
             $(controls.PlayerShortTimes).text(playbackTime.substring(0, playbackTime.indexOf('/')));
-            this.controlsFunctions.updatePlayerProgress(currentTime);
+            callback();
         }
     }
 
     public showHideMainControls(show: boolean): void {
-        if (show && !this.controlsFunctions.nowPlayingEmpty()) /*then*/ $(HtmlControls.Containers().MainControlsContainer).removeClass('d-none').addClass('d-flex');
-        else $(HtmlControls.Containers().MainControlsContainer).removeClass('d-flex').addClass('d-none');
+        if (show && !this.controlsFunctions.nowPlayingEmpty()) /*then*/ $(HtmlControls.Containers().MainControlsContainers).removeClass('d-none').addClass('d-flex');
+        else $(HtmlControls.Containers().MainControlsContainers).removeClass('d-flex').addClass('d-none');
     }
 
     private playClicked(evt: JQuery.ClickEvent): void {
         const player = this.controlsFunctions.getPlayer(),
             id = $(player).attr('data-item-id'),
             type = this.playerConfiguration.properties.SelectedMediaType,
-            progress = player.currentTime || 0;
+            localStorageKey = LocalStorage.getPlayerProgressKey(id, type),
+            localStorageProgress = parseInt(LocalStorage.get(localStorageKey)) || 0,
+            currentProgress = player.currentTime || 0,
+            play = (currentProgress, updatedProgress) => {
+                if (this.playerConfiguration.properties.ProgressUpdateInterval < Math.abs(updatedProgress - currentProgress)) {
+                    this.controlsFunctions.setCurrentTime(updatedProgress);
+                }
+
+                this.controlsFunctions.play();
+            };
 
         if (id) {
             if (this.playerConfiguration.properties.SelectedMediaType === MediaTypes.Podcast ||
                 this.playerConfiguration.properties.SelectedMediaType === MediaTypes.Television) {
-                $.get('Player/GetPlayerProgress?id=' + id + '&mediaType=' + type, (data: number) => {
-                    const savedProgress = data || 0;
+                $.get('Player/GetPlayerProgress?id=' + id + '&mediaType=' + type, (data: number) => Math.max(currentProgress, data, localStorageProgress))
+                    .done(_progress => {
+                        LocalStorage.removeItem(localStorageKey);
+                        return _progress;
+                    })
+                    .fail(_ => Math.max(currentProgress, localStorageProgress))
+                    .always(_updatedProgress => {
+                        if (this.playerConfiguration.properties.ProgressUpdateInterval < Math.abs(_updatedProgress - currentProgress)) {
+                            this.controlsFunctions.setCurrentTime(_updatedProgress);
+                        }
 
-                    if (this.playerConfiguration.properties.ProgressUpdateInterval < Math.abs(savedProgress - progress)) {
-                        this.controlsFunctions.setCurrentTime(savedProgress);
-                    }
-
-                    this.controlsFunctions.play();
-                });
+                        this.controlsFunctions.play();
+                    });
             } else {
                 this.controlsFunctions.play();
             }
         }
     }
+
+    private getLocalStrage
 }
