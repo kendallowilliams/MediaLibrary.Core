@@ -73,20 +73,13 @@ export default class Player extends BaseClass implements IView {
                 player: HTMLMediaElement = e.currentTarget as HTMLMediaElement,
                 id = $(player).attr('data-item-id'),
                 mediaType = this.playerConfiguration.properties.SelectedMediaType,
-                currentProgress = parseInt($('[data-play-index="' + currentIndex + '"]').attr('data-current-time')) || 0;
+                currentProgress = parseInt($('[data-play-index="' + currentIndex + '"]').attr('data-current-time')) || 0,
+                localStorageKey = LocalStorage.getPlayerProgressKey(id, mediaType);
 
             if (mediaType === MediaTypes.Podcast || mediaType === MediaTypes.Television) {
-                $.get('Player/GetPlayerProgress?id=' + id + '&mediaType=' + mediaType, (data: number) => {
-                    let savedProgress = data || 0;
-
-                    savedProgress = savedProgress > currentProgress ? savedProgress : currentProgress;
-                    player.currentTime = savedProgress;
-                }).fail(_ => {
-                    const localStorageKey = LocalStorage.getPlayerProgressKey(id, mediaType),
-                        localStorageProgress = parseInt(LocalStorage.get(localStorageKey)) || 0;
-
-                    player.currentTime = localStorageProgress > currentProgress ? localStorageProgress : currentProgress;
-                });
+                $.get('Player/GetPlayerProgress?id=' + id + '&mediaType=' + mediaType, (data: number) => Math.max(data, currentProgress))
+                    .fail(_ => Math.max(parseInt(LocalStorage.get(localStorageKey)) || 0, currentProgress))
+                    .always(_currentProgress => player.currentTime = _currentProgress);
             }
         });
         $(this.getPlayers()).on('ended', e => {
