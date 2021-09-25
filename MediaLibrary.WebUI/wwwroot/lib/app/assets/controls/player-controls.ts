@@ -215,6 +215,4 @@ export default class PlayerControls {
             }
         }
     }
-
-    private getLocalStrage
 }
