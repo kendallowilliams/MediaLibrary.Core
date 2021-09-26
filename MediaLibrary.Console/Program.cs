@@ -2,6 +2,7 @@
 using MediaLibrary.Console.HostedServices;
 using MediaLibrary.Shared.Services;
 using MediaLibrary.Shared.Services.Interfaces;
+using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
@@ -18,10 +19,11 @@ namespace MediaLibrary.Console
             await Host.CreateDefaultBuilder(args)
                       .ConfigureServices((context, services) => 
                       {
-                          MefService mefService = new MefService(AppDomain.CurrentDomain.BaseDirectory, context.Configuration);
-
+                          services.AddMemoryCache();
                           services.AddHostedService<AppHostedService>();
-                          services.AddSingleton<IMefService>(mefService);
+                          services.AddSingleton<IMefService>(serviceProvider => new MefService(AppDomain.CurrentDomain.BaseDirectory, 
+                                                                                               context.Configuration, 
+                                                                                               serviceProvider.GetRequiredService<IMemoryCache>()));
                       })
                       .Build()
                       .RunAsync();
