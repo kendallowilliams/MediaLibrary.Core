@@ -89,4 +89,10 @@
     <Build Include="dbo\Tables\TrackPath.sql" />
     <Build Include="dbo\Tables\Transaction.sql" />
   </ItemGroup>
+  <ItemGroup>
+    <SqlCmdVariable Include="series_root">
+      <DefaultValue>S:\online_video</DefaultValue>
+      <Value>$(SqlCmdVar__1)</Value>
+    </SqlCmdVariable>
+  </ItemGroup>
 </Project>
