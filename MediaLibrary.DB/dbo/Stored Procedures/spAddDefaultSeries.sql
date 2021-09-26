@@ -1169,13 +1169,13 @@ BEGIN
 	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Court Martial',@StarTrekTOSId,1,CONCAT(@StarTrekTOSPath,'/S1','/21.mp4'));
 	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('The Return Of The Archons',@StarTrekTOSId,1,CONCAT(@StarTrekTOSPath,'/S1','/22.mp4'));
 	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Space Seed',@StarTrekTOSId,1,CONCAT(@StarTrekTOSPath,'/S1','/23.mp4'));
-	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('A Taste Of Armageddon',@StarTrekTOSId,1,CONCAT(@StarTrekTOSPath,'/S1','/25.mp4'));
-	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('This Side Of Paradise',@StarTrekTOSId,1,CONCAT(@StarTrekTOSPath,'/S1','/26.mp4'));
-	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('The Devil In The Dark',@StarTrekTOSId,1,CONCAT(@StarTrekTOSPath,'/S1','/27.mp4'));
-	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Errand Of Mercy',@StarTrekTOSId,1,CONCAT(@StarTrekTOSPath,'/S1','/28.mp4'));
-	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('The Alternative Factor',@StarTrekTOSId,1,CONCAT(@StarTrekTOSPath,'/S1','/29.mp4'));
-	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('The City On The Edge Of Forever',@StarTrekTOSId,1,CONCAT(@StarTrekTOSPath,'/S1','/30.mp4'));
-	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Operation -- Annihilate!',@StarTrekTOSId,1,CONCAT(@StarTrekTOSPath,'/S1','/31.mp4'));
+	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('A Taste Of Armageddon',@StarTrekTOSId,1,CONCAT(@StarTrekTOSPath,'/S1','/24.mp4'));
+	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('This Side Of Paradise',@StarTrekTOSId,1,CONCAT(@StarTrekTOSPath,'/S1','/25.mp4'));
+	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('The Devil In The Dark',@StarTrekTOSId,1,CONCAT(@StarTrekTOSPath,'/S1','/26.mp4'));
+	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Errand Of Mercy',@StarTrekTOSId,1,CONCAT(@StarTrekTOSPath,'/S1','/27.mp4'));
+	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('The Alternative Factor',@StarTrekTOSId,1,CONCAT(@StarTrekTOSPath,'/S1','/28.mp4'));
+	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('The City On The Edge Of Forever',@StarTrekTOSId,1,CONCAT(@StarTrekTOSPath,'/S1','/29.mp4'));
+	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Operation -- Annihilate!',@StarTrekTOSId,1,CONCAT(@StarTrekTOSPath,'/S1','/30.mp4'));
 	/* STAR TREK: THE ORIGINAL SERIES SEASON TW0 */
 	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Amok Time',@StarTrekTOSId,2,CONCAT(@StarTrekTOSPath,'/S2','/01.mp4'));
 	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Who Mourns For Adonais?',@StarTrekTOSId,2,CONCAT(@StarTrekTOSPath,'/S2','/02.mp4'));
