@@ -1146,7 +1146,7 @@ END
 /* STAR TREK: THE ORIGINAL SERIES */
 BEGIN
 	/* STAR TREK: THE ORIGINAL SERIES SEASON ONE */
-	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('The Cage',@StarTrekTOSId,1,CONCAT(@StarTrekTOSPath,'/S1','/.mp4'));
+	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('The Cage',@StarTrekTOSId,1,CONCAT(@StarTrekTOSPath,'/S1','/01.mp4'));
 	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('The Man Trap',@StarTrekTOSId,1,CONCAT(@StarTrekTOSPath,'/S1','/02.mp4'));
 	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Charlie X',@StarTrekTOSId,1,CONCAT(@StarTrekTOSPath,'/S1','/03.mp4'));
 	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Where No Man Has Gone Before',@StarTrekTOSId,1,CONCAT(@StarTrekTOSPath,'/S1','/04.mp4'));
