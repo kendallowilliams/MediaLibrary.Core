@@ -32,5 +32,5 @@ export function containsKey(key: string): boolean {
 /* KEY GENERATORS */
 
 export function getPlayerProgressKey(id: number | string, mediaType: MediaTypes): string {
-    return 'Player_Progress_' + getMediaTypesEnumString(mediaType) + '_' + id.toString();
+    return id ? 'Player_Progress_' + getMediaTypesEnumString(mediaType) + '_' + id.toString() : null;
 }

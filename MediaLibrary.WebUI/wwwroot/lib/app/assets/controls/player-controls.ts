@@ -185,14 +185,7 @@ export default class PlayerControls {
             type = this.playerConfiguration.properties.SelectedMediaType,
             localStorageKey = LocalStorage.getPlayerProgressKey(id, type),
             localStorageProgress = parseInt(LocalStorage.get(localStorageKey)) || 0,
-            currentProgress = player.currentTime || 0,
-            play = (currentProgress, updatedProgress) => {
-                if (this.playerConfiguration.properties.ProgressUpdateInterval < Math.abs(updatedProgress - currentProgress)) {
-                    this.controlsFunctions.setCurrentTime(updatedProgress);
-                }
-
-                this.controlsFunctions.play();
-            };
+            currentProgress = player.currentTime || 0;
 
         if (id) {
             if (this.playerConfiguration.properties.SelectedMediaType === MediaTypes.Podcast ||
