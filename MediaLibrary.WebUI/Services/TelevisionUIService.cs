@@ -3,7 +3,6 @@ using MediaLibrary.DAL.Services.Interfaces;
 using MediaLibrary.WebUI.Services.Interfaces;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.Composition;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
@@ -15,17 +14,14 @@ using Microsoft.Extensions.Caching.Memory;
 namespace MediaLibrary.WebUI.Services
 {
     [ConfigureAwait(false)]
-    [Export(typeof(ITelevisionUIService))]
     public class TelevisionUIService : BaseUIService, ITelevisionUIService
     {
-        private readonly Lazy<IDataService> lazyDataService;
+        private readonly IDataService dataService;
         private readonly IMemoryCache memoryCache;
-        private IDataService dataService => lazyDataService.Value;
 
-        [ImportingConstructor]
-        public TelevisionUIService(Lazy<IDataService> dataService, IMemoryCache memoryCache) : base()
+        public TelevisionUIService(IDataService dataService, IMemoryCache memoryCache) : base()
         {
-            this.lazyDataService = dataService;
+            this.dataService = dataService;
             this.memoryCache = memoryCache;
         }
 

@@ -4,11 +4,9 @@ using MediaLibrary.DAL.Models;
 using MediaLibrary.DAL.Services.Interfaces;
 using MediaLibrary.Shared.Models.Configurations;
 using MediaLibrary.Shared.Models.Interfaces;
-using MediaLibrary.WebUI.Services.Interfaces;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.Composition;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -18,13 +16,11 @@ using static MediaLibrary.Shared.Enums;
 namespace MediaLibrary.BLL.Services
 {
     [ConfigureAwait(false)]
-    [Export(typeof(IPlayerService))]
     public class PlayerService : IPlayerService
     {
         private readonly IFileService fileService;
         private readonly IDataService dataService;
 
-        [ImportingConstructor]
         public PlayerService(IDataService dataService, IFileService fileService)
         {
             this.dataService = dataService;

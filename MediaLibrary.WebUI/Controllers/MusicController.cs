@@ -5,7 +5,6 @@ using MediaLibrary.WebUI.Models;
 using MediaLibrary.WebUI.Services.Interfaces;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.Composition;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
@@ -16,7 +15,7 @@ using System.Web;
 using System.IO;
 using IO_File = System.IO.File;
 using Fody;
-using static MediaLibrary.BLL.Extensions.StringExtensions;
+using static MediaLibrary.BLL.Extensions.ServiceCollectionExtensions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
 using System.Text.Json;
@@ -30,29 +29,25 @@ namespace MediaLibrary.WebUI.Controllers
 {
     public class MusicController : BaseController
     {
-        private readonly Lazy<IDataService> lazyDataService;
-        private readonly Lazy<IMusicUIService> lazyMusicService;
-        private readonly Lazy<MusicViewModel> lazyMusicViewModel;
-        private readonly Lazy<ITrackService> lazyTrackService;
-        private readonly Lazy<IFileService> lazyFileService;
-        private readonly Lazy<ITransactionService> lazyTransactionService;
         private readonly IBackgroundTaskQueueService backgroundTaskQueue;
         private readonly IConfiguration configuration;
-        private IDataService dataService => lazyDataService.Value;
-        private IMusicUIService musicService => lazyMusicService.Value;
-        private MusicViewModel musicViewModel => lazyMusicViewModel.Value;
-        private ITrackService trackService => lazyTrackService.Value;
-        private IFileService fileService => lazyFileService.Value;
-        private ITransactionService transactionService => lazyTransactionService.Value;
+        private readonly IDataService dataService;
+        private readonly IMusicUIService musicService;
+        private readonly MusicViewModel musicViewModel;
+        private readonly ITrackService trackService;
+        private readonly IFileService fileService;
+        private readonly ITransactionService transactionService;
 
-        public MusicController(IMefService mefService, IBackgroundTaskQueueService backgroundTaskQueue, IConfiguration configuration)
+        public MusicController(IDataService dataService, IBackgroundTaskQueueService backgroundTaskQueue, IConfiguration configuration,
+                               IMusicUIService musicService, MusicViewModel musicViewModel, ITrackService trackService,
+                               IFileService fileService, ITransactionService transactionService)
         {
-            this.lazyDataService = mefService.GetExport<IDataService>();
-            this.lazyMusicService = mefService.GetExport<IMusicUIService>();
-            this.lazyMusicViewModel = mefService.GetExport<MusicViewModel>();
-            this.lazyTrackService = mefService.GetExport<ITrackService>();
-            this.lazyFileService = mefService.GetExport<IFileService>();
-            this.lazyTransactionService = mefService.GetExport<ITransactionService>();
+            this.dataService = dataService;
+            this.musicService = musicService;
+            this.musicViewModel = musicViewModel;
+            this.trackService = trackService;
+            this.fileService = fileService;
+            this.transactionService = transactionService;
             this.configuration = configuration;
             this.backgroundTaskQueue = backgroundTaskQueue;
         }

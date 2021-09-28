@@ -20,16 +20,14 @@ namespace MediaLibrary.WebUI.Controllers
     public class SettingsController : BaseController
     {
         private readonly SettingsViewModel settingsViewModel;
-        private readonly Lazy<ITransactionService> lazyTransactionService;
-        private readonly Lazy<IDataService> lazyDataService;
-        private ITransactionService transactionService => lazyTransactionService.Value;
-        private IDataService dataService => lazyDataService.Value;
+        private readonly ITransactionService transactionService;
+        private readonly IDataService dataService;
 
-        public SettingsController(IMefService mefService)
+        public SettingsController(SettingsViewModel settingsViewModel,ITransactionService transactionService, IDataService dataService)
         {
-            this.settingsViewModel = mefService.GetExportedValue<SettingsViewModel>();
-            this.lazyTransactionService = mefService.GetExport<ITransactionService>();
-            this.lazyDataService = mefService.GetExport<IDataService>();
+            this.settingsViewModel = settingsViewModel;
+            this.transactionService = transactionService;
+            this.dataService = dataService;
         }
 
         public async Task<IActionResult> Index(SettingsTabs? tab)

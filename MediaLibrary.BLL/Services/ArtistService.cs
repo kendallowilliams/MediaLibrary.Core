@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel.Composition;
 using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
@@ -15,12 +14,10 @@ using MediaLibrary.DAL.Models;
 namespace MediaLibrary.BLL.Services
 {
     [ConfigureAwait(false)]
-    [Export(typeof(IArtistService))]
     public class ArtistService : IArtistService
     {
         private readonly IDataService dataService;
 
-        [ImportingConstructor]
         public ArtistService(IDataService dataService)
         {
             this.dataService = dataService;

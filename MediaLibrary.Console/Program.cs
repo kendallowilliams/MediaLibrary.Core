@@ -1,4 +1,5 @@
 ﻿using Fody;
+using MediaLibrary.BLL.Extensions;
 using MediaLibrary.Console.HostedServices;
 using MediaLibrary.Shared.Services;
 using MediaLibrary.Shared.Services.Interfaces;
@@ -21,9 +22,7 @@ namespace MediaLibrary.Console
                       {
                           services.AddMemoryCache();
                           services.AddHostedService<AppHostedService>();
-                          services.AddSingleton<IMefService>(serviceProvider => new MefService(AppDomain.CurrentDomain.BaseDirectory, 
-                                                                                               context.Configuration, 
-                                                                                               serviceProvider.GetRequiredService<IMemoryCache>()));
+                          services.ConfigureServices();
                       })
                       .Build()
                       .RunAsync();

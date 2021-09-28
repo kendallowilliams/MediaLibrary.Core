@@ -11,7 +11,6 @@ using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.Composition;
 using System.Linq;
 using System.Text;
 using System.Text.Json;
@@ -23,21 +22,18 @@ namespace MediaLibrary.WebUI.Controllers
 {
     public class PlaylistController : BaseController
     {
-        private readonly Lazy<IPlaylistUIService> lazyPlaylistService;
-        private readonly Lazy<IDataService> lazyDataService;
-        private readonly Lazy<PlaylistViewModel> lazyPlaylistViewModel;
-        private readonly Lazy<ITransactionService> lazyTransactionService;
-        private IPlaylistUIService playlistService => lazyPlaylistService.Value;
-        private IDataService dataService => lazyDataService.Value;
-        private PlaylistViewModel playlistViewModel => lazyPlaylistViewModel.Value;
-        private ITransactionService transactionService => lazyTransactionService.Value;
+        private readonly IPlaylistUIService playlistService;
+        private readonly IDataService dataService;
+        private readonly PlaylistViewModel playlistViewModel;
+        private readonly ITransactionService transactionService;
 
-        public PlaylistController(IMefService mefService)
+        public PlaylistController(IPlaylistUIService playlistService, IDataService dataService, PlaylistViewModel playlistViewModel,
+                                  ITransactionService transactionService)
         {
-            this.lazyPlaylistService = mefService.GetExport<IPlaylistUIService>();
-            this.lazyDataService = mefService.GetExport<IDataService>();
-            this.lazyPlaylistViewModel = mefService.GetExport<PlaylistViewModel>();
-            this.lazyTransactionService = mefService.GetExport<ITransactionService>();
+            this.playlistService = playlistService;
+            this.dataService = dataService;
+            this.playlistViewModel = playlistViewModel;
+            this.transactionService = transactionService;
         }
 
         public async Task<IActionResult> Index()

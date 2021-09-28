@@ -12,23 +12,20 @@ using MediaLibrary.DAL.Models.Interfaces;
 using System.Threading;
 using System.Data.Common;
 using System.Reflection;
-using System.ComponentModel.Composition;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Data.SqlClient;
 using MediaLibrary.DAL.DbContexts;
 using MediaLibrary.Shared.Services.Interfaces;
 using Microsoft.Extensions.Configuration;
 
-namespace MediaLibrary.BLL.Services
+namespace MediaLibrary.DAL.Services
 {
     [ConfigureAwait(false)]
-    [Export(typeof(IDataService))]
     public class DataService : IDataService
     {
         private int timeout;
         private readonly IConfiguration configuration;
 
-        [ImportingConstructor]
         public DataService(IConfiguration configuration)
         {
             timeout = 120;

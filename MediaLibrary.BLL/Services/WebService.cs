@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.Composition;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
@@ -16,10 +15,8 @@ using System.Threading;
 namespace MediaLibrary.BLL.Services
 {
     [ConfigureAwait(false)]
-    [Export(typeof(IWebService))]
     public class WebService : IWebService
     {
-        [ImportingConstructor]
         public WebService()
         {
         }

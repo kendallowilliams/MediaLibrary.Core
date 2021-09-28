@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.Composition;
 using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
@@ -14,12 +13,10 @@ using System.Linq.Expressions;
 namespace MediaLibrary.BLL.Services
 {
     [ConfigureAwait(false)]
-    [Export(typeof(IGenreService))]
     public class GenreService : IGenreService
     {
         private readonly IDataService dataService;
 
-        [ImportingConstructor]
         public GenreService(IDataService dataService)
         {
             this.dataService = dataService;

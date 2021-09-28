@@ -1,10 +1,10 @@
-﻿using MediaLibrary.BLL.Services.Interfaces;
+﻿using Fody;
+using MediaLibrary.BLL.Services.Interfaces;
 using MediaLibrary.DAL.Models;
 using MediaLibrary.DAL.Services.Interfaces;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.Composition;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
@@ -14,12 +14,11 @@ using Diagnostics = System.Diagnostics;
 
 namespace MediaLibrary.BLL.Services
 {
-    [Export(typeof(ILogService))]
+    [ConfigureAwait(false)]
     public class LogService : ILogService
     {
         private readonly ITransactionService transactionService;
 
-        [ImportingConstructor]
         public LogService(ITransactionService transactionService)
         {
             this.transactionService = transactionService;

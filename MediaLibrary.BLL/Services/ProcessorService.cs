@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.Composition;
 using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
@@ -12,11 +11,11 @@ using MediaLibrary.DAL.Services.Interfaces;
 using System.Linq.Expressions;
 using static MediaLibrary.Shared.Enums;
 using System.Threading;
+using MediaLibrary.Shared.Services.Interfaces;
 
 namespace MediaLibrary.BLL.Services
 {
     [ConfigureAwait(false)]
-    [Export(typeof(IProcessorService))]
     public class ProcessorService : IProcessorService
     {
         private readonly IDataService dataService;
@@ -25,7 +24,6 @@ namespace MediaLibrary.BLL.Services
         private readonly ITransactionService transactionService;
         private readonly ITPLService tplService;
 
-        [ImportingConstructor]
         public ProcessorService(IDataService dataService, IPodcastService podcastService, IFileService fileService,
                                 ITransactionService transactionService, ITPLService tplService)
         {

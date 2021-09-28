@@ -19,16 +19,14 @@ namespace MediaLibrary.WebUI.Controllers
     public class HomeController : BaseController
     {
         private readonly HomeViewModel homeViewModel;
-        private readonly Lazy<ITransactionService> lazyTransactionService;
-        private readonly Lazy<IDataService> lazyDataService;
-        private ITransactionService transactionService => lazyTransactionService.Value;
-        private IDataService dataService => lazyDataService.Value;
+        private readonly ITransactionService transactionService;
+        private readonly IDataService dataService;
 
-        public HomeController(IMefService mefService)
+        public HomeController(HomeViewModel homeViewModel, ITransactionService transactionService, IDataService dataService)
         {
-            this.homeViewModel = mefService.GetExportedValue<HomeViewModel>();
-            this.lazyTransactionService = mefService.GetExport<ITransactionService>();
-            this.lazyDataService = mefService.GetExport<IDataService>();
+            this.homeViewModel = homeViewModel;
+            this.transactionService = transactionService;
+            this.dataService = dataService;
         }
 
         public IActionResult Index()

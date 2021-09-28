@@ -1,11 +1,7 @@
 ﻿@model MediaLibraryConfiguration
 @using MediaLibrary.DAL.Services.Interfaces;
 @using MediaLibrary.Shared.Services.Interfaces;
-@inject IMefService MefService;
-
-@{
-    var dataService = MefService.GetExportedValue<IDataService>();
-}
+@inject IDataService DataService;
 
 <div class="d-flex flex-column flex-fill overflow-auto pt-3 p-1">
     <form>
@@ -21,7 +17,7 @@
                             <div class="input-group-prepend">
                                 <div class="input-group-text" style="width: 200px">Database Name</div>
                             </div>
-                            @Html.TextBox("DatabaseName", dataService.GetDbName(), new { @class = "form-control", @readonly = "readonly" })
+                            @Html.TextBox("DatabaseName", DataService.GetDbName(), new { @class = "form-control", @readonly = "readonly" })
                         </div>
                     </div>
                 </div>
@@ -31,7 +27,7 @@
                             <div class="input-group-prepend">
                                 <div class="input-group-text" style="width: 200px">Database Server</div>
                             </div>
-                            @Html.TextBox("DatabaseServer", dataService.GetDbServer(), new { @class = "form-control", @readonly = "readonly" })
+                            @Html.TextBox("DatabaseServer", DataService.GetDbServer(), new { @class = "form-control", @readonly = "readonly" })
                         </div>
                     </div>
                 </div>

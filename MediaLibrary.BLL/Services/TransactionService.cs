@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.Composition;
 using System.Linq;
 using System.Threading.Tasks;
 using Fody;
@@ -13,13 +12,11 @@ using Microsoft.Extensions.Configuration;
 namespace MediaLibrary.BLL.Services
 {
     [ConfigureAwait(false)]
-    [Export(typeof(ITransactionService))]
     public class TransactionService : ITransactionService
     {
         private readonly IDataService dataService;
         private readonly IConfiguration configuration;
 
-        [ImportingConstructor]
         public TransactionService(IDataService dataService, IConfiguration configuration)
         {
             this.dataService = dataService;

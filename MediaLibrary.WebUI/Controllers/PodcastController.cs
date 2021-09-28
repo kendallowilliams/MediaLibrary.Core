@@ -11,7 +11,6 @@ using Microsoft.AspNetCore.StaticFiles;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.Composition;
 using IO_File = System.IO.File;
 using System.Linq;
 using System.Net;
@@ -27,28 +26,24 @@ namespace MediaLibrary.WebUI.Controllers
 {
     public class PodcastController : BaseController
     {
-        private readonly Lazy<IPodcastUIService> lazyPodcastUIService;
-        private readonly Lazy<IDataService> lazyDataService;
-        private readonly Lazy<PodcastViewModel> lazyPodcastViewModel;
-        private readonly Lazy<IPodcastService> lazyPodcastService;
-        private readonly Lazy<ITransactionService> lazyTransactionService;
-        private readonly Lazy<IFileService> lazyFileService;
         private readonly IBackgroundTaskQueueService backgroundTaskQueue;
-        private IPodcastUIService podcastUIService => lazyPodcastUIService.Value;
-        private IDataService dataService => lazyDataService.Value;
-        private PodcastViewModel podcastViewModel => lazyPodcastViewModel.Value;
-        private IPodcastService podcastService => lazyPodcastService.Value;
-        private ITransactionService transactionService => lazyTransactionService.Value;
-        private IFileService fileService => lazyFileService.Value;
+        private readonly IPodcastUIService podcastUIService;
+        private readonly IDataService dataService;
+        private readonly PodcastViewModel podcastViewModel;
+        private readonly IPodcastService podcastService;
+        private readonly ITransactionService transactionService;
+        private readonly IFileService fileService;
 
-        public PodcastController(IMefService mefService, IBackgroundTaskQueueService backgroundTaskQueue)
+        public PodcastController(IBackgroundTaskQueueService backgroundTaskQueue, IPodcastUIService podcastUIService, IDataService dataService,
+                                 PodcastViewModel podcastViewModel, IPodcastService podcastService, ITransactionService transactionService,
+                                 IFileService fileService)
         {
-            this.lazyPodcastUIService = mefService.GetExport<IPodcastUIService>();
-            this.lazyDataService = mefService.GetExport<IDataService>();
-            this.lazyPodcastViewModel = mefService.GetExport<PodcastViewModel>();
-            this.lazyPodcastService = mefService.GetExport<IPodcastService>();
-            this.lazyTransactionService = mefService.GetExport<ITransactionService>();
-            this.lazyFileService = mefService.GetExport<IFileService>();
+            this.podcastUIService = podcastUIService;
+            this.dataService = dataService;
+            this.podcastViewModel = podcastViewModel;
+            this.podcastService = podcastService;
+            this.transactionService = transactionService;
+            this.fileService = fileService;
             this.backgroundTaskQueue = backgroundTaskQueue;
         }
 

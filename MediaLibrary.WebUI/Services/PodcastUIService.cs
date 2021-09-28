@@ -5,7 +5,6 @@ using MediaLibrary.WebUI.Services.Interfaces;
 using Microsoft.Extensions.Caching.Memory;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.Composition;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
@@ -14,17 +13,14 @@ using static MediaLibrary.Shared.Enums;
 namespace MediaLibrary.WebUI.Services
 {
     [ConfigureAwait(false)]
-    [Export(typeof(IPodcastUIService))]
     public class PodcastUIService : BaseUIService, IPodcastUIService
     {
-        private readonly Lazy<IDataService> lazyDataService;
+        private readonly IDataService dataService;
         private readonly IMemoryCache memoryCache;
-        private IDataService dataService => lazyDataService.Value;
 
-        [ImportingConstructor]
-        public PodcastUIService(Lazy<IDataService> dataService, IMemoryCache memoryCache) : base()
+        public PodcastUIService(IDataService dataService, IMemoryCache memoryCache) : base()
         {
-            this.lazyDataService = dataService;
+            this.dataService = dataService;
             this.memoryCache = memoryCache;
         }
 

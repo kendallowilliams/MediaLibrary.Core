@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.Composition;
 using System.Data;
 using System.IO;
 using System.Linq;
@@ -18,7 +17,6 @@ using MediaLibrary.DAL.Models;
 namespace MediaLibrary.BLL.Services
 {
     [ConfigureAwait(false)]
-    [Export(typeof(IPodcastService))]
     public class PodcastService : IPodcastService
     {
         private readonly IDataService dataService;
@@ -26,7 +24,6 @@ namespace MediaLibrary.BLL.Services
         private readonly ITransactionService transactionService;
         private readonly IFileService fileService;
 
-         [ImportingConstructor]
         public PodcastService(IDataService dataService, IWebService webService, ITransactionService transactionService,
                               IFileService fileService)
         {

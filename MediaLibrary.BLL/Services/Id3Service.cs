@@ -2,7 +2,6 @@
 using MediaLibrary.BLL.Services.Interfaces;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.Composition;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
@@ -12,10 +11,8 @@ using MediaLibrary.DAL.Models;
 namespace MediaLibrary.BLL.Services
 {
     [ConfigureAwait(false)]
-    [Export(typeof(IId3Service))]
     public class Id3Service : IId3Service
     {
-        [ImportingConstructor]
         public Id3Service()
         {
         }

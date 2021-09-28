@@ -2,17 +2,14 @@
 using MediaLibrary.Shared.Models.Configurations;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.Composition;
 using System.Linq;
 using System.Web;
 using static MediaLibrary.Shared.Enums;
 
 namespace MediaLibrary.WebUI.Models
 {
-    [Export, PartCreationPolicy(CreationPolicy.NonShared)]
     public class PlayerViewModel : ViewModel<PlayerConfiguration>
     {
-        [ImportingConstructor]
         public PlayerViewModel() { }
 
         public IEnumerable<Track> Songs { get; set; }

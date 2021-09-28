@@ -9,7 +9,6 @@ using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.Composition;
 using System.IO;
 using System.Linq;
 using System.Text.Json;
@@ -21,24 +20,20 @@ namespace MediaLibrary.WebUI.Controllers
 {
     public class PlayerController : BaseController
     {
-        private readonly Lazy<ITransactionService> lazyTransactionService;
-        private readonly Lazy<PlayerViewModel> lazyPlayerViewModel;
-        private readonly Lazy<IDataService> lazyDataService;
-        private readonly Lazy<IPlayerUIService> lazyPlayerUIService;
-        private readonly Lazy<IPlayerService> lazyPlayerService;
-        private ITransactionService transactionService => lazyTransactionService.Value;
-        private PlayerViewModel playerViewModel => lazyPlayerViewModel.Value;
-        private IDataService dataService => lazyDataService.Value;
-        private IPlayerUIService playerUIService => lazyPlayerUIService.Value;
-        private IPlayerService playerService => lazyPlayerService.Value;
+        private readonly ITransactionService transactionService;
+        private readonly PlayerViewModel playerViewModel;
+        private readonly IDataService dataService;
+        private readonly IPlayerUIService playerUIService;
+        private readonly IPlayerService playerService;
 
-        public PlayerController(IMefService mefService)
+        public PlayerController(ITransactionService transactionService, PlayerViewModel playerViewModel, IDataService dataService,
+                                IPlayerUIService playerUIService, IPlayerService playerService)
         {
-            this.lazyTransactionService = mefService.GetExport<ITransactionService>();
-            this.lazyPlayerViewModel = mefService.GetExport<PlayerViewModel>();
-            this.lazyDataService = mefService.GetExport<IDataService>();
-            this.lazyPlayerUIService = mefService.GetExport<IPlayerUIService>();
-            this.lazyPlayerService = mefService.GetExport<IPlayerService>();
+            this.transactionService = transactionService;
+            this.playerViewModel = playerViewModel;
+            this.dataService = dataService;
+            this.playerUIService = playerUIService;
+            this.playerService = playerService;
         }
 
         public async Task<IActionResult> Index()

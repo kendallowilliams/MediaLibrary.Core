@@ -2,7 +2,6 @@
 using MediaLibrary.BLL.Services.Interfaces;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.Composition;
 using System.IO;
 using System.Linq;
 using System.Threading;
@@ -18,7 +17,6 @@ using static MediaLibrary.Shared.Enums;
 namespace MediaLibrary.BLL.Services
 {
     [ConfigureAwait(false)]
-    [Export(typeof(IFileService))]
     public class FileService : IFileService
     {
         private readonly IDataService dataService;
@@ -30,7 +28,6 @@ namespace MediaLibrary.BLL.Services
         private readonly ITransactionService transactionService;
         private readonly IConfiguration configuration;
 
-        [ImportingConstructor]
         public FileService(IId3Service id3Service, IArtistService artistService, IAlbumService albumService,
                            IGenreService genreService, ITrackService trackService, ITransactionService transactionService,
                            IDataService dataService, IConfiguration configuration)

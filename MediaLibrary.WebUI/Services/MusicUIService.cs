@@ -9,7 +9,6 @@ using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.Composition;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -21,25 +20,20 @@ using Microsoft.Extensions.Caching.Memory;
 namespace MediaLibrary.WebUI.Services
 {
     [ConfigureAwait(false)]
-    [Export(typeof(IMusicUIService))]
     public class MusicUIService : BaseUIService, IMusicUIService
     {
-        private readonly Lazy<IDataService> lazyDataService;
-        private readonly Lazy<IFileService> lazyFileService;
-        private readonly Lazy<ITransactionService> lazyTransactionService;
         private readonly IConfiguration configuration;
-        private IDataService dataService => lazyDataService.Value;
-        private IFileService fileService => lazyFileService.Value;
-        private ITransactionService transactionService => lazyTransactionService.Value;
+        private readonly IDataService dataService;
+        private readonly IFileService fileService;
+        private readonly ITransactionService transactionService;
         private readonly IMemoryCache memoryCache;
 
-        [ImportingConstructor]
-        public MusicUIService(Lazy<IDataService> dataService, Lazy<IFileService> fileService, Lazy<ITransactionService> transactionService,
+        public MusicUIService(IDataService dataService, IFileService fileService, ITransactionService transactionService,
                               IConfiguration configuration, IMemoryCache memoryCache) : base()
         {
-            this.lazyDataService = dataService;
-            this.lazyFileService = fileService;
-            this.lazyTransactionService = transactionService;
+            this.dataService = dataService;
+            this.fileService = fileService;
+            this.transactionService = transactionService;
             this.configuration = configuration;
             this.memoryCache = memoryCache;
         }
