@@ -1,4 +1,4 @@
-﻿using MediaLibrary.WebUI.Services.Interfaces;
+﻿using MediaLibrary.Shared.Services.Interfaces;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -6,7 +6,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace MediaLibrary.WebUI.Services
+namespace MediaLibrary.Shared.Services
 {
     public class BackgroundTaskQueueService : IBackgroundTaskQueueService
     {

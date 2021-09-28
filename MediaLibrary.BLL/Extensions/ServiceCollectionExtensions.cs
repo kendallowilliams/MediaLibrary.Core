@@ -33,6 +33,7 @@ namespace MediaLibrary.BLL.Extensions
             services.AddScoped<ITrackService, TrackService>();
             services.AddScoped<ITransactionService, TransactionService>();
             services.AddScoped<IWebService, WebService>();
+            services.AddScoped<IBackgroundTaskQueueService, BackgroundTaskQueueService>();
         }
     }
 }

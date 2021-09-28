@@ -1,4 +1,4 @@
-﻿using MediaLibrary.WebUI.Services.Interfaces;
+﻿using MediaLibrary.Shared.Services.Interfaces;
 using Microsoft.Extensions.Hosting;
 using System;
 using System.Collections.Generic;
