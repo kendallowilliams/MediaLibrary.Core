@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Fody;
 using MediaLibrary.BLL.Services.Interfaces;
 using MediaLibrary.DAL.Services.Interfaces;
 using MediaLibrary.DAL.Models;
@@ -11,7 +10,6 @@ using Microsoft.Extensions.Configuration;
 
 namespace MediaLibrary.BLL.Services
 {
-    [ConfigureAwait(false)]
     public class TransactionService : ITransactionService
     {
         private readonly IDataService dataService;

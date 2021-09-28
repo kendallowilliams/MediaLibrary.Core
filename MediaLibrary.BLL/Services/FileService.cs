@@ -1,5 +1,4 @@
-﻿using Fody;
-using MediaLibrary.BLL.Services.Interfaces;
+﻿using MediaLibrary.BLL.Services.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -16,7 +15,6 @@ using static MediaLibrary.Shared.Enums;
 
 namespace MediaLibrary.BLL.Services
 {
-    [ConfigureAwait(false)]
     public class FileService : IFileService
     {
         private readonly IDataService dataService;

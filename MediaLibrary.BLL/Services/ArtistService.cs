@@ -5,7 +5,6 @@ using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
-using Fody;
 using MediaLibrary.DAL.Services.Interfaces;
 using System.Linq.Expressions;
 using MediaLibrary.BLL.Services.Interfaces;
@@ -13,7 +12,6 @@ using MediaLibrary.DAL.Models;
 
 namespace MediaLibrary.BLL.Services
 {
-    [ConfigureAwait(false)]
     public class ArtistService : IArtistService
     {
         private readonly IDataService dataService;

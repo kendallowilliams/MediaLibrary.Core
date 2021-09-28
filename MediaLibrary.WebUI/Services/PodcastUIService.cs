@@ -1,5 +1,4 @@
-﻿using Fody;
-using MediaLibrary.DAL.Models;
+﻿using MediaLibrary.DAL.Models;
 using MediaLibrary.DAL.Services.Interfaces;
 using MediaLibrary.WebUI.Services.Interfaces;
 using Microsoft.Extensions.Caching.Memory;
@@ -12,7 +11,6 @@ using static MediaLibrary.Shared.Enums;
 
 namespace MediaLibrary.WebUI.Services
 {
-    [ConfigureAwait(false)]
     public class PodcastUIService : BaseUIService, IPodcastUIService
     {
         private readonly IDataService dataService;

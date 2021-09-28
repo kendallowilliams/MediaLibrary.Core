@@ -7,13 +7,11 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using static MediaLibrary.Shared.Enums;
-using Fody;
 using MediaLibrary.WebUI.Models;
 using Microsoft.Extensions.Caching.Memory;
 
 namespace MediaLibrary.WebUI.Services
 {
-    [ConfigureAwait(false)]
     public class TelevisionUIService : BaseUIService, ITelevisionUIService
     {
         private readonly IDataService dataService;

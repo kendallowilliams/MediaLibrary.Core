@@ -4,7 +4,6 @@ using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
-using Fody;
 using MediaLibrary.DAL.Models;
 using MediaLibrary.BLL.Services.Interfaces;
 using MediaLibrary.DAL.Services.Interfaces;
@@ -15,7 +14,6 @@ using MediaLibrary.Shared.Services.Interfaces;
 
 namespace MediaLibrary.BLL.Services
 {
-    [ConfigureAwait(false)]
     public class ProcessorService : IProcessorService
     {
         private readonly IDataService dataService;

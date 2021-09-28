@@ -6,7 +6,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using System.Xml;
-using Fody;
 using Microsoft.SyndicationFeed;
 using Microsoft.SyndicationFeed.Rss;
 using MediaLibrary.BLL.Services.Interfaces;
@@ -16,7 +15,6 @@ using MediaLibrary.DAL.Models;
 
 namespace MediaLibrary.BLL.Services
 {
-    [ConfigureAwait(false)]
     public class PodcastService : IPodcastService
     {
         private readonly IDataService dataService;

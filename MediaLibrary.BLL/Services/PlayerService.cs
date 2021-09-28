@@ -1,5 +1,4 @@
-﻿using Fody;
-using MediaLibrary.BLL.Services.Interfaces;
+﻿using MediaLibrary.BLL.Services.Interfaces;
 using MediaLibrary.DAL.Models;
 using MediaLibrary.DAL.Services.Interfaces;
 using MediaLibrary.Shared.Models.Configurations;
@@ -15,7 +14,6 @@ using static MediaLibrary.Shared.Enums;
 
 namespace MediaLibrary.BLL.Services
 {
-    [ConfigureAwait(false)]
     public class PlayerService : IPlayerService
     {
         private readonly IFileService fileService;

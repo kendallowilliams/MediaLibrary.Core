@@ -7,7 +7,6 @@ using System.Data;
 using System.Threading.Tasks;
 using MediaLibrary.DAL.Models;
 using System.Linq.Expressions;
-using Fody;
 using MediaLibrary.DAL.Models.Interfaces;
 using System.Threading;
 using System.Data.Common;
@@ -20,7 +19,6 @@ using Microsoft.Extensions.Configuration;
 
 namespace MediaLibrary.DAL.Services
 {
-    [ConfigureAwait(false)]
     public class DataService : IDataService
     {
         private int timeout;

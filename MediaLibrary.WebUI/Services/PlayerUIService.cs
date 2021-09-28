@@ -7,7 +7,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using static MediaLibrary.Shared.Enums;
-using Fody;
 using MediaLibrary.WebUI.Models;
 using MediaLibrary.WebUI.Controllers;
 using System.IO;
@@ -16,7 +15,6 @@ using MediaLibrary.BLL.Services.Interfaces;
 
 namespace MediaLibrary.WebUI.Services
 {
-    [ConfigureAwait(false)]
     public class PlayerUIService : BaseUIService, IPlayerUIService
     {
         private readonly IDataService dataService;

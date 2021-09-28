@@ -14,7 +14,6 @@ using MediaLibrary.Shared.Models.Configurations;
 using System.Web;
 using System.IO;
 using IO_File = System.IO.File;
-using Fody;
 using static MediaLibrary.BLL.Extensions.ServiceCollectionExtensions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;

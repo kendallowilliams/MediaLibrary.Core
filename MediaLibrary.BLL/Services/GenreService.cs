@@ -4,7 +4,6 @@ using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
-using Fody;
 using MediaLibrary.DAL.Models;
 using MediaLibrary.BLL.Services.Interfaces;
 using MediaLibrary.DAL.Services.Interfaces;
@@ -12,7 +11,6 @@ using System.Linq.Expressions;
 
 namespace MediaLibrary.BLL.Services
 {
-    [ConfigureAwait(false)]
     public class GenreService : IGenreService
     {
         private readonly IDataService dataService;

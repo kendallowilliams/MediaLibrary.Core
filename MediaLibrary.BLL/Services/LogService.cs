@@ -1,5 +1,4 @@
-﻿using Fody;
-using MediaLibrary.BLL.Services.Interfaces;
+﻿using MediaLibrary.BLL.Services.Interfaces;
 using MediaLibrary.DAL.Models;
 using MediaLibrary.DAL.Services.Interfaces;
 using Newtonsoft.Json;
@@ -14,7 +13,6 @@ using Diagnostics = System.Diagnostics;
 
 namespace MediaLibrary.BLL.Services
 {
-    [ConfigureAwait(false)]
     public class LogService : ILogService
     {
         private readonly ITransactionService transactionService;

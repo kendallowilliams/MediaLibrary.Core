@@ -1,5 +1,4 @@
-﻿using Fody;
-using MediaLibrary.BLL.Services.Interfaces;
+﻿using MediaLibrary.BLL.Services.Interfaces;
 using MediaLibrary.DAL.Models;
 using MediaLibrary.DAL.Services.Interfaces;
 using MediaLibrary.Shared.Services.Interfaces;
@@ -19,7 +18,6 @@ using Microsoft.Extensions.Caching.Memory;
 
 namespace MediaLibrary.WebUI.Services
 {
-    [ConfigureAwait(false)]
     public class MusicUIService : BaseUIService, IMusicUIService
     {
         private readonly IConfiguration configuration;
