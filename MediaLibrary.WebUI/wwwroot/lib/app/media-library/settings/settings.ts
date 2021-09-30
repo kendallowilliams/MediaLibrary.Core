@@ -82,5 +82,11 @@ export default class Settings extends BaseClass implements IView {
             this.configurations.Player.properties.AudioVisualizerBarCount = quantity;
             this.configurations.Player.updateConfiguration();
         });
+        $(this.settingsView).find('input[name="TooltipsEnabled"]').on('change', e => {
+            const enabled = (e.currentTarget as HTMLInputElement).checked;
+
+            this.configurations.MediaLibary.properties.TooltipsEnabled = enabled;
+            this.configurations.MediaLibary.updateConfiguration();
+        });
     }
 }

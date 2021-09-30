@@ -1,9 +1,21 @@
 ﻿export function loadTooltips(parent: HTMLElement): void {
-    if (parent) /*then*/ $(parent).find('*[data-tooltip="tooltip"]').tooltip({ trigger: 'hover', placement: 'auto' });
+    if (parent) /*then*/ $(parent).find('*[data-tooltip="tooltip"]')
+        .not('[data-disabled]')
+        .tooltip({ trigger: 'hover', placement: 'auto' });
 }
 
 export function disposeTooltips(parent: HTMLElement): void {
     if (parent) /*then*/ $(parent).find('*[data-tooltip="tooltip"]').tooltip('dispose');
+}
+
+export function loadAllTooltips(): void {
+    if (parent) /*then*/ $('*[data-tooltip="tooltip"]')
+        .not('[data-disabled]')
+        .tooltip({ trigger: 'hover', placement: 'auto' });
+}
+
+export function disposeAllTooltips(): void {
+    if (parent) /*then*/ $('*[data-tooltip="tooltip"]').tooltip('dispose');
 }
 
 export function loadPopovers(parent: HTMLElement): void {

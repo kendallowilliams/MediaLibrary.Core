@@ -5,4 +5,5 @@ export default interface IMediaLibraryConfiguration extends IConfiguration {
     SelectedMediaPage: MediaPages;
     AppWidth: AppWidth;
     NavBarTimeOut: number;
+    TooltipsEnabled: boolean;
 }

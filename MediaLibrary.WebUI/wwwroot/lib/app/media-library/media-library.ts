@@ -22,6 +22,7 @@ import AddToPlaylistModal from '../assets/modals/add-to-playlist-modal';
 import IPlayerLoadFunctions from '../assets/interfaces/player-load-functions-interface';
 import Settings from './settings/settings';
 import IConfigurations from '../assets/interfaces/configurations-interface';
+import { disposeAllTooltips, loadAllTooltips } from '../assets/utilities/bootstrap-helper';
 
 export default class MediaLibrary extends BaseClass {
     private home: Home;
@@ -123,13 +124,13 @@ export default class MediaLibrary extends BaseClass {
 
     private loadConfigurations(callback: () => void = () => null): void {
         $.get('Home/HomeConfiguration', data => this.homeConfiguration = Configurations.Home(data))
-            .then(() => $.get('Music/MusicConfiguration', data => this.musicConfiguration = Configurations.Music(data))
-                .then(() => $.get('MediaLibrary/MediaLibraryConfiguration', data => this.mediaLibraryConfiguration = Configurations.MediaLibrary(data))
-                    .then(() => $.get('Television/TelevisionConfiguration', data => this.televisionConfiguration = Configurations.Television(data))
-                        .then(() => $.get('Podcast/PodcastConfiguration', data => this.podcastConfiguration = Configurations.Podcast(data))
-                            .then(() => $.get('Player/PlayerConfiguration', data => this.playerConfiguration = Configurations.Player(data))
-                                .then(() => $.get('Playlist/PlaylistConfiguration', data => this.playlistConfiguration = Configurations.Playlist(data))
-                                    .then(callback)
+            .done(() => $.get('MediaLibrary/MediaLibraryConfiguration', data => this.mediaLibraryConfiguration = Configurations.MediaLibrary(data))
+                .done(() => $.get('Music/MusicConfiguration', data => this.musicConfiguration = Configurations.Music(data))
+                    .done(() => $.get('Television/TelevisionConfiguration', data => this.televisionConfiguration = Configurations.Television(data))
+                        .done(() => $.get('Podcast/PodcastConfiguration', data => this.podcastConfiguration = Configurations.Podcast(data))
+                            .done(() => $.get('Player/PlayerConfiguration', data => this.playerConfiguration = Configurations.Player(data))
+                                .done(() => $.get('Playlist/PlaylistConfiguration', data => this.playlistConfiguration = Configurations.Playlist(data))
+                                    .done(callback)
                                 )
                             )
                         )
@@ -145,6 +146,19 @@ export default class MediaLibrary extends BaseClass {
     }
 
     private loadView(mediaPage: MediaPages): void {
+        const success = () => {
+            const $tooltips = $('*[data-tooltip="tooltip"]');
+
+            $tooltips.attr('data-disabled', 'true');
+            disposeAllTooltips();
+
+            if(this.mediaLibraryConfiguration.properties.TooltipsEnabled) {
+                $tooltips.removeAttr('data-disabled');
+                loadAllTooltips();
+            }
+
+            LoadingModal.hideLoading();
+        };
         let showHideMainControls: boolean = true;
 
         LoadingModal.showLoading();
@@ -157,29 +171,29 @@ export default class MediaLibrary extends BaseClass {
 
             switch (mediaPage) {
                 case MediaPages.Music:
-                    this.music.loadView(() => LoadingModal.hideLoading());
+                    this.music.loadView(() => success());
                     break;
                 case MediaPages.Player:
                     showHideMainControls = false;
-                    this.player.loadView(() => LoadingModal.hideLoading());
+                    this.player.loadView(() => success());
                     break;
                 case MediaPages.Playlist:
-                    this.playlist.loadView(() => LoadingModal.hideLoading());
+                    this.playlist.loadView(() => success());
                     break;
                 case MediaPages.Podcast:
-                    this.podcast.loadView(() => LoadingModal.hideLoading());
+                    this.podcast.loadView(() => success());
                     break;
                 case MediaPages.Television:
-                    this.television.loadView(() => LoadingModal.hideLoading());
+                    this.television.loadView(() => success());
                     break;
                 case MediaPages.Settings:
                     showHideMainControls = false;
-                    this.settings.loadView(() => LoadingModal.hideLoading());
+                    this.settings.loadView(() => success());
                     break;
                 case MediaPages.Home:
                 default:
                     showHideMainControls = false;
-                    this.home.loadView(() => LoadingModal.hideLoading());
+                    this.home.loadView(() => success());
                     break;
             }
 

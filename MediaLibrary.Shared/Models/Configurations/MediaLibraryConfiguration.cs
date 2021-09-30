@@ -20,5 +20,7 @@ namespace MediaLibrary.Shared.Models.Configurations
         public AppWidth AppWidth { get; set; }
 
         public byte NavBarTimeOut { get; set; }
+
+        public bool TooltipsEnabled { get;set; }
     }
 }
