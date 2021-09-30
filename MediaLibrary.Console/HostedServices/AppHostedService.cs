@@ -1,5 +1,4 @@
-﻿using Fody;
-using MediaLibrary.BLL.Services.Interfaces;
+﻿using MediaLibrary.BLL.Services.Interfaces;
 using MediaLibrary.Shared.Services.Interfaces;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
@@ -11,7 +10,6 @@ using System.Threading.Tasks;
 
 namespace MediaLibrary.Console.HostedServices
 {
-    [ConfigureAwait(false)]
     public class AppHostedService : IHostedService
     {
         private readonly IHostApplicationLifetime appLifetime;
