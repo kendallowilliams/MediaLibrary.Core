@@ -1,4 +1,5 @@
-﻿import BaseClass from "../base-class";
+﻿import { fetch_get } from "../../utilities/fetch_service";
+import BaseClass from "../base-class";
 
 export default abstract class BaseConfiguration<T> extends BaseClass {
     public properties: T;
@@ -20,6 +21,8 @@ export default abstract class BaseConfiguration<T> extends BaseClass {
                  callback();
              };
 
-        $.get(url, success);
+        fetch_get(url, null)
+            .then(response => response.json())
+            .then(data => success(data));
     }
 }
