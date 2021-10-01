@@ -16,7 +16,7 @@ import PlayerControls from "../../assets/controls/player-controls";
 import IPlayerControlsFunctions from "../../assets/interfaces/player-controls-functions-interface";
 import Error from "../../assets/data/error";
 import * as LocalStorage from '../../assets/utilities/local_storage';
-import { loadHTML } from "../../assets/utilities/fetch_service";
+import { fetch_get, loadHTML } from "../../assets/utilities/fetch_service";
 
 export default class Player extends BaseClass implements IView {
     private players: { VideoPlayer: HTMLMediaElement, MusicPlayer: HTMLMediaElement };
@@ -76,9 +76,10 @@ export default class Player extends BaseClass implements IView {
                 localStorageKey = LocalStorage.getPlayerProgressKey(id, mediaType);
 
             if (mediaType === MediaTypes.Podcast || mediaType === MediaTypes.Television) {
-                $.get('Player/GetPlayerProgress?id=' + id + '&mediaType=' + mediaType, (data: number) => Math.max(data, currentProgress))
-                    .fail(_ => Math.max(parseInt(LocalStorage.get(localStorageKey)) || 0, currentProgress))
-                    .always(_currentProgress => player.currentTime = _currentProgress);
+                fetch_get('Player/GetPlayerProgress', { id: id, mediaType: mediaType.toString() })
+                    .then(response => response.text().then(data => Math.max(parseInt(data), currentProgress)))
+                    .catch(_ => Math.max(parseInt(LocalStorage.get(localStorageKey)) || 0, currentProgress))
+                    .then(_currentProgress => player.currentTime = _currentProgress);
             }
         });
         $(this.getPlayers()).on('ended', e => {

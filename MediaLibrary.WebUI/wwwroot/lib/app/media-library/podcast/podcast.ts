@@ -9,7 +9,7 @@ import LoadingModal from "../../assets/modals/loading-modal";
 import { disposeTooltips, loadTooltips, disposePopovers } from "../../assets/utilities/bootstrap-helper";
 import { getPodcastSortEnum, getPodcastFilterEnum } from "../../assets/enums/enum-functions";
 import * as MessageBox from '../../assets/utilities/message-box'
-import { loadHTML } from "../../assets/utilities/fetch_service";
+import { fetch_get, loadHTML } from "../../assets/utilities/fetch_service";
 
 export default class Podcast extends BaseClass implements IView {
     private readonly mediaView: HTMLElement;
@@ -178,15 +178,17 @@ export default class Podcast extends BaseClass implements IView {
             $items.each((index, element) => {
                 const id = $(element).attr('data-episode-id');
 
-                $.get('Podcast/IsDownloading?id=' + id, data => {
-                    if (data) {
-                        this.refreshPodcastDownloads();
-                    } else {
-                        $(element).removeAttr('data-active-download');
-                        $('[data-podcast-action="downloading"][data-item-id="' + id + '"]').addClass('d-none');
-                        $('[data-podcast-action="download"][data-item-id="' + id + '"]').removeClass('d-none');
-                    }
-                });
+                fetch_get('Podcast/IsDownloading', { id: id })
+                    .then(response => response.text().then(isDownloading => isDownloading === 'true'))
+                    .then(isDownloading => {
+                        if (isDownloading) {
+                            this.refreshPodcastDownloads();
+                        } else {
+                            $(element).removeAttr('data-active-download');
+                            $('[data-podcast-action="downloading"][data-item-id="' + id + '"]').addClass('d-none');
+                            $('[data-podcast-action="download"][data-item-id="' + id + '"]').removeClass('d-none');
+                        }
+                    });
             });
         }, 5000);
     }

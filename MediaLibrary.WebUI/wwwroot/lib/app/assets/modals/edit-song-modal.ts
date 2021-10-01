@@ -2,6 +2,7 @@
 import LoadingModal from '../modals/loading-modal';
 import MediaLibraryConfiguration from '../models/configurations/media-library-configuration';
 import { MediaPages } from '../enums/enums';
+import { fetch_get } from '../utilities/fetch_service';
 
 export default class EditSongModal {
     private modal: HTMLElement;
@@ -25,7 +26,9 @@ export default class EditSongModal {
                     $('#txtEditPosition').val(data.Position);
                 };
 
-            $.get('Music/GetSong/' + id, success);
+            fetch_get('Music/GetSong', { id: id })
+                .then(response => response.json())
+                .then(json => success(json));
         });
 
         $('[data-song-action="save"]').on('click', e => {

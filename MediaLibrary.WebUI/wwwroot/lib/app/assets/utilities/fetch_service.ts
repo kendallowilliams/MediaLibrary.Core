@@ -1,14 +1,13 @@
-﻿export function get(url: string, data: string[][] | Record<string, string> | string | URLSearchParams = new URLSearchParams(), callback: () => void = () => null) {
+﻿export function fetch_get(url: string, data: string[][] | Record<string, string> | string | URLSearchParams = new URLSearchParams()) : Promise<Response> {
     const requestInit: RequestInit = {
         method: 'GET'
     },
         queryString = data ? '?' + (new URLSearchParams(data)).toString() : '';
 
-    fetch(url + queryString, requestInit)
-        .then(_ => callback());
+    return fetch(url + queryString, requestInit);
 }
 
-export function post(url: string, body: BodyInit, callback: () => void = () => null) {
+export function fetch_post(url: string, body: BodyInit, callback: () => void = () => null) {
     const requestInit: RequestInit = {
         method: 'POST',
         body: body
@@ -18,7 +17,10 @@ export function post(url: string, body: BodyInit, callback: () => void = () => n
         .then(_ => callback());
 }
 
-export function loadHTML(element: HTMLElement, url: string, data: string[][] | Record<string, string> | string | URLSearchParams = new URLSearchParams(), callback: () => void = () => null) {
+export function loadHTML(element: HTMLElement,
+    url: string, 
+    data: string[][] | Record<string, string> | string | URLSearchParams = new URLSearchParams(),
+    callback: () => void = () => null) {
     const requestInit: RequestInit = {
         method: 'GET'
     },

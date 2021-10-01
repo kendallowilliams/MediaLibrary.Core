@@ -4,7 +4,7 @@ import LoadingModal from './loading-modal';
 import { loadTooltips, disposeTooltips } from "../../assets/utilities/bootstrap-helper";
 import * as MessageBox from '../../assets/utilities/message-box';
 import { MessageBoxConfirmType } from '../enums/enums';
-import { loadHTML } from '../utilities/fetch_service';
+import { fetch_get, loadHTML } from '../utilities/fetch_service';
 
 export default class ManageDirectoriesModal {
     private modal: HTMLElement;
@@ -93,13 +93,15 @@ export default class ManageDirectoriesModal {
                 const itemId = $(element).attr('data-transaction-id');
 
                 $(element).attr('data-directory-status', 'monitoring');
-                $.get('Music/IsScanCompleted?id=' + itemId, data => {
-                    if (data && (data as string).toLowerCase() === 'false') {
-                        this.refreshDirectories(itemId);
-                    } else {
-                        $(element).find('i').replaceWith('<i class="fa fa-check"></i>');
-                    }
-                });
+                fetch_get('Music/IsScanCompleted', { id: itemId })
+                    .then(response => response.text())
+                    .then(data => {
+                        if (data && (data as string).toLowerCase() === 'false') {
+                            this.refreshDirectories(itemId);
+                        } else {
+                            $(element).find('i').replaceWith('<i class="fa fa-check"></i>');
+                        }
+                    });
             });
         }, 5000);
     }

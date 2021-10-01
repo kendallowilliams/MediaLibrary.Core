@@ -23,7 +23,7 @@ import IPlayerLoadFunctions from '../assets/interfaces/player-load-functions-int
 import Settings from './settings/settings';
 import IConfigurations from '../assets/interfaces/configurations-interface';
 import { disposeAllTooltips, loadAllTooltips } from '../assets/utilities/bootstrap-helper';
-import { loadHTML } from '../assets/utilities/fetch_service';
+import { fetch_get, loadHTML } from '../assets/utilities/fetch_service';
 
 export default class MediaLibrary extends BaseClass {
     private home: Home;
@@ -124,20 +124,15 @@ export default class MediaLibrary extends BaseClass {
     }
 
     private loadConfigurations(callback: () => void = () => null): void {
-        $.get('Home/HomeConfiguration', data => this.homeConfiguration = Configurations.Home(data))
-            .done(() => $.get('MediaLibrary/MediaLibraryConfiguration', data => this.mediaLibraryConfiguration = Configurations.MediaLibrary(data))
-                .done(() => $.get('Music/MusicConfiguration', data => this.musicConfiguration = Configurations.Music(data))
-                    .done(() => $.get('Television/TelevisionConfiguration', data => this.televisionConfiguration = Configurations.Television(data))
-                        .done(() => $.get('Podcast/PodcastConfiguration', data => this.podcastConfiguration = Configurations.Podcast(data))
-                            .done(() => $.get('Player/PlayerConfiguration', data => this.playerConfiguration = Configurations.Player(data))
-                                .done(() => $.get('Playlist/PlaylistConfiguration', data => this.playlistConfiguration = Configurations.Playlist(data))
-                                    .done(callback)
-                                )
-                            )
-                        )
-                    )
-                )
-            );
+        Promise.all([
+            fetch_get('Home/HomeConfiguration', null).then(response => response.json().then(data => this.homeConfiguration = Configurations.Home(data))),
+            fetch_get('MediaLibrary/MediaLibraryConfiguration', null).then(response => response.json().then(data => this.mediaLibraryConfiguration = Configurations.MediaLibrary(data))),
+            fetch_get('Music/MusicConfiguration', null).then(response => response.json().then(data => this.musicConfiguration = Configurations.Music(data))),
+            fetch_get('Television/TelevisionConfiguration', null).then(response => response.json().then(data => this.televisionConfiguration = Configurations.Television(data))),
+            fetch_get('Podcast/PodcastConfiguration', null).then(response => response.json().then(data => this.podcastConfiguration = Configurations.Podcast(data))),
+            fetch_get('Player/PlayerConfiguration', null).then(response => response.json().then(data => this.playerConfiguration = Configurations.Player(data))),
+            fetch_get('Playlist/PlaylistConfiguration', null).then(response => response.json().then(data => this.playlistConfiguration = Configurations.Playlist(data)))
+        ]).then(_ => callback());
     }
 
     private loadStaticViews(callback: () => void = () => null) {

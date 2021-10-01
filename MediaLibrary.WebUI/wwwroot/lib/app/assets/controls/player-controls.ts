@@ -4,6 +4,7 @@ import { MediaTypes, RepeatTypes } from '../enums/enums';
 import IPlayerControlsFunctions from '../interfaces/player-controls-functions-interface';
 import PlayerConfiguration from '../models/configurations/player-configuration';
 import * as LocalStorage from '../../assets/utilities/local_storage';
+import { fetch_get } from '../utilities/fetch_service';
 
 export default class PlayerControls {
     private volumeSliders: HTMLElement[];
@@ -190,13 +191,15 @@ export default class PlayerControls {
         if (id) {
             if (this.playerConfiguration.properties.SelectedMediaType === MediaTypes.Podcast ||
                 this.playerConfiguration.properties.SelectedMediaType === MediaTypes.Television) {
-                $.get('Player/GetPlayerProgress?id=' + id + '&mediaType=' + type, (data: number) => Math.max(currentProgress, data, localStorageProgress))
-                    .done(_progress => {
+                fetch_get('Player/GetPlayerProgress', { id: id, mediaType: type.toString() })
+                    .then(response => {
                         LocalStorage.removeItem(localStorageKey);
-                        return _progress;
+
+                        return response.text()
                     })
-                    .fail(_ => Math.max(currentProgress, localStorageProgress))
-                    .always(_updatedProgress => {
+                    .then(_progress => Math.max(currentProgress, parseInt(_progress), localStorageProgress))
+                    .catch(_ => Math.max(currentProgress, localStorageProgress))
+                    .then(_updatedProgress => {
                         if (this.playerConfiguration.properties.ProgressUpdateInterval < Math.abs(_updatedProgress - currentProgress)) {
                             this.controlsFunctions.setCurrentTime(_updatedProgress);
                         }
