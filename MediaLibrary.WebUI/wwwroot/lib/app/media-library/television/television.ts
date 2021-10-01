@@ -67,7 +67,7 @@ export default class Television extends BaseClass implements IView {
                     this.updateActiveMediaFunc();
                     LoadingModal.hideLoading();
                 },
-                series = this.televisionConfiguration.properties.SelectedSeriesId,
+                series = this.televisionConfiguration.properties.SelectedSeriesId.toString(),
                 id = $(item).attr('data-season-id'),
                 selectedSeason = this.televisionConfiguration.properties.SelectedSeason;
 
@@ -80,7 +80,7 @@ export default class Television extends BaseClass implements IView {
                 LoadingModal.showLoading();
                 this.televisionConfiguration.properties.SelectedSeason = parseInt(id);
                 disposeTooltips(this.seasonView);
-                loadHTML(this.seasonView, 'Television/GetSeason', [{ Key: 'series', Value: series }, { Key: 'season', Value: parseInt(id) }], success);
+                loadHTML(this.seasonView, 'Television/GetSeason', { series: series, season: id }, success);
             }
         });
     }

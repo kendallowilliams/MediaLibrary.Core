@@ -1,8 +1,8 @@
-﻿export function get(url: string, params: [{ Key: string, Value: string }], callback: () => void = () => null) {
+﻿export function get(url: string, data: string[][] | Record<string, string> | string | URLSearchParams = new URLSearchParams(), callback: () => void = () => null) {
     const requestInit: RequestInit = {
         method: 'GET'
     },
-        queryString = params && params.length > 0 ? '?' + params.toString() : '';
+        queryString = data ? '?' + (new URLSearchParams(data)).toString() : '';
 
     fetch(url + queryString, requestInit)
         .then(_ => callback());
@@ -18,11 +18,11 @@ export function post(url: string, body: BodyInit, callback: () => void = () => n
         .then(_ => callback());
 }
 
-export function loadHTML(element: HTMLElement, url: string, params: Array<{ Key: string, Value: any }>, callback: () => void = () => null) {
+export function loadHTML(element: HTMLElement, url: string, data: string[][] | Record<string, string> | string | URLSearchParams = new URLSearchParams(), callback: () => void = () => null) {
     const requestInit: RequestInit = {
         method: 'GET'
     },
-        queryString = params && params.length > 0 ? '?' + params.toString() : '';
+        queryString = data ? '?' + (new URLSearchParams(data)).toString() : '';
 
     fetch(url + queryString, requestInit)
         .then(response => response.text())

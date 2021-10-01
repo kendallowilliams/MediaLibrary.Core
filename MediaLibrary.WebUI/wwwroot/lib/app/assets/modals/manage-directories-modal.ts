@@ -33,7 +33,7 @@ export default class ManageDirectoriesModal {
 
         LoadingModal.showLoading();
         disposeTooltips(this.modal);
-        loadHTML($modal.find('.modal-body').get(0), 'Music/GetMusicDirectory', [{ Key: 'path', Value: _path }], () => {
+        loadHTML($modal.find('.modal-body').get(0), 'Music/GetMusicDirectory', { path: _path }, () => {
             const $modal = $(this.modal);
 
             $modal.find('[data-directory-action="get"]').on('click', e => {

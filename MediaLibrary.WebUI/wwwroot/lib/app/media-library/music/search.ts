@@ -86,9 +86,9 @@ export default class Search extends BaseClass {
 
             this.musicConfiguration.properties.PreviousSearchQuery = query;
             this.musicConfiguration.updateConfiguration(() => {
-                loadHTML(containers.SearchAlbumsContainer, 'Music/SearchAlbums', [{ Key: 'query', Value: query }], () => {
-                    loadHTML(containers.SearchArtistsContainer, 'Music/SearchArtists', [{ Key: 'query', Value: query }], () => {
-                        loadHTML(containers.SearchSongsContainer, 'Music/SearchSongs', [{ Key: 'query', Value: query }], () => {
+                loadHTML(containers.SearchAlbumsContainer, 'Music/SearchAlbums', { query: query }, () => {
+                    loadHTML(containers.SearchArtistsContainer, 'Music/SearchArtists', { query: query }, () => {
+                        loadHTML(containers.SearchSongsContainer, 'Music/SearchSongs', { query: query }, () => {
                             $(containers.SearchSongsContainer).find('[data-play-id]').on('click', e => {
                                 this.playFunc(e.currentTarget as HTMLButtonElement, true);
                             });

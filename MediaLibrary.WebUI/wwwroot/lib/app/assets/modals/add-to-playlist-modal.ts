@@ -17,7 +17,7 @@ export default class AddToPlaylistModal {
                 id = $btn.attr('data-item-id'),
                 type = $btn.attr('data-playlist-type');
 
-            loadHTML(HtmlControls.Containers().PlaylistListContainer, 'Playlist/PlaylistList', [{ Key: 'type', Value: type }], () => {
+            loadHTML(HtmlControls.Containers().PlaylistListContainer, 'Playlist/PlaylistList', { type: type }, () => {
                 $('[data-playlist-item="enabled"]').attr('data-playlist-url', url);
                 $('[data-playlist-item="enabled"]').attr('data-item-id', id);
 

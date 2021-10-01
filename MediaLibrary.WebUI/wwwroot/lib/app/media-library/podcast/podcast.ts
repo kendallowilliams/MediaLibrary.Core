@@ -159,15 +159,15 @@ export default class Podcast extends BaseClass implements IView {
             LoadingModal.hideLoading();
             this.refreshPodcastDownloads();
         },
-            id = this.podcastConfiguration.properties.SelectedPodcastId,
+            id = this.podcastConfiguration.properties.SelectedPodcastId.toString(),
             year = $(item).attr('data-podcast-year'),
-            filter = this.podcastConfiguration.properties.SelectedPodcastFilter;
+            filter = this.podcastConfiguration.properties.SelectedPodcastFilter.toString();
 
         if (item) {
             LoadingModal.showLoading();
             disposeTooltips(this.podcastView);
             disposePopovers(this.podcastView);
-            loadHTML(this.podcastView, 'Podcast/GetPodcastItems', [{ Key: 'id', Value: id }, { Key: 'year', Value: year }, { Key: 'filter', Value: filter }], success);
+            loadHTML(this.podcastView, 'Podcast/GetPodcastItems', { id: id, year: year, filter: filter }, success);
         }
     }
 

@@ -9,7 +9,7 @@ export default class DirectorySelector {
     public loadMusicDirectory(_path: string = null): void {
         LoadingModal.showLoading();
         disposeTooltips(this.container);
-        loadHTML(this.container, 'Music/GetDirectorySelector', [{ Key: 'path', Value: _path }], () => {
+        loadHTML(this.container, 'Music/GetDirectorySelector', { path: _path }, () => {
             const $container = $(this.container);
 
             $container.find('[data-directory-action="get"]').on('click', e => {
