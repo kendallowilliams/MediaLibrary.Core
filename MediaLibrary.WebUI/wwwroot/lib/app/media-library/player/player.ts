@@ -16,6 +16,7 @@ import PlayerControls from "../../assets/controls/player-controls";
 import IPlayerControlsFunctions from "../../assets/interfaces/player-controls-functions-interface";
 import Error from "../../assets/data/error";
 import * as LocalStorage from '../../assets/utilities/local_storage';
+import { loadHTML } from "../../assets/utilities/fetch_service";
 
 export default class Player extends BaseClass implements IView {
     private players: { VideoPlayer: HTMLMediaElement, MusicPlayer: HTMLMediaElement };
@@ -363,7 +364,7 @@ export default class Player extends BaseClass implements IView {
         disposeTooltips(containers.PlayerItemsContainer);
         $(HtmlControls.UIFields().NowPlayingTitle).text('');
         $(containers.PlayerItemsContainer).html('');
-        $(containers.PlayerItemsContainer).load('Player/GetPlayerItems', success);
+        loadHTML(containers.PlayerItemsContainer, 'Player/GetPlayerItems', null, success);
     }
 
     private applyLoadFunctions(): void {

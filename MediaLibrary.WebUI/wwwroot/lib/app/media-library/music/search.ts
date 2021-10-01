@@ -3,6 +3,7 @@ import MusicConfiguration from "../../assets/models/configurations/music-configu
 import { MusicPages } from "../../assets/enums/enums";
 import HtmlControls from "../../assets/controls/html-controls";
 import LoadingModal from "../../assets/modals/loading-modal";
+import { loadHTML } from "../../assets/utilities/fetch_service";
 
 export default class Search extends BaseClass {
     private searchTimeout: number;
@@ -85,9 +86,9 @@ export default class Search extends BaseClass {
 
             this.musicConfiguration.properties.PreviousSearchQuery = query;
             this.musicConfiguration.updateConfiguration(() => {
-                $(containers.SearchAlbumsContainer).load('Music/SearchAlbums', { query: query }, () => {
-                    $(containers.SearchArtistsContainer).load('Music/SearchArtists', { query: query }, () => {
-                        $(containers.SearchSongsContainer).load('Music/SearchSongs', { query: query }, () => {
+                loadHTML(containers.SearchAlbumsContainer, 'Music/SearchAlbums', [{ Key: 'query', Value: query }], () => {
+                    loadHTML(containers.SearchArtistsContainer, 'Music/SearchArtists', [{ Key: 'query', Value: query }], () => {
+                        loadHTML(containers.SearchSongsContainer, 'Music/SearchSongs', [{ Key: 'query', Value: query }], () => {
                             $(containers.SearchSongsContainer).find('[data-play-id]').on('click', e => {
                                 this.playFunc(e.currentTarget as HTMLButtonElement, true);
                             });

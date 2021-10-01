@@ -13,6 +13,7 @@ import { getMusicTabEnumString, getMusicTabEnum, getSongSortEnum, getArtistSortE
 import Search from "./search";
 import ManageDirectoriesModal from "../../assets/modals/manage-directories-modal";
 import * as MessageBox from "../../assets/utilities/message-box";
+import { loadHTML } from "../../assets/utilities/fetch_service";
 
 export default class Music extends BaseClass implements IView {
     private readonly mediaView: HTMLElement;
@@ -51,7 +52,7 @@ export default class Music extends BaseClass implements IView {
         }; 
 
         disposeTooltips(this.mediaView);
-        $(this.mediaView).load('Music/Index', success);
+        loadHTML(this.mediaView, 'Music/Index', null, success);
     }
 
     loadArtist(id: number, callback: () => void): void {
@@ -90,7 +91,7 @@ export default class Music extends BaseClass implements IView {
                         if (url) {
                             LoadingModal.showLoading();
                             disposeTooltips($($btn.attr('data-target'))[0]);
-                            $($btn.attr('data-target')).load(url, () => {
+                            loadHTML($($btn.attr('data-target')).get(0), url, null, () => {
                                 loadTooltips($($btn.attr('data-target'))[0]);
                                 $($btn.attr('data-target')).find('*[data-play-id]').on('click', __e => this.playFunc(__e.currentTarget as HTMLButtonElement, true));
                                 LoadingModal.hideLoading();
@@ -114,7 +115,7 @@ export default class Music extends BaseClass implements IView {
             LoadingModal.showLoading();
             this.musicConfiguration.properties.SelectedMusicTab = getMusicTabEnum($newTab.attr('data-music-tab'));
             disposeTooltips($newView[0]);
-            this.musicConfiguration.updateConfiguration(() => $newView.load(url, success));
+            this.musicConfiguration.updateConfiguration(() => loadHTML($newView.get(0), url, null, success));
         });
 
         $(this.mediaView).find('*[data-sort-type]').on('change', e => {

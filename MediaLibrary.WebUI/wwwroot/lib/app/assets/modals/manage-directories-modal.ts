@@ -4,6 +4,7 @@ import LoadingModal from './loading-modal';
 import { loadTooltips, disposeTooltips } from "../../assets/utilities/bootstrap-helper";
 import * as MessageBox from '../../assets/utilities/message-box';
 import { MessageBoxConfirmType } from '../enums/enums';
+import { loadHTML } from '../utilities/fetch_service';
 
 export default class ManageDirectoriesModal {
     private modal: HTMLElement;
@@ -32,7 +33,7 @@ export default class ManageDirectoriesModal {
 
         LoadingModal.showLoading();
         disposeTooltips(this.modal);
-        $modal.find('.modal-body').load('Music/GetMusicDirectory?path='.concat(_path || ''), () => {
+        loadHTML($modal.find('.modal-body').get(0), 'Music/GetMusicDirectory', [{ Key: 'path', Value: _path }], () => {
             const $modal = $(this.modal);
 
             $modal.find('[data-directory-action="get"]').on('click', e => {

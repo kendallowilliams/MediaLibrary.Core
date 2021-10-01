@@ -23,6 +23,7 @@ import IPlayerLoadFunctions from '../assets/interfaces/player-load-functions-int
 import Settings from './settings/settings';
 import IConfigurations from '../assets/interfaces/configurations-interface';
 import { disposeAllTooltips, loadAllTooltips } from '../assets/utilities/bootstrap-helper';
+import { loadHTML } from '../assets/utilities/fetch_service';
 
 export default class MediaLibrary extends BaseClass {
     private home: Home;
@@ -140,8 +141,8 @@ export default class MediaLibrary extends BaseClass {
     }
 
     private loadStaticViews(callback: () => void = () => null) {
-        $(this.mainViews.PlayerView).load($(this.mainViews.PlayerView).attr('data-action-url'), () => {
-            $(this.mainViews.HomeView).load($(this.mainViews.HomeView).attr('data-action-url'), callback);
+        loadHTML(this.mainViews.PlayerView, $(this.mainViews.PlayerView).attr('data-action-url'), null, () => {
+            loadHTML(this.mainViews.HomeView, $(this.mainViews.HomeView).attr('data-action-url'), null, callback);
         });
     }
 

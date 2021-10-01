@@ -7,6 +7,7 @@ import ITelevisionConfiguration from "../../assets/interfaces/television-configu
 import LoadingModal from '../../assets/modals/loading-modal';
 import { loadTooltips, disposeTooltips } from "../../assets/utilities/bootstrap-helper";
 import { getSeriesSortEnum } from "../../assets/enums/enum-functions";
+import { loadHTML } from "../../assets/utilities/fetch_service";
 
 export default class Television extends BaseClass implements IView {
     private readonly mediaView: HTMLElement;
@@ -29,7 +30,7 @@ export default class Television extends BaseClass implements IView {
             };
 
         disposeTooltips(this.mediaView);
-        $(this.mediaView).load('Television/Index', success);
+        loadHTML(this.mediaView, 'Television/Index', null, success);
     }
 
     initializeControls(): void {
@@ -79,7 +80,7 @@ export default class Television extends BaseClass implements IView {
                 LoadingModal.showLoading();
                 this.televisionConfiguration.properties.SelectedSeason = parseInt(id);
                 disposeTooltips(this.seasonView);
-                $(this.seasonView).load('Television/GetSeason', { series: series, season: parseInt(id) }, success);
+                loadHTML(this.seasonView, 'Television/GetSeason', [{ Key: 'series', Value: series }, { Key: 'season', Value: parseInt(id) }], success);
             }
         });
     }

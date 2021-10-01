@@ -3,6 +3,7 @@ import IView from "../../assets/interfaces/view-interface";
 import HtmlControls from '../../assets/controls/html-controls';
 import IConfigurations from "../../assets/interfaces/configurations-interface";
 import { getAlbumSortEnum, getAppWidthEnum, getArtistSortEnum, getSongSortEnum } from "../../assets/enums/enum-functions";
+import { loadHTML } from "../../assets/utilities/fetch_service";
 
 export default class Settings extends BaseClass implements IView {
     private settingsView: HTMLElement;
@@ -15,7 +16,7 @@ export default class Settings extends BaseClass implements IView {
     loadView(callback: () => void = () => null): void {
         const url = $(this.settingsView).attr('data-action-url');
 
-        $(this.settingsView).load(url, () => {
+        loadHTML(this.settingsView, url, null, () => {
             this.initializeControls();
             callback();
         });

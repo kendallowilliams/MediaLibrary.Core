@@ -1,5 +1,6 @@
 ﻿import { disposeTooltips, loadTooltips } from "../utilities/bootstrap-helper";
 import LoadingModal from "../modals/loading-modal";
+import { loadHTML } from "../utilities/fetch_service";
 
 export default class DirectorySelector {
     constructor(private container: HTMLElement, private onSelectionChanged: (value: string) => any) {
@@ -8,7 +9,7 @@ export default class DirectorySelector {
     public loadMusicDirectory(_path: string = null): void {
         LoadingModal.showLoading();
         disposeTooltips(this.container);
-        $(this.container).load('Music/GetDirectorySelector?path='.concat(_path || ''), () => {
+        loadHTML(this.container, 'Music/GetDirectorySelector', [{ Key: 'path', Value: _path }], () => {
             const $container = $(this.container);
 
             $container.find('[data-directory-action="get"]').on('click', e => {

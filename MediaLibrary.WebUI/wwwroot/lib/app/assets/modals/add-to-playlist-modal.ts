@@ -1,4 +1,5 @@
 ﻿import HtmlControls from "../controls/html-controls";
+import { loadHTML } from "../utilities/fetch_service";
 import LoadingModal from "./loading-modal";
 
 export default class AddToPlaylistModal {
@@ -16,7 +17,7 @@ export default class AddToPlaylistModal {
                 id = $btn.attr('data-item-id'),
                 type = $btn.attr('data-playlist-type');
 
-            $(HtmlControls.Containers().PlaylistListContainer).load('Playlist/PlaylistList/?type=' + type, () => {
+            loadHTML(HtmlControls.Containers().PlaylistListContainer, 'Playlist/PlaylistList', [{ Key: 'type', Value: type }], () => {
                 $('[data-playlist-item="enabled"]').attr('data-playlist-url', url);
                 $('[data-playlist-item="enabled"]').attr('data-item-id', id);
 

@@ -9,6 +9,7 @@ import LoadingModal from "../../assets/modals/loading-modal";
 import { disposeTooltips, loadTooltips, disposePopovers } from "../../assets/utilities/bootstrap-helper";
 import { getPodcastSortEnum, getPodcastFilterEnum } from "../../assets/enums/enum-functions";
 import * as MessageBox from '../../assets/utilities/message-box'
+import { loadHTML } from "../../assets/utilities/fetch_service";
 
 export default class Podcast extends BaseClass implements IView {
     private readonly mediaView: HTMLElement;
@@ -33,7 +34,7 @@ export default class Podcast extends BaseClass implements IView {
             };
         
         disposeTooltips(this.mediaView);
-        this.podcastConfiguration.refresh(() => $(this.mediaView).load('Podcast/Index', success));
+        this.podcastConfiguration.refresh(() => loadHTML(this.mediaView, 'Podcast/Index', null, success));
     }
 
     initializeControls(): void {
@@ -166,7 +167,7 @@ export default class Podcast extends BaseClass implements IView {
             LoadingModal.showLoading();
             disposeTooltips(this.podcastView);
             disposePopovers(this.podcastView);
-            $(this.podcastView).load('Podcast/GetPodcastItems', { id: id, year: year, filter: filter }, success);
+            loadHTML(this.podcastView, 'Podcast/GetPodcastItems', [{ Key: 'id', Value: id }, { Key: 'year', Value: year }, { Key: 'filter', Value: filter }], success);
         }
     }
 

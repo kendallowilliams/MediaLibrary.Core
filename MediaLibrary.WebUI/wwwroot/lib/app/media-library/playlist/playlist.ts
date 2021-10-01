@@ -11,6 +11,7 @@ import { getPlaylistSortEnum, getPlaylistTabEnumString, getPlaylistTabEnum, getP
 import DownloadM3UPlaylistModal from "../../assets/modals/download-m3u-playlist-modal";
 import IPlayerLoadFunctions from "../../assets/interfaces/player-load-functions-interface";
 import * as MessageBox from '../../assets/utilities/message-box';
+import { loadHTML } from "../../assets/utilities/fetch_service";
 
 export default class Playlist extends BaseClass implements IView {
     private readonly mediaView: HTMLElement;
@@ -41,7 +42,7 @@ export default class Playlist extends BaseClass implements IView {
         };
 
         disposeTooltips(this.mediaView);
-        $(this.mediaView).load('Playlist/Index', success);
+        loadHTML(this.mediaView, 'Playlist/Index', null, success);
     }
 
     private initializeControls(): void {
