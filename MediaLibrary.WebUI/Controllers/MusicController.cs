@@ -278,7 +278,7 @@ namespace MediaLibrary.WebUI.Controllers
             return result;
         }
 
-        public async Task<IActionResult> UpdateConfiguration(MusicConfiguration musicConfiguration)
+        public async Task<IActionResult> UpdateConfiguration([FromBody] MusicConfiguration musicConfiguration)
         {
             if (ModelState.IsValid)
             {

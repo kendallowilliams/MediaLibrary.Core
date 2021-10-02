@@ -11,7 +11,7 @@ export default abstract class BaseConfiguration<T> extends BaseClass {
     protected update<T>(data: T, callback: () => void = () => null): void {
         const url = this.controller.concat('/UpdateConfiguration');
 
-        fetch_post(url, JSON.stringify(data))
+        fetch_post(url, JSON.stringify(data), 'application/json')
             .then(_ => callback());
     }
 

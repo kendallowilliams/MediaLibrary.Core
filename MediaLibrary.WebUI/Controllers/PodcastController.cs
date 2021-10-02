@@ -261,7 +261,7 @@ namespace MediaLibrary.WebUI.Controllers
             return result;
         }
 
-        public async Task<IActionResult> UpdateConfiguration(PodcastConfiguration podcastConfiguration)
+        public async Task<IActionResult> UpdateConfiguration([FromBody] PodcastConfiguration podcastConfiguration)
         {
             if (ModelState.IsValid)
             {

@@ -67,7 +67,7 @@ namespace MediaLibrary.WebUI.Controllers
             return PartialView("Series", televisionViewModel);
         }
 
-        public async Task<IActionResult> UpdateConfiguration(TelevisionConfiguration televisionConfiguration)
+        public async Task<IActionResult> UpdateConfiguration([FromBody] TelevisionConfiguration televisionConfiguration)
         {
             if (ModelState.IsValid)
             {

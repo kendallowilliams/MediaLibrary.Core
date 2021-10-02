@@ -196,7 +196,7 @@ namespace MediaLibrary.WebUI.Controllers
             return lines;
         }
 
-        public async Task<IActionResult> UpdateConfiguration(PlaylistConfiguration playlistConfiguration)
+        public async Task<IActionResult> UpdateConfiguration([FromBody] PlaylistConfiguration playlistConfiguration)
         {
             if (ModelState.IsValid)
             {

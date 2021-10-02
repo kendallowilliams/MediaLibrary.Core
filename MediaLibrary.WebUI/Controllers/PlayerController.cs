@@ -46,7 +46,7 @@ namespace MediaLibrary.WebUI.Controllers
             return PartialView(playerViewModel);
         }
 
-        public async Task<IActionResult> UpdateConfiguration(PlayerConfiguration playerConfiguration)
+        public async Task<IActionResult> UpdateConfiguration([FromBody] PlayerConfiguration playerConfiguration)
         {
             if (ModelState.IsValid)
             {
