@@ -1,4 +1,4 @@
-﻿import { fetch_get } from "../../utilities/fetch_service";
+﻿import { fetch_get, fetch_post } from "../../utilities/fetch_service";
 import BaseClass from "../base-class";
 
 export default abstract class BaseConfiguration<T> extends BaseClass {
@@ -11,7 +11,8 @@ export default abstract class BaseConfiguration<T> extends BaseClass {
     protected update<T>(data: T, callback: () => void = () => null): void {
         const url = this.controller.concat('/UpdateConfiguration');
 
-        $.post(url, data, () => callback());
+        fetch_post(url, JSON.stringify(data))
+            .then(_ => callback());
     }
 
     refresh(callback: () => void = () => null): void {

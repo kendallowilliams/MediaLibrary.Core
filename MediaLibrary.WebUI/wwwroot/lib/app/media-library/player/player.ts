@@ -16,7 +16,7 @@ import PlayerControls from "../../assets/controls/player-controls";
 import IPlayerControlsFunctions from "../../assets/interfaces/player-controls-functions-interface";
 import Error from "../../assets/data/error";
 import * as LocalStorage from '../../assets/utilities/local_storage';
-import { fetch_get, loadHTML } from "../../assets/utilities/fetch_service";
+import { fetch_get, fetch_post, loadHTML } from "../../assets/utilities/fetch_service";
 
 export default class Player extends BaseClass implements IView {
     private players: { VideoPlayer: HTMLMediaElement, MusicPlayer: HTMLMediaElement };
@@ -341,9 +341,13 @@ export default class Player extends BaseClass implements IView {
     }
 
     private updatePlayCount(player: HTMLMediaElement, callback: () => void = () => null) {
-        const id = $(player).attr('data-item-id');
+        const id = $(player).attr('data-item-id'),
+            formData = new FormData();
 
-        $.post('Player/UpdatePlayCount', { mediaType: this.playerConfiguration.properties.SelectedMediaType, id: id }, callback);
+        formData.set('mediaType', this.playerConfiguration.properties.SelectedMediaType.toString());
+        formData.set('id', id);
+        fetch_post('Player/UpdatePlayCount', formData)
+            .then(_ => callback());
     }
 
     private reload(callback: () => void = () => null): void {
@@ -456,16 +460,21 @@ export default class Player extends BaseClass implements IView {
             localStorageKey = LocalStorage.getPlayerProgressKey(id, mediaType),
             localStorageProgress = parseInt(LocalStorage.get(localStorageKey)) || 0,
             data = {
-                id: id,
+                id: id.toString(),
                 mediaType: mediaType,
                 progress: progress > localStorageProgress ? progress : localStorageProgress
-            };
+            },
+            formData = new FormData();
 
+        formData.set('id', data.id);
+        formData.set('mediaType', data.mediaType.toString());
+        formData.set('progress', data.progress.toString());
         if ($currentItem.attr('data-current-time') !== data.progress.toString() && data.progress % progressUpdateInterval === 0 && !isNaN(id)) {
             $currentItem.attr('data-current-time', data.progress);
 
-            $.post('Player/UpdatePlayerProgress', data, _ => LocalStorage.removeItem(localStorageKey))
-                .fail(_ => LocalStorage.set(localStorageKey, data.progress.toString()));
+            fetch_post('Player/UpdatePlayerProgress', formData)
+                .then(_ => LocalStorage.removeItem(localStorageKey))
+                .catch(_ => LocalStorage.set(localStorageKey, data.progress.toString()));
         }
     }
 

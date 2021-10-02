@@ -7,14 +7,13 @@
     return fetch(url + queryString, requestInit);
 }
 
-export function fetch_post(url: string, body: BodyInit, callback: () => void = () => null) {
+export function fetch_post(url: string, data: BodyInit = null): Promise<Response> {
     const requestInit: RequestInit = {
         method: 'POST',
-        body: body
+        body: data
     };
 
-    fetch(url, requestInit)
-        .then(_ => callback());
+    return fetch(url, requestInit);
 }
 
 export function loadHTML(element: HTMLElement,

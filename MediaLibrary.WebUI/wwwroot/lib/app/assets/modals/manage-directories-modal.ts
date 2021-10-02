@@ -4,7 +4,7 @@ import LoadingModal from './loading-modal';
 import { loadTooltips, disposeTooltips } from "../../assets/utilities/bootstrap-helper";
 import * as MessageBox from '../../assets/utilities/message-box';
 import { MessageBoxConfirmType } from '../enums/enums';
-import { fetch_get, loadHTML } from '../utilities/fetch_service';
+import { fetch_get, fetch_post, loadHTML } from '../utilities/fetch_service';
 
 export default class ManageDirectoriesModal {
     private modal: HTMLElement;
@@ -59,14 +59,15 @@ export default class ManageDirectoriesModal {
             action = $btn.attr('data-directory-action'),
             path = $btn.attr('data-directory-path'),
             title = 'Add directory',
-            message = 'Are you sure you want to add '.concat(path).concat('?');
+            message = 'Are you sure you want to add '.concat(path).concat('?'),
+            formData = new FormData();
 
+        formData.set('path', path);
         MessageBox.confirm(title, message, MessageBoxConfirmType.YesNo, () => {
             LoadingModal.showLoading();
             $(this.modal).modal('hide');
-            $.post(action, { path: path }, () => {
-                LoadingModal.hideLoading();
-            });
+            fetch_post(action, formData)
+                .then(_ => LoadingModal.hideLoading());
         });
     }
 
@@ -75,12 +76,15 @@ export default class ManageDirectoriesModal {
             action = $btn.attr('data-directory-action'),
             id = $btn.attr('data-path-id'),
             title = 'Remove directory',
-            message = 'Are you sure you want to remove this directory?';
+            message = 'Are you sure you want to remove this directory?',
+            formData = new FormData();
 
+        formData.set('id', id);
         MessageBox.confirm(title, message, MessageBoxConfirmType.YesNo, () => {
             LoadingModal.showLoading();
             $(this.modal).modal('hide');
-            $.post(action, { id: id }, () => this.loadFunc(() => LoadingModal.hideLoading()));
+            fetch_post(action, formData)
+                .then(_ => this.loadFunc(() => LoadingModal.hideLoading()));
         });
     }
 

@@ -13,7 +13,7 @@ import { getMusicTabEnumString, getMusicTabEnum, getSongSortEnum, getArtistSortE
 import Search from "./search";
 import ManageDirectoriesModal from "../../assets/modals/manage-directories-modal";
 import * as MessageBox from "../../assets/utilities/message-box";
-import { loadHTML } from "../../assets/utilities/fetch_service";
+import { fetch_post, loadHTML } from "../../assets/utilities/fetch_service";
 
 export default class Music extends BaseClass implements IView {
     private readonly mediaView: HTMLElement;
@@ -136,13 +136,17 @@ export default class Music extends BaseClass implements IView {
         $('[data-music-action="refresh"]').on('click', e => {
             const title = 'Refresh Music',
                 question = 'Do you want the refresh to delete missing/invalid files?',
+                formData = new FormData(),
                 yesCallback = () => {
                     LoadingModal.showLoading();
-                    $.post('Music/Refresh?deleteFiles=true', () => this.loadView(() => LoadingModal.hideLoading()));
+                    formData.set('deleteFiles', 'true');
+                    fetch_post('Music/Refresh', formData)
+                        .then(_ => this.loadView(() => LoadingModal.hideLoading()));
                 },
                 noCallback = () => {
                     LoadingModal.showLoading();
-                    $.post('Music/Refresh', () => this.loadView(() => LoadingModal.hideLoading()));
+                    fetch_post('Music/Refresh')
+                        .then(_ => this.loadView(() => LoadingModal.hideLoading()));
                 };
 
             MessageBox.confirm(title, question, MessageBoxConfirmType.YesNoCancel, yesCallback, noCallback);

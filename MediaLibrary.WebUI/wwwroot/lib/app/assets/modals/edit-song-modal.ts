@@ -2,7 +2,7 @@
 import LoadingModal from '../modals/loading-modal';
 import MediaLibraryConfiguration from '../models/configurations/media-library-configuration';
 import { MediaPages } from '../enums/enums';
-import { fetch_get } from '../utilities/fetch_service';
+import { fetch_get, fetch_post } from '../utilities/fetch_service';
 
 export default class EditSongModal {
     private modal: HTMLElement;
@@ -41,7 +41,7 @@ export default class EditSongModal {
 
             $(this.modal).modal('hide').on('hidden.bs.modal', () => {
                 LoadingModal.showLoading();
-                $.post('Music/UpdateSong', data, () => this.loadFunc(this.mediaLibraryConfiguration.properties.SelectedMediaPage));
+                fetch_post('Music/UpdateSong', data).then(_ => this.loadFunc(this.mediaLibraryConfiguration.properties.SelectedMediaPage));
             });
         });
     }

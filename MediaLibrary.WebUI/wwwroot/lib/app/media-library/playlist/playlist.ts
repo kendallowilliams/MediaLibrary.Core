@@ -11,7 +11,7 @@ import { getPlaylistSortEnum, getPlaylistTabEnumString, getPlaylistTabEnum, getP
 import DownloadM3UPlaylistModal from "../../assets/modals/download-m3u-playlist-modal";
 import IPlayerLoadFunctions from "../../assets/interfaces/player-load-functions-interface";
 import * as MessageBox from '../../assets/utilities/message-box';
-import { loadHTML } from "../../assets/utilities/fetch_service";
+import { fetch_post, loadHTML } from "../../assets/utilities/fetch_service";
 
 export default class Playlist extends BaseClass implements IView {
     private readonly mediaView: HTMLElement;
@@ -77,11 +77,15 @@ export default class Playlist extends BaseClass implements IView {
                 id = $btn.attr('data-item-id'),
                 playlistType = $btn.attr('data-playlist-type'),
                 title = 'Delete playlist item',
-                message = 'Are you sure you want to delete this item from the playlist?';
+                message = 'Are you sure you want to delete this item from the playlist?',
+                formData = new FormData();
 
+            formData.set('id', id);
+            formData.set('playlistType', playlistType);
             MessageBox.confirm(title, message, MessageBoxConfirmType.YesNo, () => {
                 LoadingModal.showLoading();
-                $.post('Playlist/RemovePlaylistItem', { id: id, playlistType: playlistType }, () => this.loadView(() => LoadingModal.hideLoading()));
+                fetch_post('Playlist/RemovePlaylistItem', formData)
+                    .then(_ => this.loadView(() => LoadingModal.hideLoading()));
             });
         });
 
@@ -89,11 +93,14 @@ export default class Playlist extends BaseClass implements IView {
             const $btn = $(e.currentTarget),
                 id = $btn.attr('data-item-id'),
                 title = 'Delete playlist',
-                message = 'Are you sure you want to delete this playlist?';
+                message = 'Are you sure you want to delete this playlist?',
+                formData = new FormData();
 
             MessageBox.confirm(title, message, MessageBoxConfirmType.YesNo, () => {
                 LoadingModal.showLoading();
-                $.post('Playlist/RemovePlaylist', { id: id }, () => this.loadView(() => LoadingModal.hideLoading()));
+                formData.set('id', id);
+                fetch_post('Playlist/RemovePlaylist', formData)
+                    .then(_ => this.loadView(() => LoadingModal.hideLoading()));
             });
         });
 

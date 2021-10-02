@@ -1,5 +1,5 @@
 ﻿import HtmlControls from "../controls/html-controls";
-import { loadHTML } from "../utilities/fetch_service";
+import { fetch_post, loadHTML } from "../utilities/fetch_service";
 import LoadingModal from "./loading-modal";
 
 export default class AddToPlaylistModal {
@@ -25,11 +25,15 @@ export default class AddToPlaylistModal {
                     const $btn = $(e.currentTarget),
                         url = $btn.attr('data-playlist-url'),
                         id = $btn.attr('data-item-id'),
-                        playlistId = $btn.attr('data-playlist-id');
+                        playlistId = $btn.attr('data-playlist-id'),
+                        formData = new FormData();
 
+                    formData.set('playlistId', playlistId);
+                    formData.set('itemId', id);
                     LoadingModal.showLoading()
                     $(this.modal).modal('hide')
-                    $.post(url, { playlistId, itemId: id }, () => LoadingModal.hideLoading());
+                    fetch_post(url, formData)
+                        .then(_ => LoadingModal.hideLoading());
                 });
             });
         });
