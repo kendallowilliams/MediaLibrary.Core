@@ -196,8 +196,8 @@ export default class PlayerControls {
                         LocalStorage.removeItem(localStorageKey);
 
                         return response.text()
+                            .then(_progress => Math.max(currentProgress, parseInt(_progress), localStorageProgress))
                     })
-                    .then(_progress => Math.max(currentProgress, parseInt(_progress), localStorageProgress))
                     .catch(_ => Math.max(currentProgress, localStorageProgress))
                     .then(_updatedProgress => {
                         if (this.playerConfiguration.properties.ProgressUpdateInterval < Math.abs(_updatedProgress - currentProgress)) {

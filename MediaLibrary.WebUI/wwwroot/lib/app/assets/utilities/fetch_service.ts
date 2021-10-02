@@ -4,7 +4,9 @@
     },
         queryString = data ? '?' + (new URLSearchParams(data)).toString() : '';
 
-    return fetch(url + queryString, requestInit);
+    return fetch(url + queryString, requestInit)
+        .then(response => response.ok ? Promise.resolve(response) : Promise.reject(response))
+        .catch(reason => Promise.reject(reason));
 }
 
 export function fetch_post(url: string, data: BodyInit = null, contentType: string = null): Promise<Response> {
@@ -17,7 +19,9 @@ export function fetch_post(url: string, data: BodyInit = null, contentType: stri
     if (contentType) /*then*/ headers.append('Content-Type', contentType);
     requestInit.headers = headers;
 
-    return fetch(url, requestInit);
+    return fetch(url, requestInit)
+        .then(response => response.ok ? Promise.resolve(response) : Promise.reject(response))
+        .catch(reason => Promise.reject(reason));
 }
 
 export function loadHTML(element: HTMLElement,

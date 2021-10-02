@@ -43,7 +43,8 @@ export default class EditSongModal {
 
             $(this.modal).modal('hide').on('hidden.bs.modal', () => {
                 LoadingModal.showLoading();
-                fetch_post('Music/UpdateSong', formData).then(_ => this.loadFunc(this.mediaLibraryConfiguration.properties.SelectedMediaPage));
+                fetch_post('Music/UpdateSong', formData)
+                    .then(_ => this.loadFunc(this.mediaLibraryConfiguration.properties.SelectedMediaPage));
             });
         });
     }
