@@ -50,7 +50,7 @@ export default class AddNewSongModal {
             if ($form.get(0).checkValidity()) {
                 LoadingModal.showLoading();
                 fetch_post('Music/Upload', formData)
-                    .then(_ => success())
+                    .then(response => response.ok ? success() : response.text().then(message => error(message)))
                     .catch(status => error(status));
             }
         });
