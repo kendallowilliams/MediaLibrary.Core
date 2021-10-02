@@ -1,7 +1,6 @@
 ﻿import HtmlControls from "../controls/html-controls";
 import LoadingModal from "./loading-modal";
 import * as MessageBox from '../utilities/message-box';
-import loadingModal from "./loading-modal";
 import DirectorySelector from "../controls/directory-selector";
 import { fetch_post } from "../utilities/fetch_service";
 
@@ -42,7 +41,7 @@ export default class AddNewSongModal {
                 formData = new FormData($form.get(0)),
                 success = () => this.loadFunc(() => LoadingModal.hideLoading()),
                 error = (status) => {
-                    loadingModal.hideLoading();
+                    LoadingModal.hideLoading();
                     MessageBox.showError('Error', status);
                 };
 
