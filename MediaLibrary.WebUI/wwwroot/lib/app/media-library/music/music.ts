@@ -25,7 +25,8 @@ export default class Music extends BaseClass implements IView {
 
     constructor(private musicConfiguration: MusicConfiguration,
         private playFunc: (btn: HTMLButtonElement, single: boolean) => void,
-        private updateActiveMediaFunc: () => void) {
+        private updateActiveMediaFunc: () => void,
+        private tooltipsEnabled: () => boolean = () => false) {
         super();
         this.mediaView = HtmlControls.Views().MediaView;
         this.artist = new Artist(musicConfiguration, this.loadView.bind(this));
@@ -44,7 +45,7 @@ export default class Music extends BaseClass implements IView {
             this.addNewSongModal = new AddNewSongModal(this.loadView.bind(this));
             this.manageDirectoriesModal = new ManageDirectoriesModal(this.loadView.bind(this));
             this.initializeControls();
-            loadTooltips(this.mediaView);
+            if (this.tooltipsEnabled()) /*then*/ loadTooltips(this.mediaView);
             $('[data-music-tab="' + getMusicTabEnumString(this.musicConfiguration.properties.SelectedMusicTab) + '"]').tab('show');
             this.updateActiveMediaFunc();
             if (this.musicConfiguration.properties.SelectedMusicPage === MusicPages.Search) /*then*/ this.search.search();
@@ -84,7 +85,7 @@ export default class Music extends BaseClass implements IView {
                 url = $newView.attr('data-load-url'),
                 success = () => {
                     LoadingModal.hideLoading();
-                    loadTooltips($newView[0]);
+                    if (this.tooltipsEnabled()) /*then*/ loadTooltips($newView[0]);
 
                     $('[data-group-url]').on('click', _e => {
                         const $btn = $(_e.currentTarget),
@@ -94,7 +95,7 @@ export default class Music extends BaseClass implements IView {
                             disposeTooltips($($btn.attr('data-target'))[0]);
                             loadHTML($($btn.attr('data-target')).get(0), url, null)
                                 .then(_ => {
-                                    loadTooltips($($btn.attr('data-target'))[0]);
+                                    if (this.tooltipsEnabled()) /*then*/ loadTooltips($($btn.attr('data-target'))[0]);
                                     $($btn.attr('data-target')).find('*[data-play-id]').on('click', __e => this.playFunc(__e.currentTarget as HTMLButtonElement, true));
                                     LoadingModal.hideLoading();
                                     $btn.attr('data-group-url', '');

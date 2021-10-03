@@ -23,7 +23,8 @@ export default class Playlist extends BaseClass implements IView {
     constructor(private playlistConfiguration: PlaylistConfiguration,
         private playFunc: (btn: HTMLButtonElement) => void,
         private updateActiveMediaFunc: () => void,
-        private loadFunctions: IPlayerLoadFunctions) {
+        private loadFunctions: IPlayerLoadFunctions,
+        private tooltipsEnabled: () => boolean = () => false) {
         super();
         this.playlistView = HtmlControls.Views().MediaView;
         this.mediaView = HtmlControls.Views().MediaView;
@@ -39,6 +40,7 @@ export default class Playlist extends BaseClass implements IView {
             this.applyLoadFunctions();
             $('[data-playlist-tab="' + getPlaylistTabEnumString(this.playlistConfiguration.properties.SelectedPlaylistTab) + '"]').tab('show');
             callback();
+            if (this.tooltipsEnabled()) /*then*/ loadTooltips(this.mediaView);
         };
 
         disposeTooltips(this.mediaView);
@@ -47,7 +49,6 @@ export default class Playlist extends BaseClass implements IView {
     }
 
     private initializeControls(): void {
-        loadTooltips(this.mediaView);
         $(this.mediaView).find('*[data-back-button="playlist"]').on('click', () => this.goBack(() => this.loadView.call(this)));
         $(this.mediaView).find('*[data-play-id]').on('click', e => this.playFunc(e.currentTarget as HTMLButtonElement));
 

@@ -86,10 +86,27 @@ export default class MediaLibrary extends BaseClass {
                     this.editSongModal = new EditSongModal(this.mediaLibraryConfiguration, this.loadView.bind(this));
                     this.addToPlaylistModal = new AddToPlaylistModal();
                     this.home = new Home(this.homeConfiguration);
-                    this.music = new Music(this.musicConfiguration, this.playWrapper.bind(this), this.updateActiveMedia.bind(this));
-                    this.playlist = new Playlist(this.playlistConfiguration, this.playWrapper.bind(this), this.updateActiveMedia.bind(this), loadFunctions);
-                    this.podcast = new Podcast(this.podcastConfiguration, this.playWrapper.bind(this), this.updateActiveMedia.bind(this));
-                    this.television = new Television(this.televisionConfiguration, this.playWrapper.bind(this), this.updateActiveMedia.bind(this));
+                    this.music = new Music(this.musicConfiguration,
+                        this.playWrapper.bind(this),
+                        this.updateActiveMedia.bind(this),
+                        () => this.mediaLibraryConfiguration.properties.TooltipsEnabled
+                    );
+                    this.playlist = new Playlist(this.playlistConfiguration,
+                        this.playWrapper.bind(this),
+                        this.updateActiveMedia.bind(this),
+                        loadFunctions,
+                        () => this.mediaLibraryConfiguration.properties.TooltipsEnabled
+                    );
+                    this.podcast = new Podcast(this.podcastConfiguration,
+                        this.playWrapper.bind(this),
+                        this.updateActiveMedia.bind(this),
+                        () => this.mediaLibraryConfiguration.properties.TooltipsEnabled
+                    );
+                    this.television = new Television(this.televisionConfiguration,
+                        this.playWrapper.bind(this),
+                        this.updateActiveMedia.bind(this),
+                        () => this.mediaLibraryConfiguration.properties.TooltipsEnabled
+                    );
                     this.player = new Player(this.playerConfiguration, loadFunctions, this.updateActiveMedia.bind(this));
                     this.settings = new Settings(configurations);
                     this.loadView(this.mediaLibraryConfiguration.properties.SelectedMediaPage);

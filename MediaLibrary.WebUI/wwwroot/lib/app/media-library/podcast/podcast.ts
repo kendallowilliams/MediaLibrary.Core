@@ -18,7 +18,8 @@ export default class Podcast extends BaseClass implements IView {
 
     constructor(private podcastConfiguration: PodcastConfiguration,
         private playFunc: (btn: HTMLButtonElement, single: boolean) => void,
-        private updateActiveMediaFunc: () => void) {
+        private updateActiveMediaFunc: () => void,
+        private tooltipsEnabled: () => boolean = () => false) {
         super();
         this.mediaView = HtmlControls.Views().MediaView;
     }
@@ -29,6 +30,7 @@ export default class Podcast extends BaseClass implements IView {
                 this.podcastView = HtmlControls.Views().PodcastView;
                 this.addNewPodcastModal = new AddNewPodcastModal(this.loadView.bind(this));
                 this.initializeControls();
+                if (this.tooltipsEnabled()) /*then*/ loadTooltips(this.mediaView);
                 $('[data-podcast-year][data-item-index="1"]').trigger('click');
                 callback();
             };
@@ -38,7 +40,6 @@ export default class Podcast extends BaseClass implements IView {
     }
 
     initializeControls(): void {
-        loadTooltips(this.mediaView);
         $('[data-back-button="podcast"]').on('click', () => {
             LoadingModal.showLoading();
             this.podcastConfiguration.properties.SelectedPodcastId = 0;
@@ -116,7 +117,7 @@ export default class Podcast extends BaseClass implements IView {
         const success = () => {
             $(item).parent('li.page-item:first').addClass('active');
             this.updateMobileYears(parseInt($(item).attr('data-item-index')));
-            loadTooltips(this.podcastView);
+            if (this.tooltipsEnabled()) /*then*/ loadTooltips(this.podcastView);
             $(this.podcastView).find('[data-podcast-item-options-popover]').each((index, element) => {
                 const $element = $(element),
                     id = $element.attr('data-podcast-item-options-popover'),

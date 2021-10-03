@@ -15,7 +15,8 @@ export default class Television extends BaseClass implements IView {
 
     constructor(private televisionConfiguration: TelevisionConfiguration,
         private playFunc: (btn: HTMLButtonElement) => void,
-        private updateActiveMediaFunc: () => void) {
+        private updateActiveMediaFunc: () => void,
+        private tooltipsEnabled: () => boolean = () => false) {
         super();
         this.mediaView = HtmlControls.Views().MediaView;
     }
@@ -25,6 +26,7 @@ export default class Television extends BaseClass implements IView {
             success: () => void = () => {
                 this.seasonView = HtmlControls.Views().SeasonView;
                 this.initializeControls();
+                if (this.tooltipsEnabled()) /*then*/ loadTooltips(this.mediaView);
                 $('[data-season-id][data-item-index="0"]').trigger('click');
                 callback();
             };
@@ -35,7 +37,6 @@ export default class Television extends BaseClass implements IView {
     }
 
     initializeControls(): void {
-        loadTooltips(this.mediaView);
         $('[data-back-button="television"]').on('click', () => this.goBack(() => this.loadView.call(this)));
 
         $(this.mediaView).find('*[data-series-action="sort"]').on('change', e => {
@@ -63,7 +64,7 @@ export default class Television extends BaseClass implements IView {
                 success = () => {
                     $(item).parent('li.page-item:first').addClass('active');
                     this.updateMobileSeasons(parseInt(id));
-                    loadTooltips(this.seasonView);
+                    if (this.tooltipsEnabled()) /*then*/ loadTooltips(this.seasonView);
                     $(this.seasonView).find('*[data-play-id]').on('click', e => this.playFunc(e.currentTarget as HTMLButtonElement));
                     this.updateActiveMediaFunc();
                     LoadingModal.hideLoading();
