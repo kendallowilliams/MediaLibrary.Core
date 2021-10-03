@@ -33,7 +33,6 @@ export function loadHTML(element: HTMLElement, url: string, data: string[][] | R
     return fetch(url + queryString, requestInit)
         .then(response => response.ok ? Promise.resolve(response) : Promise.reject(response))
         .catch(reason => Promise.reject(reason))
-        //.then(response => { throw 'test'; return Promise.resolve(response); })
         .then(response => response.text())
         .then(content => element.innerHTML = content);
 }
