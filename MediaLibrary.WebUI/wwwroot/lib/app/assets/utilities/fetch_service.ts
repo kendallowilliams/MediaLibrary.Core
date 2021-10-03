@@ -24,19 +24,16 @@ export function fetch_post(url: string, data: BodyInit = null, contentType: stri
         .catch(reason => Promise.reject(reason));
 }
 
-export function loadHTML(element: HTMLElement,
-    url: string,
-    data: string[][] | Record<string, string> | string | URLSearchParams = new URLSearchParams(),
-    callback: () => void = () => null) {
+export function loadHTML(element: HTMLElement, url: string, data: string[][] | Record<string, string> | string | URLSearchParams = new URLSearchParams()): Promise<string> {
     const requestInit: RequestInit = {
         method: 'GET'
     },
         queryString = data ? '?' + (new URLSearchParams(data)).toString() : '';
 
-    fetch(url + queryString, requestInit)
+    return fetch(url + queryString, requestInit)
         .then(response => response.ok ? Promise.resolve(response) : Promise.reject(response))
         .catch(reason => Promise.reject(reason))
+        //.then(response => { throw 'test'; return Promise.resolve(response); })
         .then(response => response.text())
-        .then(content => element.innerHTML = content)
-        .then(_ => callback());
+        .then(content => element.innerHTML = content);
 }

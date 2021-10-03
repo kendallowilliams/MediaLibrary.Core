@@ -33,25 +33,26 @@ export default class ManageDirectoriesModal {
 
         LoadingModal.showLoading();
         disposeTooltips(this.modal);
-        loadHTML($modal.find('.modal-body').get(0), 'Music/GetMusicDirectory', { path: _path }, () => {
-            const $modal = $(this.modal);
+        loadHTML($modal.find('.modal-body').get(0), 'Music/GetMusicDirectory', { path: _path })
+            .then(_ => {
+                const $modal = $(this.modal);
 
-            $modal.find('[data-directory-action="get"]').on('click', e => {
-                const path = $(e.currentTarget).attr('data-directory-path');
+                $modal.find('[data-directory-action="get"]').on('click', e => {
+                    const path = $(e.currentTarget).attr('data-directory-path');
 
-                this.loadMusicDirectory(encodeURIComponent(path));
+                    this.loadMusicDirectory(encodeURIComponent(path));
+                });
+                $modal.find('[data-directory-action-type="remove"]').on('click', e => {
+                    this.removeMusicDirectory(e.currentTarget);
+                });
+                $modal.find('[data-directory-action-type="add"]').on('click', e => {
+                    this.addMusicDirectory(e.currentTarget);
+                });
+                loadTooltips(this.modal);
+                callback();
+                LoadingModal.hideLoading();
+                this.refreshDirectories();
             });
-            $modal.find('[data-directory-action-type="remove"]').on('click', e => {
-                this.removeMusicDirectory(e.currentTarget);
-            });
-            $modal.find('[data-directory-action-type="add"]').on('click', e => {
-                this.addMusicDirectory(e.currentTarget);
-            });
-            loadTooltips(this.modal);
-            callback();
-            LoadingModal.hideLoading();
-            this.refreshDirectories();
-        });
     }
 
     private addMusicDirectory(btn: HTMLElement): void {

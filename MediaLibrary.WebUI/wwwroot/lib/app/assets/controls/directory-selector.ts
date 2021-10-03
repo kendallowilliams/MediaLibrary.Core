@@ -9,18 +9,19 @@ export default class DirectorySelector {
     public loadMusicDirectory(_path: string = null): void {
         LoadingModal.showLoading();
         disposeTooltips(this.container);
-        loadHTML(this.container, 'Music/GetDirectorySelector', { path: _path }, () => {
-            const $container = $(this.container);
+        loadHTML(this.container, 'Music/GetDirectorySelector', { path: _path })
+            .then(_ => {
+                const $container = $(this.container);
 
-            $container.find('[data-directory-action="get"]').on('click', e => {
-                const path = $(e.currentTarget).attr('data-directory-path');
+                $container.find('[data-directory-action="get"]').on('click', e => {
+                    const path = $(e.currentTarget).attr('data-directory-path');
 
-                this.loadMusicDirectory(encodeURIComponent(path));
+                    this.loadMusicDirectory(encodeURIComponent(path));
+                });
+                loadTooltips(this.container);
+                $container.find('input[type="radio"]').on('change', e => this.selectionChanged(e.target as HTMLInputElement));
+                LoadingModal.hideLoading();
             });
-            loadTooltips(this.container);
-            $container.find('input[type="radio"]').on('change', e => this.selectionChanged(e.target as HTMLInputElement));
-            LoadingModal.hideLoading();
-        });
     }
 
     public selectionChanged(radio: HTMLInputElement): void {

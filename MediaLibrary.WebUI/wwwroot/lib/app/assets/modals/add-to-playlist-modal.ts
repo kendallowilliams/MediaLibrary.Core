@@ -17,25 +17,26 @@ export default class AddToPlaylistModal {
                 id = $btn.attr('data-item-id'),
                 type = $btn.attr('data-playlist-type');
 
-            loadHTML(HtmlControls.Containers().PlaylistListContainer, 'Playlist/PlaylistList', { type: type }, () => {
-                $('[data-playlist-item="enabled"]').attr('data-playlist-url', url);
-                $('[data-playlist-item="enabled"]').attr('data-item-id', id);
+            loadHTML(HtmlControls.Containers().PlaylistListContainer, 'Playlist/PlaylistList', { type: type })
+                .then(_ => {
+                    $('[data-playlist-item="enabled"]').attr('data-playlist-url', url);
+                    $('[data-playlist-item="enabled"]').attr('data-item-id', id);
 
-                $('[data-playlist-action="add"]').on('click', e => {
-                    const $btn = $(e.currentTarget),
-                        url = $btn.attr('data-playlist-url'),
-                        id = $btn.attr('data-item-id'),
-                        playlistId = $btn.attr('data-playlist-id'),
-                        formData = new FormData();
+                    $('[data-playlist-action="add"]').on('click', e => {
+                        const $btn = $(e.currentTarget),
+                            url = $btn.attr('data-playlist-url'),
+                            id = $btn.attr('data-item-id'),
+                            playlistId = $btn.attr('data-playlist-id'),
+                            formData = new FormData();
 
-                    formData.set('playlistId', playlistId);
-                    formData.set('itemId', id);
-                    LoadingModal.showLoading()
-                    $(this.modal).modal('hide')
-                    fetch_post(url, formData)
-                        .then(_ => LoadingModal.hideLoading());
+                        formData.set('playlistId', playlistId);
+                        formData.set('itemId', id);
+                        LoadingModal.showLoading()
+                        $(this.modal).modal('hide')
+                        fetch_post(url, formData)
+                            .then(_ => LoadingModal.hideLoading());
+                    });
                 });
-            });
         });
 
         $(this.modal).on('hide.bs.modal', function (e) {

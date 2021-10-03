@@ -42,7 +42,8 @@ export default class Playlist extends BaseClass implements IView {
         };
 
         disposeTooltips(this.mediaView);
-        loadHTML(this.mediaView, 'Playlist/Index', null, success);
+        loadHTML(this.mediaView, 'Playlist/Index', null)
+            .then(_ => success());
     }
 
     private initializeControls(): void {

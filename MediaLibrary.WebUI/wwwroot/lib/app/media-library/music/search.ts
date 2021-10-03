@@ -86,22 +86,22 @@ export default class Search extends BaseClass {
 
             this.musicConfiguration.properties.PreviousSearchQuery = query;
             this.musicConfiguration.updateConfiguration(() => {
-                loadHTML(containers.SearchAlbumsContainer, 'Music/SearchAlbums', { query: query }, () => {
-                    loadHTML(containers.SearchArtistsContainer, 'Music/SearchArtists', { query: query }, () => {
-                        loadHTML(containers.SearchSongsContainer, 'Music/SearchSongs', { query: query }, () => {
-                            $(containers.SearchSongsContainer).find('[data-play-id]').on('click', e => {
-                                this.playFunc(e.currentTarget as HTMLButtonElement, true);
-                            });
-
-                            $('[data-artist-id]').on('click', _e => this._loadArtist(parseInt($(_e.currentTarget).attr('data-artist-id'))));
-                            $('[data-album-id]').on('click', _e => this._loadAlbum(parseInt($(_e.currentTarget).attr('data-album-id'))));
-                            this.updateActiveMediaFunc();
-                            showHideLoading(false);
-                            LoadingModal.hideLoading();
-                            $(HtmlControls.UIControls().SearchQuery).focus();
+                Promise.all([
+                    loadHTML(containers.SearchAlbumsContainer, 'Music/SearchAlbums', { query: query }),
+                    loadHTML(containers.SearchArtistsContainer, 'Music/SearchArtists', { query: query }),
+                    loadHTML(containers.SearchSongsContainer, 'Music/SearchSongs', { query: query })
+                ]).then(_ => {
+                        $(containers.SearchSongsContainer).find('[data-play-id]').on('click', e => {
+                            this.playFunc(e.currentTarget as HTMLButtonElement, true);
                         });
+
+                        $('[data-artist-id]').on('click', _e => this._loadArtist(parseInt($(_e.currentTarget).attr('data-artist-id'))));
+                        $('[data-album-id]').on('click', _e => this._loadAlbum(parseInt($(_e.currentTarget).attr('data-album-id'))));
+                        this.updateActiveMediaFunc();
+                        showHideLoading(false);
+                        LoadingModal.hideLoading();
+                        $(HtmlControls.UIControls().SearchQuery).focus();
                     });
-                });
             });
         } else {
             LoadingModal.showLoading();

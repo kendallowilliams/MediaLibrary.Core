@@ -136,9 +136,10 @@ export default class MediaLibrary extends BaseClass {
     }
 
     private loadStaticViews(callback: () => void = () => null) {
-        loadHTML(this.mainViews.PlayerView, $(this.mainViews.PlayerView).attr('data-action-url'), null, () => {
-            loadHTML(this.mainViews.HomeView, $(this.mainViews.HomeView).attr('data-action-url'), null, callback);
-        });
+        Promise.all([
+            loadHTML(this.mainViews.PlayerView, $(this.mainViews.PlayerView).attr('data-action-url'), null),
+            loadHTML(this.mainViews.HomeView, $(this.mainViews.HomeView).attr('data-action-url'), null)
+        ]).then(_ => callback());
     }
 
     private loadView(mediaPage: MediaPages): void {

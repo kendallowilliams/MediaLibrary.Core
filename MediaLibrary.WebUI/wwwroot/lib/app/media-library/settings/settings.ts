@@ -16,10 +16,11 @@ export default class Settings extends BaseClass implements IView {
     loadView(callback: () => void = () => null): void {
         const url = $(this.settingsView).attr('data-action-url');
 
-        loadHTML(this.settingsView, url, null, () => {
-            this.initializeControls();
-            callback();
-        });
+        loadHTML(this.settingsView, url, null)
+            .then(_ => {
+                this.initializeControls();
+                callback();
+            });
     }
 
     private initializeControls(): void {

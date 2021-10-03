@@ -52,7 +52,8 @@ export default class Music extends BaseClass implements IView {
         }; 
 
         disposeTooltips(this.mediaView);
-        loadHTML(this.mediaView, 'Music/Index', null, success);
+        loadHTML(this.mediaView, 'Music/Index', null)
+            .then(_ => success());
     }
 
     loadArtist(id: number, callback: () => void): void {
@@ -91,13 +92,14 @@ export default class Music extends BaseClass implements IView {
                         if (url) {
                             LoadingModal.showLoading();
                             disposeTooltips($($btn.attr('data-target'))[0]);
-                            loadHTML($($btn.attr('data-target')).get(0), url, null, () => {
-                                loadTooltips($($btn.attr('data-target'))[0]);
-                                $($btn.attr('data-target')).find('*[data-play-id]').on('click', __e => this.playFunc(__e.currentTarget as HTMLButtonElement, true));
-                                LoadingModal.hideLoading();
-                                $btn.attr('data-group-url', '');
-                                this.updateActiveMediaFunc();
-                            });
+                            loadHTML($($btn.attr('data-target')).get(0), url, null)
+                                .then(_ => {
+                                    loadTooltips($($btn.attr('data-target'))[0]);
+                                    $($btn.attr('data-target')).find('*[data-play-id]').on('click', __e => this.playFunc(__e.currentTarget as HTMLButtonElement, true));
+                                    LoadingModal.hideLoading();
+                                    $btn.attr('data-group-url', '');
+                                    this.updateActiveMediaFunc();
+                                });
                         }
                     });
                     $('[data-album-id]').on('click', _e => this.album.loadAlbum(parseInt($(_e.currentTarget).attr('data-album-id')), () => this.loadView()));
@@ -115,7 +117,7 @@ export default class Music extends BaseClass implements IView {
             LoadingModal.showLoading();
             this.musicConfiguration.properties.SelectedMusicTab = getMusicTabEnum($newTab.attr('data-music-tab'));
             disposeTooltips($newView[0]);
-            this.musicConfiguration.updateConfiguration(() => loadHTML($newView.get(0), url, null, success));
+            this.musicConfiguration.updateConfiguration(() => loadHTML($newView.get(0), url, null).then(_ => success()));
         });
 
         $(this.mediaView).find('*[data-sort-type]').on('change', e => {

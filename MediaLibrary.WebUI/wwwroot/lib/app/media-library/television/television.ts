@@ -30,7 +30,8 @@ export default class Television extends BaseClass implements IView {
             };
 
         disposeTooltips(this.mediaView);
-        loadHTML(this.mediaView, 'Television/Index', null, success);
+        loadHTML(this.mediaView, 'Television/Index', null)
+            .then(_ => success());
     }
 
     initializeControls(): void {
@@ -80,7 +81,8 @@ export default class Television extends BaseClass implements IView {
                 LoadingModal.showLoading();
                 this.televisionConfiguration.properties.SelectedSeason = parseInt(id);
                 disposeTooltips(this.seasonView);
-                loadHTML(this.seasonView, 'Television/GetSeason', { series: series, season: id }, success);
+                loadHTML(this.seasonView, 'Television/GetSeason', { series: series, season: id })
+                    .then(_ => success());
             }
         });
     }

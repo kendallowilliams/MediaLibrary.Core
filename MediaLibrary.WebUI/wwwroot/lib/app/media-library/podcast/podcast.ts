@@ -34,7 +34,7 @@ export default class Podcast extends BaseClass implements IView {
             };
         
         disposeTooltips(this.mediaView);
-        this.podcastConfiguration.refresh(() => loadHTML(this.mediaView, 'Podcast/Index', null, success));
+        this.podcastConfiguration.refresh(() => loadHTML(this.mediaView, 'Podcast/Index', null).then(_ => success()));
     }
 
     initializeControls(): void {
@@ -180,7 +180,8 @@ export default class Podcast extends BaseClass implements IView {
             LoadingModal.showLoading();
             disposeTooltips(this.podcastView);
             disposePopovers(this.podcastView);
-            loadHTML(this.podcastView, 'Podcast/GetPodcastItems', { id: id, year: year, filter: filter }, success);
+            loadHTML(this.podcastView, 'Podcast/GetPodcastItems', { id: id, year: year, filter: filter })
+                .then(_ => success());
         }
     }
 
