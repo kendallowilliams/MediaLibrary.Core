@@ -35,8 +35,8 @@ export function loadHTML(element: HTMLElement,
 
     fetch(url + queryString, requestInit)
         .then(response => response.ok ? Promise.resolve(response) : Promise.reject(response))
-        .catch(reason => Promise.reject(reason))
         .then(response => response.text())
         .then(content => element.innerHTML = content)
-        .then(_ => callback());
+        .then(_ => callback())
+        .catch(reason => Promise.reject(reason));
 }
