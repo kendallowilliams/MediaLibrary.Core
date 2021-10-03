@@ -40,19 +40,19 @@ export default class ManageDirectoriesModal {
                 $modal.find('[data-directory-action="get"]').on('click', e => {
                     const path = $(e.currentTarget).attr('data-directory-path');
 
-                    this.loadMusicDirectory(encodeURIComponent(path));
-                });
-                $modal.find('[data-directory-action-type="remove"]').on('click', e => {
-                    this.removeMusicDirectory(e.currentTarget);
-                });
-                $modal.find('[data-directory-action-type="add"]').on('click', e => {
-                    this.addMusicDirectory(e.currentTarget);
-                });
-                loadTooltips(this.modal);
-                callback();
-                LoadingModal.hideLoading();
-                this.refreshDirectories();
+                this.loadMusicDirectory(path);
             });
+            $modal.find('[data-directory-action-type="remove"]').on('click', e => {
+                this.removeMusicDirectory(e.currentTarget);
+            });
+            $modal.find('[data-directory-action-type="add"]').on('click', e => {
+                this.addMusicDirectory(e.currentTarget);
+            });
+            loadTooltips(this.modal);
+            callback();
+            LoadingModal.hideLoading();
+            this.refreshDirectories();
+        });
     }
 
     private addMusicDirectory(btn: HTMLElement): void {

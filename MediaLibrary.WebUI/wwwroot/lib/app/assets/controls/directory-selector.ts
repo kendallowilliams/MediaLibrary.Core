@@ -16,12 +16,12 @@ export default class DirectorySelector {
                 $container.find('[data-directory-action="get"]').on('click', e => {
                     const path = $(e.currentTarget).attr('data-directory-path');
 
-                    this.loadMusicDirectory(encodeURIComponent(path));
-                });
-                loadTooltips(this.container);
-                $container.find('input[type="radio"]').on('change', e => this.selectionChanged(e.target as HTMLInputElement));
-                LoadingModal.hideLoading();
+                this.loadMusicDirectory(path);
             });
+            loadTooltips(this.container);
+            $container.find('input[type="radio"]').on('change', e => this.selectionChanged(e.target as HTMLInputElement));
+            LoadingModal.hideLoading();
+        });
     }
 
     public selectionChanged(radio: HTMLInputElement): void {
