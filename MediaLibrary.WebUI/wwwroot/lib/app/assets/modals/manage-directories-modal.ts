@@ -39,7 +39,7 @@ export default class ManageDirectoriesModal {
             $modal.find('[data-directory-action="get"]').on('click', e => {
                 const path = $(e.currentTarget).attr('data-directory-path');
 
-                this.loadMusicDirectory(encodeURIComponent(path));
+                this.loadMusicDirectory(path);
             });
             $modal.find('[data-directory-action-type="remove"]').on('click', e => {
                 this.removeMusicDirectory(e.currentTarget);
