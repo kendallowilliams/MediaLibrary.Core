@@ -4,10 +4,10 @@
     IEnumerable<int> years = Model.SelectedPodcast.PodcastItems.Select(item => item.PublishDate.Year).Distinct().OrderByDescending(year => year);
 }
 
-<div class="d-flex flex-column" style="flex: 1 1 auto; overflow-y: auto">
-    <div style="flex: 0 0 auto">
+<div class="d-flex flex-column flex-fill" style="overflow-y: auto">
+    <div>
         <div class="d-flex flex-row">
-            <div style="flex: 0 1 auto; overflow-x: auto">
+            <div class="flex-shrink-1" style="overflow-x: auto">
                 <h4 class="text-truncate">
                     @(Model.SelectedPodcast.Title) @(!Model.SelectedPodcast.Title.ToLower().Contains("podcast") ? "podcast" : string.Empty)
                 </h4>
@@ -31,7 +31,7 @@
         </div>
         <hr />
     </div>
-    <div class="card" style="flex: 1 1 auto; overflow-y: auto">
+    <div class="card flex-fill" style="overflow-y: auto">
         <div class="card-header" id="heading-podcast-@(Model.SelectedPodcast.Id)">
             <ul class="pagination justify-content-center m-0">
                 <li class="page-item pagination-sm"><a class="page-link" href="javascript: void(0);" data-podcast-year="-">&laquo;</a></li>
@@ -42,7 +42,7 @@
                 <li class="page-item pagination-sm"><a class="page-link" href="javascript: void(0);" data-podcast-year="+">&raquo;</a></li>
             </ul>
         </div>
-        <div class="card-body m-0 p-0" id="@(HtmlControlsRepository.PodcastViewId)" style="flex: 1 1 auto; overflow-y: auto"
+        <div class="card-body m-0 p-0 flex-fill" id="@(HtmlControlsRepository.PodcastViewId)" style="overflow-y: auto"
              data-podcast-years="@(string.Join(",", years))"></div>
     </div>
 </div>

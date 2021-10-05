@@ -1,7 +1,7 @@
 ﻿@model MediaLibrary.WebUI.Models.PodcastViewModel
 
-<div class="d-flex flex-column" style="flex: 1 1 auto; overflow-y: auto">
-    <div style="flex: 0 0 auto">
+<div class="d-flex flex-column flex-fill" style="overflow-y: auto">
+    <div>
         <h4>Podcasts</h4>
         <div class="p-1">
             <button type="button" class="btn btn-sm btn-outline-secondary" data-toggle="modal" data-target="#@(HtmlControlsRepository.NewPodcastModalId)" data-tooltip="tooltip" title="Add podcast"><i class="fa fa-plus"></i></button>
@@ -20,7 +20,7 @@
 
     @if (Model.PodcastGroups.Any())
     {
-        <div id="accordion-podcasts" style="flex: 1 1 auto; overflow-y: auto" class="accordion">
+        <div id="accordion-podcasts flex-fill" style="overflow-y: auto" class="accordion">
             @foreach (var item in Model.PodcastGroups.Select((group, index) => new { Index = index, Group = group }))
             {
                 <div class="card">
@@ -40,8 +40,8 @@
                                     <div class="media">
                                         <img class="mr-3 track-img" src="@(Url.Content("~/images/audio.png"))" title="@(podcast.Title)">
                                         <div class="media-body d-flex flex-column" style="overflow-x: auto">
-                                            <span class="mt-0 text-truncate font-weight-bold" style="flex: 0 0 auto">@(podcast.Title)</span>
-                                            <small style="flex: 0 0 auto">@(podcast.PodcastItems.Count()) episode@(podcast.PodcastItems.Count() == 1 ? string.Empty : "s")</small>
+                                            <span class="mt-0 text-truncate font-weight-bold">@(podcast.Title)</span>
+                                            <small>@(podcast.PodcastItems.Count()) episode@(podcast.PodcastItems.Count() == 1 ? string.Empty : "s")</small>
                                         </div>
                                         <div>
                                             <button class="btn btn-sm btn-outline-secondary d-none" data-tooltip="tooltip" title="@(podcast.Description)" data-placement="left"

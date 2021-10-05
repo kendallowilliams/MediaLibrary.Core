@@ -1,9 +1,9 @@
 ﻿@model MediaLibrary.WebUI.Models.PlaylistViewModel
 
-<div class="d-flex flex-column" style="flex: 1 1 auto; overflow-y: auto">
-    <div style="flex: 0 0 auto">
+<div class="d-flex flex-column flex-fill" style="overflow-y: auto">
+    <div>
         <div class="d-flex flex-row">
-            <div style="flex: 0 1 auto; overflow-x: auto">
+            <div class="flex-shrink-1" style="overflow-x: auto">
                 <h4 class="text-truncate">@(Model.SelectedPlaylist.Name) playlist</h4>
             </div>
         </div>
@@ -34,7 +34,7 @@
         </div>
         <hr />
     </div>
-    <div class="card" style="flex: 1 1 auto; overflow-y: auto">
+    <div class="card flex-fill" style="overflow-y: auto">
         <div class="card-header p-0" id="heading-playlist-@(Model.SelectedPlaylist.Id)">
             <h5 class="mb-0">
                 @if (Model.SelectedPlaylist.Type == (int)Enums.PlaylistTabs.Music)
@@ -45,7 +45,7 @@
                 { <button class="btn btn-sm btn-link">Episodes</button> }
             </h5>
         </div>
-        <div class="card-body m-0 p-0" style="flex: 1 1 auto; overflow-y: auto">
+        <div class="card-body m-0 p-0 flex-fill" style="overflow-y: auto">
             @if (Model.SelectedPlaylist.PlaylistTracks.Any())
             {
                 <ul class="list-group list-group-flush">
@@ -55,9 +55,12 @@
                             <div class="media">
                                 <img class="mr-3 track-img" src="@(Url.Content("~/images/audio.png"))" title="@(list.Track.Title)">
                                 <div class="media-body d-flex flex-column" style="overflow-x: auto">
-                                    <span class="mt-0 text-truncate font-weight-bold" style="flex: 0 0 auto">@(list.Track.Title)</span>
-                                    <div style="flex: 0 0 auto">
-                                        <small data-album-id="@(list.Track.Album?.Id)" style="cursor: pointer">@(list.Track.Album?.Title ?? "Unknown Album")</small> - <small data-artist-id="@(list.Track.Artist?.Id)" style="cursor: pointer" class="text-muted">@(list.Track.Artist?.Name ?? "Unknown Artist")</small>
+                                    <span class="mt-0 text-truncate font-weight-bold">@(list.Track.Title)</span>
+                                    <div class="d-flex flex-row">
+                                        <small data-album-id="@(list.Track.Album?.Id)" class="text-truncate" style="cursor: pointer">@(list.Track.Album?.Title ?? "Unknown Album")</small>
+                                        <small>-</small>
+                                        <small data-artist-id="@(list.Track.Artist?.Id)" style="cursor: pointer" class="text-muted text-truncate">@(list.Track.Artist?.Name ?? "Unknown Artist")</small>
+                                        <div class="flex-fill"></div>
                                     </div>
                                 </div>
                                 <div>
@@ -86,9 +89,9 @@
                             <div class="media">
                                 <img class="mr-3 track-img" src="@(Url.Content("~/images/audio.png"))" title="@(list.PodcastItem.Title)">
                                 <div class="media-body d-flex flex-column" style="overflow-x: auto">
-                                    <span class="mt-0 text-truncate font-weight-bold" style="flex: 0 0 auto">@(list.PodcastItem.Title)</span>
-                                    <div style="flex: 0 0 auto">
-                                        <small data-podcast-id="@(list.PodcastItem.PodcastId)" style="cursor: pointer">@(list.PodcastItem.Podcast?.Title ?? "Unknown Podcast")</small>
+                                    <span class="mt-0 text-truncate font-weight-bold">@(list.PodcastItem.Title)</span>
+                                    <div class="d-flex flex-row">
+                                        <small data-podcast-id="@(list.PodcastItem.PodcastId)" class="text-truncate" style="cursor: pointer">@(list.PodcastItem.Podcast?.Title ?? "Unknown Podcast")</small>
                                     </div>
                                 </div>
                                 <div>
@@ -117,9 +120,9 @@
                             <div class="media">
                                 <img class="mr-3 track-img" src="@(Url.Content("~/images/audio.png"))" title="@(list.Episode.Title)">
                                 <div class="media-body d-flex flex-column" style="overflow-x: auto">
-                                    <span class="mt-0 text-truncate font-weight-bold" style="flex: 0 0 auto">@(list.Episode.Title)</span>
-                                    <div style="flex: 0 0 auto">
-                                        <small data-series-id="@(list.Episode.SeriesId)" style="cursor: pointer">@(list.Episode.Series?.Title ?? "Unknown Series")</small>
+                                    <span class="mt-0 text-truncate font-weight-bold">@(list.Episode.Title)</span>
+                                    <div class="d-flex flex-row">
+                                        <small data-series-id="@(list.Episode.SeriesId)" class="text-truncate" style="cursor: pointer">@(list.Episode.Series?.Title ?? "Unknown Series")</small>
                                     </div>
                                 </div>
                                 <div>

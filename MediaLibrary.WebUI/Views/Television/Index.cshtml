@@ -1,7 +1,7 @@
 ﻿@model MediaLibrary.WebUI.Models.TelevisionViewModel
 
-<div class="d-flex flex-column"  style="flex: 1 1 auto; overflow-y: auto">
-    <div style="flex: 0 0 auto">
+<div class="d-flex flex-column flex-fill"  style="overflow-y: auto">
+    <div>
         <h4>Television</h4>
         <div class="d-flex flex-column align-items-end">
             @Html.DropDownListFor(x => x.Configuration.SelectedSeriesSort,
@@ -21,7 +21,7 @@
 
     @if (Model.SeriesGroups.Any())
     {
-        <div id="accordion-series" style="flex: 1 1 auto; overflow-y: auto" class="accordion">
+        <div id="accordion-series" style="overflow-y: auto" class="accordion flex-fill">
             @foreach (var item in Model.SeriesGroups.Select((group, index) => new { Index = index, Group = group }))
             {
                 <div class="card">
@@ -41,8 +41,8 @@
                                     <div class="media">
                                         <img class="mr-3 track-img" src="@(Url.Content("~/images/audio.png"))" title="@(series.Title)">
                                         <div class="media-body d-flex flex-column" style="overflow-x: auto">
-                                            <span class="mt-0 text-truncate font-weight-bold" style="flex: 0 0 auto">@(series.Title)</span>
-                                            <small style="cursor: pointer; flex: 0 0 auto">@(series.Episodes.GroupBy(e => e.Season).Count()) season@(series.Episodes.GroupBy(e => e.Season).Count() == 1 ? string.Empty : "s")</small>
+                                            <span class="mt-0 text-truncate font-weight-bold">@(series.Title)</span>
+                                            <small style="cursor: pointer">@(series.Episodes.GroupBy(e => e.Season).Count()) season@(series.Episodes.GroupBy(e => e.Season).Count() == 1 ? string.Empty : "s")</small>
                                         </div>
                                         <div>
                                             <buton class="btn btn-sm btn-outline-secondary" data-series-id="@(series.Id)" data-tooltip="tooltip" title="View series">

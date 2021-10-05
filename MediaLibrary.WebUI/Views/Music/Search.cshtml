@@ -1,10 +1,10 @@
 ﻿@model MediaLibrary.WebUI.Models.MusicViewModel
 
-<div class="d-flex flex-column" style="flex: 1 1 auto; overflow-y: auto">
-    <div style="flex: 0 0 auto">
+<div class="d-flex flex-column flex-fill" style="overflow-y: auto">
+    <div>
         <h4>Search Music</h4>
         <div class="d-flex pl-1 pr-1">
-            <div style="flex: 1 1 auto">
+            <div class="flex-fill">
                 <button class="btn btn-sm btn-outline-secondary" data-back-button="search" data-tooltip="tooltip" title="Go back"><i class="fa fa-arrow-circle-left"></i></button>
                 <div class="d-none">
                     <a class="btn btn-sm btn-outline-secondary" href="#@(HtmlControlsRepository.SearchSongsContainerId)"><i class="fa fa-music"></i></a>
@@ -12,7 +12,7 @@
                     <a class="btn btn-sm btn-outline-secondary" href="#@(HtmlControlsRepository.SearchAlbumsContainerId)"><i class="fa fa-compact-disc"></i></a>
                 </div>
             </div>
-            <div style="flex: 0 0 auto">
+            <div>
                 <div class="input-group">
                     <input type="text" data-search="query" class="form-control form-control-sm" id="@(HtmlControlsRepository.SearchQueryId)"
                            minlength="3" placeholder="Enter search text..." />
@@ -27,7 +27,7 @@
         </div>
         <hr />
     </div>
-    <div style="flex: 1 1 auto; overflow-y: auto">
+    <div class="flex-fill" style="overflow-y: auto">
         <div id="@(HtmlControlsRepository.SearchSongsContainerId)"><partial name="~/Views/Music/Songs.cshtml" model="Model" /></div>
         <hr />
         <div id="@(HtmlControlsRepository.SearchArtistsContainerId)"><partial name="~/Views/Music/Artists.cshtml" model="Model" /></div>

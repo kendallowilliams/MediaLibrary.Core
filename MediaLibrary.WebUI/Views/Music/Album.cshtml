@@ -1,20 +1,20 @@
 ﻿@model MediaLibrary.WebUI.Models.MusicViewModel
 
-<div class="d-flex flex-column" style="flex: 1 1 auto; overflow-y: auto">
-    <div style="flex: 0 0 auto">
+<div class="d-flex flex-column flex-fill" style="overflow-y: auto">
+    <div>
         <h4 class="text-truncate">@(Model.SelectedAlbum.Title)</h4>
         <div class="p-1">
             <button class="btn btn-sm btn-outline-secondary" data-back-button="album" data-tooltip="tooltip" title="Go back"><i class="fa fa-arrow-circle-left"></i></button>
         </div>
         <hr />
     </div>
-    <div class="card" style="flex: 1 1 auto; overflow-y: auto">
+    <div class="card flex-fill" style="overflow-y: auto">
         <div class="card-header p-0" id="heading-artist-@(Model.SelectedAlbum.Id)">
             <h5 class="mb-0">
                 <button class="btn btn-sm btn-link">Songs</button>
             </h5>
         </div>
-        <div class="card-body m-0 p-0" style="flex: 1 1 auto; overflow-y: auto">
+        <div class="card-body m-0 p-0 flex-fill" style="overflow-y: auto">
             @if (Model.SelectedAlbum.Tracks.Any())
             {
             <ul class="list-group list-group-flush">
@@ -24,8 +24,8 @@
                     <div class="media">
                         <img class="mr-3 track-img" src="@(Url.Content("~/images/audio.png"))" title="@(song.Title)">
                         <div class="media-body d-flex flex-column" style="overflow-x: auto">
-                            <span class="mt-0 text-truncate font-weight-bold" style="flex: 0 0 auto">@(song.Title)</span>
-                            <small data-artist-id="@(song.ArtistId)" style="cursor: pointer; flex: 0 0 auto">@(song.Artist?.Name ?? "Unknown Artist")</small>
+                            <span class="mt-0 text-truncate font-weight-bold">@(song.Title)</span>
+                            <small data-artist-id="@(song.ArtistId)" style="cursor: pointer">@(song.Artist?.Name ?? "Unknown Artist")</small>
                         </div>
                         <div>
                             <button class="btn btn-sm btn-outline-secondary" data-play-id="@(song.Id)" data-tooltip="tooltip" title="Play">
