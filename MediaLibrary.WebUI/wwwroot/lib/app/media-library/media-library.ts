@@ -24,6 +24,7 @@ import IConfigurations from '../assets/interfaces/configurations-interface';
 import { disposeAllTooltips, loadAllTooltips } from '../assets/utilities/bootstrap-helper';
 import { fetch_get, loadHTML } from '../assets/utilities/fetch_service';
 import SettingsModal from '../assets/modals/settings-modal';
+import ISettingsReloadFunctions from '../assets/interfaces/settings-reload-functions';
 
 export default class MediaLibrary extends BaseClass {
     private home: Home;
@@ -64,11 +65,18 @@ export default class MediaLibrary extends BaseClass {
 
     private load(): void {
         const loadFunctions: IPlayerLoadFunctions = {
-            loadArtist: (id) => this.music.loadArtist(id, this.loadView.bind(this, MediaPages.Music)),
-            loadAlbum: (id) => this.music.loadAlbum(id, this.loadView.bind(this, MediaPages.Music)),
-            loadPodcast: (id) => this.podcast.loadPodcast(id, this.loadView.bind(this, MediaPages.Podcast)),
-            loadSeries: (id) => this.television.loadSeries(id, this.loadView.bind(this, MediaPages.Television))
-        },
+                loadArtist: (id) => this.music.loadArtist(id, this.loadView.bind(this, MediaPages.Music)),
+                loadAlbum: (id) => this.music.loadAlbum(id, this.loadView.bind(this, MediaPages.Music)),
+                loadPodcast: (id) => this.podcast.loadPodcast(id, this.loadView.bind(this, MediaPages.Podcast)),
+                loadSeries: (id) => this.television.loadSeries(id, this.loadView.bind(this, MediaPages.Television))
+            },
+            settingsLoadFunctions: ISettingsReloadFunctions = {
+                loadTelevision: () => this.television.loadView(),
+                loadMusic: () => this.music.loadView(),
+                loadPodcast: () => this.podcast.loadView(),
+                loadPlaylist: () => this.playlist.loadView(),
+                loadPlayer: () => this.player.loadView()
+            },
             success: () => void = () => {
                 const configurations: IConfigurations = {
                     MediaLibary: this.mediaLibraryConfiguration,
@@ -85,7 +93,7 @@ export default class MediaLibrary extends BaseClass {
                     LoadingModal.hideLoading();
                     this.editSongModal = new EditSongModal(this.mediaLibraryConfiguration, this.loadView.bind(this));
                     this.addToPlaylistModal = new AddToPlaylistModal();
-                    this.settingsModal = new SettingsModal(configurations);
+                    this.settingsModal = new SettingsModal(configurations, settingsLoadFunctions);
                     this.home = new Home(this.homeConfiguration);
                     this.music = new Music(this.musicConfiguration,
                         this.playWrapper.bind(this),

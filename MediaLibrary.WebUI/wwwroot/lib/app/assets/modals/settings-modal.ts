@@ -2,11 +2,12 @@
 import { getAlbumSortEnum, getAppWidthEnum, getArtistSortEnum,  getPlaylistSortEnum,  getSeriesSortEnum,  getSongSortEnum } from "../enums/enum-functions";
 import { MediaPages } from "../enums/enums";
 import IConfigurations from "../interfaces/configurations-interface";
+import ISettingsReloadFunctions from "../interfaces/settings-reload-functions";
 
 export default class SettingsModal {
     private modal: HTMLElement;
 
-    constructor(private configurations: IConfigurations) {
+    constructor(private configurations: IConfigurations, private settingsLoadFunctions: ISettingsReloadFunctions) {
         this.modal = HtmlControls.Modals().SettingsModal;
         this.initializeControls();
     }
@@ -49,7 +50,7 @@ export default class SettingsModal {
             this.configurations.MediaLibary.updateConfiguration();
         });
         $modalBody.find('input[name="NavBarTimeOut"]').on('change', e => {
-            const timeout = $(e.currentTarget).val() as number;
+            const timeout = parseInt($(e.currentTarget).val() as string);
 
             this.configurations.MediaLibary.properties.NavBarTimeOut = timeout;
             this.configurations.MediaLibary.updateConfiguration();
@@ -58,46 +59,46 @@ export default class SettingsModal {
             const sort = $(e.currentTarget).val() as string;
 
             this.configurations.Music.properties.SelectedAlbumSort = getAlbumSortEnum(sort);
-            this.configurations.Music.updateConfiguration();
+            this.configurations.Music.updateConfiguration(() => this.settingsLoadFunctions.loadMusic());
         });
         $modalBody.find('select[name="SelectedArtistSort"]').on('change', e => {
             const sort = $(e.currentTarget).val() as string;
 
             this.configurations.Music.properties.SelectedArtistSort = getArtistSortEnum(sort);
-            this.configurations.Music.updateConfiguration();
+            this.configurations.Music.updateConfiguration(() => this.settingsLoadFunctions.loadMusic());
         });
         $modalBody.find('select[name="SelectedSongSort"]').on('change', e => {
             const sort = $(e.currentTarget).val() as string;
 
             this.configurations.Music.properties.SelectedSongSort = getSongSortEnum(sort);
-            this.configurations.Music.updateConfiguration();
+            this.configurations.Music.updateConfiguration(() => this.settingsLoadFunctions.loadMusic());
         });
         $modalBody.find('input[name="MaxSystemPlaylistItems"]').on('change', e => {
-            const max = $(e.currentTarget).val() as number;
+            const max = parseInt($(e.currentTarget).val() as string);
 
             this.configurations.Playlist.properties.MaxSystemPlaylistItems = max;
-            this.configurations.Playlist.updateConfiguration();
+            this.configurations.Playlist.updateConfiguration(() => this.settingsLoadFunctions.loadPlaylist());
         });
         $modalBody.find('input[name="SkipBackwardSeconds"]').on('change', e => {
-            const seconds = $(e.currentTarget).val() as number;
+            const seconds = parseInt($(e.currentTarget).val() as string);
 
             this.configurations.Player.properties.SkipBackwardSeconds = seconds;
             this.configurations.Player.updateConfiguration();
         });
         $modalBody.find('input[name="SkipForwardSeconds"]').on('change', e => {
-            const seconds = $(e.currentTarget).val() as number;
+            const seconds = parseInt($(e.currentTarget).val() as string);
 
             this.configurations.Player.properties.SkipForwardSeconds = seconds;
             this.configurations.Player.updateConfiguration();
         });
         $modalBody.find('input[name="ProgressUpdateInterval"]').on('change', e => {
-            const seconds = $(e.currentTarget).val() as number;
+            const seconds = parseInt($(e.currentTarget).val() as string);
 
             this.configurations.Player.properties.ProgressUpdateInterval = seconds;
             this.configurations.Player.updateConfiguration();
         });
         $modalBody.find('input[name="AudioVisualizerBarCount"]').on('change', e => {
-            const quantity = $(e.currentTarget).val() as number;
+            const quantity = parseInt($(e.currentTarget).val() as string);
 
             this.configurations.Player.properties.AudioVisualizerBarCount = quantity;
             this.configurations.Player.updateConfiguration();
@@ -112,25 +113,25 @@ export default class SettingsModal {
             const sort = $(e.currentTarget).val() as string;
 
             this.configurations.Television.properties.SelectedSeriesSort = getSeriesSortEnum(sort);
-            this.configurations.Television.updateConfiguration(/* todo: need to reload view */);
+            this.configurations.Television.updateConfiguration(() => this.settingsLoadFunctions.loadTelevision());
         });
         $modalBody.find('select[name="SelectedTelevisionPlaylistSort"]').on('change', e => {
             const sort = $(e.currentTarget).val() as string;
 
             this.configurations.Playlist.properties.SelectedTelevisionPlaylistSort = getPlaylistSortEnum(sort);
-            this.configurations.Playlist.updateConfiguration(/* todo: need to reload view */);
+            this.configurations.Playlist.updateConfiguration(() => this.settingsLoadFunctions.loadPlaylist());
         });
         $modalBody.find('select[name="SelectedPodcastPlaylistSort"]').on('change', e => {
             const sort = $(e.currentTarget).val() as string;
 
             this.configurations.Playlist.properties.SelectedPodcastPlaylistSort = getPlaylistSortEnum(sort);
-            this.configurations.Playlist.updateConfiguration(/* todo: need to reload view */);
+            this.configurations.Playlist.updateConfiguration(() => this.settingsLoadFunctions.loadPlaylist());
         });
         $modalBody.find('select[name="SelectedMusicPlaylistSort"]').on('change', e => {
             const sort = $(e.currentTarget).val() as string;
 
             this.configurations.Playlist.properties.SelectedMusicPlaylistSort = getPlaylistSortEnum(sort);
-            this.configurations.Playlist.updateConfiguration(/* todo: need to reload view */);
+            this.configurations.Playlist.updateConfiguration(() => this.settingsLoadFunctions.loadPlaylist());
         });
     }
 }

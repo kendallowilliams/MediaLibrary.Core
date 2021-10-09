@@ -9,7 +9,7 @@ import LoadingModal from "../../assets/modals/loading-modal";
 import IMusicConfiguration from "../../assets/interfaces/music-configuration-interface";
 import { loadTooltips, disposeTooltips } from '../../assets/utilities/bootstrap-helper';
 import AddNewSongModal from "../../assets/modals/add-song-modal";
-import { getMusicTabEnumString, getMusicTabEnum, getSongSortEnum, getArtistSortEnum, getAlbumSortEnum } from "../../assets/enums/enum-functions";
+import { getMusicTabEnumString, getMusicTabEnum } from "../../assets/enums/enum-functions";
 import Search from "./search";
 import ManageDirectoriesModal from "../../assets/modals/manage-directories-modal";
 import * as MessageBox from "../../assets/utilities/message-box";
@@ -108,32 +108,10 @@ export default class Music extends BaseClass implements IView {
                     $('[data-group-url][data-target="#collapse-songs-0"]').trigger('click');
                     this.updateActiveMediaFunc();
                 };
-            $(HtmlControls.UIControls().MusicTabList).find('*[data-sort-tab]').each((index, _btn) => {
-                if ($(_btn).attr('data-sort-tab') === $newTab.attr('id')) {
-                    $(_btn).removeClass('d-none').addClass('d-inline-block');
-                } else {
-                    $(_btn).removeClass('d-inline-block').addClass('d-none');
-                }
-            });
             LoadingModal.showLoading();
             this.musicConfiguration.properties.SelectedMusicTab = getMusicTabEnum($newTab.attr('data-music-tab'));
             disposeTooltips($newView[0]);
             this.musicConfiguration.updateConfiguration(() => loadHTML($newView.get(0), url, null).then(_ => success()));
-        });
-
-        $(this.mediaView).find('*[data-sort-type]').on('change', e => {
-            const select = e.currentTarget,
-                sortType: string = $(select).attr('data-sort-type');
-
-            if (sortType === 'SelectedAlbumSort') {
-                this.musicConfiguration.properties.SelectedAlbumSort = getAlbumSortEnum($(select).val() as string);
-            } else if (sortType === 'SelectedArtistSort') {
-                this.musicConfiguration.properties.SelectedArtistSort = getArtistSortEnum($(select).val() as string);
-            } else if (sortType === 'SelectedSongSort') {
-                this.musicConfiguration.properties.SelectedSongSort = getSongSortEnum($(select).val() as string);
-            }
-
-            this.musicConfiguration.updateConfiguration(() => this.loadView());
         });
 
         $('[data-music-action="refresh"]').on('click', e => {
