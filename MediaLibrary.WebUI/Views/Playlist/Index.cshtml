@@ -11,63 +11,29 @@
 <div class="d-flex flex-column text-truncate" style="overflow-y: auto">
     <div>
         <h4>Playlists</h4>
-        <div class="nav d-block p-1" id="@(HtmlControlsRepository.PlaylistTabListId)" role="tablist">
-            <a class="btn btn-sm btn-outline-secondary" id="@(HtmlControlsRepository.MusicPlaylistContainerId)-tab" data-toggle="tab"
-               role="tab" title="@(nameof(Enums.PlaylistTabs.Music))" data-playlist-tab="@(nameof(Enums.PlaylistTabs.Music))"
-               data-tooltip="tooltip" href="#@(HtmlControlsRepository.MusicPlaylistContainerId)">
-                <i class="fa fa-music"></i>
-            </a>
-            <a class="btn btn-sm btn-outline-secondary" id="@(HtmlControlsRepository.PodcastPlaylistContainerId)-tab" data-toggle="tab"
-               role="tab" title="@(nameof(Enums.PlaylistTabs.Podcast))" data-playlist-tab="@(nameof(Enums.PlaylistTabs.Podcast))"
-               data-tooltip="tooltip" href="#@(HtmlControlsRepository.PodcastPlaylistContainerId)">
-                <i class="fa fa-podcast"></i>
-            </a>
-            <a class="btn btn-sm btn-outline-secondary" id="@(HtmlControlsRepository.EpisodePlaylistContainerId)-tab" data-toggle="tab"
-               role="tab" title="@(nameof(Enums.PlaylistTabs.Television))" data-playlist-tab="@(nameof(Enums.PlaylistTabs.Television))"
-               data-tooltip="tooltip" href="#@(HtmlControlsRepository.EpisodePlaylistContainerId)">
-                <i class="fa fa-tv"></i>
-            </a>
-            <div class="float-right d-none d-lg-block">
+        <div class="nav d-flex p-1" id="@(HtmlControlsRepository.PlaylistTabListId)" role="tablist">
+            <div class="flex-fill">
+                <a class="btn btn-sm btn-outline-secondary" id="@(HtmlControlsRepository.MusicPlaylistContainerId)-tab" data-toggle="tab"
+                   role="tab" title="@(nameof(Enums.PlaylistTabs.Music))" data-playlist-tab="@(nameof(Enums.PlaylistTabs.Music))"
+                   data-tooltip="tooltip" href="#@(HtmlControlsRepository.MusicPlaylistContainerId)">
+                    <i class="fa fa-music"></i>
+                </a>
+                <a class="btn btn-sm btn-outline-secondary" id="@(HtmlControlsRepository.PodcastPlaylistContainerId)-tab" data-toggle="tab"
+                   role="tab" title="@(nameof(Enums.PlaylistTabs.Podcast))" data-playlist-tab="@(nameof(Enums.PlaylistTabs.Podcast))"
+                   data-tooltip="tooltip" href="#@(HtmlControlsRepository.PodcastPlaylistContainerId)">
+                    <i class="fa fa-podcast"></i>
+                </a>
+                <a class="btn btn-sm btn-outline-secondary" id="@(HtmlControlsRepository.EpisodePlaylistContainerId)-tab" data-toggle="tab"
+                   role="tab" title="@(nameof(Enums.PlaylistTabs.Television))" data-playlist-tab="@(nameof(Enums.PlaylistTabs.Television))"
+                   data-tooltip="tooltip" href="#@(HtmlControlsRepository.EpisodePlaylistContainerId)">
+                    <i class="fa fa-tv"></i>
+                </a>
+            </div>
+            <div>
                 <button type="button" class="btn btn-sm btn-outline-secondary" data-toggle="modal" data-target="#@(HtmlControlsRepository.NewPlaylistModalId)" data-tooltip="tooltip" title="Add playlist"><i class="fa fa-plus"></i></button>
-                @Html.DropDownListFor(x => x.Configuration.SelectedMusicPlaylistSort,
-                                        Model.PlaylistSortItems,
-                                        null,
-                                        new
-                                        {
-                                            @class = "form-control form-control-sm border border-secondary d-none align-middle",
-                                            style = "width: 135px",
-                                            title = "Sort by",
-                                            data_playlist_action = "sort",
-                                            data_tooltip = "tooltip",
-                                            data_sort_type = nameof(Model.Configuration.SelectedMusicPlaylistSort),
-                                            data_sort_tab = $"{HtmlControlsRepository.MusicPlaylistContainerId}-tab"
-                                        })
-                @Html.DropDownListFor(x => x.Configuration.SelectedPodcastPlaylistSort,
-                                        Model.PlaylistSortItems,
-                                        null,
-                                        new
-                                        {
-                                            @class = "form-control form-control-sm border border-secondary d-none align-middle",
-                                            style = "width: 135px",
-                                            title = "Sort by",
-                                            data_playlist_action = "sort",
-                                            data_tooltip = "tooltip",
-                                            data_sort_type = nameof(Model.Configuration.SelectedPodcastPlaylistSort),
-                                            data_sort_tab = $"{HtmlControlsRepository.PodcastPlaylistContainerId}-tab"
-                                        })
-              @Html.DropDownListFor(x => x.Configuration.SelectedTelevisionPlaylistSort,
-                                      Model.PlaylistSortItems,
-                                      null,
-                                      new
-                                      {
-                                          @class = "form-control form-control-sm border border-secondary d-none align-middle",
-                                          style = "width: 135px",
-                                          title = "Sort by",
-                                          data_playlist_action = "sort",
-                                          data_tooltip = "tooltip",
-                                          data_sort_type = nameof(Model.Configuration.SelectedTelevisionPlaylistSort),
-                                          data_sort_tab = $"{HtmlControlsRepository.EpisodePlaylistContainerId}-tab"
-                                      })
+                <button class="btn btn-sm btn-outline-secondary" data-toggle="modal" data-target="#@(HtmlControlsRepository.SettingsModalId)" data-tooltip="tooltip" title="Settings">
+                    <i class="fa fa-cog"></i>
+                </button>
             </div>
         </div>
         <hr />

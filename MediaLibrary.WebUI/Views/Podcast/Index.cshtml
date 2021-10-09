@@ -1,21 +1,18 @@
 ﻿@model MediaLibrary.WebUI.Models.PodcastViewModel
 
 <div class="d-flex flex-column flex-fill" style="overflow-y: auto">
-    <div>
+    <div class="d-flex flex-column">
         <h4>Podcasts</h4>
-        <div class="p-1">
-            <button type="button" class="btn btn-sm btn-outline-secondary" data-toggle="modal" data-target="#@(HtmlControlsRepository.NewPodcastModalId)" data-tooltip="tooltip" title="Add podcast"><i class="fa fa-plus"></i></button>
-            @Html.DropDownListFor(x => x.Configuration.SelectedPodcastSort,
-                                  Model.PodcastSortItems,
-                                  null,
-                                  new { @class = "form-control form-control-sm border border-secondary float-right align-middle",
-                                        style = "width: 150px",
-                                        title = "Sort by",
-                                        data_podcast_action = "sort",
-                                        data_tooltip = "tooltip"
-            })
+        <div class="d-flex flex-row">
+            <div class="flex-fill"></div>
+            <div class="pr-1">
+                <button type="button" class="btn btn-sm btn-outline-secondary" data-toggle="modal" data-target="#@(HtmlControlsRepository.NewPodcastModalId)" data-tooltip="tooltip" title="Add podcast"><i class="fa fa-plus"></i></button>
+                <button class="btn btn-sm btn-outline-secondary" data-toggle="modal" data-target="#@(HtmlControlsRepository.SettingsModalId)" data-tooltip="tooltip" title="Settings">
+                    <i class="fa fa-cog"></i>
+                </button>
+            </div>
         </div>
-        <hr />
+        <div><hr /></div>
     </div>
 
     @if (Model.PodcastGroups.Any())

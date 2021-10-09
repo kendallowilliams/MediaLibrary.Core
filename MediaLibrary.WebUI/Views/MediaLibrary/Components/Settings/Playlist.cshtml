@@ -1,0 +1,58 @@
+﻿@model PlaylistConfiguration
+
+@{
+    var playlistSortItems = PlaylistRepository.GetPlaylistSortItems()
+                                              .Select(item => new SelectListItem { Text = item.Name, Value = item.Value.ToString() });
+}
+
+<div class="d-flex flex-column flex-fill overflow-auto pt-3 p-1">
+    <form>
+        <div class="row m-0 p-0 mb-3">
+            <div class="col-3 border-right">
+                <h6>Interface</h6>
+            </div>
+            <div class="col-9">
+                <div class="row mb-3">
+                    <div class="col">
+                        <div class="input-group input-group-sm">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text" style="width: 125px">Max Playlist Items</div>
+                            </div>
+                            @Html.TextBoxFor(x => x.MaxSystemPlaylistItems, new { @class = "form-control", type = "number", step = "1", min = "1" })
+                        </div>
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col">
+                        <div class="input-group input-group-sm">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text" style="width: 125px">Music Sort</div>
+                            </div>
+                            @Html.DropDownListFor(x => x.SelectedMusicPlaylistSort, playlistSortItems, null, new { @class = "custom-select" })
+                        </div>
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col">
+                        <div class="input-group input-group-sm">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text" style="width: 125px">Podcast Sort</div>
+                            </div>
+                            @Html.DropDownListFor(x => x.SelectedPodcastPlaylistSort, playlistSortItems, null, new { @class = "custom-select" })
+                        </div>
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col">
+                        <div class="input-group input-group-sm">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text" style="width: 125px">Television Sort</div>
+                            </div>
+                            @Html.DropDownListFor(x => x.SelectedTelevisionPlaylistSort, playlistSortItems, null, new { @class = "custom-select" })
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

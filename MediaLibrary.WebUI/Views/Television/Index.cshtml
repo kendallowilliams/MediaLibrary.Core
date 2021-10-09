@@ -1,22 +1,17 @@
 ﻿@model MediaLibrary.WebUI.Models.TelevisionViewModel
 
 <div class="d-flex flex-column flex-fill"  style="overflow-y: auto">
-    <div>
+    <div class="d-flex flex-column">
         <h4>Television</h4>
-        <div class="d-flex flex-column align-items-end">
-            @Html.DropDownListFor(x => x.Configuration.SelectedSeriesSort,
-                                    Model.SeriesSortItems,
-                                    null,
-                                    new
-                                         {
-                                             @class = "form-control form-control-sm border border-secondary align-middle",
-                                        style = "width: 150px",
-                                        title = "Sort by",
-                                        data_series_action = "sort",
-                                        data_tooltip = "tooltip"
-            })
+        <div class="d-flex flex-row">
+            <div class="flex-fill"></div>
+            <div class="pr-1">
+                <button class="btn btn-sm btn-outline-secondary" data-toggle="modal" data-target="#@(HtmlControlsRepository.SettingsModalId)" data-tooltip="tooltip" title="Settings">
+                    <i class="fa fa-cog"></i>
+                </button>
+            </div>
         </div>
-        <hr />
+        <div><hr /></div>
     </div>
 
     @if (Model.SeriesGroups.Any())

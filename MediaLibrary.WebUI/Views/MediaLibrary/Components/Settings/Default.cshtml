@@ -1,0 +1,22 @@
+﻿@model SettingsViewModel
+
+<div>
+    <div id="@(HtmlControlsRepository.GeneralSettingsContainerId)">
+        <partial name="~/Views/MediaLibrary/Components/Settings/General.cshtml" model="Model.MediaLibraryConfiguration" />
+    </div>
+    <div id="@(HtmlControlsRepository.MusicSettingsContainerId)">
+        <partial name="~/Views/MediaLibrary/Components/Settings/Music.cshtml" model="Model.MusicConfiguration" />
+    </div>
+    <div id="@(HtmlControlsRepository.PodcastSettingsContainerId)">
+        <partial name="~/Views/MediaLibrary/Components/Settings/Podcast.cshtml" model="Model.PodcastConfiguration" />
+    </div>
+    <div id="@(HtmlControlsRepository.TelevisionSettingsContainerId)">
+        <partial name="~/Views/MediaLibrary/Components/Settings/Television.cshtml" model="Model.TelevisionConfiguration" />
+    </div>
+    <div id="@(HtmlControlsRepository.PlaylistSettingsContainerId)">
+        <partial name="~/Views/MediaLibrary/Components/Settings/Playlist.cshtml" model="Model.PlaylistConfiguration" />
+    </div>
+    <div id="@(HtmlControlsRepository.PlayerSettingsContainerId)">
+        <partial name="~/Views/MediaLibrary/Components/Settings/Player.cshtml" model="Model.PlayerConfiguration" />
+    </div>
+</div>

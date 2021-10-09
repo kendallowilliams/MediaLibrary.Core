@@ -39,12 +39,6 @@ export default class Television extends BaseClass implements IView {
     initializeControls(): void {
         $('[data-back-button="television"]').on('click', () => this.goBack(() => this.loadView.call(this)));
 
-        $(this.mediaView).find('*[data-series-action="sort"]').on('change', e => {
-            LoadingModal.showLoading();
-            this.televisionConfiguration.properties.SelectedSeriesSort = getSeriesSortEnum($(e.currentTarget).val() as string);
-            this.televisionConfiguration.updateConfiguration(() => this.loadView(() => LoadingModal.hideLoading()));
-        });
-
         $(this.mediaView).find('*[data-series-id]').on('click', e => {
             LoadingModal.showLoading();
             this.televisionConfiguration.properties.SelectedSeriesId = parseInt($(e.currentTarget).attr('data-series-id'));

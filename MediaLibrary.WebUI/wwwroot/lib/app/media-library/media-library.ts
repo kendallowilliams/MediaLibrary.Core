@@ -20,10 +20,10 @@ import EditSongModal from '../assets/modals/edit-song-modal';
 import { getMediaPagesEnum, getMediaPagesEnumString } from '../assets/enums/enum-functions';
 import AddToPlaylistModal from '../assets/modals/add-to-playlist-modal';
 import IPlayerLoadFunctions from '../assets/interfaces/player-load-functions-interface';
-import Settings from './settings/settings';
 import IConfigurations from '../assets/interfaces/configurations-interface';
 import { disposeAllTooltips, loadAllTooltips } from '../assets/utilities/bootstrap-helper';
 import { fetch_get, loadHTML } from '../assets/utilities/fetch_service';
+import SettingsModal from '../assets/modals/settings-modal';
 
 export default class MediaLibrary extends BaseClass {
     private home: Home;
@@ -32,7 +32,7 @@ export default class MediaLibrary extends BaseClass {
     private playlist: Playlist;
     private television: Television;
     private podcast: Podcast;
-    private settings: Settings;
+    private settingsModal: SettingsModal;
     private homeConfiguration: HomeConfiguration;
     private mediaLibraryConfiguration: MediaLibraryConfiguration;
     private playerConfiguration: PlayerConfiguration;
@@ -85,6 +85,7 @@ export default class MediaLibrary extends BaseClass {
                     LoadingModal.hideLoading();
                     this.editSongModal = new EditSongModal(this.mediaLibraryConfiguration, this.loadView.bind(this));
                     this.addToPlaylistModal = new AddToPlaylistModal();
+                    this.settingsModal = new SettingsModal(configurations);
                     this.home = new Home(this.homeConfiguration);
                     this.music = new Music(this.musicConfiguration,
                         this.playWrapper.bind(this),
@@ -108,7 +109,6 @@ export default class MediaLibrary extends BaseClass {
                         () => this.mediaLibraryConfiguration.properties.TooltipsEnabled
                     );
                     this.player = new Player(this.playerConfiguration, loadFunctions, this.updateActiveMedia.bind(this));
-                    this.settings = new Settings(configurations);
                     this.loadView(this.mediaLibraryConfiguration.properties.SelectedMediaPage);
                 });
             };
@@ -200,10 +200,6 @@ export default class MediaLibrary extends BaseClass {
                 case MediaPages.Television:
                     this.television.loadView(() => success());
                     break;
-                case MediaPages.Settings:
-                    showHideMainControls = false;
-                    this.settings.loadView(() => success());
-                    break;
                 case MediaPages.Home:
                 default:
                     showHideMainControls = false;
@@ -226,9 +222,6 @@ export default class MediaLibrary extends BaseClass {
                 break;
             case MediaPages.Player:
                 $(this.mainViews.PlayerView).removeClass('d-none');
-                break;
-            case MediaPages.Settings:
-                $(this.mainViews.SettingsView).removeClass('d-none');
                 break;
             default:
                 $(this.mainViews.MediaView).removeClass('d-none');
