@@ -17,7 +17,7 @@
 
     @if (Model.PodcastGroups.Any())
     {
-        <div id="accordion-podcasts flex-fill" style="overflow-y: auto" class="accordion">
+        <div id="accordion-podcasts" style="overflow-y: auto" class="accordion flex-fill">
             @foreach (var item in Model.PodcastGroups.Select((group, index) => new { Index = index, Group = group }))
             {
                 <div class="card">
