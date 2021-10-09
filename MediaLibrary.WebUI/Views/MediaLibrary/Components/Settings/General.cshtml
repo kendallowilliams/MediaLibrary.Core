@@ -12,20 +12,12 @@
         <div class="col-10">
             <div class="row mb-3">
                 <div class="col">
-                    <div class="input-group input-group-sm">
-                        <div class="input-group-prepend">
-                            <div class="input-group-text" style="width: 200px">Database Name</div>
-                        </div>
+                    <div class="form-group">
+                        <label>Database Name</label>
                         @Html.TextBox("DatabaseName", DataService.GetDbName(), new { @class = "form-control", @readonly = "readonly" })
                     </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col">
-                    <div class="input-group input-group-sm">
-                        <div class="input-group-prepend">
-                            <div class="input-group-text" style="width: 200px">Database Server</div>
-                        </div>
+                    <div class="form-group">
+                        <label>Database Server</label>
                         @Html.TextBox("DatabaseServer", DataService.GetDbServer(), new { @class = "form-control", @readonly = "readonly" })
                     </div>
                 </div>
@@ -39,26 +31,14 @@
         <div class="col-10">
             <div class="row mb-3">
                 <div class="col">
-                    <div class="input-group input-group-sm">
-                        <div class="input-group-prepend">
-                            <div class="input-group-text" style="width: 200px">App Width</div>
-                        </div>
+                    <div class="form-group">
+                        <label>App Width</label>
                         @Html.DropDownListFor(x => x.AppWidth, new SelectList(Enum.GetValues(typeof(Enums.AppWidth))), null, new { @class = "custom-select" })
                     </div>
-                </div>
-            </div>
-            <div class="row mb-3">
-                <div class="col">
-                    <div class="input-group input-group-sm">
-                        <div class="input-group-prepend">
-                            <div class="input-group-text" style="width: 200px">NavBar Time Out (seconds)</div>
-                        </div>
+                    <div class="form-group">
+                        <label>NavBar Time Out (seconds)</label>
                         @Html.TextBoxFor(x => x.NavBarTimeOut, new { @class = "form-control", type = "number" })
                     </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col">
                     <div class="form-check">
                         <input type="checkbox" class="form-check-input" id="exampleCheck1">
                         @Html.CheckBoxFor(x => x.TooltipsEnabled, new { @class = "form-check-input" })

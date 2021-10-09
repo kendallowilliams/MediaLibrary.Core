@@ -15,30 +15,16 @@
             <div class="col-9">
                 <div class="row mb-3">
                     <div class="col">
-                        <div class="input-group input-group-sm">
-                            <div class="input-group-prepend">
-                                <div class="input-group-text" style="width: 100px">Album Sort</div>
-                            </div>
+                        <div class="form-group">
+                            @Html.LabelFor(x => x.SelectedAlbumSort, "Album Sort")
                             @Html.DropDownListFor(x => x.SelectedAlbumSort, albumSortList, null, new { @class = "custom-select" })
                         </div>
-                    </div>
-                </div>
-                <div class="row mb-3">
-                    <div class="col">
-                        <div class="input-group input-group-sm">
-                            <div class="input-group-prepend">
-                                <div class="input-group-text" style="width: 100px">Artist Sort</div>
-                            </div>
+                        <div class="form-group">
+                            @Html.LabelFor(x => x.SelectedArtistSort, "Artist Sort")
                             @Html.DropDownListFor(x => x.SelectedArtistSort, artistSortList, null, new { @class = "custom-select" })
                         </div>
-                    </div>
-                </div>
-                <div class="row mb-3">
-                    <div class="col">
-                        <div class="input-group input-group-sm">
-                            <div class="input-group-prepend">
-                                <div class="input-group-text" style="width: 100px">Song Sort</div>
-                            </div>
+                        <div class="form-group">
+                            @Html.LabelFor(x => x.SelectedSongSort, "Song Sort")
                             @Html.DropDownListFor(x => x.SelectedSongSort, songSortList, null, new { @class = "custom-select" })
                         </div>
                     </div>

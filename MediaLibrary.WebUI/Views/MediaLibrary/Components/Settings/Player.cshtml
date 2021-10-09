@@ -8,10 +8,8 @@
         <div class="col-9">
             <div class="row mb-3">
                 <div class="col">
-                    <div class="input-group input-group-sm">
-                        <div class="input-group-prepend">
-                            <div class="input-group-text" style="width: 240px">Audio Visualizer Bar Count</div>
-                        </div>
+                    <div class="form-group">
+                        @Html.LabelFor(x => x.AudioVisualizerBarCount, "Audio Visualizer Bar Count")
                         @Html.TextBoxFor(x => x.AudioVisualizerBarCount, new { @class = "form-control", type = "number", step = "1", min = "64", max = "128" })
                     </div>
                 </div>
@@ -25,30 +23,16 @@
         <div class="col-9">
             <div class="row mb-3">
                 <div class="col">
-                    <div class="input-group input-group-sm">
-                        <div class="input-group-prepend">
-                            <div class="input-group-text" style="width: 240px">Skip Back (seconds)</div>
-                        </div>
+                    <div class="form-group">
+                        @Html.LabelFor(x => x.SkipBackwardSeconds, "Skip Back (seconds)")
                         @Html.TextBoxFor(x => x.SkipBackwardSeconds, new { @class = "form-control", type = "number", step = "1", min = "1" })
                     </div>
-                </div>
-            </div>
-            <div class="row mb-3">
-                <div class="col">
-                    <div class="input-group input-group-sm">
-                        <div class="input-group-prepend">
-                            <div class="input-group-text" style="width: 240px">Skip Ahead (seconds)</div>
-                        </div>
+                    <div class="form-group">
+                        @Html.LabelFor(x => x.SkipForwardSeconds, "Skip Ahead (seconds)")
                         @Html.TextBoxFor(x => x.SkipForwardSeconds, new { @class = "form-control", type = "number", step = "1", min = "1" })
                     </div>
-                </div>
-            </div>
-            <div class="row mb-3">
-                <div class="col">
-                    <div class="input-group input-group-sm">
-                        <div class="input-group-prepend">
-                            <div class="input-group-text" style="width: 240px">Progress Update Interval (seconds)</div>
-                        </div>
+                    <div class="form-group">
+                        @Html.LabelFor(x => x.ProgressUpdateInterval, "Progress Update Interval (seconds)")
                         @Html.TextBoxFor(x => x.ProgressUpdateInterval, new { @class = "form-control", type = "number", step = "1", min = "1" })
                     </div>
                 </div>
