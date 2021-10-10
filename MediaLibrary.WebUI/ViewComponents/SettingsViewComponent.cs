@@ -1,43 +1,35 @@
 ﻿using MediaLibrary.BLL.Services.Interfaces;
 using MediaLibrary.DAL.Models;
 using MediaLibrary.DAL.Services.Interfaces;
-using MediaLibrary.Shared.Services.Interfaces;
-using MediaLibrary.WebUI.Models;
 using MediaLibrary.Shared.Models.Configurations;
+using MediaLibrary.WebUI.Models;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text.Json;
-using System.Threading.Tasks;
-using System.Web;
-using static MediaLibrary.Shared.Enums;
 using System.Reflection;
+using System.Threading.Tasks;
 
-namespace MediaLibrary.WebUI.Controllers
+namespace MediaLibrary.WebUI.ViewComponents
 {
-    public class SettingsController : BaseController
+    public class SettingsViewComponent : ViewComponent
     {
         private readonly SettingsViewModel settingsViewModel;
-        private readonly Lazy<ITransactionService> lazyTransactionService;
-        private readonly Lazy<IDataService> lazyDataService;
-        private ITransactionService transactionService => lazyTransactionService.Value;
-        private IDataService dataService => lazyDataService.Value;
+        private readonly ITransactionService transactionService;
+        private readonly IDataService dataService;
 
-        public SettingsController(IMefService mefService)
+        public SettingsViewComponent(SettingsViewModel settingsViewModel, ITransactionService transactionService, IDataService dataService)
         {
-            this.settingsViewModel = mefService.GetExportedValue<SettingsViewModel>();
-            this.lazyTransactionService = mefService.GetExport<ITransactionService>();
-            this.lazyDataService = mefService.GetExport<IDataService>();
+            this.settingsViewModel = settingsViewModel;
+            this.transactionService = transactionService;
+            this.dataService = dataService;
         }
 
-        public async Task<IActionResult> Index(SettingsTabs? tab)
+        public async Task<IViewComponentResult> InvokeAsync()
         {
             await LoadConfigurations();
-            if (tab.HasValue) /*then*/ settingsViewModel.CurrentSettingsTab = tab.Value;
 
-            return PartialView(settingsViewModel);
+            return View(settingsViewModel);
         }
 
         private async Task LoadConfigurations()
@@ -60,7 +52,7 @@ namespace MediaLibrary.WebUI.Controllers
                 if (property != null)
                 {
                     object configurationObject = configuration.GetConfigurationObject(property.PropertyType);
-                    
+
                     if (configurationObject != null)
                     {
                         property.SetValue(settingsViewModel, configurationObject);

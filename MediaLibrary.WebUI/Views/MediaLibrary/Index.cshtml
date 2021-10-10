@@ -7,8 +7,6 @@
 <div id="@(HtmlControlsRepository.MediaViewId)" class="@((Model.Configuration.SelectedMediaPage == Enums.MediaPages.Home ||
                                                           Model.Configuration.SelectedMediaPage == Enums.MediaPages.Player) ? "d-none" : string.Empty) flex-column flex-fill overflow-auto"
      style="display: flex"></div>
-<div id="@(HtmlControlsRepository.SettingsViewId)" class="@((Model.Configuration.SelectedMediaPage == Enums.MediaPages.Settings) ? "d-none" : string.Empty) flex-column flex-fill overflow-auto"
-     style="display: flex" data-action-url="@Url.Action("Index", "Settings")"></div>
 <div class="@(HtmlControlsRepository.MainControlsContainersClass) d-none flex-column">
     <div><hr /></div>
     <div class="d-flex flex-row border rounded p-1 bg-light">
@@ -55,6 +53,7 @@
 
 <partial name="~/Views/Shared/Modals/EditSongModal.cshtml" />
 <partial name="~/Views/Shared/Modals/AddToPlaylistModal.cshtml" model="Model" />
+<partial name="~/Views/Shared/Modals/SettingsModal.cshtml" />
 
 @section scripts {
 }

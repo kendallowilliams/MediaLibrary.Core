@@ -20,8 +20,11 @@ import EditSongModal from '../assets/modals/edit-song-modal';
 import { getMediaPagesEnum, getMediaPagesEnumString } from '../assets/enums/enum-functions';
 import AddToPlaylistModal from '../assets/modals/add-to-playlist-modal';
 import IPlayerLoadFunctions from '../assets/interfaces/player-load-functions-interface';
-import Settings from './settings/settings';
 import IConfigurations from '../assets/interfaces/configurations-interface';
+import { disposeAllTooltips, loadAllTooltips } from '../assets/utilities/bootstrap-helper';
+import { fetch_get, loadHTML } from '../assets/utilities/fetch_service';
+import SettingsModal from '../assets/modals/settings-modal';
+import ISettingsReloadFunctions from '../assets/interfaces/settings-reload-functions';
 
 export default class MediaLibrary extends BaseClass {
     private home: Home;
@@ -30,7 +33,7 @@ export default class MediaLibrary extends BaseClass {
     private playlist: Playlist;
     private television: Television;
     private podcast: Podcast;
-    private settings: Settings;
+    private settingsModal: SettingsModal;
     private homeConfiguration: HomeConfiguration;
     private mediaLibraryConfiguration: MediaLibraryConfiguration;
     private playerConfiguration: PlayerConfiguration;
@@ -62,11 +65,18 @@ export default class MediaLibrary extends BaseClass {
 
     private load(): void {
         const loadFunctions: IPlayerLoadFunctions = {
-            loadArtist: (id) => this.music.loadArtist(id, this.loadView.bind(this, MediaPages.Music)),
-            loadAlbum: (id) => this.music.loadAlbum(id, this.loadView.bind(this, MediaPages.Music)),
-            loadPodcast: (id) => this.podcast.loadPodcast(id, this.loadView.bind(this, MediaPages.Podcast)),
-            loadSeries: (id) => this.television.loadSeries(id, this.loadView.bind(this, MediaPages.Television))
-        },
+                loadArtist: (id) => this.music.loadArtist(id, this.loadView.bind(this, MediaPages.Music)),
+                loadAlbum: (id) => this.music.loadAlbum(id, this.loadView.bind(this, MediaPages.Music)),
+                loadPodcast: (id) => this.podcast.loadPodcast(id, this.loadView.bind(this, MediaPages.Podcast)),
+                loadSeries: (id) => this.television.loadSeries(id, this.loadView.bind(this, MediaPages.Television))
+            },
+            settingsLoadFunctions: ISettingsReloadFunctions = {
+                loadTelevision: () => this.television.loadView(),
+                loadMusic: () => this.music.loadView(),
+                loadPodcast: () => this.podcast.loadView(),
+                loadPlaylist: () => this.playlist.loadView(),
+                loadPlayer: () => this.player.loadView()
+            },
             success: () => void = () => {
                 const configurations: IConfigurations = {
                     MediaLibary: this.mediaLibraryConfiguration,
@@ -83,13 +93,34 @@ export default class MediaLibrary extends BaseClass {
                     LoadingModal.hideLoading();
                     this.editSongModal = new EditSongModal(this.mediaLibraryConfiguration, this.loadView.bind(this));
                     this.addToPlaylistModal = new AddToPlaylistModal();
+                    this.settingsModal = new SettingsModal(configurations, settingsLoadFunctions);
                     this.home = new Home(this.homeConfiguration);
-                    this.music = new Music(this.musicConfiguration, this.playWrapper.bind(this), this.updateActiveMedia.bind(this));
-                    this.playlist = new Playlist(this.playlistConfiguration, this.playWrapper.bind(this), this.updateActiveMedia.bind(this), loadFunctions);
-                    this.podcast = new Podcast(this.podcastConfiguration, this.playWrapper.bind(this), this.updateActiveMedia.bind(this));
-                    this.television = new Television(this.televisionConfiguration, this.playWrapper.bind(this), this.updateActiveMedia.bind(this));
-                    this.player = new Player(this.playerConfiguration, loadFunctions, this.updateActiveMedia.bind(this));
-                    this.settings = new Settings(configurations);
+                    this.music = new Music(this.musicConfiguration,
+                        this.playWrapper.bind(this),
+                        this.updateActiveMedia.bind(this),
+                        () => this.mediaLibraryConfiguration.properties.TooltipsEnabled
+                    );
+                    this.playlist = new Playlist(this.playlistConfiguration,
+                        this.playWrapper.bind(this),
+                        this.updateActiveMedia.bind(this),
+                        loadFunctions,
+                        () => this.mediaLibraryConfiguration.properties.TooltipsEnabled
+                    );
+                    this.podcast = new Podcast(this.podcastConfiguration,
+                        this.playWrapper.bind(this),
+                        this.updateActiveMedia.bind(this),
+                        () => this.mediaLibraryConfiguration.properties.TooltipsEnabled
+                    );
+                    this.television = new Television(this.televisionConfiguration,
+                        this.playWrapper.bind(this),
+                        this.updateActiveMedia.bind(this),
+                        () => this.mediaLibraryConfiguration.properties.TooltipsEnabled
+                    );
+                    this.player = new Player(this.playerConfiguration,
+                        loadFunctions,
+                        this.updateActiveMedia.bind(this),
+                        () => this.mediaLibraryConfiguration.properties.TooltipsEnabled
+                    );
                     this.loadView(this.mediaLibraryConfiguration.properties.SelectedMediaPage);
                 });
             };
@@ -122,29 +153,38 @@ export default class MediaLibrary extends BaseClass {
     }
 
     private loadConfigurations(callback: () => void = () => null): void {
-        $.get('Home/HomeConfiguration', data => this.homeConfiguration = Configurations.Home(data))
-            .then(() => $.get('Music/MusicConfiguration', data => this.musicConfiguration = Configurations.Music(data))
-                .then(() => $.get('MediaLibrary/MediaLibraryConfiguration', data => this.mediaLibraryConfiguration = Configurations.MediaLibrary(data))
-                    .then(() => $.get('Television/TelevisionConfiguration', data => this.televisionConfiguration = Configurations.Television(data))
-                        .then(() => $.get('Podcast/PodcastConfiguration', data => this.podcastConfiguration = Configurations.Podcast(data))
-                            .then(() => $.get('Player/PlayerConfiguration', data => this.playerConfiguration = Configurations.Player(data))
-                                .then(() => $.get('Playlist/PlaylistConfiguration', data => this.playlistConfiguration = Configurations.Playlist(data))
-                                    .then(callback)
-                                )
-                            )
-                        )
-                    )
-                )
-            );
+        Promise.all([
+            fetch_get('Home/HomeConfiguration', null).then(response => response.json().then(data => this.homeConfiguration = Configurations.Home(data))),
+            fetch_get('MediaLibrary/MediaLibraryConfiguration', null).then(response => response.json().then(data => this.mediaLibraryConfiguration = Configurations.MediaLibrary(data))),
+            fetch_get('Music/MusicConfiguration', null).then(response => response.json().then(data => this.musicConfiguration = Configurations.Music(data))),
+            fetch_get('Television/TelevisionConfiguration', null).then(response => response.json().then(data => this.televisionConfiguration = Configurations.Television(data))),
+            fetch_get('Podcast/PodcastConfiguration', null).then(response => response.json().then(data => this.podcastConfiguration = Configurations.Podcast(data))),
+            fetch_get('Player/PlayerConfiguration', null).then(response => response.json().then(data => this.playerConfiguration = Configurations.Player(data))),
+            fetch_get('Playlist/PlaylistConfiguration', null).then(response => response.json().then(data => this.playlistConfiguration = Configurations.Playlist(data)))
+        ]).then(_ => callback());
     }
 
     private loadStaticViews(callback: () => void = () => null) {
-        $(this.mainViews.PlayerView).load($(this.mainViews.PlayerView).attr('data-action-url'), () => {
-            $(this.mainViews.HomeView).load($(this.mainViews.HomeView).attr('data-action-url'), callback);
-        });
+        Promise.all([
+            loadHTML(this.mainViews.PlayerView, $(this.mainViews.PlayerView).attr('data-action-url'), null),
+            loadHTML(this.mainViews.HomeView, $(this.mainViews.HomeView).attr('data-action-url'), null)
+        ]).then(_ => callback());
     }
 
     private loadView(mediaPage: MediaPages): void {
+        const success = () => {
+            const $tooltips = $('*[data-tooltip="tooltip"]');
+
+            $tooltips.attr('data-disabled', 'true');
+            disposeAllTooltips();
+
+            if(this.mediaLibraryConfiguration.properties.TooltipsEnabled) {
+                $tooltips.removeAttr('data-disabled');
+                loadAllTooltips();
+            }
+
+            LoadingModal.hideLoading();
+        };
         let showHideMainControls: boolean = true;
 
         LoadingModal.showLoading();
@@ -157,29 +197,25 @@ export default class MediaLibrary extends BaseClass {
 
             switch (mediaPage) {
                 case MediaPages.Music:
-                    this.music.loadView(() => LoadingModal.hideLoading());
+                    this.music.loadView(() => success());
                     break;
                 case MediaPages.Player:
                     showHideMainControls = false;
-                    this.player.loadView(() => LoadingModal.hideLoading());
+                    this.player.loadView(() => success());
                     break;
                 case MediaPages.Playlist:
-                    this.playlist.loadView(() => LoadingModal.hideLoading());
+                    this.playlist.loadView(() => success());
                     break;
                 case MediaPages.Podcast:
-                    this.podcast.loadView(() => LoadingModal.hideLoading());
+                    this.podcast.loadView(() => success());
                     break;
                 case MediaPages.Television:
-                    this.television.loadView(() => LoadingModal.hideLoading());
-                    break;
-                case MediaPages.Settings:
-                    showHideMainControls = false;
-                    this.settings.loadView(() => LoadingModal.hideLoading());
+                    this.television.loadView(() => success());
                     break;
                 case MediaPages.Home:
                 default:
                     showHideMainControls = false;
-                    this.home.loadView(() => LoadingModal.hideLoading());
+                    this.home.loadView(() => success());
                     break;
             }
 
@@ -198,9 +234,6 @@ export default class MediaLibrary extends BaseClass {
                 break;
             case MediaPages.Player:
                 $(this.mainViews.PlayerView).removeClass('d-none');
-                break;
-            case MediaPages.Settings:
-                $(this.mainViews.SettingsView).removeClass('d-none');
                 break;
             default:
                 $(this.mainViews.MediaView).removeClass('d-none');

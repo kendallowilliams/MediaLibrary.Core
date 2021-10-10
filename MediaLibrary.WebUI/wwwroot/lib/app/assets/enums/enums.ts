@@ -67,8 +67,7 @@ export const enum MediaPages {
     Playlist,
     Podcast,
     Player,
-    Television,
-    Settings
+    Television
 }
 export const enum MediaTypes {
     Song,

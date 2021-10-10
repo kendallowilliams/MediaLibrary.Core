@@ -6,17 +6,14 @@ using MediaLibrary.WebUI.Services;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.Composition;
 using System.Linq;
 using System.Web;
 using static MediaLibrary.Shared.Enums;
 
 namespace MediaLibrary.WebUI.Models
 {
-    [Export, PartCreationPolicy(CreationPolicy.NonShared)]
     public class MusicViewModel : ViewModel<MusicConfiguration>
     {
-        [ImportingConstructor]
         public MusicViewModel()
         {
             SongGroups = Enumerable.Empty<IGrouping<string, Track>>();

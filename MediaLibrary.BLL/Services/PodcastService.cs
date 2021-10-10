@@ -1,13 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.Composition;
 using System.Data;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using System.Xml;
-using Fody;
 using Microsoft.SyndicationFeed;
 using Microsoft.SyndicationFeed.Rss;
 using MediaLibrary.BLL.Services.Interfaces;
@@ -17,8 +15,6 @@ using MediaLibrary.DAL.Models;
 
 namespace MediaLibrary.BLL.Services
 {
-    [ConfigureAwait(false)]
-    [Export(typeof(IPodcastService))]
     public class PodcastService : IPodcastService
     {
         private readonly IDataService dataService;
@@ -26,7 +22,6 @@ namespace MediaLibrary.BLL.Services
         private readonly ITransactionService transactionService;
         private readonly IFileService fileService;
 
-         [ImportingConstructor]
         public PodcastService(IDataService dataService, IWebService webService, ITransactionService transactionService,
                               IFileService fileService)
         {
@@ -131,7 +126,7 @@ namespace MediaLibrary.BLL.Services
                   .ToList();
                 
                 await dataService.Insert(podcastItems);
-                podcast.PodcastItems = podcastItems.ToList();
+                podcast.PodcastItems = podcast.PodcastItems.Concat(podcastItems).ToList();
                 await dataService.Update(podcast);
             }
 

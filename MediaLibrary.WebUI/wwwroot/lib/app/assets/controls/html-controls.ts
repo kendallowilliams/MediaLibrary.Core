@@ -79,6 +79,7 @@
         AlertModal: document.getElementById('alert-modal'),
         ErrorModal: document.getElementById('error-modal'),
         ConfirmModal: document.getElementById('confirm-modal'),
-        WarningModal: document.getElementById('warning-modal')
+        WarningModal: document.getElementById('warning-modal'),
+        SettingsModal: document.getElementById('settings-modal')
     })
 }

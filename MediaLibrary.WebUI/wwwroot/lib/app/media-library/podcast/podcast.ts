@@ -9,6 +9,7 @@ import LoadingModal from "../../assets/modals/loading-modal";
 import { disposeTooltips, loadTooltips, disposePopovers } from "../../assets/utilities/bootstrap-helper";
 import { getPodcastSortEnum, getPodcastFilterEnum } from "../../assets/enums/enum-functions";
 import * as MessageBox from '../../assets/utilities/message-box'
+import { fetch_get, fetch_post, loadHTML } from "../../assets/utilities/fetch_service";
 
 export default class Podcast extends BaseClass implements IView {
     private readonly mediaView: HTMLElement;
@@ -17,7 +18,8 @@ export default class Podcast extends BaseClass implements IView {
 
     constructor(private podcastConfiguration: PodcastConfiguration,
         private playFunc: (btn: HTMLButtonElement, single: boolean) => void,
-        private updateActiveMediaFunc: () => void) {
+        private updateActiveMediaFunc: () => void,
+        private tooltipsEnabled: () => boolean = () => false) {
         super();
         this.mediaView = HtmlControls.Views().MediaView;
     }
@@ -28,16 +30,16 @@ export default class Podcast extends BaseClass implements IView {
                 this.podcastView = HtmlControls.Views().PodcastView;
                 this.addNewPodcastModal = new AddNewPodcastModal(this.loadView.bind(this));
                 this.initializeControls();
+                if (this.tooltipsEnabled()) /*then*/ loadTooltips(this.mediaView);
                 $('[data-podcast-year][data-item-index="1"]').trigger('click');
                 callback();
             };
         
         disposeTooltips(this.mediaView);
-        this.podcastConfiguration.refresh(() => $(this.mediaView).load('Podcast/Index', success));
+        this.podcastConfiguration.refresh(() => loadHTML(this.mediaView, 'Podcast/Index', null).then(_ => success()));
     }
 
     initializeControls(): void {
-        loadTooltips(this.mediaView);
         $('[data-back-button="podcast"]').on('click', () => {
             LoadingModal.showLoading();
             this.podcastConfiguration.properties.SelectedPodcastId = 0;
@@ -75,17 +77,24 @@ export default class Podcast extends BaseClass implements IView {
         });
 
         $(this.mediaView).find('*[data-podcast-action="refresh"]').on('click', e => {
+            const formData = new FormData();
+
+            formData.set('id', this.podcastConfiguration.properties.SelectedPodcastId.toString());
             LoadingModal.showLoading();
-            $.post('Podcast/RefreshPodcast', { id: this.podcastConfiguration.properties.SelectedPodcastId }, () => this.loadView(() => LoadingModal.hideLoading()));
+            fetch_post('Podcast/RefreshPodcast', formData)
+                .then(_ => this.loadView(() => LoadingModal.hideLoading()));
         });
         $(this.mediaView).find('*[data-podcast-action="delete"]').on('click', e => {
             const $btn = $(e.currentTarget),
                 id = $btn.attr('data-item-id'),
                 title = 'Delete podcast',
                 message = 'Are you sure you want to remove this podcast?',
+                formData = new FormData(),
                 callback = () => {
                     LoadingModal.showLoading();
-                    $.post('Podcast/RemovePodcast', { id: id }, () => this.loadView(() => LoadingModal.hideLoading()));
+                    formData.set('id', id);
+                    fetch_post('Podcast/RemovePodcast', formData)
+                        .then(_ => this.loadView(() => LoadingModal.hideLoading()));
                 };
 
             MessageBox.confirm(title, message, MessageBoxConfirmType.YesNo, callback);
@@ -108,7 +117,7 @@ export default class Podcast extends BaseClass implements IView {
         const success = () => {
             $(item).parent('li.page-item:first').addClass('active');
             this.updateMobileYears(parseInt($(item).attr('data-item-index')));
-            loadTooltips(this.podcastView);
+            if (this.tooltipsEnabled()) /*then*/ loadTooltips(this.podcastView);
             $(this.podcastView).find('[data-podcast-item-options-popover]').each((index, element) => {
                 const $element = $(element),
                     id = $element.attr('data-podcast-item-options-popover'),
@@ -126,25 +135,31 @@ export default class Podcast extends BaseClass implements IView {
             $(this.mediaView).find('*[data-play-id]').on('click', e => this.playFunc(e.currentTarget as HTMLButtonElement, true));
             $(this.mediaView).find('*[data-podcast-action="download"]').on('click', e => {
                 const $btn = $(e.currentTarget),
-                    id = $btn.attr('data-item-id');
+                    id = $btn.attr('data-item-id'),
+                    formData = new FormData();
 
+                formData.set('id', id);
                 LoadingModal.showLoading();
                 $btn.tooltip('dispose');
-                $.post($btn.attr('data-download-action'), { id: id }, () => {
-                    LoadingModal.hideLoading();
-                    $('[data-podcast-year="' + this.getSelectedYear() + '"]').click();
-                });
+                fetch_post($btn.attr('data-download-action'), formData)
+                    .then(_ => {
+                        LoadingModal.hideLoading();
+                        $('[data-podcast-year="' + this.getSelectedYear() + '"]').click();
+                    });
             });
             $(this.mediaView).find('*[data-podcast-action="mark-played"]').on('click', e => {
                 const $btn = $(e.currentTarget),
-                    id = $btn.attr('data-item-id');
+                    id = $btn.attr('data-item-id'),
+                    formData = new FormData();
 
+                formData.set('id', id);
                 LoadingModal.showLoading();
                 $btn.tooltip('dispose');
-                $.post($btn.attr('data-mark-played-action'), { id: id }, () => {
-                    LoadingModal.hideLoading();
-                    $('[data-podcast-year="' + this.getSelectedYear() + '"]').click();
-                });
+                fetch_post($btn.attr('data-mark-played-action'), formData)
+                    .then(_ => {
+                        LoadingModal.hideLoading();
+                        $('[data-podcast-year="' + this.getSelectedYear() + '"]').click();
+                    });
             });
             $(this.mediaView).find('*[data-podcast-action="show-description"]').on('click', e => {
                 const $btn = $(e.currentTarget),
@@ -158,15 +173,16 @@ export default class Podcast extends BaseClass implements IView {
             LoadingModal.hideLoading();
             this.refreshPodcastDownloads();
         },
-            id = this.podcastConfiguration.properties.SelectedPodcastId,
+            id = this.podcastConfiguration.properties.SelectedPodcastId.toString(),
             year = $(item).attr('data-podcast-year'),
-            filter = this.podcastConfiguration.properties.SelectedPodcastFilter;
+            filter = this.podcastConfiguration.properties.SelectedPodcastFilter.toString();
 
         if (item) {
             LoadingModal.showLoading();
             disposeTooltips(this.podcastView);
             disposePopovers(this.podcastView);
-            $(this.podcastView).load('Podcast/GetPodcastItems', { id: id, year: year, filter: filter }, success);
+            loadHTML(this.podcastView, 'Podcast/GetPodcastItems', { id: id, year: year, filter: filter })
+                .then(_ => success());
         }
     }
 
@@ -177,15 +193,17 @@ export default class Podcast extends BaseClass implements IView {
             $items.each((index, element) => {
                 const id = $(element).attr('data-episode-id');
 
-                $.get('Podcast/IsDownloading?id=' + id, data => {
-                    if (data) {
-                        this.refreshPodcastDownloads();
-                    } else {
-                        $(element).removeAttr('data-active-download');
-                        $('[data-podcast-action="downloading"][data-item-id="' + id + '"]').addClass('d-none');
-                        $('[data-podcast-action="download"][data-item-id="' + id + '"]').removeClass('d-none');
-                    }
-                });
+                fetch_get('Podcast/IsDownloading', { id: id })
+                    .then(response => response.text().then(isDownloading => isDownloading === 'true'))
+                    .then(isDownloading => {
+                        if (isDownloading) {
+                            this.refreshPodcastDownloads();
+                        } else {
+                            $(element).removeAttr('data-active-download');
+                            $('[data-podcast-action="downloading"][data-item-id="' + id + '"]').addClass('d-none');
+                            $('[data-podcast-action="download"][data-item-id="' + id + '"]').removeClass('d-none');
+                        }
+                    });
             });
         }, 5000);
     }

@@ -19,9 +19,6 @@ export function getMediaPagesEnum(page: string): MediaPages {
         case 'Television':
             mediaPage = MediaPages.Television;
             break;
-        case 'Settings':
-            mediaPage = MediaPages.Settings;
-            break;
         case 'Home':
         default:
             mediaPage = MediaPages.Home;
@@ -49,9 +46,6 @@ export function getMediaPagesEnumString(page: MediaPages): string {
             break;
         case MediaPages.Television:
             mediaPage = 'Television';
-            break;
-        case MediaPages.Settings:
-            mediaPage = 'Settings';
             break;
         case MediaPages.Home:
         default:

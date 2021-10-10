@@ -1,0 +1,22 @@
+﻿@model SettingsViewModel
+
+<div class="d-flex flex-column">
+    <div id="@(HtmlControlsRepository.GeneralSettingsContainerId)" class="flex-fill">
+        <partial name="~/Views/MediaLibrary/Components/Settings/General.cshtml" model="Model.MediaLibraryConfiguration" />
+    </div>
+    <div id="@(HtmlControlsRepository.MusicSettingsContainerId)" class="flex-fill">
+        <partial name="~/Views/MediaLibrary/Components/Settings/Music.cshtml" model="Model.MusicConfiguration" />
+    </div>
+    <div id="@(HtmlControlsRepository.PodcastSettingsContainerId)" class="flex-fill">
+        <partial name="~/Views/MediaLibrary/Components/Settings/Podcast.cshtml" model="Model.PodcastConfiguration" />
+    </div>
+    <div id="@(HtmlControlsRepository.TelevisionSettingsContainerId)" class="flex-fill">
+        <partial name="~/Views/MediaLibrary/Components/Settings/Television.cshtml" model="Model.TelevisionConfiguration" />
+    </div>
+    <div id="@(HtmlControlsRepository.PlaylistSettingsContainerId)" class="flex-fill">
+        <partial name="~/Views/MediaLibrary/Components/Settings/Playlist.cshtml" model="Model.PlaylistConfiguration" />
+    </div>
+    <div id="@(HtmlControlsRepository.PlayerSettingsContainerId)" class="flex-fill">
+        <partial name="~/Views/MediaLibrary/Components/Settings/Player.cshtml" model="Model.PlayerConfiguration" />
+    </div>
+</div>

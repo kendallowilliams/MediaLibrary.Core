@@ -9,10 +9,11 @@ import LoadingModal from "../../assets/modals/loading-modal";
 import IMusicConfiguration from "../../assets/interfaces/music-configuration-interface";
 import { loadTooltips, disposeTooltips } from '../../assets/utilities/bootstrap-helper';
 import AddNewSongModal from "../../assets/modals/add-song-modal";
-import { getMusicTabEnumString, getMusicTabEnum, getSongSortEnum, getArtistSortEnum, getAlbumSortEnum } from "../../assets/enums/enum-functions";
+import { getMusicTabEnumString, getMusicTabEnum } from "../../assets/enums/enum-functions";
 import Search from "./search";
 import ManageDirectoriesModal from "../../assets/modals/manage-directories-modal";
 import * as MessageBox from "../../assets/utilities/message-box";
+import { fetch_post, loadHTML } from "../../assets/utilities/fetch_service";
 
 export default class Music extends BaseClass implements IView {
     private readonly mediaView: HTMLElement;
@@ -24,7 +25,8 @@ export default class Music extends BaseClass implements IView {
 
     constructor(private musicConfiguration: MusicConfiguration,
         private playFunc: (btn: HTMLButtonElement, single: boolean) => void,
-        private updateActiveMediaFunc: () => void) {
+        private updateActiveMediaFunc: () => void,
+        private tooltipsEnabled: () => boolean = () => false) {
         super();
         this.mediaView = HtmlControls.Views().MediaView;
         this.artist = new Artist(musicConfiguration, this.loadView.bind(this));
@@ -40,10 +42,10 @@ export default class Music extends BaseClass implements IView {
 
     loadView(callback: () => void = () => null): void {
         const success: () => void = () => {
-            this.addNewSongModal = new AddNewSongModal(this.loadView.bind(this));
-            this.manageDirectoriesModal = new ManageDirectoriesModal(this.loadView.bind(this));
+            this.addNewSongModal = new AddNewSongModal(this.loadView.bind(this), this.tooltipsEnabled);
+            this.manageDirectoriesModal = new ManageDirectoriesModal(this.loadView.bind(this), this.tooltipsEnabled);
             this.initializeControls();
-            loadTooltips(this.mediaView);
+            if (this.tooltipsEnabled()) /*then*/ loadTooltips(this.mediaView);
             $('[data-music-tab="' + getMusicTabEnumString(this.musicConfiguration.properties.SelectedMusicTab) + '"]').tab('show');
             this.updateActiveMediaFunc();
             if (this.musicConfiguration.properties.SelectedMusicPage === MusicPages.Search) /*then*/ this.search.search();
@@ -51,7 +53,8 @@ export default class Music extends BaseClass implements IView {
         }; 
 
         disposeTooltips(this.mediaView);
-        $(this.mediaView).load('Music/Index', success);
+        loadHTML(this.mediaView, 'Music/Index', null)
+            .then(_ => success());
     }
 
     loadArtist(id: number, callback: () => void): void {
@@ -82,7 +85,7 @@ export default class Music extends BaseClass implements IView {
                 url = $newView.attr('data-load-url'),
                 success = () => {
                     LoadingModal.hideLoading();
-                    loadTooltips($newView[0]);
+                    if (this.tooltipsEnabled()) /*then*/ loadTooltips($newView[0]);
 
                     $('[data-group-url]').on('click', _e => {
                         const $btn = $(_e.currentTarget),
@@ -90,13 +93,14 @@ export default class Music extends BaseClass implements IView {
                         if (url) {
                             LoadingModal.showLoading();
                             disposeTooltips($($btn.attr('data-target'))[0]);
-                            $($btn.attr('data-target')).load(url, () => {
-                                loadTooltips($($btn.attr('data-target'))[0]);
-                                $($btn.attr('data-target')).find('*[data-play-id]').on('click', __e => this.playFunc(__e.currentTarget as HTMLButtonElement, true));
-                                LoadingModal.hideLoading();
-                                $btn.attr('data-group-url', '');
-                                this.updateActiveMediaFunc();
-                            });
+                            loadHTML($($btn.attr('data-target')).get(0), url, null)
+                                .then(_ => {
+                                    if (this.tooltipsEnabled()) /*then*/ loadTooltips($($btn.attr('data-target'))[0]);
+                                    $($btn.attr('data-target')).find('*[data-play-id]').on('click', __e => this.playFunc(__e.currentTarget as HTMLButtonElement, true));
+                                    LoadingModal.hideLoading();
+                                    $btn.attr('data-group-url', '');
+                                    this.updateActiveMediaFunc();
+                                });
                         }
                     });
                     $('[data-album-id]').on('click', _e => this.album.loadAlbum(parseInt($(_e.currentTarget).attr('data-album-id')), () => this.loadView()));
@@ -104,44 +108,26 @@ export default class Music extends BaseClass implements IView {
                     $('[data-group-url][data-target="#collapse-songs-0"]').trigger('click');
                     this.updateActiveMediaFunc();
                 };
-            $(HtmlControls.UIControls().MusicTabList).find('*[data-sort-tab]').each((index, _btn) => {
-                if ($(_btn).attr('data-sort-tab') === $newTab.attr('id')) {
-                    $(_btn).removeClass('d-none').addClass('d-inline-block');
-                } else {
-                    $(_btn).removeClass('d-inline-block').addClass('d-none');
-                }
-            });
             LoadingModal.showLoading();
             this.musicConfiguration.properties.SelectedMusicTab = getMusicTabEnum($newTab.attr('data-music-tab'));
             disposeTooltips($newView[0]);
-            this.musicConfiguration.updateConfiguration(() => $newView.load(url, success));
-        });
-
-        $(this.mediaView).find('*[data-sort-type]').on('change', e => {
-            const select = e.currentTarget,
-                sortType: string = $(select).attr('data-sort-type');
-
-            if (sortType === 'SelectedAlbumSort') {
-                this.musicConfiguration.properties.SelectedAlbumSort = getAlbumSortEnum($(select).val() as string);
-            } else if (sortType === 'SelectedArtistSort') {
-                this.musicConfiguration.properties.SelectedArtistSort = getArtistSortEnum($(select).val() as string);
-            } else if (sortType === 'SelectedSongSort') {
-                this.musicConfiguration.properties.SelectedSongSort = getSongSortEnum($(select).val() as string);
-            }
-
-            this.musicConfiguration.updateConfiguration(() => this.loadView());
+            this.musicConfiguration.updateConfiguration(() => loadHTML($newView.get(0), url, null).then(_ => success()));
         });
 
         $('[data-music-action="refresh"]').on('click', e => {
             const title = 'Refresh Music',
                 question = 'Do you want the refresh to delete missing/invalid files?',
+                formData = new FormData(),
                 yesCallback = () => {
                     LoadingModal.showLoading();
-                    $.post('Music/Refresh?deleteFiles=true', () => this.loadView(() => LoadingModal.hideLoading()));
+                    formData.set('deleteFiles', 'true');
+                    fetch_post('Music/Refresh', formData)
+                        .then(_ => this.loadView(() => LoadingModal.hideLoading()));
                 },
                 noCallback = () => {
                     LoadingModal.showLoading();
-                    $.post('Music/Refresh', () => this.loadView(() => LoadingModal.hideLoading()));
+                    fetch_post('Music/Refresh')
+                        .then(_ => this.loadView(() => LoadingModal.hideLoading()));
                 };
 
             MessageBox.confirm(title, question, MessageBoxConfirmType.YesNoCancel, yesCallback, noCallback);

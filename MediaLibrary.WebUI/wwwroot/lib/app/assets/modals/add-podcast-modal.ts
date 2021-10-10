@@ -1,6 +1,7 @@
 ﻿import HtmlControls from "../controls/html-controls";
 import LoadingModal from './loading-modal';
 import * as MessageBox from '../utilities/message-box';
+import { fetch_post } from "../utilities/fetch_service";
 
 export default class AddNewPodcastModal {
     private modal: HTMLElement;
@@ -18,12 +19,15 @@ export default class AddNewPodcastModal {
         $(this.modal).find('*[data-podcast-action="save"]').on('click', e => {
             LoadingModal.showLoading();
             $(this.modal).modal('hide').on('hidden.bs.modal', () => {
-                $.post('Podcast/AddPodcast', { rssFeed: $('#txtNewPodcast').val() }, () => {
-                    this.loadFunc(() => LoadingModal.hideLoading());
-                }).fail(_ => {
-                    LoadingModal.hideLoading();
-                    MessageBox.showError('Error', 'Failed to load podcast feed.');
-                });
+                const formData = new FormData();
+
+                formData.set('rssFeed', $('#txtNewPodcast').val() as string);
+                fetch_post('Podcast/AddPodcast', formData)
+                    .then(_ => this.loadFunc(() => LoadingModal.hideLoading()))
+                    .catch(_ => {
+                        LoadingModal.hideLoading();
+                        MessageBox.showError('Error', 'Failed to load podcast feed.');
+                    });
             });
         });
     }

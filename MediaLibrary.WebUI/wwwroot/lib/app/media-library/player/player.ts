@@ -16,6 +16,7 @@ import PlayerControls from "../../assets/controls/player-controls";
 import IPlayerControlsFunctions from "../../assets/interfaces/player-controls-functions-interface";
 import Error from "../../assets/data/error";
 import * as LocalStorage from '../../assets/utilities/local_storage';
+import { fetch_get, fetch_post, loadHTML } from "../../assets/utilities/fetch_service";
 
 export default class Player extends BaseClass implements IView {
     private players: { VideoPlayer: HTMLMediaElement, MusicPlayer: HTMLMediaElement };
@@ -42,7 +43,8 @@ export default class Player extends BaseClass implements IView {
         getPlayer: this.getPlayer.bind(this)
     };
 
-    constructor(private playerConfiguration: PlayerConfiguration, private loadFunctions: IPlayerLoadFunctions, private updateActiveMedia: () => void = () => null) {
+    constructor(private playerConfiguration: PlayerConfiguration, private loadFunctions: IPlayerLoadFunctions, private updateActiveMedia: () => void = () => null,
+        private tooltipsEnabled: () => boolean = () => false) {
         super();
 
         this.players = HtmlControls.Players();
@@ -61,7 +63,7 @@ export default class Player extends BaseClass implements IView {
     private initPlayer(): void {
         this.initMediaPlayers();
         this.initPlayerControls();
-        loadTooltips(this.playerView);
+        if (this.tooltipsEnabled()) /*then*/ loadTooltips(this.playerView);
         this.reload(() => this.loadItem());
     }
 
@@ -75,9 +77,10 @@ export default class Player extends BaseClass implements IView {
                 localStorageKey = LocalStorage.getPlayerProgressKey(id, mediaType);
 
             if (mediaType === MediaTypes.Podcast || mediaType === MediaTypes.Television) {
-                $.get('Player/GetPlayerProgress?id=' + id + '&mediaType=' + mediaType, (data: number) => Math.max(data, currentProgress))
-                    .fail(_ => Math.max(parseInt(LocalStorage.get(localStorageKey)) || 0, currentProgress))
-                    .always(_currentProgress => player.currentTime = _currentProgress);
+                fetch_get('Player/GetPlayerProgress', { id: id, mediaType: mediaType.toString() })
+                    .then(response => response.text().then(data => Math.max(parseInt(data), currentProgress)))
+                    .catch(_ => Math.max(parseInt(LocalStorage.get(localStorageKey)) || 0, currentProgress))
+                    .then(_currentProgress => player.currentTime = _currentProgress);
             }
         });
         $(this.getPlayers()).on('ended', e => {
@@ -339,15 +342,19 @@ export default class Player extends BaseClass implements IView {
     }
 
     private updatePlayCount(player: HTMLMediaElement, callback: () => void = () => null) {
-        const id = $(player).attr('data-item-id');
+        const id = $(player).attr('data-item-id'),
+            formData = new FormData();
 
-        $.post('Player/UpdatePlayCount', { mediaType: this.playerConfiguration.properties.SelectedMediaType, id: id }, callback);
+        formData.set('mediaType', this.playerConfiguration.properties.SelectedMediaType.toString());
+        formData.set('id', id);
+        fetch_post('Player/UpdatePlayCount', formData)
+            .then(_ => callback());
     }
 
     private reload(callback: () => void = () => null): void {
         const containers = HtmlControls.Containers(),
             success = () => {
-                loadTooltips(containers.PlayerItemsContainer);
+                if (this.tooltipsEnabled()) /*then*/ loadTooltips(containers.PlayerItemsContainer);
                 this.applyLoadFunctions();
                 this.updateSelectedPlayerPage();
                 $(containers.PlayerItemsContainer).find('[data-item-index]').on('click', e => {
@@ -363,7 +370,8 @@ export default class Player extends BaseClass implements IView {
         disposeTooltips(containers.PlayerItemsContainer);
         $(HtmlControls.UIFields().NowPlayingTitle).text('');
         $(containers.PlayerItemsContainer).html('');
-        $(containers.PlayerItemsContainer).load('Player/GetPlayerItems', success);
+        loadHTML(containers.PlayerItemsContainer, 'Player/GetPlayerItems', null)
+            .then(_ => success());
     }
 
     private applyLoadFunctions(): void {
@@ -454,16 +462,21 @@ export default class Player extends BaseClass implements IView {
             localStorageKey = LocalStorage.getPlayerProgressKey(id, mediaType),
             localStorageProgress = parseInt(LocalStorage.get(localStorageKey)) || 0,
             data = {
-                id: id,
+                id: id.toString(),
                 mediaType: mediaType,
                 progress: progress > localStorageProgress ? progress : localStorageProgress
-            };
+            },
+            formData = new FormData();
 
+        formData.set('id', data.id);
+        formData.set('mediaType', data.mediaType.toString());
+        formData.set('progress', data.progress.toString());
         if ($currentItem.attr('data-current-time') !== data.progress.toString() && data.progress % progressUpdateInterval === 0 && !isNaN(id)) {
             $currentItem.attr('data-current-time', data.progress);
 
-            $.post('Player/UpdatePlayerProgress', data, _ => LocalStorage.removeItem(localStorageKey))
-                .fail(_ => LocalStorage.set(localStorageKey, data.progress.toString()));
+            fetch_post('Player/UpdatePlayerProgress', formData)
+                .then(_ => LocalStorage.removeItem(localStorageKey))
+                .catch(_ => LocalStorage.set(localStorageKey, data.progress.toString()));
         }
     }
 

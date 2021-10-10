@@ -3,12 +3,10 @@ using MediaLibrary.DAL.Services.Interfaces;
 using MediaLibrary.WebUI.Services.Interfaces;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.Composition;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using static MediaLibrary.Shared.Enums;
-using Fody;
 using MediaLibrary.WebUI.Models;
 using MediaLibrary.WebUI.Repositories;
 using MediaLibrary.Shared.Models.Configurations;
@@ -16,17 +14,13 @@ using System.Linq.Expressions;
 
 namespace MediaLibrary.WebUI.Services
 {
-    [ConfigureAwait(false)]
-    [Export(typeof(IPlaylistUIService))]
     public class PlaylistUIService : BaseUIService, IPlaylistUIService
     {
-        private readonly Lazy<IDataService> lazyDataService;
-        private IDataService dataService => lazyDataService.Value;
+        private readonly IDataService dataService;
 
-        [ImportingConstructor]
-        public PlaylistUIService(Lazy<IDataService> dataService) : base()
+        public PlaylistUIService(IDataService dataService) : base()
         {
-            this.lazyDataService = dataService;
+            this.dataService = dataService;
         }
 
         public async Task<IEnumerable<IGrouping<string, Playlist>>> GetPlaylistGroups(PlaylistConfiguration configuration)

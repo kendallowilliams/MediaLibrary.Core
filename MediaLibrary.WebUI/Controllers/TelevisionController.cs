@@ -12,7 +12,6 @@ using Microsoft.AspNetCore.StaticFiles;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.Composition;
 using IO_File = System.IO.File;
 using System.Linq;
 using System.Net;
@@ -26,21 +25,18 @@ namespace MediaLibrary.WebUI.Controllers
 {
     public class TelevisionController : BaseController
     {
-        private readonly Lazy<ITelevisionUIService> lazyTelevisionService;
-        private readonly Lazy<IDataService> lazyDataService;
-        private readonly Lazy<TelevisionViewModel> lazyTelevisionViewModel;
-        private readonly Lazy<ITransactionService> lazyTransactionService;
-        private ITelevisionUIService televisionService => lazyTelevisionService.Value;
-        private IDataService dataService => lazyDataService.Value;
-        private TelevisionViewModel televisionViewModel => lazyTelevisionViewModel.Value;
-        private ITransactionService transactionService => lazyTransactionService.Value;
+        private readonly ITelevisionUIService televisionService;
+        private readonly IDataService dataService;
+        private readonly TelevisionViewModel televisionViewModel;
+        private readonly ITransactionService transactionService;
 
-        public TelevisionController(IMefService mefService)
+        public TelevisionController(ITelevisionUIService televisionService, IDataService dataService, TelevisionViewModel televisionViewModel,
+                                    ITransactionService transactionService)
         {
-            this.lazyTelevisionService = mefService.GetExport<ITelevisionUIService>();
-            this.lazyDataService = mefService.GetExport<IDataService>();
-            this.lazyTelevisionViewModel = mefService.GetExport<TelevisionViewModel>();
-            this.lazyTransactionService = mefService.GetExport<ITransactionService>();
+            this.televisionService = televisionService;
+            this.dataService = dataService;
+            this.televisionViewModel = televisionViewModel;
+            this.transactionService = transactionService;
         }
 
         public async Task<IActionResult> Index()
@@ -71,7 +67,7 @@ namespace MediaLibrary.WebUI.Controllers
             return PartialView("Series", televisionViewModel);
         }
 
-        public async Task<IActionResult> UpdateConfiguration(TelevisionConfiguration televisionConfiguration)
+        public async Task<IActionResult> UpdateConfiguration([FromBody] TelevisionConfiguration televisionConfiguration)
         {
             if (ModelState.IsValid)
             {

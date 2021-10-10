@@ -18,18 +18,15 @@ namespace MediaLibrary.WebUI.Controllers
 {
     public class MediaLibraryController : BaseController
     {
-        private readonly Lazy<MediaLibraryViewModel> lazyMediaLibraryViewModel;
-        private readonly Lazy<IDataService> lazyDataService;
-        private readonly Lazy<ILogService> lazyLogService;
-        private MediaLibraryViewModel mediaLibraryViewModel => lazyMediaLibraryViewModel.Value;
-        private IDataService dataService => lazyDataService.Value;
-        private ILogService logService => lazyLogService.Value;
+        private MediaLibraryViewModel mediaLibraryViewModel;
+        private readonly IDataService dataService;
+        private readonly ILogService logService;
 
-        public MediaLibraryController(IMefService mefService)
+        public MediaLibraryController(MediaLibraryViewModel mediaLibraryViewModel, IDataService dataService, ILogService logService)
         {
-            this.lazyMediaLibraryViewModel = mefService.GetExport<MediaLibraryViewModel>();
-            this.lazyDataService = mefService.GetExport<IDataService>();
-            this.lazyLogService = mefService.GetExport<ILogService>();
+            this.mediaLibraryViewModel = mediaLibraryViewModel;
+            this.dataService = dataService;
+            this.logService = logService;
         }
 
         public async Task<IActionResult> Index()
@@ -41,7 +38,7 @@ namespace MediaLibrary.WebUI.Controllers
             return View(mediaLibraryViewModel);
         }
 
-        public async Task<IActionResult> UpdateConfiguration(MediaLibraryConfiguration mediaLibraryConfiguration)
+        public async Task<IActionResult> UpdateConfiguration([FromBody] MediaLibraryConfiguration mediaLibraryConfiguration)
         {
             if (ModelState.IsValid)
             {

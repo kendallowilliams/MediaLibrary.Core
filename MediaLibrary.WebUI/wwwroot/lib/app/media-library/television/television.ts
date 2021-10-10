@@ -7,6 +7,7 @@ import ITelevisionConfiguration from "../../assets/interfaces/television-configu
 import LoadingModal from '../../assets/modals/loading-modal';
 import { loadTooltips, disposeTooltips } from "../../assets/utilities/bootstrap-helper";
 import { getSeriesSortEnum } from "../../assets/enums/enum-functions";
+import { loadHTML } from "../../assets/utilities/fetch_service";
 
 export default class Television extends BaseClass implements IView {
     private readonly mediaView: HTMLElement;
@@ -14,7 +15,8 @@ export default class Television extends BaseClass implements IView {
 
     constructor(private televisionConfiguration: TelevisionConfiguration,
         private playFunc: (btn: HTMLButtonElement) => void,
-        private updateActiveMediaFunc: () => void) {
+        private updateActiveMediaFunc: () => void,
+        private tooltipsEnabled: () => boolean = () => false) {
         super();
         this.mediaView = HtmlControls.Views().MediaView;
     }
@@ -24,23 +26,18 @@ export default class Television extends BaseClass implements IView {
             success: () => void = () => {
                 this.seasonView = HtmlControls.Views().SeasonView;
                 this.initializeControls();
+                if (this.tooltipsEnabled()) /*then*/ loadTooltips(this.mediaView);
                 $('[data-season-id][data-item-index="0"]').trigger('click');
                 callback();
             };
 
         disposeTooltips(this.mediaView);
-        $(this.mediaView).load('Television/Index', success);
+        loadHTML(this.mediaView, 'Television/Index', null)
+            .then(_ => success());
     }
 
     initializeControls(): void {
-        loadTooltips(this.mediaView);
         $('[data-back-button="television"]').on('click', () => this.goBack(() => this.loadView.call(this)));
-
-        $(this.mediaView).find('*[data-series-action="sort"]').on('change', e => {
-            LoadingModal.showLoading();
-            this.televisionConfiguration.properties.SelectedSeriesSort = getSeriesSortEnum($(e.currentTarget).val() as string);
-            this.televisionConfiguration.updateConfiguration(() => this.loadView(() => LoadingModal.hideLoading()));
-        });
 
         $(this.mediaView).find('*[data-series-id]').on('click', e => {
             LoadingModal.showLoading();
@@ -61,12 +58,12 @@ export default class Television extends BaseClass implements IView {
                 success = () => {
                     $(item).parent('li.page-item:first').addClass('active');
                     this.updateMobileSeasons(parseInt(id));
-                    loadTooltips(this.seasonView);
+                    if (this.tooltipsEnabled()) /*then*/ loadTooltips(this.seasonView);
                     $(this.seasonView).find('*[data-play-id]').on('click', e => this.playFunc(e.currentTarget as HTMLButtonElement));
                     this.updateActiveMediaFunc();
                     LoadingModal.hideLoading();
                 },
-                series = this.televisionConfiguration.properties.SelectedSeriesId,
+                series = this.televisionConfiguration.properties.SelectedSeriesId.toString(),
                 id = $(item).attr('data-season-id'),
                 selectedSeason = this.televisionConfiguration.properties.SelectedSeason;
 
@@ -79,7 +76,8 @@ export default class Television extends BaseClass implements IView {
                 LoadingModal.showLoading();
                 this.televisionConfiguration.properties.SelectedSeason = parseInt(id);
                 disposeTooltips(this.seasonView);
-                $(this.seasonView).load('Television/GetSeason', { series: series, season: parseInt(id) }, success);
+                loadHTML(this.seasonView, 'Television/GetSeason', { series: series, season: id })
+                    .then(_ => success());
             }
         });
     }

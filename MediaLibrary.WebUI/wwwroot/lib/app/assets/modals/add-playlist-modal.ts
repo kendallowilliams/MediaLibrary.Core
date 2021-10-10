@@ -2,6 +2,7 @@
 import PlaylistConfiguration from "../models/configurations/playlist-configuration";
 import LoadingModal from "./loading-modal";
 import { getPlaylistTabEnumString } from "../enums/enum-functions";
+import { fetch_post } from "../utilities/fetch_service";
 
 export default class AddNewPlaylistModal {
     private modal: HTMLElement;
@@ -18,15 +19,15 @@ export default class AddNewPlaylistModal {
         });
 
         $(this.modal).find('*[data-playlist-action="save"]').on('click', e => {
-            const data = {
-                playlistName: $('#txtNewPlaylist').val(),
-                playlistType: $('#ddlPlaylistType').val()
-            };
+            const formData = new FormData();
+
+            formData.set('playlistName', $('#txtNewPlaylist').val() as string);
+            formData.set('playlistType', $('#ddlPlaylistType').val() as string);
 
             LoadingModal.showLoading();
-            $(this.modal).modal('hide').on('hidden.bs.modal', () => {
-                $.post('Playlist/AddPlaylist', data, () => this.loadFunc(() => LoadingModal.hideLoading()));
-            });
+            $(this.modal).modal('hide')
+                .on('hidden.bs.modal', () => fetch_post('Playlist/AddPlaylist', formData)
+                                                .then(_ => this.loadFunc(() => LoadingModal.hideLoading())));
         });
     }
 }

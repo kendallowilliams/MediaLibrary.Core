@@ -1,5 +1,4 @@
-﻿using Fody;
-using MediaLibrary.BLL.Services.Interfaces;
+﻿using MediaLibrary.BLL.Services.Interfaces;
 using MediaLibrary.Shared.Services.Interfaces;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
@@ -11,22 +10,19 @@ using System.Threading.Tasks;
 
 namespace MediaLibrary.Console.HostedServices
 {
-    [ConfigureAwait(false)]
     public class AppHostedService : IHostedService
     {
-        private readonly IMefService mefService;
         private readonly IHostApplicationLifetime appLifetime;
+        private readonly IProcessorService processorService;
 
-        public AppHostedService(IMefService mefService, IHostApplicationLifetime appLifetime)
+        public AppHostedService(IProcessorService processorService, IHostApplicationLifetime appLifetime)
         {
-            this.mefService = mefService;
             this.appLifetime = appLifetime;
+            this.processorService = processorService;
         }
 
         public async Task StartAsync(CancellationToken cancellationToken)
         {
-            IProcessorService processorService = mefService.GetExportedValue<IProcessorService>();
-
             await Task.WhenAll(processorService.RefreshMusic(), processorService.RefreshPodcasts(), processorService.PerformCleanup());
             appLifetime.StopApplication();
         }

@@ -96,6 +96,7 @@ namespace MediaLibrary.WebUI.Repositories
         public static string ConfirmModalId { get => "confirm-modal"; }
         public static string AlertModalId { get => "alert-modal"; }
         public static string WarningModalId { get => "warning-modal"; }
+        public static string SettingsModalId { get => "settings-modal"; }
         #endregion Modal Ids
     }
 }

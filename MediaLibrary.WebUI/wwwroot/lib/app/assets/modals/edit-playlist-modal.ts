@@ -1,4 +1,5 @@
 ﻿import HtmlControls from "../controls/html-controls";
+import { fetch_post } from "../utilities/fetch_service";
 import LoadingModal from "./loading-modal";
 
 export default class EditPlaylistModal {
@@ -16,12 +17,16 @@ export default class EditPlaylistModal {
         });
 
         $('[data-playlist-action="edit"]').on('click', e => {
-            var data = { id: $('#txtPlaylistId').val(), name: $('#txtPlaylistName').val() };
+            var formData = new FormData();
+
+            formData.set('id', $('#txtPlaylistId').val() as string);
+            formData.set('name', $('#txtPlaylistName').val() as string);
 
             $(this.modal).modal('hide').on('hidden.bs.modal', () => {
                 LoadingModal.showLoading();
                 $('#txtPlaylistId, #txtPlaylistName').val('');
-                $.post('Playlist/EditPlaylist', data, () => this.loadFunc(() => LoadingModal.hideLoading()));
+                fetch_post('Playlist/EditPlaylist', formData)
+                    .then(_ => this.loadFunc(() => LoadingModal.hideLoading()));
             });
         });
     }

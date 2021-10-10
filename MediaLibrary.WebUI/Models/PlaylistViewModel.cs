@@ -4,17 +4,14 @@ using MediaLibrary.WebUI.Repositories;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.Composition;
 using System.Linq;
 using System.Web;
 using static MediaLibrary.Shared.Enums;
 
 namespace MediaLibrary.WebUI.Models
 {
-    [Export, PartCreationPolicy(CreationPolicy.NonShared)]
     public class PlaylistViewModel : ViewModel<PlaylistConfiguration>
     {
-        [ImportingConstructor]
         public PlaylistViewModel()
         {
             PlaylistGroups = Enumerable.Empty<IGrouping<string, Playlist>>();

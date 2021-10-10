@@ -1,7 +1,6 @@
 ﻿using MediaLibrary.Shared.Services.Interfaces;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.Composition;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -10,10 +9,8 @@ using System.Threading.Tasks.Dataflow;
 
 namespace MediaLibrary.Shared.Services
 {
-    [Export(typeof(ITPLService))]
     public class TPLService : ITPLService
     {
-        [ImportingConstructor]
         public TPLService()
         {
 

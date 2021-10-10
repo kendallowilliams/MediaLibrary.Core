@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace MediaLibrary.WebUI.Services.Interfaces
+namespace MediaLibrary.Shared.Services.Interfaces
 {
     public interface IBackgroundTaskQueueService
     {

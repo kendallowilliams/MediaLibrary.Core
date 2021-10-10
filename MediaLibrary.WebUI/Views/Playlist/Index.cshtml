@@ -8,75 +8,41 @@
     ViewBag.Title = "Playlists";
 }
 
-<div class="d-flex flex-column" style="flex: 1 1 auto; overflow-y: auto">
-    <div style="flex: 0 0 auto">
+<div class="d-flex flex-column text-truncate" style="overflow-y: auto">
+    <div>
         <h4>Playlists</h4>
-        <div class="nav d-block p-1" id="@(HtmlControlsRepository.PlaylistTabListId)" role="tablist">
-            <a class="btn btn-sm btn-outline-secondary" id="@(HtmlControlsRepository.MusicPlaylistContainerId)-tab" data-toggle="tab"
-               role="tab" title="@(nameof(Enums.PlaylistTabs.Music))" data-playlist-tab="@(nameof(Enums.PlaylistTabs.Music))"
-               data-tooltip="tooltip" href="#@(HtmlControlsRepository.MusicPlaylistContainerId)">
-                <i class="fa fa-music"></i>
-            </a>
-            <a class="btn btn-sm btn-outline-secondary" id="@(HtmlControlsRepository.PodcastPlaylistContainerId)-tab" data-toggle="tab"
-               role="tab" title="@(nameof(Enums.PlaylistTabs.Podcast))" data-playlist-tab="@(nameof(Enums.PlaylistTabs.Podcast))"
-               data-tooltip="tooltip" href="#@(HtmlControlsRepository.PodcastPlaylistContainerId)">
-                <i class="fa fa-podcast"></i>
-            </a>
-            <a class="btn btn-sm btn-outline-secondary" id="@(HtmlControlsRepository.EpisodePlaylistContainerId)-tab" data-toggle="tab"
-               role="tab" title="@(nameof(Enums.PlaylistTabs.Television))" data-playlist-tab="@(nameof(Enums.PlaylistTabs.Television))"
-               data-tooltip="tooltip" href="#@(HtmlControlsRepository.EpisodePlaylistContainerId)">
-                <i class="fa fa-tv"></i>
-            </a>
-            <div class="float-right d-none d-lg-block">
+        <div class="d-flex p-1" id="@(HtmlControlsRepository.PlaylistTabListId)">
+            <div class="nav d-block flex-fill" role="tablist">
+                <a class="btn btn-sm btn-outline-secondary" id="@(HtmlControlsRepository.MusicPlaylistContainerId)-tab" data-toggle="tab"
+                   role="tab" title="@(nameof(Enums.PlaylistTabs.Music))" data-playlist-tab="@(nameof(Enums.PlaylistTabs.Music))"
+                   data-tooltip="tooltip" href="#@(HtmlControlsRepository.MusicPlaylistContainerId)">
+                    <i class="fa fa-music"></i>
+                </a>
+                <a class="btn btn-sm btn-outline-secondary" id="@(HtmlControlsRepository.PodcastPlaylistContainerId)-tab" data-toggle="tab"
+                   role="tab" title="@(nameof(Enums.PlaylistTabs.Podcast))" data-playlist-tab="@(nameof(Enums.PlaylistTabs.Podcast))"
+                   data-tooltip="tooltip" href="#@(HtmlControlsRepository.PodcastPlaylistContainerId)">
+                    <i class="fa fa-podcast"></i>
+                </a>
+                <a class="btn btn-sm btn-outline-secondary" id="@(HtmlControlsRepository.EpisodePlaylistContainerId)-tab" data-toggle="tab"
+                   role="tab" title="@(nameof(Enums.PlaylistTabs.Television))" data-playlist-tab="@(nameof(Enums.PlaylistTabs.Television))"
+                   data-tooltip="tooltip" href="#@(HtmlControlsRepository.EpisodePlaylistContainerId)">
+                    <i class="fa fa-tv"></i>
+                </a>
+            </div>
+            <div>
                 <button type="button" class="btn btn-sm btn-outline-secondary" data-toggle="modal" data-target="#@(HtmlControlsRepository.NewPlaylistModalId)" data-tooltip="tooltip" title="Add playlist"><i class="fa fa-plus"></i></button>
-                @Html.DropDownListFor(x => x.Configuration.SelectedMusicPlaylistSort,
-                                        Model.PlaylistSortItems,
-                                        null,
-                                        new
-                                        {
-                                            @class = "form-control form-control-sm border border-secondary d-none align-middle",
-                                            style = "width: 135px",
-                                            title = "Sort by",
-                                            data_playlist_action = "sort",
-                                            data_tooltip = "tooltip",
-                                            data_sort_type = nameof(Model.Configuration.SelectedMusicPlaylistSort),
-                                            data_sort_tab = $"{HtmlControlsRepository.MusicPlaylistContainerId}-tab"
-                                        })
-                @Html.DropDownListFor(x => x.Configuration.SelectedPodcastPlaylistSort,
-                                        Model.PlaylistSortItems,
-                                        null,
-                                        new
-                                        {
-                                            @class = "form-control form-control-sm border border-secondary d-none align-middle",
-                                            style = "width: 135px",
-                                            title = "Sort by",
-                                            data_playlist_action = "sort",
-                                            data_tooltip = "tooltip",
-                                            data_sort_type = nameof(Model.Configuration.SelectedPodcastPlaylistSort),
-                                            data_sort_tab = $"{HtmlControlsRepository.PodcastPlaylistContainerId}-tab"
-                                        })
-              @Html.DropDownListFor(x => x.Configuration.SelectedTelevisionPlaylistSort,
-                                      Model.PlaylistSortItems,
-                                      null,
-                                      new
-                                      {
-                                          @class = "form-control form-control-sm border border-secondary d-none align-middle",
-                                          style = "width: 135px",
-                                          title = "Sort by",
-                                          data_playlist_action = "sort",
-                                          data_tooltip = "tooltip",
-                                          data_sort_type = nameof(Model.Configuration.SelectedTelevisionPlaylistSort),
-                                          data_sort_tab = $"{HtmlControlsRepository.EpisodePlaylistContainerId}-tab"
-                                      })
+                <button class="btn btn-sm btn-outline-secondary" data-toggle="modal" data-target="#@(HtmlControlsRepository.SettingsModalId)" data-tooltip="tooltip" title="Settings">
+                    <i class="fa fa-cog"></i>
+                </button>
             </div>
         </div>
         <hr />
     </div>
-    <div class="tab-content" style="flex: 1 1 auto; overflow-y: auto">
+    <div class="tab-content flex-fill" style="overflow-y: auto">
         <div class="tab-pane fade" id="@(HtmlControlsRepository.MusicPlaylistContainerId)" role="tabpanel">
             @if (musicPlaylistGroups.Any())
             {
-                <div id="accordion-playlists-@(Enums.PlaylistTabs.Music)" style="flex: 1 1 auto; overflow-y: auto" class="accordion">
+                <div id="accordion-playlists-@(Enums.PlaylistTabs.Music)" style="overflow-y: auto" class="accordion flex-fill">
                     @foreach (var item in musicPlaylistGroups.Select((group, index) => new { Index = index, Group = group }))
                     {
                         <div class="card">
@@ -96,8 +62,8 @@
                                             <div class="media">
                                                 <img class="mr-3 track-img" src="@(Url.Content("~/images/audio.png"))" title="@(playlist.Name)">
                                                 <div class="media-body d-flex flex-column" style="overflow-x: auto">
-                                                    <span class="mt-0 text-truncate font-weight-bold" style="flex: 0 0 auto">@(playlist.Name)</span>
-                                                    <small style="flex: 0 0 auto">@(playlist.Description)</small>
+                                                    <span class="mt-0 text-truncate font-weight-bold">@(playlist.Name)</span>
+                                                    <small>@(playlist.Description)</small>
                                                 </div>
                                                 <div>
                                                     <button class="btn btn-sm btn-outline-secondary" data-playlist-id="@(playlist.Id)" data-tooltip="tooltip" title="View playlist">
@@ -124,7 +90,7 @@
         <div class="tab-pane fade" id="@(HtmlControlsRepository.PodcastPlaylistContainerId)" role="tabpanel">
             @if (podcastPlaylistGroups.Any())
             {
-                <div id="accordion-playlists-@(Enums.PlaylistTabs.Podcast)" style="flex: 1 1 auto; overflow-y: auto" class="accordion">
+                <div id="accordion-playlists-@(Enums.PlaylistTabs.Podcast)" style="overflow-y: auto" class="accordion flex-fill">
                     @foreach (var item in podcastPlaylistGroups.Select((group, index) => new { Index = index + musicPlaylistGroups.Count(), Group = group }))
                     {
                         <div class="card">
@@ -144,8 +110,8 @@
                                             <div class="media">
                                                 <img class="mr-3 track-img" src="@(Url.Content("~/images/audio.png"))" title="@(playlist.Name)">
                                                 <div class="media-body d-flex flex-column" style="overflow-x: auto">
-                                                    <span class="mt-0 text-truncate font-weight-bold" style="flex: 0 0 auto">@(playlist.Name)</span>
-                                                    <small style="flex: 0 0 auto">@(playlist.Description)</small>
+                                                    <span class="mt-0 text-truncate font-weight-bold">@(playlist.Name)</span>
+                                                    <small>@(playlist.Description)</small>
                                                 </div>
                                                 <div>
                                                     <button class="btn btn-sm btn-outline-secondary" data-playlist-id="@(playlist.Id)" data-tooltip="tooltip" title="View playlist">
@@ -172,7 +138,7 @@
         <div class="tab-pane fade" id="@(HtmlControlsRepository.EpisodePlaylistContainerId)" role="tabpanel">
             @if (episodePlaylistGroups.Any())
             {
-                <div id="accordion-playlists-@(Enums.PlaylistTabs.Television)" style="flex: 1 1 auto; overflow-y: auto" class="accordion">
+                <div id="accordion-playlists-@(Enums.PlaylistTabs.Television)" style="overflow-y: auto" class="accordion flex-fill">
                     @foreach (var item in episodePlaylistGroups.Select((group, index) => new { Index = index + musicPlaylistGroups.Count() + podcastPlaylistGroups.Count(), Group = group }))
                     {
                         <div class="card">
@@ -193,8 +159,8 @@
                                             <div class="media">
                                                 <img class="mr-3 track-img" src="@(Url.Content("~/images/audio.png"))" title="@(playlist.Name)">
                                                 <div class="media-body d-flex flex-column" style="overflow-x: auto">
-                                                    <span class="mt-0 text-truncate font-weight-bold" style="flex: 0 0 auto">@(playlist.Name)</span>
-                                                    <small style="flex: 0 0 auto">@(playlist.Description)</small>
+                                                    <span class="mt-0 text-truncate font-weight-bold">@(playlist.Name)</span>
+                                                    <small>@(playlist.Description)</small>
                                                 </div>
                                                 <div>
                                                     <button class="btn btn-sm btn-outline-secondary" data-playlist-id="@(playlist.Id)" data-tooltip="tooltip" title="View playlist">
