@@ -1,12 +1,12 @@
 ﻿@model PlayerConfiguration
 
-<div class="d-flex flex-column flex-fill overflow-auto pt-3 p-1">
+<div class="d-flex flex-column flex-fill overflow-auto">
     <div class="row m-0 p-0 mb-3">
         <div class="col-auto border-right">
-            <h6>Interface</h6>
+            <h6 style="width: 75px">Interface</h6>
         </div>
         <div class="col">
-            <div class="row mb-3">
+            <div class="row">
                 <div class="col">
                     <div class="form-group">
                         @Html.LabelFor(x => x.AudioVisualizerBarCount, "Audio Visualizer Bar Count")
@@ -16,12 +16,12 @@
             </div>
         </div>
     </div>
-    <div class="row m-0 p-0 mb-3">
+    <div class="row m-0 p-0">
         <div class="col-auto border-right">
-            <h6>Options</h6>
+            <h6 style="width: 75px">Options</h6>
         </div>
         <div class="col">
-            <div class="row mb-3">
+            <div class="row">
                 <div class="col">
                     <div class="form-group">
                         @Html.LabelFor(x => x.SkipBackwardSeconds, "Skip Back (seconds)")

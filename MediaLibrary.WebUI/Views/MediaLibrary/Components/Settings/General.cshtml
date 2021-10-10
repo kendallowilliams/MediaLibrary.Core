@@ -1,16 +1,15 @@
 ﻿@model MediaLibraryConfiguration
 @using MediaLibrary.DAL.Services.Interfaces;
-@using MediaLibrary.Shared.Services.Interfaces;
 @inject IDataService DataService;
 
-<div class="d-flex flex-column flex-fill overflow-auto pt-3 p-1">
+<div class="d-flex flex-column flex-fill overflow-auto">
     @Html.HiddenFor(x => x.SelectedMediaPage)
     <div class="row m-0 p-0 mb-3">
         <div class="col-auto border-right">
             <h6>System Info</h6>
         </div>
         <div class="col">
-            <div class="row mb-3">
+            <div class="row">
                 <div class="col">
                     <div class="form-group">
                         <label>Database Name</label>
@@ -24,12 +23,12 @@
             </div>
         </div>
     </div>
-    <div class="row m-0 p-0 mb-3">
+    <div class="row m-0 p-0">
         <div class="col-auto border-right">
             <h6>Interface</h6>
         </div>
         <div class="col">
-            <div class="row mb-3">
+            <div class="row">
                 <div class="col">
                     <div class="form-group">
                         <label>App Width</label>

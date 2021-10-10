@@ -5,34 +5,32 @@
                                               .Select(item => new SelectListItem { Text = item.Name, Value = item.Value.ToString() });
 }
 
-<div class="d-flex flex-column flex-fill overflow-auto pt-3 p-1">
-    <form>
-        <div class="row m-0 p-0 mb-3">
-            <div class="col-auto border-right">
-                <h6>Interface</h6>
-            </div>
-            <div class="col">
-                <div class="row mb-3">
-                    <div class="col">
-                        <div class="form-group">
-                            @Html.LabelFor(x => x.MaxSystemPlaylistItems, "Max Playlist Items")
-                            @Html.TextBoxFor(x => x.MaxSystemPlaylistItems, new { @class = "form-control", type = "number", step = "1", min = "1" })
-                        </div>
-                        <div class="form-group">
-                            @Html.LabelFor(x => x.SelectedMusicPlaylistSort, "Music Sort")
-                            @Html.DropDownListFor(x => x.SelectedMusicPlaylistSort, playlistSortItems, null, new { @class = "custom-select" })
-                        </div>
-                        <div class="form-group">
-                            @Html.LabelFor(x => x.SelectedPodcastPlaylistSort, "Podcast Sort")
-                            @Html.DropDownListFor(x => x.SelectedPodcastPlaylistSort, playlistSortItems, null, new { @class = "custom-select" })
-                        </div>
-                        <div class="form-group">
-                            @Html.LabelFor(x => x.SelectedTelevisionPlaylistSort, "Television Sort")
-                            @Html.DropDownListFor(x => x.SelectedTelevisionPlaylistSort, playlistSortItems, null, new { @class = "custom-select" })
-                        </div>
+<div class="d-flex flex-column flex-fill overflow-auto">
+    <div class="row m-0 p-0 mb-3">
+        <div class="col-auto border-right">
+            <h6>Interface</h6>
+        </div>
+        <div class="col">
+            <div class="row">
+                <div class="col">
+                    <div class="form-group">
+                        @Html.LabelFor(x => x.MaxSystemPlaylistItems, "Max Playlist Items")
+                        @Html.TextBoxFor(x => x.MaxSystemPlaylistItems, new { @class = "form-control", type = "number", step = "1", min = "1" })
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(x => x.SelectedMusicPlaylistSort, "Music Sort")
+                        @Html.DropDownListFor(x => x.SelectedMusicPlaylistSort, playlistSortItems, null, new { @class = "custom-select" })
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(x => x.SelectedPodcastPlaylistSort, "Podcast Sort")
+                        @Html.DropDownListFor(x => x.SelectedPodcastPlaylistSort, playlistSortItems, null, new { @class = "custom-select" })
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(x => x.SelectedTelevisionPlaylistSort, "Television Sort")
+                        @Html.DropDownListFor(x => x.SelectedTelevisionPlaylistSort, playlistSortItems, null, new { @class = "custom-select" })
                     </div>
                 </div>
             </div>
         </div>
-    </form>
+    </div>
 </div>
