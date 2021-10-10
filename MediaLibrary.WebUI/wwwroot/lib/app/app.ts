@@ -22,5 +22,9 @@ export default class App {
                 MessageBox.showError('Error', error ? error.message : message as string);
             }
         };
+        window.onbeforeunload = (evt: Event) => {
+            evt.preventDefault();
+            evt.returnValue = false;
+        }
     }
 }
