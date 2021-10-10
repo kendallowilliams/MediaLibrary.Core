@@ -1,7 +1,7 @@
 ﻿@model MediaLibrary.WebUI.Models.MusicViewModel
 
 <div class="d-flex flex-column flex-fill" style="overflow-y: auto">
-    <div>
+    <div class="d-flex flex-column">
         <h4>Search Music</h4>
         <div class="d-flex pl-1 pr-1">
             <div class="flex-fill">
@@ -12,9 +12,9 @@
                     <a class="btn btn-sm btn-outline-secondary" href="#@(HtmlControlsRepository.SearchAlbumsContainerId)"><i class="fa fa-compact-disc"></i></a>
                 </div>
             </div>
-            <div>
-                <div class="input-group">
-                    <input type="text" data-search="query" class="form-control form-control-sm" id="@(HtmlControlsRepository.SearchQueryId)"
+            <div class="flex-fill">
+                <div class="input-group input-group-sm">
+                    <input type="text" data-search="query" class="form-control" id="@(HtmlControlsRepository.SearchQueryId)"
                            minlength="3" placeholder="Enter search text..." />
                     <div class="input-group-append">
                         <button data-music-action="search-music" class="btn btn-sm btn-outline-success">
@@ -25,7 +25,7 @@
                 </div>
             </div>
         </div>
-        <hr />
+        <div><hr /></div>
     </div>
     <div class="flex-fill" style="overflow-y: auto">
         <div id="@(HtmlControlsRepository.SearchSongsContainerId)"><partial name="~/Views/Music/Songs.cshtml" model="Model" /></div>
