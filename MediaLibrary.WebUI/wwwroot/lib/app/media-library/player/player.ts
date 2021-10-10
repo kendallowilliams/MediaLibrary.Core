@@ -43,7 +43,8 @@ export default class Player extends BaseClass implements IView {
         getPlayer: this.getPlayer.bind(this)
     };
 
-    constructor(private playerConfiguration: PlayerConfiguration, private loadFunctions: IPlayerLoadFunctions, private updateActiveMedia: () => void = () => null) {
+    constructor(private playerConfiguration: PlayerConfiguration, private loadFunctions: IPlayerLoadFunctions, private updateActiveMedia: () => void = () => null,
+        private tooltipsEnabled: () => boolean = () => false) {
         super();
 
         this.players = HtmlControls.Players();
@@ -62,7 +63,7 @@ export default class Player extends BaseClass implements IView {
     private initPlayer(): void {
         this.initMediaPlayers();
         this.initPlayerControls();
-        loadTooltips(this.playerView);
+        if (this.tooltipsEnabled()) /*then*/ loadTooltips(this.playerView);
         this.reload(() => this.loadItem());
     }
 
@@ -353,7 +354,7 @@ export default class Player extends BaseClass implements IView {
     private reload(callback: () => void = () => null): void {
         const containers = HtmlControls.Containers(),
             success = () => {
-                loadTooltips(containers.PlayerItemsContainer);
+                if (this.tooltipsEnabled()) /*then*/ loadTooltips(containers.PlayerItemsContainer);
                 this.applyLoadFunctions();
                 this.updateSelectedPlayerPage();
                 $(containers.PlayerItemsContainer).find('[data-item-index]').on('click', e => {

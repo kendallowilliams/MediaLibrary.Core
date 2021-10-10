@@ -42,8 +42,8 @@ export default class Music extends BaseClass implements IView {
 
     loadView(callback: () => void = () => null): void {
         const success: () => void = () => {
-            this.addNewSongModal = new AddNewSongModal(this.loadView.bind(this));
-            this.manageDirectoriesModal = new ManageDirectoriesModal(this.loadView.bind(this));
+            this.addNewSongModal = new AddNewSongModal(this.loadView.bind(this), this.tooltipsEnabled);
+            this.manageDirectoriesModal = new ManageDirectoriesModal(this.loadView.bind(this), this.tooltipsEnabled);
             this.initializeControls();
             if (this.tooltipsEnabled()) /*then*/ loadTooltips(this.mediaView);
             $('[data-music-tab="' + getMusicTabEnumString(this.musicConfiguration.properties.SelectedMusicTab) + '"]').tab('show');

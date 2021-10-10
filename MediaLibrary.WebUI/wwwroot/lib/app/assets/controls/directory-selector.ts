@@ -3,7 +3,7 @@ import LoadingModal from "../modals/loading-modal";
 import { loadHTML } from "../utilities/fetch_service";
 
 export default class DirectorySelector {
-    constructor(private container: HTMLElement, private onSelectionChanged: (value: string) => any) {
+    constructor(private container: HTMLElement, private onSelectionChanged: (value: string) => any, private tooltipsEnabled: () => boolean = () => false) {
     }
 
     public loadMusicDirectory(_path: string = null): void {
@@ -18,7 +18,7 @@ export default class DirectorySelector {
 
                 this.loadMusicDirectory(path);
             });
-            loadTooltips(this.container);
+            if (this.tooltipsEnabled()) /*then*/ loadTooltips(this.container);
             $container.find('input[type="radio"]').on('change', e => this.selectionChanged(e.target as HTMLInputElement));
             LoadingModal.hideLoading();
         });

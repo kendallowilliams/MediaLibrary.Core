@@ -8,7 +8,7 @@ export default class AddNewSongModal {
     private modal: HTMLElement;
     private directorySelector: DirectorySelector;
 
-    constructor(private loadFunc: (callback: () => void) => void = () => null) {
+    constructor(private loadFunc: (callback: () => void) => void = () => null, private tooltipsEnabled: () => boolean = () => false) {
         this.modal = HtmlControls.Modals().NewSongModal;
         this.initializeControls();
     }
@@ -25,7 +25,7 @@ export default class AddNewSongModal {
 
             $fileLabel.text(selectedFile?.name || 'Choose file...');
         });
-        this.directorySelector = new DirectorySelector($directorySelectorContainer.get(0), value => $musicPath.val(value));
+        this.directorySelector = new DirectorySelector($directorySelectorContainer.get(0), value => $musicPath.val(value), this.tooltipsEnabled);
         $(this.modal).on('show.bs.modal', e => {
             const $modal = $(e.currentTarget),
                 $file = $modal.find('input[type="file"]');

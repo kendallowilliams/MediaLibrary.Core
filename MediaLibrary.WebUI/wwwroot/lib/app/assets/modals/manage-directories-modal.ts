@@ -9,7 +9,7 @@ import { fetch_get, fetch_post, loadHTML } from '../utilities/fetch_service';
 export default class ManageDirectoriesModal {
     private modal: HTMLElement;
 
-    constructor(private loadFunc: (callback: () => void) => void = () => null) {
+    constructor(private loadFunc: (callback: () => void) => void = () => null, private tooltipsEnabled: () => boolean = () => false) {
         this.modal = HtmlControls.Modals().ManageDirectoriesModal;
         this.initializeControls();
     }
@@ -48,7 +48,7 @@ export default class ManageDirectoriesModal {
             $modal.find('[data-directory-action-type="add"]').on('click', e => {
                 this.addMusicDirectory(e.currentTarget);
             });
-            loadTooltips(this.modal);
+            if (this.tooltipsEnabled()) /*then*/ loadTooltips(this.modal);
             callback();
             LoadingModal.hideLoading();
             this.refreshDirectories();

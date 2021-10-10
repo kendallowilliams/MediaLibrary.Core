@@ -116,7 +116,11 @@ export default class MediaLibrary extends BaseClass {
                         this.updateActiveMedia.bind(this),
                         () => this.mediaLibraryConfiguration.properties.TooltipsEnabled
                     );
-                    this.player = new Player(this.playerConfiguration, loadFunctions, this.updateActiveMedia.bind(this));
+                    this.player = new Player(this.playerConfiguration,
+                        loadFunctions,
+                        this.updateActiveMedia.bind(this),
+                        () => this.mediaLibraryConfiguration.properties.TooltipsEnabled
+                    );
                     this.loadView(this.mediaLibraryConfiguration.properties.SelectedMediaPage);
                 });
             };
