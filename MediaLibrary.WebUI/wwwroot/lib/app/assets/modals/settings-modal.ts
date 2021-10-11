@@ -1,5 +1,5 @@
 ﻿import HtmlControls from "../controls/html-controls";
-import { getAlbumSortEnum, getAppWidthEnum, getArtistSortEnum,  getPlaylistSortEnum,  getSeriesSortEnum,  getSongSortEnum } from "../enums/enum-functions";
+import { getAlbumSortEnum, getAppWidthEnum, getArtistSortEnum,  getPlaylistSortEnum,  getPodcastFilterEnum,  getPodcastSortEnum,  getSeriesSortEnum,  getSongSortEnum } from "../enums/enum-functions";
 import { MediaPages } from "../enums/enums";
 import IConfigurations from "../interfaces/configurations-interface";
 import ISettingsReloadFunctions from "../interfaces/settings-reload-functions";
@@ -132,6 +132,18 @@ export default class SettingsModal {
 
             this.configurations.Playlist.properties.SelectedMusicPlaylistSort = getPlaylistSortEnum(sort);
             this.configurations.Playlist.updateConfiguration(() => this.settingsLoadFunctions.loadPlaylist());
+        });
+        $modalBody.find('select[name="SelectedPodcastSort"]').on('change', e => {
+            const sort = $(e.currentTarget).val() as string;
+
+            this.configurations.Podcast.properties.SelectedPodcastSort = getPodcastSortEnum(sort);
+            this.configurations.Podcast.updateConfiguration(() => this.settingsLoadFunctions.loadPodcast());
+        });
+        $modalBody.find('select[name="SelectedPodcastFilter"]').on('change', e => {
+            const filter = $(e.currentTarget).val() as string;
+
+            this.configurations.Podcast.properties.SelectedPodcastFilter = getPodcastFilterEnum(filter);
+            this.configurations.Podcast.updateConfiguration(() => this.settingsLoadFunctions.loadPodcast());
         });
     }
 }

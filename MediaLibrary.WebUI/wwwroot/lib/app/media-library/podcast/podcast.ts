@@ -47,12 +47,6 @@ export default class Podcast extends BaseClass implements IView {
             this.podcastConfiguration.updateConfiguration(() => this.loadView(() => LoadingModal.hideLoading()));
         });
 
-        $(this.mediaView).find('[data-podcast-action="sort"]').on('change', e => {
-            LoadingModal.showLoading();
-            this.podcastConfiguration.properties.SelectedPodcastSort = getPodcastSortEnum($(e.currentTarget).val() as string);
-            this.podcastConfiguration.updateConfiguration(() => this.loadView(() => LoadingModal.hideLoading()));
-        });
-
         $(this.mediaView).find('*[data-podcast-id]').on('click', e => this.loadPodcast(parseInt($(e.currentTarget).attr('data-podcast-id')), () => this.loadView()));
         
         $(this.mediaView).find('*[data-podcast-year]').on('click', e => {
@@ -68,12 +62,6 @@ export default class Podcast extends BaseClass implements IView {
                 $('li.page-item').removeClass('active');
                 this.loadPodcastView(e.currentTarget);
             }
-        });
-
-        $(this.mediaView).find('*[data-podcast-action="filter"]').on('change', e => {
-            LoadingModal.showLoading();
-            this.podcastConfiguration.properties.SelectedPodcastFilter = getPodcastFilterEnum($(e.currentTarget).val() as string);
-            this.podcastConfiguration.updateConfiguration(() => this.loadView(() => LoadingModal.hideLoading()));
         });
 
         $(this.mediaView).find('*[data-podcast-action="refresh"]').on('click', e => {

@@ -5,31 +5,23 @@
 }
 
 <div class="d-flex flex-column flex-fill" style="overflow-y: auto">
-    <div>
-        <div class="d-flex flex-row">
-            <div class="flex-shrink-1" style="overflow-x: auto">
-                <h4 class="text-truncate">
-                    @(Model.SelectedPodcast.Title) @(!Model.SelectedPodcast.Title.ToLower().Contains("podcast") ? "podcast" : string.Empty)
-                </h4>
+    <div class="d-flex flex-column">
+        <h4 class="text-truncate">@(Model.SelectedPodcast.Title) @(!Model.SelectedPodcast.Title.ToLower().Contains("podcast") ? "podcast" : string.Empty)</h4>
+        <div class="d-flex flex-row p-1">
+            <div class="flex-fill">
+                <button class="btn btn-sm btn-outline-secondary" data-back-button="podcast" data-tooltip="tooltip" title="Go back"><i class="fa fa-arrow-circle-left"></i></button>
+                <button class="btn btn-sm btn-outline-secondary" data-podcast-action="refresh" data-tooltip="tooltip" title="Refresh podcast"><i class="fa fa-sync"></i></button>
+                <button class="btn btn-sm btn-outline-danger" data-podcast-action="delete" data-tooltip="tooltip" title="Delete podcast" data-item-id="@(Model.SelectedPodcast.Id)">
+                    <i class="fa fa-trash"></i>
+                </button>
+            </div>
+            <div>
+                <button class="btn btn-sm btn-outline-secondary" data-toggle="modal" data-target="#@(HtmlControlsRepository.SettingsModalId)" data-tooltip="tooltip" title="Settings">
+                    <i class="fa fa-cog"></i>
+                </button>
             </div>
         </div>
-        <div class="p-1">
-            <button class="btn btn-sm btn-outline-secondary" data-back-button="podcast" data-tooltip="tooltip" title="Go back"><i class="fa fa-arrow-circle-left"></i></button>
-            <button class="btn btn-sm btn-outline-secondary" data-podcast-action="refresh" data-tooltip="tooltip" title="Refresh podcast"><i class="fa fa-sync"></i></button>
-            <button class="btn btn-sm btn-outline-danger" data-podcast-action="delete" data-tooltip="tooltip" title="Delete podcast" data-item-id="@(Model.SelectedPodcast.Id)">
-                <i class="fa fa-trash"></i>
-            </button>
-            @Html.DropDownListFor(x => x.Configuration.SelectedPodcastFilter,
-                         Model.PodcastFilterItems,
-                         null,
-                         new { @class = "form-control form-control-sm border border-secondary float-right align-middle",
-                               style = "width: 150px",
-                               title = "Filter by",
-                               data_podcast_action = "filter",
-                               data_tooltip = "tooltip"
-            })
-        </div>
-        <hr />
+        <div><hr /></div>
     </div>
     <div class="card flex-fill" style="overflow-y: auto">
         <div class="card-header" id="heading-podcast-@(Model.SelectedPodcast.Id)">
