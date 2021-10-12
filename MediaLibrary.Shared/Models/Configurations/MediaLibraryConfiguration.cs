@@ -12,15 +12,17 @@ namespace MediaLibrary.Shared.Models.Configurations
         public MediaLibraryConfiguration()
         {
             SelectedMediaPage = MediaPages.Home;
-            NavBarTimeOut = 3;
+            NavBarDelay = 3;
         }
 
         public MediaPages SelectedMediaPage { get; set; }
 
         public AppWidth AppWidth { get; set; }
 
-        public byte NavBarTimeOut { get; set; }
+        public byte NavBarDelay { get; set; }
 
         public bool TooltipsEnabled { get;set; }
+
+        public byte SettingsDelay { get; set; }
     }
 }

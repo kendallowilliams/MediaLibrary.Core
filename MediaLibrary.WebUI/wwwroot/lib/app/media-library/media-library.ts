@@ -255,7 +255,7 @@ export default class MediaLibrary extends BaseClass {
         window.clearTimeout(this.navBarTimeOut);
 
         if (!$navBar.hasClass('collapsed')) {
-            this.navBarTimeOut = window.setTimeout(() => $navBar.collapse('hide'), this.mediaLibraryConfiguration.properties.NavBarTimeOut * 1000);
+            this.navBarTimeOut = window.setTimeout(() => $navBar.collapse('hide'), this.mediaLibraryConfiguration.properties.NavBarDelay * 1000);
         }
     }
 }
