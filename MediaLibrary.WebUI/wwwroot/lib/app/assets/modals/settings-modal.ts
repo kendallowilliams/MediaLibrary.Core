@@ -1,15 +1,30 @@
 ﻿import HtmlControls from "../controls/html-controls";
 import { getAlbumSortEnum, getAppWidthEnum, getArtistSortEnum,  getPlaylistSortEnum,  getPodcastFilterEnum,  getPodcastSortEnum,  getSeriesSortEnum,  getSongSortEnum } from "../enums/enum-functions";
-import { MediaPages } from "../enums/enums";
+import { MediaPages, MessageBoxConfirmType } from "../enums/enums";
 import IConfigurations from "../interfaces/configurations-interface";
 import ISettingsReloadFunctions from "../interfaces/settings-reload-functions";
+import { fetch_post } from "../utilities/fetch_service";
+import * as MessageBox from "../../assets/utilities/message-box";
+import LoadingModal from "../../assets/modals/loading-modal";
+import AddNewSongModal from "./add-song-modal";
+import ManageDirectoriesModal from "./manage-directories-modal";
 
 export default class SettingsModal {
     private modal: HTMLElement;
     private autoHideTimeOut: number;
+    private addNewSongModal: AddNewSongModal;
+    private manageDirectoriesModal: ManageDirectoriesModal;
 
     constructor(private configurations: IConfigurations, private settingsLoadFunctions: ISettingsReloadFunctions) {
+        const tooltipsEnabled = () => this.configurations.MediaLibary.properties.TooltipsEnabled;
+
         this.modal = HtmlControls.Modals().SettingsModal;
+        this.addNewSongModal = new AddNewSongModal(() => this.settingsLoadFunctions.loadMusic(),
+            tooltipsEnabled,
+            () => this.hide());
+        this.manageDirectoriesModal = new ManageDirectoriesModal(() => this.settingsLoadFunctions.loadMusic(),
+            tooltipsEnabled,
+            () => this.hide());
         this.initializeControls();
     }
 
@@ -28,6 +43,8 @@ export default class SettingsModal {
                 ];
 
             $(settingsContainers).addClass('d-none');
+            this.addNewSongModal.hide();
+            this.manageDirectoriesModal.hide();
 
             if (mediaPage === MediaPages.Home) {
                 $(containers.GeneralSettingsContainer).removeClass('d-none');
@@ -170,17 +187,40 @@ export default class SettingsModal {
             this.configurations.Podcast.updateConfiguration(() => this.settingsLoadFunctions.loadPodcast());
             this.autoCloseModal();
         });
+
+        $('[data-settings-action="refresh"]').on('click', e => {
+            const title = 'Refresh Music',
+                question = 'Do you want the refresh to delete missing/invalid files?',
+                formData = new FormData(),
+                yesCallback = () => {
+                    LoadingModal.showLoading();
+                    formData.set('deleteFiles', 'true');
+                    fetch_post('Music/Refresh', formData)
+                        .then(_ => this.settingsLoadFunctions.loadMusic());
+                },
+                noCallback = () => {
+                    LoadingModal.showLoading();
+                    fetch_post('Music/Refresh')
+                        .then(_ => this.settingsLoadFunctions.loadMusic());
+                };
+
+            this.autoCloseModal();
+            MessageBox.confirm(title, question, MessageBoxConfirmType.YesNoCancel, yesCallback, noCallback);
+        });
     }
 
     private autoCloseModal(): void {
-        const hide = () => $(this.modal).modal('hide'),
-            delay = this.configurations.MediaLibary.properties.SettingsDelay;
+        const delay = this.configurations.MediaLibary.properties.SettingsDelay;
 
         if (delay > 0) {
             if (this.autoHideTimeOut) /*then*/ window.clearTimeout(this.autoHideTimeOut);
-            this.autoHideTimeOut = window.setTimeout(hide, this.configurations.MediaLibary.properties.SettingsDelay * 1000);
+            this.autoHideTimeOut = window.setTimeout(this.hide, this.configurations.MediaLibary.properties.SettingsDelay * 1000);
         } else {
-            hide();
+            this.hide();
         }
+    }
+
+    public hide(): void {
+        $(this.modal).modal('hide');
     }
 }

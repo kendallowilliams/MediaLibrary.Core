@@ -23,8 +23,10 @@ export default class App {
             }
         };
         window.onbeforeunload = (evt: Event) => {
-            evt.preventDefault();
-            evt.returnValue = false;
+            if (this.mediaLibrary.getPromptBeforeUnload()) {
+                evt.preventDefault();
+                evt.returnValue = false;
+            }
         }
     }
 }

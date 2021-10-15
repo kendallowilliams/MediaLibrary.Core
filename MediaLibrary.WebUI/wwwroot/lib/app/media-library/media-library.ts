@@ -258,5 +258,9 @@ export default class MediaLibrary extends BaseClass {
             this.navBarTimeOut = window.setTimeout(() => $navBar.collapse('hide'), this.mediaLibraryConfiguration.properties.NavBarDelay * 1000);
         }
     }
+
+    public getPromptBeforeUnload(): boolean {
+        return this.mediaLibraryConfiguration.properties.PromptBeforeUnload;
+    }
 }
 

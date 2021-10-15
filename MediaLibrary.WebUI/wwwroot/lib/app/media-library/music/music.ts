@@ -11,7 +11,6 @@ import { loadTooltips, disposeTooltips } from '../../assets/utilities/bootstrap-
 import AddNewSongModal from "../../assets/modals/add-song-modal";
 import { getMusicTabEnumString, getMusicTabEnum } from "../../assets/enums/enum-functions";
 import Search from "./search";
-import ManageDirectoriesModal from "../../assets/modals/manage-directories-modal";
 import * as MessageBox from "../../assets/utilities/message-box";
 import { fetch_post, loadHTML } from "../../assets/utilities/fetch_service";
 
@@ -20,8 +19,6 @@ export default class Music extends BaseClass implements IView {
     private artist: Artist;
     private album: Album;
     private search: Search;
-    private addNewSongModal: AddNewSongModal;
-    private manageDirectoriesModal: ManageDirectoriesModal;
 
     constructor(private musicConfiguration: MusicConfiguration,
         private playFunc: (btn: HTMLButtonElement, single: boolean) => void,
@@ -42,8 +39,6 @@ export default class Music extends BaseClass implements IView {
 
     loadView(callback: () => void = () => null): void {
         const success: () => void = () => {
-            this.addNewSongModal = new AddNewSongModal(this.loadView.bind(this), this.tooltipsEnabled);
-            this.manageDirectoriesModal = new ManageDirectoriesModal(this.loadView.bind(this), this.tooltipsEnabled);
             this.initializeControls();
             if (this.tooltipsEnabled()) /*then*/ loadTooltips(this.mediaView);
             $('[data-music-tab="' + getMusicTabEnumString(this.musicConfiguration.properties.SelectedMusicTab) + '"]').tab('show');
@@ -112,25 +107,6 @@ export default class Music extends BaseClass implements IView {
             this.musicConfiguration.properties.SelectedMusicTab = getMusicTabEnum($newTab.attr('data-music-tab'));
             disposeTooltips($newView[0]);
             this.musicConfiguration.updateConfiguration(() => loadHTML($newView.get(0), url, null).then(_ => success()));
-        });
-
-        $('[data-music-action="refresh"]').on('click', e => {
-            const title = 'Refresh Music',
-                question = 'Do you want the refresh to delete missing/invalid files?',
-                formData = new FormData(),
-                yesCallback = () => {
-                    LoadingModal.showLoading();
-                    formData.set('deleteFiles', 'true');
-                    fetch_post('Music/Refresh', formData)
-                        .then(_ => this.loadView(() => LoadingModal.hideLoading()));
-                },
-                noCallback = () => {
-                    LoadingModal.showLoading();
-                    fetch_post('Music/Refresh')
-                        .then(_ => this.loadView(() => LoadingModal.hideLoading()));
-                };
-
-            MessageBox.confirm(title, question, MessageBoxConfirmType.YesNoCancel, yesCallback, noCallback);
         });
 
         $('[data-music-action="search"]').on('click', e => {
