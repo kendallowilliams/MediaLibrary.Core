@@ -162,13 +162,15 @@ export default class Player extends BaseClass implements IView {
 
             if ($(button).hasClass('active')) {
                 this.playerConfiguration.properties.AudioVisualizerEnabled = false;
-                this.playerConfiguration.updateConfiguration(() => {
+                this.playerConfiguration.updateConfiguration()
+                    .then(() => {
                     $(button).removeClass('active');
                     this.audioVisualizer.disable();
                 });
             } else {
                 this.playerConfiguration.properties.AudioVisualizerEnabled = true;
-                this.playerConfiguration.updateConfiguration(() => {
+                this.playerConfiguration.updateConfiguration()
+                    .then(() => {
                     $(button).addClass('active');
                     this.audioVisualizer.enable();
 
@@ -182,7 +184,8 @@ export default class Player extends BaseClass implements IView {
 
             MessageBox.confirm(title, message, MessageBoxConfirmType.YesNo, () => {
                 this.playerConfiguration.properties.NowPlayingList = [];
-                this.playerConfiguration.updateConfiguration(() => this.reload(() => this.loadItem()));
+                this.playerConfiguration.updateConfiguration()
+                    .then(() => this.reload(() => this.loadItem()));
                 this.playerControls.showHideMainControls(false);
             });
         });
@@ -215,7 +218,8 @@ export default class Player extends BaseClass implements IView {
             this.updateActiveMedia();
             $('li[data-play-index].list-group-item').removeClass('active');
             this.playerConfiguration.properties.CurrentItemIndex = index;
-            this.playerConfiguration.updateConfiguration(() => {
+            this.playerConfiguration.updateConfiguration()
+                .then(() => {
                 $item.addClass('active');
                 $player.attr('data-item-id', id);
                 $(fields.NowPlayingTitle).text(title.length > 0 ? ': ' + title : title);
@@ -396,7 +400,8 @@ export default class Player extends BaseClass implements IView {
             selectedPlayerPage = this.playerConfiguration.properties.SelectedPlayerPage;
             $(buttons.PlayerFullscreenButton).addClass('d-none');
 
-            this.playerConfiguration.updateConfiguration(() =>
+            this.playerConfiguration.updateConfiguration()
+                .then(() =>
                 $(this.getPlayers()).each((index, element) => {
                     const page = $(element).attr('data-player-page');
 
@@ -446,7 +451,8 @@ export default class Player extends BaseClass implements IView {
         this.playerConfiguration.properties.CurrentItemIndex = currentItem ? currentItem.Id : 0;
         this.playerConfiguration.properties.SelectedMediaType = getMediaTypesEnum(mediaType);
         this.playerConfiguration.properties.NowPlayingList = playData;
-        this.playerConfiguration.updateConfiguration(success);
+        this.playerConfiguration.updateConfiguration()
+            .then(() => success());
     }
 
     public getCurrentlyLoadedId(): number {

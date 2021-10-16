@@ -65,10 +65,9 @@ export default class SettingsModal {
             const $btn = $(e.currentTarget),
                 path = $('#' + $btn.attr('data-element-id')).val() as string;
 
-            this.configurations.Music.properties.RootPath = path;
-            this.configurations.Music.updateConfiguration()
-                .catch();
             this.autoCloseModal();
+            this.configurations.Music.properties.RootPath = path;
+            this.configurations.Music.updateConfiguration();
         });
         $modalBody.find('select[name="AppWidth"]').on('change', e => {
             const width = $(e.currentTarget).val() as string;

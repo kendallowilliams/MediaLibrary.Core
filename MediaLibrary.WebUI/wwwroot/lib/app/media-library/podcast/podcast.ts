@@ -45,7 +45,8 @@ export default class Podcast extends BaseClass implements IView {
             LoadingModal.showLoading();
             this.podcastConfiguration.properties.SelectedPodcastId = 0;
             this.podcastConfiguration.properties.SelectedPodcastPage = PodcastPages.Index;
-            this.podcastConfiguration.updateConfiguration(() => this.loadView(() => LoadingModal.hideLoading()));
+            this.podcastConfiguration.updateConfiguration()
+                .then(() => this.loadView(() => LoadingModal.hideLoading()));
         });
 
         $(this.mediaView).find('*[data-podcast-id]').on('click', e => this.loadPodcast(parseInt($(e.currentTarget).attr('data-podcast-id')), () => this.loadView()));
@@ -94,7 +95,8 @@ export default class Podcast extends BaseClass implements IView {
         if (Number.isInteger(id)) {
             this.podcastConfiguration.properties.SelectedPodcastPage = PodcastPages.Podcast;
             this.podcastConfiguration.properties.SelectedPodcastId = id;
-            this.podcastConfiguration.updateConfiguration(callback);
+            this.podcastConfiguration.updateConfiguration()
+                .then(() => callback());
         }
     }
 
