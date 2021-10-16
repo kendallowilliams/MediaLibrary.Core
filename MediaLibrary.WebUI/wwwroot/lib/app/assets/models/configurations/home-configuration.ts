@@ -7,7 +7,7 @@ export default class HomeConfiguration extends BaseConfiguration<IHomeConfigurat
         this.properties = properties;
     }
 
-    updateConfiguration(callback: () => void = () => null): void {
-        super.update<IHomeConfiguration>(this.properties, callback);
+    updateConfiguration(): Promise<Response> {
+        return super.update<IHomeConfiguration>(this.properties);
     }
 }

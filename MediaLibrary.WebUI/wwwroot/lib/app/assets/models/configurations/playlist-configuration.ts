@@ -7,7 +7,7 @@ export default class PlaylistConfiguration extends BaseConfiguration<IPlaylistCo
         this.properties = properties;
     }
 
-    updateConfiguration(callback: () => void = () => null): void {
-        super.update<IPlaylistConfiguration>(this.properties, callback);
+    updateConfiguration(): Promise<Response> {
+        return super.update<IPlaylistConfiguration>(this.properties);
     }
 }

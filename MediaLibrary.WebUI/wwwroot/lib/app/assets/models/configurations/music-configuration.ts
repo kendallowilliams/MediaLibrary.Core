@@ -7,7 +7,7 @@ export default class MusicConfiguration extends BaseConfiguration<IMusicConfigur
         this.properties = properties;
     }
 
-    updateConfiguration(callback: () => void = () => null): void {
-        super.update<IMusicConfiguration>(this.properties, callback);
+    updateConfiguration(): Promise<Response> {
+        return super.update<IMusicConfiguration>(this.properties);
     }
 }

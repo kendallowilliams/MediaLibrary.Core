@@ -61,6 +61,15 @@ export default class SettingsModal {
             }
         });
 
+        $modalBody.find('[data-element-id="RootPath"]').on('click', e => {
+            const $btn = $(e.currentTarget),
+                path = $('#' + $btn.attr('data-element-id')).val() as string;
+
+            this.configurations.Music.properties.RootPath = path;
+            this.configurations.Music.updateConfiguration()
+                .catch();
+            this.autoCloseModal();
+        });
         $modalBody.find('select[name="AppWidth"]').on('change', e => {
             const width = $(e.currentTarget).val() as string;
 
@@ -86,28 +95,32 @@ export default class SettingsModal {
             const sort = $(e.currentTarget).val() as string;
 
             this.configurations.Music.properties.SelectedAlbumSort = getAlbumSortEnum(sort);
-            this.configurations.Music.updateConfiguration(() => this.settingsLoadFunctions.loadMusic());
+            this.configurations.Music.updateConfiguration()
+                .then(() => this.settingsLoadFunctions.loadMusic());
             this.autoCloseModal();
         });
         $modalBody.find('select[name="SelectedArtistSort"]').on('change', e => {
             const sort = $(e.currentTarget).val() as string;
 
             this.configurations.Music.properties.SelectedArtistSort = getArtistSortEnum(sort);
-            this.configurations.Music.updateConfiguration(() => this.settingsLoadFunctions.loadMusic());
+            this.configurations.Music.updateConfiguration()
+                .then(() => this.settingsLoadFunctions.loadMusic());
             this.autoCloseModal();
         });
         $modalBody.find('select[name="SelectedSongSort"]').on('change', e => {
             const sort = $(e.currentTarget).val() as string;
 
             this.configurations.Music.properties.SelectedSongSort = getSongSortEnum(sort);
-            this.configurations.Music.updateConfiguration(() => this.settingsLoadFunctions.loadMusic());
+            this.configurations.Music.updateConfiguration()
+                .then(() => this.settingsLoadFunctions.loadMusic());
             this.autoCloseModal();
         });
         $modalBody.find('input[name="MaxSystemPlaylistItems"]').on('change', e => {
             const max = parseInt($(e.currentTarget).val() as string);
 
             this.configurations.Playlist.properties.MaxSystemPlaylistItems = max;
-            this.configurations.Playlist.updateConfiguration(() => this.settingsLoadFunctions.loadPlaylist());
+            this.configurations.Playlist.updateConfiguration()
+                .then(() => this.settingsLoadFunctions.loadPlaylist());
             this.autoCloseModal();
         });
         $modalBody.find('input[name="SkipBackwardSeconds"]').on('change', e => {
@@ -149,42 +162,48 @@ export default class SettingsModal {
             const sort = $(e.currentTarget).val() as string;
 
             this.configurations.Television.properties.SelectedSeriesSort = getSeriesSortEnum(sort);
-            this.configurations.Television.updateConfiguration(() => this.settingsLoadFunctions.loadTelevision());
+            this.configurations.Television.updateConfiguration()
+                .then(() => this.settingsLoadFunctions.loadTelevision());
             this.autoCloseModal();
         });
         $modalBody.find('select[name="SelectedTelevisionPlaylistSort"]').on('change', e => {
             const sort = $(e.currentTarget).val() as string;
 
             this.configurations.Playlist.properties.SelectedTelevisionPlaylistSort = getPlaylistSortEnum(sort);
-            this.configurations.Playlist.updateConfiguration(() => this.settingsLoadFunctions.loadPlaylist());
+            this.configurations.Playlist.updateConfiguration()
+                .then(() => this.settingsLoadFunctions.loadPlaylist());
             this.autoCloseModal();
         });
         $modalBody.find('select[name="SelectedPodcastPlaylistSort"]').on('change', e => {
             const sort = $(e.currentTarget).val() as string;
 
             this.configurations.Playlist.properties.SelectedPodcastPlaylistSort = getPlaylistSortEnum(sort);
-            this.configurations.Playlist.updateConfiguration(() => this.settingsLoadFunctions.loadPlaylist());
+            this.configurations.Playlist.updateConfiguration()
+                .then(() => this.settingsLoadFunctions.loadPlaylist());
             this.autoCloseModal();
         });
         $modalBody.find('select[name="SelectedMusicPlaylistSort"]').on('change', e => {
             const sort = $(e.currentTarget).val() as string;
 
             this.configurations.Playlist.properties.SelectedMusicPlaylistSort = getPlaylistSortEnum(sort);
-            this.configurations.Playlist.updateConfiguration(() => this.settingsLoadFunctions.loadPlaylist());
+            this.configurations.Playlist.updateConfiguration()
+                .then(() => this.settingsLoadFunctions.loadPlaylist());
             this.autoCloseModal();
         });
         $modalBody.find('select[name="SelectedPodcastSort"]').on('change', e => {
             const sort = $(e.currentTarget).val() as string;
 
             this.configurations.Podcast.properties.SelectedPodcastSort = getPodcastSortEnum(sort);
-            this.configurations.Podcast.updateConfiguration(() => this.settingsLoadFunctions.loadPodcast());
+            this.configurations.Podcast.updateConfiguration()
+                .then(() => this.settingsLoadFunctions.loadPodcast());
             this.autoCloseModal();
         });
         $modalBody.find('select[name="SelectedPodcastFilter"]').on('change', e => {
             const filter = $(e.currentTarget).val() as string;
 
             this.configurations.Podcast.properties.SelectedPodcastFilter = getPodcastFilterEnum(filter);
-            this.configurations.Podcast.updateConfiguration(() => this.settingsLoadFunctions.loadPodcast());
+            this.configurations.Podcast.updateConfiguration()
+                .then(() => this.settingsLoadFunctions.loadPodcast());
             this.autoCloseModal();
         });
 

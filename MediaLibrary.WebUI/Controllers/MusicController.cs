@@ -280,6 +280,8 @@ namespace MediaLibrary.WebUI.Controllers
 
         public async Task<IActionResult> UpdateConfiguration([FromBody] MusicConfiguration musicConfiguration)
         {
+            IActionResult result = NoContent();
+
             if (ModelState.IsValid)
             {
                 Configuration configuration = await dataService.Get<Configuration>(item => item.Type == nameof(MediaPages.Music));
@@ -291,12 +293,17 @@ namespace MediaLibrary.WebUI.Controllers
                 }
                 else
                 {
+                    if (!Directory.Exists(musicConfiguration.RootPath)) 
+                    {
+                        ModelState.AddModelError(nameof(musicConfiguration.RootPath), "Directory invalid or does not exist.");
+                        result = new BadRequestObjectResult(ModelState);
+                    }
                     configuration.JsonData = JsonConvert.SerializeObject(musicConfiguration);
                     await dataService.Update(configuration);
                 }
             }
             
-            return NoContent();
+            return result;
         }
 
         public async Task<JsonResult> GetSong(int id)
@@ -361,9 +368,11 @@ namespace MediaLibrary.WebUI.Controllers
 
             if (ModelState.IsValid)
             {
+                Configuration configuration = await dataService.Get<Configuration>(item => item.Type == nameof(MediaPages.Music));
+                MusicConfiguration musicConfiguration = configuration?.GetConfigurationObject<MusicConfiguration>() ?? new MusicConfiguration();
                 string fileName = viewModel.MusicFile.FileName,
                        filePath = Path.Combine(viewModel.MusicPath, fileName),
-                       rootPath = configuration["RootPath"];
+                       rootPath = musicConfiguration.RootPath;
 
                 if (Directory.Exists(viewModel.MusicPath) && !System.IO.File.Exists(filePath))
                 {

@@ -106,7 +106,8 @@ export default class Music extends BaseClass implements IView {
             LoadingModal.showLoading();
             this.musicConfiguration.properties.SelectedMusicTab = getMusicTabEnum($newTab.attr('data-music-tab'));
             disposeTooltips($newView[0]);
-            this.musicConfiguration.updateConfiguration(() => loadHTML($newView.get(0), url, null).then(_ => success()));
+            this.musicConfiguration.updateConfiguration()
+                .then(() => loadHTML($newView.get(0), url, null).then(_ => success()));
         });
 
         $('[data-music-action="search"]').on('click', e => {

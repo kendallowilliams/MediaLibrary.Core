@@ -21,5 +21,6 @@ namespace MediaLibrary.Shared.Models.Configurations
         public MusicTabs SelectedMusicTab { get; set; }
         public MusicPages SelectedMusicPage { get; set; }
         public string PreviousSearchQuery { get; set; }
+        public string RootPath { get; set; }
     }
 }

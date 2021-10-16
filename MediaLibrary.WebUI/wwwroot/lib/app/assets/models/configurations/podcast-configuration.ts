@@ -7,7 +7,7 @@ export default class PodcastConfiguration extends BaseConfiguration<IPodcastConf
         this.properties = properties;
     }
 
-    updateConfiguration(callback: () => void = () => null): void {
-        super.update<IPodcastConfiguration>(this.properties, callback);
+    updateConfiguration(): Promise<Response> {
+        return super.update<IPodcastConfiguration>(this.properties);
     }
 }

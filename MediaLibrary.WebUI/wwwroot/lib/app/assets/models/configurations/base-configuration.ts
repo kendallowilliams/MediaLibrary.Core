@@ -8,21 +8,19 @@ export default abstract class BaseConfiguration<T> extends BaseClass {
         super();
     }
 
-    protected update<T>(data: T, callback: () => void = () => null): void {
+    protected update<T>(data: T): Promise<Response> {
         const url = this.controller.concat('/UpdateConfiguration');
 
-        fetch_post(url, JSON.stringify(data), 'application/json')
-            .then(_ => callback());
+        return fetch_post(url, JSON.stringify(data), 'application/json');
     }
 
-    refresh(callback: () => void = () => null): void {
+    public refresh(): Promise<void> {
         const url = this.controller.concat('/').concat(this.controller).concat('Configuration'),
              success: (data) => void = (data) => {
                  this.properties = data;
-                 callback();
              };
 
-        fetch_get(url, null)
+        return fetch_get(url, null)
             .then(response => response.json())
             .then(data => success(data));
     }

@@ -36,7 +36,8 @@ export default class Podcast extends BaseClass implements IView {
             };
         
         disposeTooltips(this.mediaView);
-        this.podcastConfiguration.refresh(() => loadHTML(this.mediaView, 'Podcast/Index', null).then(_ => success()));
+        this.podcastConfiguration.refresh()
+            .then(() => loadHTML(this.mediaView, 'Podcast/Index', null).then(_ => success()));
     }
 
     initializeControls(): void {

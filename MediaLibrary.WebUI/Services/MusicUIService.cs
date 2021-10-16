@@ -157,7 +157,9 @@ namespace MediaLibrary.WebUI.Services
                                 activeDirectories = transactionData.SelectMany(item => item.Directories);
             IEnumerable<TrackPath> includedTrackPaths = Enumerable.Empty<TrackPath>();
             MusicDirectory musicDirectory = default;
-            string rootPath = configuration["RootPath"],
+            Configuration configuration = await dataService.Get<Configuration>(item => item.Type == nameof(MediaPages.Music));
+            MusicConfiguration musicConfiguration = configuration?.GetConfigurationObject<MusicConfiguration>() ?? new MusicConfiguration();
+            string rootPath = musicConfiguration.RootPath,
                    targetPath = string.IsNullOrWhiteSpace(path) ? rootPath : path;
             DirectoryInfo rootPathInfo = new DirectoryInfo(rootPath),
                           targetPathInfo = new DirectoryInfo(targetPath);
@@ -174,7 +176,7 @@ namespace MediaLibrary.WebUI.Services
             foreach (var directory in musicDirectory.SubDirectories)
             {
                 IEnumerable<string> allFiles = fileService.EnumerateFiles(directory.Path, recursive: false),
-                                    fileTypes = configuration["FileTypes"].Split(",".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
+                                    fileTypes = this.configuration["FileTypes"].Split(",".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
 
                 directory.HasFiles = allFiles.Where(file => fileTypes.Contains(Path.GetExtension(file), StringComparer.OrdinalIgnoreCase)).Any();
                 directory.IsLoading = activeDirectories.Contains(directory.Path, StringComparer.OrdinalIgnoreCase);
