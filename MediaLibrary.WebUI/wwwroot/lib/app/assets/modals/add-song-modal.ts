@@ -8,7 +8,9 @@ export default class AddNewSongModal {
     private modal: HTMLElement;
     private directorySelector: DirectorySelector;
 
-    constructor(private loadFunc: (callback: () => void) => void = () => null, private tooltipsEnabled: () => boolean = () => false) {
+    constructor(private loadFunc: (callback: () => void) => void = () => null,
+        private tooltipsEnabled: () => boolean = () => false,
+        private showCallback: () => void = () => null) {
         this.modal = HtmlControls.Modals().NewSongModal;
         this.initializeControls();
     }
@@ -30,6 +32,7 @@ export default class AddNewSongModal {
             const $modal = $(e.currentTarget),
                 $file = $modal.find('input[type="file"]');
 
+            this.showCallback();
             $file.val('');
             $modal.find('input[data-field="MusicPath"]').val('');
             this.directorySelector.loadMusicDirectory();
@@ -53,5 +56,9 @@ export default class AddNewSongModal {
                     .catch((response: Response) => response.text().then(message => error(message)));
             }
         });
+    }
+
+    public hide(): void {
+        $(this.modal).modal('hide');
     }
 }

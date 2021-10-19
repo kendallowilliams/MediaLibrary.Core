@@ -23,13 +23,6 @@
             </div>
             <div>
                 <button class="btn btn-sm btn-outline-secondary" data-music-action="search" data-tooltip="tooltip" title="Search music"><i class="fa fa-search"></i></button>
-                <button class="btn btn-sm btn-outline-secondary" data-music-action="manage-directories" data-tooltip="tooltip" title="Manage directories">
-                    <i class="fa fa-folder"></i>
-                </button>
-                <button class="btn btn-sm btn-outline-secondary" data-toggle="modal" data-target="#@(HtmlControlsRepository.NewSongModalId)" data-tooltip="tooltip" title="Add new song">
-                    <i class="fa fa-upload"></i>
-                </button>
-                <button class="btn btn-sm btn-outline-secondary" data-music-action="refresh" data-tooltip="tooltip" title="Check for new music"><i class="fa fa-sync"></i></button>
                 <button class="btn btn-sm btn-outline-secondary" data-toggle="modal" data-target="#@(HtmlControlsRepository.SettingsModalId)" data-tooltip="tooltip" title="Settings">
                     <i class="fa fa-cog"></i>
                 </button>
@@ -43,6 +36,3 @@
         <div class="tab-pane fade" id="@(HtmlControlsRepository.SongsContainerId)" role="tabpanel" data-load-url="@Url.Action("GetSongs", "Music")"></div>
     </div>
 </div>
-
-<partial name="~/Views/Shared/Modals/AddNewSongModal.cshtml" model="new AddNewSongModalViewModel()" />
-<partial name="~/Views/Shared/Modals/ManageDirectoriesModal.cshtml" model="Model" />

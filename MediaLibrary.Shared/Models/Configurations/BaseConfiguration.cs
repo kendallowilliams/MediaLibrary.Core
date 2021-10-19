@@ -8,8 +8,15 @@ namespace MediaLibrary.Shared.Models.Configurations
 {
     public abstract class BaseConfiguration : IConfiguration
     {
-        public BaseConfiguration() { }
+        public BaseConfiguration() 
+        {
+#if !DEV && !DEBUG
+            PromptBeforeUnload = true;
+#endif
+        }
 
         public int ScrollTop { get; set; }
+
+        public bool PromptBeforeUnload { get; set; }
     }
 }

@@ -7,9 +7,9 @@
 }
 
 <div class="d-flex flex-column flex-fill overflow-auto">
-    <div class="row m-0 p-0">
+    <div class="row m-0 p-0 mb-3">
         <div class="col-auto border-right">
-            <h6>Interface</h6>
+            <h6 style="width: 100px">Interface</h6>
         </div>
         <div class="col">
             <div class="row">
@@ -27,6 +27,22 @@
                         @Html.DropDownListFor(x => x.SelectedSongSort, songSortList, null, new { @class = "custom-select" })
                     </div>
                 </div>
+            </div>
+        </div>
+    </div>
+    <div class="row m-0 p-0">
+        <div class="col-auto border-right">
+            <h6 style="width: 100px">Actions</h6>
+        </div>
+        <div class="col">
+            <div class="mb-3">
+                <button class="btn btn-sm btn-outline-secondary" data-settings-action="manage-directories" data-tooltip="tooltip" title="Manage directories">
+                    <i class="fa fa-folder"></i>
+                </button>
+                <button class="btn btn-sm btn-outline-secondary" data-toggle="modal" data-target="#@(HtmlControlsRepository.NewSongModalId)" data-tooltip="tooltip" title="Add new song">
+                    <i class="fa fa-upload"></i>
+                </button>
+                <button class="btn btn-sm btn-outline-secondary" data-settings-action="refresh" data-tooltip="tooltip" title="Check for new music"><i class="fa fa-sync"></i></button>
             </div>
         </div>
     </div>

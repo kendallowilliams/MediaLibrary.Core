@@ -9,21 +9,24 @@ import { fetch_get, fetch_post, loadHTML } from '../utilities/fetch_service';
 export default class ManageDirectoriesModal {
     private modal: HTMLElement;
 
-    constructor(private loadFunc: (callback: () => void) => void = () => null, private tooltipsEnabled: () => boolean = () => false) {
+    constructor(private loadFunc: (callback: () => void) => void = () => null,
+        private tooltipsEnabled: () => boolean = () => false,
+        private showCallback: () => void = () => null) {
         this.modal = HtmlControls.Modals().ManageDirectoriesModal;
         this.initializeControls();
     }
 
     private initializeControls(): void {
         $(this.modal).on('show.bs.modal', e => {
+            this.showCallback();
         });
 
         $(this.modal).on('hide.bs.modal', e => {
             disposeTooltips(this.modal);
             $(this.modal).find('.modal-body').html('');
         });
-
-        $('[data-music-action="manage-directories"]').on('click', e => {
+        
+        $('[data-settings-action="manage-directories"]').on('click', e => {
             this.loadMusicDirectory(null, () => $(this.modal).modal('show'));
         });
     }
@@ -109,5 +112,9 @@ export default class ManageDirectoriesModal {
                     });
             });
         }, 5000);
+    }
+
+    public hide(): void {
+        $(this.modal).modal('hide');
     }
 }
