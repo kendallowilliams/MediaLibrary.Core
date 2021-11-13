@@ -114,16 +114,18 @@ namespace MediaLibrary.BLL.Services
                 }
 
                 podcastItems = items.Select(item => new
-                {
-                    item.Title,
-                    item.Description,
-                    Enclosure = item.Links.FirstOrDefault(linkItem => linkItem.RelationshipType == "enclosure"),
-                    PublishDate = item.Published.DateTime
+                                        {
+                                            item.Title,
+                                            item.Description,
+                                            Enclosure = item.Links.FirstOrDefault(linkItem => linkItem.RelationshipType == "enclosure"),
+                                            PublishDate = item.Published.DateTime
 
-                }).Select(data => new PodcastItem(data.Title, data.Description, data.Enclosure.Uri.OriginalString,
-                                                  data.Enclosure.Length, data.PublishDate, podcast.Id))
-                  .Where(item => item.PublishDate > lastUpdateDate)
-                  .ToList();
+                                        })
+                                    .Where(item => item.Enclosure != null)
+                                    .Select(data => new PodcastItem(data.Title, data.Description, data.Enclosure.Uri.OriginalString,
+                                                                    data.Enclosure.Length, data.PublishDate, podcast.Id))
+                                    .Where(item => item.PublishDate > lastUpdateDate)
+                                    .ToList();
                 
                 await dataService.Insert(podcastItems);
                 podcast.PodcastItems = podcast.PodcastItems.Concat(podcastItems).ToList();
