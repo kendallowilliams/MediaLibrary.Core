@@ -48,8 +48,10 @@ export default class Music extends BaseClass implements IView {
         }; 
 
         disposeTooltips(this.mediaView);
-        loadHTML(this.mediaView, 'Music/Index', null)
-            .then(_ => success());
+        loadHTML(this.mediaView, 'Music/Index', null).then(_ => success());
+        if (this.musicConfiguration.properties.MusicPaths.length === 0) {
+            MessageBox.askQuestion('Root Path', 'Music folder?', _ => callback());
+        }
     }
 
     loadArtist(id: number, callback: () => void): void {

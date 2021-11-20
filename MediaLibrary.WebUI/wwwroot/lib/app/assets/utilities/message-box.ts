@@ -6,36 +6,32 @@ function initialize(): void {
     const $alertModal = $(HtmlControls.Modals().AlertModal),
         $confirmModal = $(HtmlControls.Modals().ConfirmModal),
         $errorModal = $(HtmlControls.Modals().ErrorModal),
-        $warningModal = $(HtmlControls.Modals().WarningModal);
+        $warningModal = $(HtmlControls.Modals().WarningModal),
+        $questionModal = $(HtmlControls.Modals().QuestionModal);
 
-    $([$alertModal, $confirmModal, $errorModal, $warningModal]).each((index, element) => {
-        if ($(element).attr('data-initialized') !== 'true') {
-            $(element).on('hidden.bs.modal', e => {
+    jQuery.each([$alertModal, $confirmModal, $errorModal, $warningModal, $questionModal], (index, element) => {
+        const $element = $(element);
+
+        if ($element.attr('data-initialized') !== 'true') {
+            $element.on('hidden.bs.modal', e => {
                 const $title = $(e.currentTarget).find('.modal-title'),
-                    $body = $(e.currentTarget).find('.modal-body');
+                    $body = $(e.currentTarget).find('.modal-body'),
+                    $footer = $(e.currentTarget).find('.modal-footer');
 
                 $title.html('');
-                $body.html('');
+
+                if (!$questionModal.is($element)) /*then*/ $body.html('');
+                else {
+                    $body.find('label').text('');
+                    $body.find('input').val('');
+                    $footer.find('button').off();
+                }
             });
+
+            if ($confirmModal.is($element)) /*then*/ $element.find('[data-button="callback"]').off();
+            $element.attr('data-initialized', 'true');
         }
     });
-
-    if ($alertModal.attr('data-initialized') !== 'true') {
-        $alertModal.attr('data-initialized', 'true');
-    }
-
-    if ($confirmModal.attr('data-initialized') !== 'true') {
-        $confirmModal.find('[data-button="callback"]').off();
-        $confirmModal.attr('data-initialized', 'true');
-    }
-
-    if ($errorModal.attr('data-initialized') !== 'true') {
-        $errorModal.attr('data-initialized', 'true');
-    }
-
-    if ($warningModal.attr('data-initialized') !== 'true') {
-        $warningModal.attr('data-initialized', 'true');
-    }
 }
 
 export function alert(title: string, message: string, isHtml = false): void {
@@ -107,5 +103,24 @@ export function confirm(title: string, message: string,
     });
     $btnContainers.addClass('d-none');
     $btnContainer.removeClass('d-none');
+    $modal.modal('show');
+}
+
+export function askQuestion(title: string, question: string, callback: (answer: string) => void = _ => null): void {
+    const $modal = $(HtmlControls.Modals().QuestionModal),
+        $title = $modal.find('.modal-title'),
+        $body = $modal.find('.modal-body'),
+        $footer = $modal.find('.modal-footer'),
+        $label = $body.find('label'),
+        $input = $body.find('input'),
+        $btn = $footer.find('[data-button="submit"]');
+
+    if ($modal.attr('data-initialized') !== 'true') /*then*/ initialize();
+    $title.text(title);
+    $label.text(question);
+    $btn.on('click', () => {
+        callback($input.val() as string);
+        $modal.modal('hide');
+    });
     $modal.modal('show');
 }

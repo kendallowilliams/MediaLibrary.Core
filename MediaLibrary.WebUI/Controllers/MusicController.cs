@@ -280,8 +280,6 @@ namespace MediaLibrary.WebUI.Controllers
 
         public async Task<IActionResult> UpdateConfiguration([FromBody] MusicConfiguration musicConfiguration)
         {
-            IActionResult result = NoContent();
-
             if (ModelState.IsValid)
             {
                 Configuration configuration = await dataService.Get<Configuration>(item => item.Type == nameof(MediaPages.Music));
@@ -293,17 +291,12 @@ namespace MediaLibrary.WebUI.Controllers
                 }
                 else
                 {
-                    if (!Directory.Exists(musicConfiguration.RootPath)) 
-                    {
-                        ModelState.AddModelError(nameof(musicConfiguration.RootPath), "Directory invalid or does not exist.");
-                        result = new BadRequestObjectResult(ModelState);
-                    }
                     configuration.JsonData = JsonConvert.SerializeObject(musicConfiguration);
                     await dataService.Update(configuration);
                 }
             }
             
-            return result;
+            return NoContent();
         }
 
         public async Task<JsonResult> GetSong(int id)
@@ -368,22 +361,21 @@ namespace MediaLibrary.WebUI.Controllers
 
             if (ModelState.IsValid)
             {
-                Configuration configuration = await dataService.Get<Configuration>(item => item.Type == nameof(MediaPages.Music));
-                MusicConfiguration musicConfiguration = configuration?.GetConfigurationObject<MusicConfiguration>() ?? new MusicConfiguration();
+                Configuration musicConfiguration = await dataService.Get<Configuration>(item => item.Type == nameof(MediaPages.Music));
                 string fileName = viewModel.MusicFile.FileName,
-                       filePath = Path.Combine(viewModel.MusicPath, fileName),
-                       rootPath = musicConfiguration.RootPath;
+                       filePath = Path.Combine(viewModel.MusicPath, fileName);
+                IEnumerable<string> musicPaths = musicConfiguration.GetConfigurationObject<MusicConfiguration>().MusicPaths;
 
-                if (Directory.Exists(viewModel.MusicPath) && !System.IO.File.Exists(filePath))
+                if (Directory.Exists(viewModel.MusicPath) && !IO_File.Exists(filePath))
                 {
-                    DirectoryInfo rootPathInfo = new DirectoryInfo(rootPath),
-                                  targetPathInfo = new DirectoryInfo(viewModel.MusicPath);
-                    bool isSafePath = fileService.EnumerateDirectories(rootPathInfo.FullName, recursive: true)
-                                                 .Any(item => item.Equals(targetPathInfo.FullName));
+                    IEnumerable<DirectoryInfo> musicPathInfos = musicPaths.Select(path => new DirectoryInfo(path));
+                    DirectoryInfo targetPathInfo = new DirectoryInfo(viewModel.MusicPath);
+                    bool isSafePath = musicPathInfos.Any(info => fileService.EnumerateDirectories(info.FullName, recursive: true)
+                                                                            .Any(item => item.Equals(targetPathInfo.FullName)));
 
                     if (isSafePath)
                     {
-                        using (Stream stream = System.IO.File.OpenWrite(filePath)) { await viewModel.MusicFile.CopyToAsync(stream); }
+                        using (Stream stream = IO_File.OpenWrite(filePath)) { await viewModel.MusicFile.CopyToAsync(stream); }
                         await fileService.ReadMediaFile(filePath);
                         musicService.ClearData();
                         result = NoContent();

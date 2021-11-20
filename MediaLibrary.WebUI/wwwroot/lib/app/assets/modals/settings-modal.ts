@@ -98,6 +98,13 @@ export default class SettingsModal {
                 .then(() => this.settingsLoadFunctions.loadMusic());
             this.autoCloseModal();
         });
+        //$modalBody.find('input[name="RootPath"]').on('change', e => {
+        //    const path = $(e.currentTarget).val() as string;
+
+        //    this.configurations.Music.properties.RootPath = path;
+        //    this.configurations.Music.updateConfiguration();
+        //    this.autoCloseModal();
+        //});
         $modalBody.find('select[name="SelectedArtistSort"]').on('change', e => {
             const sort = $(e.currentTarget).val() as string;
 

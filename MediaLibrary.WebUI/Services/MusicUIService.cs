@@ -153,30 +153,34 @@ namespace MediaLibrary.WebUI.Services
             IEnumerable<Transaction> existingTransactions = await transactionService.GetActiveTransactionsByType(TransactionTypes.Read);
             var transactionData = existingTransactions.Where(item => !string.IsNullOrWhiteSpace(item.Message))
                                                       .Select(item => new { item.Id, Directories = JsonConvert.DeserializeObject<IEnumerable<string>>(item.Message) });
-            IEnumerable<string> directories = Enumerable.Empty<string>(),
+            Configuration musicConfiguration = await dataService.Get<Configuration>(item => item.Type == nameof(MediaPages.Music));
+            IEnumerable<string> musicPaths = musicConfiguration.GetConfigurationObject<MusicConfiguration>().MusicPaths,
+                                directories = musicPaths,
                                 activeDirectories = transactionData.SelectMany(item => item.Directories);
             IEnumerable<TrackPath> includedTrackPaths = Enumerable.Empty<TrackPath>();
             MusicDirectory musicDirectory = default;
-            Configuration configuration = await dataService.Get<Configuration>(item => item.Type == nameof(MediaPages.Music));
-            MusicConfiguration musicConfiguration = configuration?.GetConfigurationObject<MusicConfiguration>() ?? new MusicConfiguration();
-            string rootPath = musicConfiguration.RootPath,
-                   targetPath = string.IsNullOrWhiteSpace(path) ? rootPath : path;
-            DirectoryInfo rootPathInfo = new DirectoryInfo(rootPath),
-                          targetPathInfo = new DirectoryInfo(targetPath);
-            bool isSafePath = fileService.EnumerateDirectories(rootPathInfo.FullName, recursive: true)
-                                         .Any(item => item.Equals(targetPathInfo.FullName));
+            IEnumerable<DirectoryInfo> musicPathInfos = musicPaths.Select(path => new DirectoryInfo(path));
+            DirectoryInfo targetPathInfo = Directory.Exists(path) ? new DirectoryInfo(path) : null;
+            bool isSafePath = targetPathInfo != null &&
+                              musicPathInfos.Any(info => fileService.EnumerateDirectories(info.FullName, recursive: true)
+                                                                    .Any(item => item.Equals(targetPathInfo.FullName)));
 
-            if (!isSafePath) /*then*/ targetPathInfo = rootPathInfo;
-            directories = Directory.EnumerateDirectories(targetPathInfo.FullName);
-            includedTrackPaths = await dataService.GetList<TrackPath>(item => directories.Contains(item.Location));
-            musicDirectory = new MusicDirectory(targetPathInfo.FullName, directories.OrderBy(item => item, StringComparer.OrdinalIgnoreCase), includedTrackPaths);
-            if (!rootPathInfo.FullName.Equals(targetPathInfo.FullName, StringComparison.OrdinalIgnoreCase)) /*then*/
-                musicDirectory.SubDirectories = musicDirectory.SubDirectories.Prepend(new MusicDirectory(Path.Combine(targetPathInfo.FullName, "..")));
+            if (isSafePath)
+            {
+                directories = Directory.EnumerateDirectories(targetPathInfo.FullName);
+                includedTrackPaths = await dataService.GetList<TrackPath>(item => directories.Contains(item.Location));
+                musicDirectory = new MusicDirectory(targetPathInfo.FullName, directories.OrderBy(item => item, StringComparer.OrdinalIgnoreCase), includedTrackPaths);
+                musicDirectory.SubDirectories.Prepend(new MusicDirectory(Path.Combine(targetPathInfo.FullName, "..")));
+            }
+            else
+            {
+                musicDirectory = new MusicDirectory(string.Empty, directories.OrderBy(item => item, StringComparer.OrdinalIgnoreCase), includedTrackPaths);
+            }
 
             foreach (var directory in musicDirectory.SubDirectories)
             {
                 IEnumerable<string> allFiles = fileService.EnumerateFiles(directory.Path, recursive: false),
-                                    fileTypes = this.configuration["FileTypes"].Split(",".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
+                                    fileTypes = configuration["FileTypes"].Split(",".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
 
                 directory.HasFiles = allFiles.Where(file => fileTypes.Contains(Path.GetExtension(file), StringComparer.OrdinalIgnoreCase)).Any();
                 directory.IsLoading = activeDirectories.Contains(directory.Path, StringComparer.OrdinalIgnoreCase);
