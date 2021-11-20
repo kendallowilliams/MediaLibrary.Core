@@ -1,5 +1,5 @@
 ﻿import HtmlControls from "../controls/html-controls";
-import { getAlbumSortEnum, getAppWidthEnum, getArtistSortEnum,  getPlaylistSortEnum,  getPodcastFilterEnum,  getPodcastSortEnum,  getSeriesSortEnum,  getSongSortEnum } from "../enums/enum-functions";
+import { getAlbumSortEnum, getAppWidthEnum, getArtistSortEnum, getPlaylistSortEnum, getPodcastFilterEnum, getPodcastSortEnum, getSeriesSortEnum, getSongSortEnum } from "../enums/enum-functions";
 import { MediaPages, MessageBoxConfirmType } from "../enums/enums";
 import IConfigurations from "../interfaces/configurations-interface";
 import ISettingsReloadFunctions from "../interfaces/settings-reload-functions";
@@ -35,11 +35,11 @@ export default class SettingsModal {
             const mediaPage = this.configurations.MediaLibary.properties.SelectedMediaPage,
                 containers = HtmlControls.Containers(),
                 settingsContainers = [containers.GeneralSettingsContainer,
-                    containers.MusicSettingsContainer,
-                    containers.PlayerSettingsContainer,
-                    containers.PlaylistSettingsContainer,
-                    containers.PodcastSettingsContainer,
-                    containers.TelevisionSettingsContainer
+                containers.MusicSettingsContainer,
+                containers.PlayerSettingsContainer,
+                containers.PlaylistSettingsContainer,
+                containers.PodcastSettingsContainer,
+                containers.TelevisionSettingsContainer
                 ];
 
             $(settingsContainers).addClass('d-none');
