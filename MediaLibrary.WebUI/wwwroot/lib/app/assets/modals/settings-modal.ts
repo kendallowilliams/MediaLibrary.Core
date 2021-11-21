@@ -8,12 +8,14 @@ import * as MessageBox from "../../assets/utilities/message-box";
 import LoadingModal from "../../assets/modals/loading-modal";
 import AddNewSongModal from "./add-song-modal";
 import ManageDirectoriesModal from "./manage-directories-modal";
+import StringList from "../controls/string-list";
 
 export default class SettingsModal {
     private modal: HTMLElement;
     private autoHideTimeOut: number;
     private addNewSongModal: AddNewSongModal;
     private manageDirectoriesModal: ManageDirectoriesModal;
+    private stringList: StringList;
 
     constructor(private configurations: IConfigurations, private settingsLoadFunctions: ISettingsReloadFunctions) {
         const tooltipsEnabled = () => this.configurations.MediaLibary.properties.TooltipsEnabled;
@@ -29,8 +31,13 @@ export default class SettingsModal {
     }
 
     private initializeControls(): void {
-        const $modalBody = $(this.modal).find('.modal-body');
+        const $modalBody = $(this.modal).find('.modal-body'),
+            stringListElement = $modalBody.find('.string-list').get(0);
 
+        this.stringList = new StringList(stringListElement,
+            this.configurations.Music.properties.MusicPaths,
+            list => this.updateMusicPaths(list),
+            list => this.updateMusicPaths(list));
         $(this.modal).on('show.bs.modal', e => {
             const mediaPage = this.configurations.MediaLibary.properties.SelectedMediaPage,
                 containers = HtmlControls.Containers(),
@@ -59,15 +66,6 @@ export default class SettingsModal {
             } else if (mediaPage === MediaPages.Television) {
                 $(containers.TelevisionSettingsContainer).removeClass('d-none');
             }
-        });
-
-        $modalBody.find('[data-element-id="RootPath"]').on('click', e => {
-            const $btn = $(e.currentTarget),
-                path = $('#' + $btn.attr('data-element-id')).val() as string;
-
-            this.autoCloseModal();
-            this.configurations.Music.properties.RootPath = path;
-            this.configurations.Music.updateConfiguration();
         });
         $modalBody.find('select[name="AppWidth"]').on('change', e => {
             const width = $(e.currentTarget).val() as string;
@@ -98,13 +96,6 @@ export default class SettingsModal {
                 .then(() => this.settingsLoadFunctions.loadMusic());
             this.autoCloseModal();
         });
-        //$modalBody.find('input[name="RootPath"]').on('change', e => {
-        //    const path = $(e.currentTarget).val() as string;
-
-        //    this.configurations.Music.properties.RootPath = path;
-        //    this.configurations.Music.updateConfiguration();
-        //    this.autoCloseModal();
-        //});
         $modalBody.find('select[name="SelectedArtistSort"]').on('change', e => {
             const sort = $(e.currentTarget).val() as string;
 
@@ -247,5 +238,11 @@ export default class SettingsModal {
 
     public hide(): void {
         $(this.modal).modal('hide');
+    }
+
+    private updateMusicPaths(list: string[] = []): void {
+        this.configurations.Music.properties.MusicPaths = list;
+        this.configurations.Music.updateConfiguration();
+        this.autoCloseModal();
     }
 }

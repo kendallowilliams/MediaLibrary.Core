@@ -74,6 +74,7 @@ namespace MediaLibrary.WebUI.Repositories
         public static string MusicTabListId { get => "music-tab-list"; }
         public static string PlaylistTabListId { get => "playlist-tab-list"; }
         public static string SearchQueryId { get => "search-query"; }
+        public static string StringListsClass { get => "string-list"; }
         #endregion UI Control Ids
 
         #region UI Field Ids

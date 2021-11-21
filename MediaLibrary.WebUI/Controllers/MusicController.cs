@@ -14,12 +14,10 @@ using MediaLibrary.Shared.Models.Configurations;
 using System.Web;
 using System.IO;
 using IO_File = System.IO.File;
-using static MediaLibrary.BLL.Extensions.ServiceCollectionExtensions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
 using System.Text.Json;
 using Microsoft.Extensions.Configuration;
-using Microsoft.AspNetCore.Authorization;
 using MediaLibrary.Shared.Services.Interfaces;
 using Microsoft.AspNetCore.StaticFiles;
 using MediaLibrary.Shared.Models;
@@ -291,6 +289,7 @@ namespace MediaLibrary.WebUI.Controllers
                 }
                 else
                 {
+                    musicConfiguration.MusicPaths = musicConfiguration.MusicPaths.Distinct(StringComparer.OrdinalIgnoreCase);
                     configuration.JsonData = JsonConvert.SerializeObject(musicConfiguration);
                     await dataService.Update(configuration);
                 }

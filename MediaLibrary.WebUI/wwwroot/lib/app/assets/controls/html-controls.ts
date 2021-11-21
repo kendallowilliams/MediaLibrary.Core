@@ -61,7 +61,8 @@
         PlayerSliders: document.getElementsByClassName('player-slider'),
         VolumeSliders: document.getElementsByClassName('volume-slider'),
         PlayerTimes: document.getElementsByClassName('player-time'),
-        PlayerShortTimes: document.getElementsByClassName('player-short-time')
+        PlayerShortTimes: document.getElementsByClassName('player-short-time'),
+        StringLists: document.getElementsByClassName('string-list')
     }),
     UIFields: () => ({
         NowPlayingTitle: document.getElementById('player-title')

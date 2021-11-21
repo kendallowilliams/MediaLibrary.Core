@@ -1,0 +1,40 @@
+﻿@model IEnumerable<string>
+
+@{ 
+    var items = Model ?? Enumerable.Empty<string>();
+
+    items = items.Distinct(StringComparer.OrdinalIgnoreCase)
+                 .OrderBy(item => item)
+                 .Where(item => !string.IsNullOrWhiteSpace(item));
+}
+
+<div class="@HtmlControlsRepository.StringListsClass">
+    <div class="input-group input-group-sm">
+        <input type="text" class="form-control" />
+        <div class="input-group-append">
+            <button type="button" class="btn btn-outline-primary" data-button="add-item"><i class="fa fa-plus"></i></button>
+        </div>
+    </div>
+    <hr />
+    <div class="d-flex flex-row flex-wrap" data-container="StringListItems">
+        <div class="input-group input-group-sm w-auto d-none" data-template="StringListItem">
+            <div class="input-group-prepend">
+                <div class="input-group-text" data-field="path"></div>
+            </div>
+            <div class="input-group-append">
+                <button type="button" class="btn btn-outline-danger" data-button="remove-item"><i class="fa fa-trash"></i></button>
+            </div>
+        </div>
+        @foreach (var item in items)
+        {
+            <div class="input-group input-group-sm w-auto">
+                <div class="input-group-prepend">
+                    <div class="input-group-text" data-field="path">@item</div>
+                </div>
+                <div class="input-group-append">
+                    <button type="button" class="btn btn-outline-danger" data-button="remove-item"><i class="fa fa-trash"></i></button>
+                </div>
+            </div>
+        }
+    </div>
+</div>

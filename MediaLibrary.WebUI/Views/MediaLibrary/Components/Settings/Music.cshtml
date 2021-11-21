@@ -14,58 +14,28 @@
         <div class="col">
             <div class="row">
                 <div class="col">
-                    <div class="row">
-                        <div class="col-auto border-right">
-                            <h6>Paths</h6>
-                        </div>
-                        <div class="col">
-                            <div class="input-group input-group-sm">
-                                <input type="text" class="form-control" />
-                                <div class="input-group-append">
-                                    <button type="button" class="btn btn-outline-primary"><i class="fa fa-plus"></i></button>
-                                </div>
-                            </div>
-                            <hr />
-                            <div class="d-flex flex-row flex-wrap">
-                                @foreach (string path in Model.MusicPaths)
-                                {
-                                    <div class="input-group input-group-sm w-auto">
-                                        <div class="input-group-prepend">
-                                            <div class="input-group-text">@path</div>
-                                        </div>
-                                        <div class="input-group-append">
-                                            <button type="button" class="btn btn-outline-primary"><i class="fa fa-trash"></i></button>
-                                        </div>
-                                    </div>
-                                }
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        @Html.LabelFor(x => x.RootPath, "Root Path")
-                        <div class="input-group">
-                            @Html.TextBoxFor(x => x.RootPath, new { @class = "form-control" })
-                            <div class="input-group-append">
-                                <button class="btn btn-outline-secondary" type="button" data-element-id="@Html.IdFor(x => x.RootPath)">
-                                    <i class="fa fa-save"></i>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
                     <div class="form-group">
                         @Html.LabelFor(x => x.SelectedAlbumSort, "Album Sort")
-                        @Html.DropDownListFor(x => x.SelectedAlbumSort, albumSortList, null, new { @class = "custom-select" })
+                        @Html.DropDownListFor(x => x.SelectedAlbumSort, albumSortList, null, new { @class = "custom-select custom-select-sm" })
                     </div>
                     <div class="form-group">
                         @Html.LabelFor(x => x.SelectedArtistSort, "Artist Sort")
-                        @Html.DropDownListFor(x => x.SelectedArtistSort, artistSortList, null, new { @class = "custom-select" })
+                        @Html.DropDownListFor(x => x.SelectedArtistSort, artistSortList, null, new { @class = "custom-select custom-select-sm" })
                     </div>
                     <div class="form-group">
                         @Html.LabelFor(x => x.SelectedSongSort, "Song Sort")
-                        @Html.DropDownListFor(x => x.SelectedSongSort, songSortList, null, new { @class = "custom-select" })
+                        @Html.DropDownListFor(x => x.SelectedSongSort, songSortList, null, new { @class = "custom-select custom-select-sm" })
                     </div>
                 </div>
             </div>
+        </div>
+    </div>
+    <div class="row m-0 p-0 mb-3">
+        <div class="col-auto border-right">
+            <h6 style="width: 100px">Paths</h6>
+        </div>
+        <div class="col">
+            <partial name="~/Views/Shared/Controls/StringList.cshtml" model="Model.MusicPaths" />
         </div>
     </div>
     <div class="row m-0 p-0">
