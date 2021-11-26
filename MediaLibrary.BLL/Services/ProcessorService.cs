@@ -42,6 +42,7 @@ namespace MediaLibrary.BLL.Services
                 transaction = await transactionService.GetNewTransaction(TransactionTypes.RefreshPodcast);
                 podcasts = await dataService.GetList<Podcast>();
                 await tplService.ConcurrentAsync(async podcast => await podcastService.RefreshPodcast(podcast), podcasts, 4, default(CancellationToken));
+                await podcastService.CleanMissingPodcastFiles();
                 await transactionService.UpdateTransactionCompleted(transaction);
             }
             catch (Exception ex)

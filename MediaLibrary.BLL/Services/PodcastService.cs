@@ -183,5 +183,16 @@ namespace MediaLibrary.BLL.Services
 
             return fileName;
         }
+
+        public async Task CleanMissingPodcastFiles()
+        {
+            IEnumerable<PodcastItem> podcastItems = await dataService.GetList<PodcastItem>(item => item.File != null && item.File != "");
+
+            foreach(var item in podcastItems.Where(item => !File.Exists(item.File)))
+            {
+                item.File = null;
+                await dataService.Update(item);
+            }
+        }
     }
 }
