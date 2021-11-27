@@ -220,8 +220,7 @@ namespace MediaLibrary.WebUI.Controllers
 
             await podcastService.RefreshPodcast(podcast);
             podcastUIService.ClearPodcasts();
-            transaction.Message = $"Podcast: {podcast.Title}";
-            await transactionService.UpdateTransactionCompleted(transaction);
+            await transactionService.UpdateTransactionCompleted(transaction, $"Podcast: {podcast.Title}");
         }
 
 #if !DEBUG && !DEV
