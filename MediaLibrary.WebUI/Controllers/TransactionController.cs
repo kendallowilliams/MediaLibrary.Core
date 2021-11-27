@@ -43,7 +43,8 @@ namespace MediaLibrary.WebUI.Controllers
                                                                       (!transactionViewModel.TransactionType.HasValue || transaction.Type == (int)transactionViewModel.TransactionType) &&
                                                                       (!transactionViewModel.TransactionStatus.HasValue || transaction.Status == (int)transactionViewModel.TransactionStatus);
 
-            toDate = toDate.AddDays(1).AddSeconds(-1);
+            transactionViewModel.FromDate = fromDate;
+            transactionViewModel.ToDate = toDate.AddDays(1).AddSeconds(-1);
             transactionViewModel.Transactions = await dataService.GetList(expr).ContinueWith(task => task.Result.OrderByDescending(item => item.CreateDate));
 
             return View(transactionViewModel);
