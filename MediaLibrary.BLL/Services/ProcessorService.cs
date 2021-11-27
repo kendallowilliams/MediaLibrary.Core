@@ -39,7 +39,7 @@ namespace MediaLibrary.BLL.Services
 
             try
             {
-                transaction = await transactionService.GetNewTransaction(TransactionTypes.RefreshPodcast);
+                transaction = await transactionService.GetNewTransaction(TransactionTypes.RefreshPodcasts);
                 podcasts = await dataService.GetList<Podcast>();
                 await tplService.ConcurrentAsync(async podcast => await podcastService.RefreshPodcast(podcast), podcasts, 4, default(CancellationToken));
                 await podcastService.CleanMissingPodcastFiles();

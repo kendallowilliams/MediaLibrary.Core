@@ -215,8 +215,13 @@ namespace MediaLibrary.WebUI.Controllers
 
         public async Task RefreshPodcast(int id)
         {
-            await podcastService.RefreshPodcast(await dataService.Get<Podcast>(item => item.Id == id));
+            Transaction transaction = await transactionService.GetNewTransaction(TransactionTypes.RefreshPodcast);
+            Podcast podcast = await dataService.Get<Podcast>(item => item.Id == id);
+
+            await podcastService.RefreshPodcast(podcast);
             podcastUIService.ClearPodcasts();
+            transaction.Message = $"Podcast: {podcast.Title}";
+            await transactionService.UpdateTransactionCompleted(transaction);
         }
 
 #if !DEBUG && !DEV
