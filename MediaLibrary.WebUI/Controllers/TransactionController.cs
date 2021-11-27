@@ -33,14 +33,14 @@ namespace MediaLibrary.WebUI.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Index(TransactionViewModel transactionViewModel = null)
+        public async Task<IActionResult> Index(TransactionViewModel viewModel = null)
         {
+            TransactionViewModel transactionViewModel = viewModel ?? new TransactionViewModel();
             Expression<Func<Transaction, bool>> expr = transaction => (!transactionViewModel.FromDate.HasValue || transaction.CreateDate >= transactionViewModel.FromDate) &&
                                                                       (!transactionViewModel.ToDate.HasValue || transaction.CreateDate <= transactionViewModel.ToDate) &&
                                                                       (!transactionViewModel.TransactionType.HasValue || transaction.Type == (int)transactionViewModel.TransactionType) &&
                                                                       (!transactionViewModel.TransactionStatus.HasValue || transaction.Status == (int)transactionViewModel.TransactionStatus);
 
-            transactionViewModel = transactionViewModel ?? new TransactionViewModel();
             transactionViewModel.Transactions = await dataService.GetList(expr).ContinueWith(task => task.Result.OrderByDescending(item => item.CreateDate));
 
             return View(transactionViewModel);
