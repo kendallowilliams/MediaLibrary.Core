@@ -258,7 +258,7 @@ export default class SettingsModal {
                 .then(result => result.toLowerCase() === 'true')
                 .then(result => {
                     if (!result) {
-                        MessageBox.showError('Error', 'Path [' + path + '] invalid. Check path and try again.');
+                        MessageBox.showError('Error', 'Path [' + path + '] invalid or already exists. Check path and try again.');
                     }
 
                     return result;
