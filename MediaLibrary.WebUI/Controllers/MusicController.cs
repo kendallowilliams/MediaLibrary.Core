@@ -526,12 +526,28 @@ namespace MediaLibrary.WebUI.Controllers
             }
         }
 
-        public async Task<bool> MusicPathValid(string path)
+        public async Task<IActionResult> MusicPathValid(string path)
         {
             Configuration configuration = await dataService.Get<Configuration>(item => item.Type == nameof(MediaPages.Music));
             MusicConfiguration musicConfiguration = configuration?.GetConfigurationObject<MusicConfiguration>() ?? new MusicConfiguration();
+            IActionResult result = Ok(true);
 
-            return !string.IsNullOrWhiteSpace(path) && Directory.Exists(path) && !musicConfiguration.MusicPaths.Contains(path, StringComparer.OrdinalIgnoreCase);
+            path = path.Trim();
+
+            if (string.IsNullOrWhiteSpace(path))
+            {
+                result = BadRequest("Path is missing.");
+            }
+            else if (!Directory.Exists(path))
+            {
+                result = BadRequest("Path not found/does not exist");
+            }
+            else if (musicConfiguration.MusicPaths.Contains(path, StringComparer.OrdinalIgnoreCase))
+            {
+                result = BadRequest("Path already added.");
+            }
+
+            return result;
         }
     }
 }

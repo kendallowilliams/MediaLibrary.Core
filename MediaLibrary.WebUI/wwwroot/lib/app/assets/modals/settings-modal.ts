@@ -252,17 +252,10 @@ export default class SettingsModal {
     private checkPathValid(path: string): Promise<boolean> {
         let promise: Promise<boolean> = Promise.resolve(false);
 
-        if (path) {
+        if (path.trim()) {
             promise = fetch_get('Music/MusicPathValid', { path: path })
-                .then(response => response.text())
-                .then(result => result.toLowerCase() === 'true')
-                .then(result => {
-                    if (!result) {
-                        MessageBox.showError('Error', 'Path [' + path + '] invalid or already exists. Check path and try again.');
-                    }
-
-                    return result;
-                });
+                        .then(response => response.text().then(result => result.toLowerCase() === 'true'),
+                              response => response.text().then(reason => MessageBox.showError('Error', reason)));
         }
 
         return promise;
