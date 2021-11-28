@@ -162,7 +162,8 @@ namespace MediaLibrary.WebUI.Services
             IEnumerable<DirectoryInfo> musicPathInfos = musicPaths.Select(path => new DirectoryInfo(path));
             DirectoryInfo targetPathInfo = Directory.Exists(path) ? new DirectoryInfo(path) : null;
             bool isSafePath = targetPathInfo != null &&
-                              musicPathInfos.Any(info => fileService.EnumerateDirectories(info.FullName, recursive: true)
+                              musicPathInfos.Any(info => info.FullName == targetPathInfo.FullName ||
+                                                         fileService.EnumerateDirectories(info.FullName, recursive: true)
                                                                     .Any(item => item.Equals(targetPathInfo.FullName)));
 
             if (isSafePath)
@@ -170,10 +171,11 @@ namespace MediaLibrary.WebUI.Services
                 directories = Directory.EnumerateDirectories(targetPathInfo.FullName);
                 includedTrackPaths = await dataService.GetList<TrackPath>(item => directories.Contains(item.Location));
                 musicDirectory = new MusicDirectory(targetPathInfo.FullName, directories.OrderBy(item => item, StringComparer.OrdinalIgnoreCase), includedTrackPaths);
-                musicDirectory.SubDirectories.Prepend(new MusicDirectory(Path.Combine(targetPathInfo.FullName, "..")));
+                musicDirectory.SubDirectories = musicDirectory.SubDirectories.Prepend(new MusicDirectory(Path.Combine(targetPathInfo.FullName, "..")));
             }
             else
             {
+                includedTrackPaths = await dataService.GetList<TrackPath>(item => directories.Contains(item.Location));
                 musicDirectory = new MusicDirectory(string.Empty, directories.OrderBy(item => item, StringComparer.OrdinalIgnoreCase), includedTrackPaths);
             }
 

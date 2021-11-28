@@ -255,7 +255,14 @@ export default class SettingsModal {
         if (path) {
             promise = fetch_get('Music/MusicPathValid', { path: path })
                 .then(response => response.text())
-                .then(result => result.toLowerCase() === 'true');
+                .then(result => result.toLowerCase() === 'true')
+                .then(result => {
+                    if (!result) {
+                        MessageBox.showError('Error', 'Path [' + path + '] invalid. Check path and try again.');
+                    }
+
+                    return result;
+                });
         }
 
         return promise;

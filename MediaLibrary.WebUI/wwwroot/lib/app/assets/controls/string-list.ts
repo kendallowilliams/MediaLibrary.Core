@@ -1,5 +1,4 @@
 ﻿import HtmlControls from "./html-controls";
-import * as MessageBox from '../utilities/message-box';
 
 export default class StringList {
     private $itemsContainer: JQuery<HTMLElement>;
@@ -35,8 +34,8 @@ export default class StringList {
             item = this.$pathInput.val() as string;
         let items: string[] = [];
 
-        this.itemValidator(item).then(exists => {
-            if (exists) {
+        this.itemValidator(item).then(valid => {
+            if (valid) {
                 $itemField.text(item);
                 $itemTemplate.removeClass('d-none').removeAttr('data-template')
                 this.$itemsContainer.append($itemTemplate);
@@ -46,9 +45,6 @@ export default class StringList {
                     .toArray();
                 callback(items, true);
                 this.$pathInput.val('');
-            } else {
-                MessageBox.showError('Error', 'Item [' + item + '] is not valid and cannot be added.');
-                callback(items, false);
             }
         });
     }
