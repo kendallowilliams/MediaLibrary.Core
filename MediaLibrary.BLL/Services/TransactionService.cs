@@ -38,7 +38,7 @@ namespace MediaLibrary.BLL.Services
             {
                 transaction.Status = (int)TransactionStatus.Completed;
                 transaction.StatusMessage = $"{TransactionStatus.Completed} [{Enum.GetName(typeof(TransactionTypes), transaction.Type)}]";
-                transaction.Message = message;
+                transaction.Message = message ?? transaction.Message;
                 transaction.ModifyDate = DateTime.Now;
                 await dataService.Update(transaction);
             }

@@ -1,0 +1,52 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <base href="@(Url.Content("~"))/" />
+    <title>KOW Moosic @ViewBag.Title</title>
+    <link rel="icon" href="@Url.Content("~/favicon.ico")" />
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/lib/font-awesome/css/all.min.css" />
+    <link rel="stylesheet" href="~/lib/jquery-ui-1.12.1.custom/jquery-ui.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" />
+    <script src="~/lib/require.js/require.min.js"></script>
+</head>
+<body>
+    <div class="container-fluid d-flex flex-column h-100">
+        <header></header>
+        <main class="d-flex flex-column flex-fill overflow-auto body-content">
+            @RenderBody()
+        </main>
+        <footer class="footer-content">
+            <p class="text-center">&copy; @DateTime.Now.Year - Kendall O. Williams</p>
+        </footer>
+    </div>
+
+    @RenderSection("scripts", false)
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <partial name="~/Views/Shared/Modals/Reusable/AlertModal.cshtml" />
+
+    <script type="text/javascript" defer="defer">
+        var MessageBox = null;
+
+        requirejs.config({
+            baseUrl: '@(Url.Content("~/lib/app"))',
+            paths: {
+                jquery: '../jquery/jquery.min',
+                'jquery-ui': '../jquery-ui-1.12.1.custom/jquery-ui.min',
+                bootstrap: '../bootstrap/dist/js/bootstrap.bundle.min'
+            },
+            deps: ['jquery', 'jquery-ui', 'bootstrap'],
+            bundles: {
+                'app': [ 'assets/utilities/message-box' ]
+            }
+        });
+
+        requirejs(['jquery', 'jquery-ui', 'bootstrap', 'assets/utilities/message-box'], function (jquery, jquery_ui, bootstrap, messageBox) {
+            MessageBox = messageBox;
+        });
+
+    </script>
+</body>
+</html>

@@ -36,14 +36,13 @@ namespace MediaLibrary.BLL.Services
         {
             Transaction transaction = null;
             IEnumerable<Podcast> podcasts = null;
-            IEnumerable<Task<Podcast>> tasks = null;
 
             try
             {
-                transaction = await transactionService.GetNewTransaction(TransactionTypes.RefreshPodcast);
+                transaction = await transactionService.GetNewTransaction(TransactionTypes.RefreshPodcasts);
                 podcasts = await dataService.GetList<Podcast>();
-                tasks = podcasts.Select(podcast => podcastService.RefreshPodcast(podcast));
                 await tplService.ConcurrentAsync(async podcast => await podcastService.RefreshPodcast(podcast), podcasts, 4, default(CancellationToken));
+                await podcastService.CleanMissingPodcastFiles();
                 await transactionService.UpdateTransactionCompleted(transaction);
             }
             catch (Exception ex)
