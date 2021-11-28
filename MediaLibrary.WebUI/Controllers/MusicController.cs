@@ -545,6 +545,10 @@ namespace MediaLibrary.WebUI.Controllers
             else if (musicConfiguration.MusicPaths.Contains(path, StringComparer.OrdinalIgnoreCase))
             {
                 result = BadRequest("Path already added.");
+            } 
+            else if (musicConfiguration.MusicPaths.Any(_path => path.StartsWith(_path, StringComparison.OrdinalIgnoreCase)))
+            {
+                result = BadRequest("Use directory selector to add this path.");
             }
 
             return result;
