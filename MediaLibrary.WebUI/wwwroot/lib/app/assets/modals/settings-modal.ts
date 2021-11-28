@@ -3,7 +3,7 @@ import { getAlbumSortEnum, getAppWidthEnum, getArtistSortEnum, getPlaylistSortEn
 import { MediaPages, MessageBoxConfirmType } from "../enums/enums";
 import IConfigurations from "../interfaces/configurations-interface";
 import ISettingsReloadFunctions from "../interfaces/settings-reload-functions";
-import { fetch_post } from "../utilities/fetch_service";
+import { fetch_get, fetch_post } from "../utilities/fetch_service";
 import * as MessageBox from "../../assets/utilities/message-box";
 import LoadingModal from "../../assets/modals/loading-modal";
 import AddNewSongModal from "./add-song-modal";
@@ -36,8 +36,9 @@ export default class SettingsModal {
 
         this.stringList = new StringList(stringListElement,
             this.configurations.Music.properties.MusicPaths,
-            list => this.updateMusicPaths(list),
-            list => this.updateMusicPaths(list));
+            (list: string[], hasChanged: boolean) => this.updateMusicPaths(list, hasChanged),
+            (list: string[], hasChanged: boolean) => this.updateMusicPaths(list, hasChanged),
+            item => this.checkPathValid(item));
         $(this.modal).on('show.bs.modal', e => {
             const mediaPage = this.configurations.MediaLibary.properties.SelectedMediaPage,
                 containers = HtmlControls.Containers(),
@@ -240,9 +241,23 @@ export default class SettingsModal {
         $(this.modal).modal('hide');
     }
 
-    private updateMusicPaths(list: string[] = []): void {
-        this.configurations.Music.properties.MusicPaths = list;
-        this.configurations.Music.updateConfiguration();
-        this.autoCloseModal();
+    private updateMusicPaths(list: string[] = [], hasChanged: boolean = false): void {
+        if (hasChanged) {
+            this.configurations.Music.properties.MusicPaths = list;
+            this.configurations.Music.updateConfiguration();
+            this.autoCloseModal();
+        }
+    }
+
+    private checkPathValid(path: string): Promise<boolean> {
+        let promise: Promise<boolean> = Promise.resolve(false);
+
+        if (path) {
+            promise = fetch_get('Music/MusicPathValid', { path: path })
+                .then(response => response.text())
+                .then(result => result.toLowerCase() === 'true');
+        }
+
+        return promise;
     }
 }

@@ -525,5 +525,13 @@ namespace MediaLibrary.WebUI.Controllers
                 musicService.ClearData();
             }
         }
+
+        public async Task<bool> MusicPathValid(string path)
+        {
+            Configuration configuration = await dataService.Get<Configuration>(item => item.Type == nameof(MediaPages.Music));
+            MusicConfiguration musicConfiguration = configuration?.GetConfigurationObject<MusicConfiguration>() ?? new MusicConfiguration();
+
+            return !string.IsNullOrWhiteSpace(path) && Directory.Exists(path) && !musicConfiguration.MusicPaths.Contains(path, StringComparer.OrdinalIgnoreCase);
+        }
     }
 }

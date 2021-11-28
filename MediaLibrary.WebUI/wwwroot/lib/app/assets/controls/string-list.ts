@@ -1,4 +1,5 @@
 ﻿import HtmlControls from "./html-controls";
+import * as MessageBox from '../utilities/message-box';
 
 export default class StringList {
     private $itemsContainer: JQuery<HTMLElement>;
@@ -6,8 +7,9 @@ export default class StringList {
 
     constructor(private stringListElement: HTMLElement,
         private items: string[] = [],
-        private addCallback: (list) => void = _ => null,
-        private removeCallback: (list) => void = _ => null) {
+        private addCallback: (list: string[], hasChanged: boolean) => void = _ => null,
+        private removeCallback: (list: string[], hasChanged: boolean) => void = _ => null,
+        private itemValidator: (item: string) => Promise<boolean> = _ => Promise.resolve(true)) {
         this.initialize();
     }
 
@@ -26,27 +28,32 @@ export default class StringList {
         }
     }
 
-    private addItem(callback: (list) => void = _ => null): void {
+    private addItem(callback: (list: string[], hasChanged: boolean) => void = _ => null): void {
         const $itemTemplate = this.$itemsContainer.find('[data-template="StringListItem"]').clone(true),
             $listItems = this.$itemsContainer.find('.input-group').not('[data-template]'),
-            $pathField = $itemTemplate.find('[data-field]'),
-            path = this.$pathInput.val() as string;
+            $itemField = $itemTemplate.find('[data-field]'),
+            item = this.$pathInput.val() as string;
         let items: string[] = [];
 
-        if (path) {
-            $pathField.text(path);
-            $itemTemplate.removeClass('d-none').removeAttr('data-template')
-            this.$itemsContainer.append($itemTemplate);
-            items = this.$itemsContainer.find('[data-field]')
-                .map((index, element) => $(element).text())
-                .filter((index, element) => !!element)
-                .toArray();
-            $pathField.text('');
-            callback(items);
-        }
+        this.itemValidator(item).then(exists => {
+            if (exists) {
+                $itemField.text(item);
+                $itemTemplate.removeClass('d-none').removeAttr('data-template')
+                this.$itemsContainer.append($itemTemplate);
+                items = this.$itemsContainer.find('[data-field]')
+                    .map((index, element) => $(element).text())
+                    .filter((index, element) => !!element)
+                    .toArray();
+                callback(items, true);
+                this.$pathInput.val('');
+            } else {
+                MessageBox.showError('Error', 'Item [' + item + '] is not valid and cannot be added.');
+                callback(items, false);
+            }
+        });
     }
 
-    private removeItem(btn: HTMLButtonElement, callback: (list) => void = _ => null): void {
+    private removeItem(btn: HTMLButtonElement, callback: (list: string[], hasChanged: boolean) => void = _ => null): void {
         let items: string[] = [];
 
         $(btn.parentNode.parentNode).remove();
@@ -54,6 +61,6 @@ export default class StringList {
             .map((index, element) => $(element).text())
             .filter((index, element) => !!element)
             .toArray();
-        callback(items);
+        callback(items, true);
     }
 }
