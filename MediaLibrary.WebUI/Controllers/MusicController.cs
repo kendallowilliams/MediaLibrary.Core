@@ -542,6 +542,8 @@ namespace MediaLibrary.WebUI.Controllers
             Configuration configuration = await dataService.Get<Configuration>(item => item.Type == nameof(MediaPages.Music));
             MusicConfiguration musicConfiguration = configuration?.GetConfigurationObject<MusicConfiguration>() ?? new MusicConfiguration();
             IActionResult result = Ok(true);
+            Func<DirectoryInfo, bool> canUse = dirInfo => (dirInfo.Attributes & FileAttributes.Hidden) != FileAttributes.Hidden &&
+                                                          (dirInfo.Attributes & FileAttributes.System) != FileAttributes.System;
 
             path = path.Trim();
 
@@ -560,6 +562,10 @@ namespace MediaLibrary.WebUI.Controllers
             else if (musicConfiguration.MusicPaths.Any(_path => path.StartsWith(_path, StringComparison.OrdinalIgnoreCase)))
             {
                 result = BadRequest("Use directory selector to add this path.");
+            }
+            else if (!canUse(new DirectoryInfo(path)))
+            {
+                result = BadRequest("Path is either a hidden or system folder and cannot be used.");
             }
 
             return result;

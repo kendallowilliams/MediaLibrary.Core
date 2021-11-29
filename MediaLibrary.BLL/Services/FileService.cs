@@ -47,13 +47,25 @@ namespace MediaLibrary.BLL.Services
         public IEnumerable<string> EnumerateDirectories(string path, string searchPattern = "*", bool recursive = false)
         {
             SearchOption searchOption = recursive ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly;
-            return Directory.Exists(path) ? Directory.EnumerateDirectories(path, searchPattern, searchOption) : Enumerable.Empty<string>();
+            DirectoryInfo directoryInfo = Directory.Exists(path) ? new DirectoryInfo(path) : default;
+            Func<DirectoryInfo, bool> canUse = dirInfo => (dirInfo.Attributes & FileAttributes.Hidden) != FileAttributes.Hidden &&
+                                                          (dirInfo.Attributes & FileAttributes.System) != FileAttributes.System;
+
+            return directoryInfo != null && canUse(directoryInfo) ?
+                Directory.EnumerateDirectories(path, searchPattern, searchOption) :
+                Enumerable.Empty<string>();
         }
 
         public IEnumerable<string> EnumerateFiles(string path, string searchPattern = "*", bool recursive = false)
         {
             SearchOption searchOption = recursive ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly;
-            return Directory.Exists(path) ? Directory.EnumerateFiles(path, searchPattern, searchOption) : Enumerable.Empty<string>();
+            DirectoryInfo directoryInfo = Directory.Exists(path) ? new DirectoryInfo(path) : default;
+            Func<DirectoryInfo, bool> canUse = dirInfo => (dirInfo.Attributes & FileAttributes.Hidden) != FileAttributes.Hidden &&
+                                                          (dirInfo.Attributes & FileAttributes.System) != FileAttributes.System;
+
+            return directoryInfo != null && canUse(directoryInfo) ?
+                Directory.EnumerateFiles(path, searchPattern, searchOption) : 
+                Enumerable.Empty<string>();
         }
 
         public async Task Write(string path, byte[] data)
