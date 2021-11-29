@@ -487,9 +487,20 @@ namespace MediaLibrary.WebUI.Controllers
 
         public async Task<IActionResult> GetMusicDirectory(string path)
         {
-            MusicDirectory musicDirectory = await musicService.GetMusicDirectory(path);
+            IActionResult result = default;
 
-            return PartialView("~/Views/Shared/Controls/MusicDirectory.cshtml", musicDirectory);
+            try
+            {
+                MusicDirectory musicDirectory = await musicService.GetMusicDirectory(path);
+
+                result = PartialView("~/Views/Shared/Controls/MusicDirectory.cshtml", musicDirectory);
+            }
+            catch (Exception ex)
+            {
+                result = StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
+            }
+
+            return result;
         }
 
         public async Task<IActionResult> GetDirectorySelector(string path)
