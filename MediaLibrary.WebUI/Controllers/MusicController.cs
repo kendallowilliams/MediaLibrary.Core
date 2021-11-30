@@ -517,12 +517,17 @@ namespace MediaLibrary.WebUI.Controllers
 
         public async Task AddMusicDirectory(string path)
         {
-            ScanDirectoryRequest request = new ScanDirectoryRequest(path);
-            bool pathExists = await dataService.Exists<TrackPath>(item => item.Location == path);
-
-            if (!pathExists)
+            if (!string.IsNullOrWhiteSpace(path) && Directory.Exists(path))
             {
-                await Scan(request);
+                DirectoryInfo directoryInfo =  new DirectoryInfo(path);
+                ScanDirectoryRequest request = new ScanDirectoryRequest(directoryInfo.FullName);
+                bool pathExists = directoryInfo != null &&
+                                  await dataService.Exists<TrackPath>(item => item.Location == directoryInfo.FullName);
+
+                if (!pathExists)
+                {
+                    await Scan(request);
+                }
             }
         }
 
