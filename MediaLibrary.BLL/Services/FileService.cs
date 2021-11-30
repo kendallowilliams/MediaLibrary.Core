@@ -68,17 +68,11 @@ namespace MediaLibrary.BLL.Services
                 Enumerable.Empty<string>();
         }
 
-        public async Task Write(string path, byte[] data)
-        {
-            await Task.Run(() => File.WriteAllBytes(path, data));
-        }
+        public void Write(string path, byte[] data) => File.WriteAllBytes(path, data);
 
-        public async Task Write(string path, string data)
-        {
-            await Task.Run(() => File.WriteAllText(path, data));
-        }
+        public void Write(string path, string data) => File.WriteAllText(path, data);
 
-        public async Task<bool> Exists(string path) => await Task.Run(() => File.Exists(path));
+        public bool Exists(string path) => File.Exists(path);
 
         public void Delete(string path)
         {
