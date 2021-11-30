@@ -1,4 +1,5 @@
 using MediaLibrary.BLL.Extensions;
+using MediaLibrary.BLL.Services.Interfaces;
 using MediaLibrary.Shared.Services;
 using MediaLibrary.Shared.Services.Interfaces;
 using MediaLibrary.WebUI.HostedServices;
@@ -6,6 +7,7 @@ using MediaLibrary.WebUI.Models;
 using MediaLibrary.WebUI.Services;
 using MediaLibrary.WebUI.Services.Interfaces;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Server.IISIntegration;
@@ -69,6 +71,18 @@ namespace MediaLibrary.WebUI
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
+
+            app.UseExceptionHandler(exceptionHandler =>
+            {
+                exceptionHandler.Run(async context =>
+                {
+                    var exceptionHandlerFeature = context.Features.Get<IExceptionHandlerFeature>();
+                    var logService = context.RequestServices.GetService<ILogService>();
+
+                    await logService.Error(exceptionHandlerFeature.Error);
+
+                });
+            });
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
