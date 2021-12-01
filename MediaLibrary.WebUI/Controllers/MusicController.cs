@@ -546,31 +546,31 @@ namespace MediaLibrary.WebUI.Controllers
         {
             Configuration configuration = await dataService.Get<Configuration>(item => item.Type == nameof(MediaPages.Music));
             MusicConfiguration musicConfiguration = configuration?.GetConfigurationObject<MusicConfiguration>() ?? new MusicConfiguration();
-            IActionResult result = Ok(true);
+            IActionResult result = Ok();
             Func<DirectoryInfo, bool> canUse = dirInfo => (dirInfo.Attributes & FileAttributes.Hidden) != FileAttributes.Hidden &&
                                                           (dirInfo.Attributes & FileAttributes.System) != FileAttributes.System;
 
-            path = path.Trim();
+            path = path?.Trim();
 
             if (string.IsNullOrWhiteSpace(path))
             {
-                result = BadRequest("Path is missing.");
+                result = Ok("Path is missing.");
             }
             else if (!Directory.Exists(path))
             {
-                result = BadRequest("Path not found/does not exist");
+                result = Ok("Path not found/does not exist");
             }
             else if (musicConfiguration.MusicPaths.Contains(path, StringComparer.OrdinalIgnoreCase))
             {
-                result = BadRequest("Path already added.");
+                result = Ok("Path already added.");
             } 
             else if (musicConfiguration.MusicPaths.Any(_path => path.StartsWith(_path, StringComparison.OrdinalIgnoreCase)))
             {
-                result = BadRequest("Use directory selector to add this path.");
+                result = Ok("Use directory selector to add this path.");
             }
             else if (!canUse(new DirectoryInfo(path)))
             {
-                result = BadRequest("Path is either a hidden or system folder and cannot be used.");
+                result = Ok("Path is either a hidden or system folder and cannot be used.");
             }
 
             return result;

@@ -254,8 +254,14 @@ export default class SettingsModal {
 
         if (path.trim()) {
             promise = fetch_get('Music/MusicPathValid', { path: path })
-                        .then(response => response.text().then(result => result.toLowerCase() === 'true'),
-                              response => response.text().then(reason => MessageBox.showError('Error', reason)));
+                .then(response => response.text())
+                .then(message => {
+                    if (message) {
+                        MessageBox.showWarning('Warning', message)
+                    }
+
+                    return !message;
+                });
         }
 
         return promise;

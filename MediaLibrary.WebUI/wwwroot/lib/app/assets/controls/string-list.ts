@@ -29,10 +29,10 @@ export default class StringList {
 
     private addItem(callback: (list: string[], hasChanged: boolean) => void = _ => null): void {
         const $itemTemplate = this.$itemsContainer.find('[data-template="StringListItem"]').clone(true),
-            $listItems = this.$itemsContainer.find('.input-group').not('[data-template]'),
             $itemField = $itemTemplate.find('[data-field]'),
             item = this.$pathInput.val() as string;
-        let items: string[] = [];
+        let items: string[] = [],
+            $listItems = jQuery<HTMLElement>();
 
         this.itemValidator(item).then(valid => {
             if (valid) {
@@ -42,7 +42,14 @@ export default class StringList {
                 items = this.$itemsContainer.find('[data-field]')
                     .map((index, element) => $(element).text())
                     .filter((index, element) => !!element)
-                    .toArray();
+                    .toArray()
+                    .sort();
+                $listItems = this.$itemsContainer.find('.input-group').not('[data-template]')
+                items.forEach((item, index) => {
+                    const $item = $listItems.has(':contains("' + item + '")');
+
+                    this.$itemsContainer.append($item);
+                });
                 callback(items, true);
                 this.$pathInput.val('');
             }
