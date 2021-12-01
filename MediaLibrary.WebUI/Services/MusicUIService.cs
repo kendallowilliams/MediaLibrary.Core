@@ -190,7 +190,7 @@ namespace MediaLibrary.WebUI.Services
                 directory.HasFiles = allFiles.Where(file => fileTypes.Contains(Path.GetExtension(file), StringComparer.OrdinalIgnoreCase)).Any();
                 directory.IsLoading = activeDirectories.Contains(directory.Path, StringComparer.OrdinalIgnoreCase);
                 directory.TransactionId = transactionData.FirstOrDefault(item => item.Directories.Contains(directory.Path, StringComparer.OrdinalIgnoreCase))?.Id;
-                directory.HasDirectories = fileService.EnumerateDirectories(directory.Path).Any();
+                directory.HasDirectories = isSafePath ? fileService.EnumerateDirectories(directory.Path).Any() : musicPaths.Any();
             }
 
             return musicDirectory;
