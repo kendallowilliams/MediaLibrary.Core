@@ -517,6 +517,9 @@ namespace MediaLibrary.WebUI.Controllers
 
         public async Task AddMusicDirectory(string path)
         {
+            Func<DirectoryInfo, bool> canUse = dirInfo => (dirInfo.Attributes & FileAttributes.Hidden) != FileAttributes.Hidden &&
+                                                          (dirInfo.Attributes & FileAttributes.System) != FileAttributes.System;
+
             if (!string.IsNullOrWhiteSpace(path) && Directory.Exists(path))
             {
                 DirectoryInfo directoryInfo =  new DirectoryInfo(path);
@@ -524,7 +527,7 @@ namespace MediaLibrary.WebUI.Controllers
                 bool pathExists = directoryInfo != null &&
                                   await dataService.Exists<TrackPath>(item => item.Location == directoryInfo.FullName);
 
-                if (!pathExists)
+                if (!pathExists && canUse(directoryInfo))
                 {
                     await Scan(request);
                 }
