@@ -569,11 +569,13 @@ namespace MediaLibrary.WebUI.Controllers
             } 
             else if (musicConfiguration.MusicPaths.Any(_path => path.StartsWith(_path, StringComparison.OrdinalIgnoreCase)))
             {
-                result = Ok("Use directory selector to add this path.");
+                string parentPath = musicConfiguration.MusicPaths.FirstOrDefault(_path => path.StartsWith(_path, StringComparison.OrdinalIgnoreCase));
+
+                result = Ok($"Path found within '{parentPath}' and cannot be added.");
             }
             else if (!canUse(new DirectoryInfo(path)))
             {
-                result = Ok("Path is either a hidden or system folder and cannot be used.");
+                result = Ok("Path is a hidden or system folder and cannot be used.");
             }
 
             return result;
