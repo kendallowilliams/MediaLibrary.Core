@@ -8,7 +8,7 @@ namespace MediaLibrary.DAL.DbContexts
 {
     public partial class MediaLibraryEntities : DbContext
     {
-        public MediaLibraryEntities()
+        public MediaLibraryEntities() : base()
         {
         }
 
