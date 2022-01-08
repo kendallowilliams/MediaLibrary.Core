@@ -20,7 +20,7 @@ namespace MediaLibrary.Console
                       {
                           services.AddMemoryCache();
                           services.AddHostedService<AppHostedService>();
-                          services.ConfigureServices();
+                          services.ConfigureServices(context.Configuration);
                       })
                       .Build()
                       .RunAsync();

@@ -9,8 +9,5 @@ namespace MediaLibrary.DAL.DbContexts
 {
     public partial class MediaLibraryEntities
     {
-        public MediaLibraryEntities(string nameOrConnectionString) : base() 
-        {
-        }
     }
 }

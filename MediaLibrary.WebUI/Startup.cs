@@ -37,7 +37,7 @@ namespace MediaLibrary.WebUI
             services.AddControllersWithViews();
             services.AddHostedService<BackgroundQueueHostedService>();
             services.AddMemoryCache();
-            services.ConfigureServices();
+            services.ConfigureServices(Configuration);
             services.AddScoped<HomeViewModel>();
             services.AddScoped<MediaLibraryViewModel>();
             services.AddScoped<MusicViewModel>();
