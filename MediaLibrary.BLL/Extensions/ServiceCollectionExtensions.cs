@@ -23,7 +23,7 @@ namespace MediaLibrary.BLL.Extensions
         {
             services.AddDbContextFactory<MediaLibraryEntities>(options =>
             {
-                options.UseSqlServer(configuration["ConnectionStrings:MediaLibrary"]);
+                options.UseSqlServer(configuration.GetConnectionString("MediaLibrary"));
             });
             services.AddScoped<ITPLService, TPLService>();
             services.AddScoped<IDataService, DataService>();

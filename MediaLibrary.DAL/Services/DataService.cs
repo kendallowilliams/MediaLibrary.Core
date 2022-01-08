@@ -34,14 +34,14 @@ namespace MediaLibrary.DAL.Services
 
         public string GetDbServer()
         {
-            SqlConnectionStringBuilder builder = new SqlConnectionStringBuilder(configuration["ConnectionStrings:MediaLibrary"]);
+            SqlConnectionStringBuilder builder = new SqlConnectionStringBuilder(configuration.GetConnectionString("MediaLibrary"));
 
             return builder.DataSource;
         }
 
         public string GetDbName()
         {
-            SqlConnectionStringBuilder builder = new SqlConnectionStringBuilder(configuration["ConnectionStrings:MediaLibrary"]);
+            SqlConnectionStringBuilder builder = new SqlConnectionStringBuilder(configuration.GetConnectionString("MediaLibrary"));
 
             return builder.InitialCatalog;
         }
