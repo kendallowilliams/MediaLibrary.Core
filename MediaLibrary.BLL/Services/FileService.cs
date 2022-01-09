@@ -12,6 +12,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Microsoft.Extensions.Configuration;
 using static MediaLibrary.Shared.Enums;
+using MediaLibrary.Shared.Models.Configurations;
 
 namespace MediaLibrary.BLL.Services
 {
@@ -117,12 +118,17 @@ namespace MediaLibrary.BLL.Services
         {
             try
             {
-                IEnumerable<TrackPath> paths = await dataService.GetList<TrackPath>(includes: path => path.Tracks),
-                                       validPaths = paths.Where(_path => _path.Tracks.Any()),
-                                       invalidPaths = paths.Where(_path => !_path.Tracks.Any());
+                var musicConfiguration = await dataService.Get<Configuration>(item => item.Type == nameof(MediaPages.Music))
+                                                          .ContinueWith(task => task.Result.GetConfigurationObject<MusicConfiguration>() ?? 
+                                                                                new MusicConfiguration());
+                IEnumerable<string> fileTypes = configuration["FileTypes"].Split(",".ToCharArray(), StringSplitOptions.RemoveEmptyEntries),
+                                    configPaths = musicConfiguration.MusicPaths;
+                IEnumerable<TrackPath> savedPaths = await dataService.GetList<TrackPath>(includes: path => path.Tracks),
+                                       validPaths = savedPaths.Where(_path => _path.Tracks.Any()),
+                                       emptyPaths = savedPaths.Where(_path => !_path.Tracks.Any()),
+                                       invalidPaths = savedPaths.Where(_path => !configPaths.Any(p => _path.Location.StartsWith(p, StringComparison.OrdinalIgnoreCase)));
                 IEnumerable<Album> albumsToDelete = Enumerable.Empty<Album>();
                 IEnumerable<Artist> artistsToDelete = Enumerable.Empty<Artist>();
-                IEnumerable<string> fileTypes = configuration["FileTypes"].Split(",".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
 
                 foreach (TrackPath path in validPaths)
                 {
@@ -131,9 +137,9 @@ namespace MediaLibrary.BLL.Services
                                         files = EnumerateFiles(path.Location).Where(file => fileTypes.Contains(Path.GetExtension(file), StringComparer.OrdinalIgnoreCase)),
                                         deletedFiles = existingFiles.Where(file => !File.Exists(file)),
                                         newFiles = files.Except(existingFiles),
-                                        existingDirectories = paths.Where(_path => !path.Equals(_path) && 
-                                                                                   _path.Location.StartsWith(path.Location))
-                                                                   .Select(_path => _path.Location);
+                                        existingDirectories = savedPaths.Where(_path => !path.Equals(_path) && 
+                                                                                        _path.Location.StartsWith(path.Location))
+                                                                        .Select(_path => _path.Location);
 
                     foreach (string file in newFiles)
                     {
@@ -163,11 +169,16 @@ namespace MediaLibrary.BLL.Services
                         }
                     }
 
+                    if (transaction.GetTransactionType() == TransactionTypes.RefreshMusicWithDelete)
+                    {
+                        foreach (var _path in invalidPaths) { await dataService.Delete<TrackPath>(_path.Id); }
+                    }
+
                     path.LastScanDate = DateTime.Now;
                     await dataService.Update(path);
                 }
 
-                foreach (TrackPath path in invalidPaths) { await dataService.Delete<TrackPath>(path.Id); }
+                foreach (TrackPath path in emptyPaths) { await dataService.Delete<TrackPath>(path.Id); }
                 albumsToDelete = await dataService.GetList<Album>(album => album.Tracks.Count() == 0, default, album => album.Tracks);
                 artistsToDelete = await dataService.GetList<Artist>(artist => artist.Tracks.Count() == 0, default, artist => artist.Tracks);
                 foreach (Album album in albumsToDelete) { await dataService.Delete<Album>(album.Id); }
