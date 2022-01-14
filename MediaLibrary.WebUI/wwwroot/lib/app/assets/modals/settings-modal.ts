@@ -39,7 +39,7 @@ export default class SettingsModal {
             (list: string[], hasChanged: boolean) => this.updateMusicPaths(list, hasChanged),
             (list: string[], hasChanged: boolean) => this.updateMusicPaths(list, hasChanged),
             item => this.checkPathValid(item),
-            item => this.musicPathInUse(item));
+            item => this.musicPathInUse(item).then(inUse => !inUse));
         $(this.modal).on('show.bs.modal', e => {
             const mediaPage = this.configurations.MediaLibary.properties.SelectedMediaPage,
                 containers = HtmlControls.Containers(),
