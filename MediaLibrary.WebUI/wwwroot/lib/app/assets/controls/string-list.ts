@@ -63,12 +63,14 @@ export default class StringList {
         let items: string[] = [];
 
         this.removeValidator(item).then(valid => {
-            $(btn.parentNode.parentNode).remove();
-            items = this.$itemsContainer.find('[data-field]')
-                .map((index, element) => $(element).text())
-                .filter((index, element) => !!element)
-                .toArray();
-            callback(items, true);
+            if (valid) {
+                $(btn.parentNode.parentNode).remove();
+                items = this.$itemsContainer.find('[data-field]')
+                    .map((index, element) => $(element).text())
+                    .filter((index, element) => !!element)
+                    .toArray();
+                callback(items, true);
+            }
         });
     }
 
