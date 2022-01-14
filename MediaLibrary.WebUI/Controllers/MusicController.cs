@@ -552,8 +552,8 @@ namespace MediaLibrary.WebUI.Controllers
             IActionResult result = Ok();
             Func<DirectoryInfo, bool> canUse = dirInfo => (dirInfo.Attributes & FileAttributes.Hidden) != FileAttributes.Hidden &&
                                                           (dirInfo.Attributes & FileAttributes.System) != FileAttributes.System;
-
-            path = path?.Trim() ?? string.Empty;
+            var dirInfos = musicConfiguration.MusicPaths.Select(p => new DirectoryInfo(p));
+            var dirInfo = new DirectoryInfo(path?.Trim() ?? string.Empty);
 
             if (string.IsNullOrWhiteSpace(path))
             {
@@ -563,13 +563,13 @@ namespace MediaLibrary.WebUI.Controllers
             {
                 result = Ok("Path not found/does not exist");
             }
-            else if (musicConfiguration.MusicPaths.Contains(path, StringComparer.OrdinalIgnoreCase))
+            else if (dirInfos.Any(i => i.FullName.Equals(dirInfo.FullName, StringComparison.OrdinalIgnoreCase)))
             {
                 result = Ok("Path already added.");
             } 
-            else if (musicConfiguration.MusicPaths.Any(_path => path.StartsWith(_path, StringComparison.OrdinalIgnoreCase)))
+            else if (dirInfos.Any(i => dirInfo.FullName.StartsWith(i.FullName, StringComparison.OrdinalIgnoreCase)))
             {
-                string parentPath = musicConfiguration.MusicPaths.FirstOrDefault(_path => path.StartsWith(_path, StringComparison.OrdinalIgnoreCase));
+                string parentPath = dirInfos.FirstOrDefault(i => dirInfo.FullName.StartsWith(i.FullName, StringComparison.OrdinalIgnoreCase))?.FullName;
 
                 result = Ok($"Path found within '{parentPath}' and cannot be added.");
             }
@@ -586,10 +586,10 @@ namespace MediaLibrary.WebUI.Controllers
             Configuration configuration = await dataService.Get<Configuration>(item => item.Type == nameof(MediaPages.Music));
             MusicConfiguration musicConfiguration = configuration?.GetConfigurationObject<MusicConfiguration>() ?? new MusicConfiguration();
             var trackPaths = await dataService.GetList<TrackPath>();
+            var dirInfo = new DirectoryInfo(path?.Trim() ?? string.Empty);
 
-            path = path?.Trim() ?? string.Empty;
-
-            return trackPaths.Any(_path => _path.Location.StartsWith(path, StringComparison.OrdinalIgnoreCase));
+            return trackPaths.Select(p => new DirectoryInfo(p.Location))
+                             .Any(p => p.FullName.StartsWith(dirInfo.FullName, StringComparison.OrdinalIgnoreCase));
         }
 
         private IEnumerable<string> ValidateMusicPaths(IEnumerable<string> paths)
