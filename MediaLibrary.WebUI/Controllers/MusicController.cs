@@ -589,7 +589,7 @@ namespace MediaLibrary.WebUI.Controllers
 
             path = path?.Trim() ?? string.Empty;
 
-            return trackPaths.Any(_path => path.StartsWith(_path.Location, StringComparison.OrdinalIgnoreCase));
+            return trackPaths.Any(_path => _path.Location.StartsWith(path, StringComparison.OrdinalIgnoreCase));
         }
 
         private IEnumerable<string> ValidateMusicPaths(IEnumerable<string> paths)
