@@ -38,7 +38,8 @@ export default class SettingsModal {
             this.configurations.Music.properties.MusicPaths,
             (list: string[], hasChanged: boolean) => this.updateMusicPaths(list, hasChanged),
             (list: string[], hasChanged: boolean) => this.updateMusicPaths(list, hasChanged),
-            item => this.checkPathValid(item));
+            item => this.checkPathValid(item),
+            item => this.musicPathInUse(item));
         $(this.modal).on('show.bs.modal', e => {
             const mediaPage = this.configurations.MediaLibary.properties.SelectedMediaPage,
                 containers = HtmlControls.Containers(),
@@ -244,7 +245,9 @@ export default class SettingsModal {
     private updateMusicPaths(list: string[] = [], hasChanged: boolean = false): void {
         if (hasChanged) {
             this.configurations.Music.properties.MusicPaths = list;
-            this.configurations.Music.updateConfiguration();
+            this.configurations.Music.updateConfiguration()
+                .then(() => this.configurations.Music.refresh())
+                .then(() => this.stringList.load(this.configurations.Music.properties.MusicPaths));
             this.autoCloseModal();
         }
     }
@@ -253,14 +256,35 @@ export default class SettingsModal {
         let promise: Promise<boolean> = Promise.resolve(false);
 
         if (path.trim()) {
+            LoadingModal.showLoading();
             promise = fetch_get('Music/MusicPathValid', { path: path })
                 .then(response => response.text())
                 .then(message => {
-                    if (message) {
-                        MessageBox.showWarning('Warning', message)
-                    }
+                    if (message) /*then*/ MessageBox.showWarning('Warning', message);
+                    LoadingModal.hideLoading();
 
                     return !message;
+                });
+        }
+
+        return promise;
+    }
+
+    private musicPathInUse(path: string): Promise<boolean> {
+        let promise: Promise<boolean> = Promise.resolve(false);
+
+        if (path.trim()) {
+            LoadingModal.showLoading();
+            promise = fetch_get('Music/MusicPathInUse', { path: path })
+                .then(response => response.text())
+                .then(response => {
+                    const inUse = response === 'true',
+                        message = 'This path contains folders that contain music and cannot be removed. Use the directory selector to remove all subfolders first.';
+
+                    if (inUse) /*then*/ MessageBox.showWarning('Warning', message);
+                    LoadingModal.hideLoading();
+
+                    return !inUse;
                 });
         }
 

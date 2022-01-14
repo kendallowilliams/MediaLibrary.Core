@@ -8,7 +8,8 @@ export default class StringList {
         private items: string[] = [],
         private addCallback: (list: string[], hasChanged: boolean) => void = _ => null,
         private removeCallback: (list: string[], hasChanged: boolean) => void = _ => null,
-        private itemValidator: (item: string) => Promise<boolean> = _ => Promise.resolve(true)) {
+        private addValidator: (item: string) => Promise<boolean> = _ => Promise.resolve(true),
+        private removeValidator: (item: string) => Promise<boolean> = _ => Promise.resolve(true)) {
         this.initialize();
     }
 
@@ -34,7 +35,7 @@ export default class StringList {
         let items: string[] = [],
             $listItems = jQuery<HTMLElement>();
 
-        this.itemValidator(item).then(valid => {
+        this.addValidator(item).then(valid => {
             if (valid) {
                 $itemField.text(item);
                 $itemTemplate.removeClass('d-none').removeAttr('data-template')
@@ -57,13 +58,33 @@ export default class StringList {
     }
 
     private removeItem(btn: HTMLButtonElement, callback: (list: string[], hasChanged: boolean) => void = _ => null): void {
+        const $item = $(btn.parentNode.parentNode),
+            item: string = $item.find('[data-field]').text();
         let items: string[] = [];
 
-        $(btn.parentNode.parentNode).remove();
-        items = this.$itemsContainer.find('[data-field]')
-            .map((index, element) => $(element).text())
-            .filter((index, element) => !!element)
-            .toArray();
-        callback(items, true);
+        this.removeValidator(item).then(valid => {
+            $(btn.parentNode.parentNode).remove();
+            items = this.$itemsContainer.find('[data-field]')
+                .map((index, element) => $(element).text())
+                .filter((index, element) => !!element)
+                .toArray();
+            callback(items, true);
+        });
+    }
+
+    public load(items: string[] = []): void {
+        const $template = this.$itemsContainer.find('[data-template="StringListItem"]').clone(true);
+
+        this.$itemsContainer.empty();
+        this.$itemsContainer.append($template);
+
+        items.forEach((item, index) => {
+            const $itemTemplate = $template.clone(true),
+                $itemField = $itemTemplate.find('[data-field]');
+
+            $itemField.text(item);
+            $itemTemplate.removeClass('d-none').removeAttr('data-template')
+            this.$itemsContainer.append($itemTemplate);
+        });
     }
 }

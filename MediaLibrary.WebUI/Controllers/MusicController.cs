@@ -289,7 +289,7 @@ namespace MediaLibrary.WebUI.Controllers
                 }
                 else
                 {
-                    musicConfiguration.MusicPaths = musicConfiguration.MusicPaths.Distinct(StringComparer.OrdinalIgnoreCase);
+                    musicConfiguration.MusicPaths = ValidateMusicPaths(musicConfiguration.MusicPaths);
                     configuration.JsonData = JsonConvert.SerializeObject(musicConfiguration);
                     await dataService.Update(configuration);
                 }
@@ -553,7 +553,7 @@ namespace MediaLibrary.WebUI.Controllers
             Func<DirectoryInfo, bool> canUse = dirInfo => (dirInfo.Attributes & FileAttributes.Hidden) != FileAttributes.Hidden &&
                                                           (dirInfo.Attributes & FileAttributes.System) != FileAttributes.System;
 
-            path = path?.Trim();
+            path = path?.Trim() ?? string.Empty;
 
             if (string.IsNullOrWhiteSpace(path))
             {
@@ -575,10 +575,32 @@ namespace MediaLibrary.WebUI.Controllers
             }
             else if (!canUse(new DirectoryInfo(path)))
             {
-                result = Ok("Path is a hidden or system folder and cannot be used.");
+                result = Ok($"{path} is a hidden or system folder and cannot be used.");
             }
 
             return result;
+        }
+
+        public async Task<bool> MusicPathInUse(string path)
+        {
+            Configuration configuration = await dataService.Get<Configuration>(item => item.Type == nameof(MediaPages.Music));
+            MusicConfiguration musicConfiguration = configuration?.GetConfigurationObject<MusicConfiguration>() ?? new MusicConfiguration();
+            var trackPaths = await dataService.GetList<TrackPath>();
+
+            path = path?.Trim() ?? string.Empty;
+
+            return trackPaths.Any(_path => path.StartsWith(_path.Location, StringComparison.OrdinalIgnoreCase));
+        }
+
+        private IEnumerable<string> ValidateMusicPaths(IEnumerable<string> paths)
+        {
+            paths ??= Enumerable.Empty<string>();
+
+            return paths.Where(path => !paths.Where(_path => !string.IsNullOrWhiteSpace(_path) &&
+                                                             !_path.Equals(path, StringComparison.OrdinalIgnoreCase))
+                                             .Any(_path => path.StartsWith(_path, StringComparison.OrdinalIgnoreCase)))
+                        .OrderBy(path => path)
+                        .Distinct();
         }
     }
 }
