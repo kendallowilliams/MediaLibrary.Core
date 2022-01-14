@@ -284,7 +284,7 @@ export default class SettingsModal {
                     if (inUse) /*then*/ MessageBox.showWarning('Warning', message);
                     LoadingModal.hideLoading();
 
-                    return !inUse;
+                    return inUse;
                 });
         }
 
