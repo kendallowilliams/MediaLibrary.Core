@@ -51,9 +51,9 @@ export default class StringList {
 
                     this.$itemsContainer.append($item);
                 });
-                callback(items, true);
                 this.$pathInput.val('');
             }
+            callback(items, valid);
         });
     }
 
@@ -69,8 +69,8 @@ export default class StringList {
                     .map((index, element) => $(element).text())
                     .filter((index, element) => !!element)
                     .toArray();
-                callback(items, true);
             }
+            callback(items, valid);
         });
     }
 
