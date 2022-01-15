@@ -51,7 +51,7 @@ namespace MediaLibrary.WebUI
             services.AddSingleton<IPlaylistUIService, PlaylistUIService>();
             services.AddSingleton<IPodcastUIService, PodcastUIService>();
             services.AddSingleton<ITelevisionUIService, TelevisionUIService>();
-            services.AddSingleton(typeof(IBackgroundTaskQueueService), typeof(BackgroundTaskQueueService)); 
+            services.AddSingleton<IBackgroundTaskQueueService, BackgroundTaskQueueService>();
             services.AddAuthentication(IISDefaults.AuthenticationScheme);
             services.AddAuthorization();
             services.AddResponseCompression();
