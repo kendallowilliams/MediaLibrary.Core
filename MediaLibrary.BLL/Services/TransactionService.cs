@@ -25,7 +25,7 @@ namespace MediaLibrary.BLL.Services
         {
             Transaction transaction = new Transaction(transactionType);
 
-            transaction.Status = (int)TransactionStatus.Created;
+            transaction.Status = TransactionStatus.Created;
             transaction.StatusMessage = $"{TransactionStatus.Created} [{Enum.GetName(typeof(TransactionTypes), transaction.Type)}]";
             await dataService.Insert(transaction);
 

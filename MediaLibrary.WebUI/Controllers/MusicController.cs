@@ -91,7 +91,7 @@ namespace MediaLibrary.WebUI.Controllers
         public async Task<IActionResult> GetSongGroup(string key, SongSort sort)
         {
             IGrouping<string, Track> group = default;
-            bool hasPlaylists = await dataService.Exists<Playlist>(item => item.Type == (int)PlaylistTabs.Music);
+            bool hasPlaylists = await dataService.Exists<Playlist>(item => item.Type == PlaylistTypes.Music);
 
             await musicService.GetSongGroups(sort).ContinueWith(task => group = task.Result.FirstOrDefault(item => item.Key == key));
 

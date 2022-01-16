@@ -17,18 +17,16 @@ namespace MediaLibrary.DAL.Models
 
         public Transaction() : base()
         {
-            Status = (int)TransactionStatus.Created;
+            Status = TransactionStatus.Created;
             StatusMessage = TransactionStatus.Created.ToString();
             Type = TransactionTypes.None;
         }
 
         public Transaction(TransactionTypes transactionType) : base()
         {
-            Status = (int)TransactionStatus.Created;
+            Status = TransactionStatus.Created;
             StatusMessage = TransactionStatus.Created.ToString();
             Type = transactionType;
         }
-
-        public TransactionTypes GetTransactionType() => (TransactionTypes)Type;
     }
 }

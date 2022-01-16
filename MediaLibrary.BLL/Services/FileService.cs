@@ -146,7 +146,7 @@ namespace MediaLibrary.BLL.Services
                         await ReadMediaFile(file);
                     }
 
-                    if (transaction.GetTransactionType() == TransactionTypes.RefreshMusicWithDelete)
+                    if (transaction.Type == TransactionTypes.RefreshMusicWithDelete)
                     {
                         foreach (string file in deletedFiles)
                         {
@@ -169,7 +169,7 @@ namespace MediaLibrary.BLL.Services
                         }
                     }
 
-                    if (transaction.GetTransactionType() == TransactionTypes.RefreshMusicWithDelete)
+                    if (transaction.Type == TransactionTypes.RefreshMusicWithDelete)
                     {
                         foreach (var _path in invalidPaths) { await dataService.Delete<TrackPath>(_path.Id); }
                     }

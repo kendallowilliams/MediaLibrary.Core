@@ -56,7 +56,7 @@
 
                             <div id="collapse-playlists-@(item.Index)" class="collapse @(item.Index == 0 ? "show" : "")" data-parent="#accordion-playlists-@(Enums.PlaylistTabs.Music)">
                                 <ul class="list-group list-group-flush">
-                                    @foreach (var playlist in item.Group.Where(playlist => playlist.Type == (int)Enums.PlaylistTabs.Music))
+                                    @foreach (var playlist in item.Group.Where(playlist => playlist.Type == Enums.PlaylistTypes.Music))
                                     {
                                         <li class="list-group-item">
                                             <div class="media">
