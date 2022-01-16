@@ -12,7 +12,7 @@
                         <span class="mt-0 text-truncate font-weight-bold">@(item.Song.Title)</span>
                         <div class="d-flex flex-row">
                             <small data-album-id="@(item.Song.Album?.Id)" class="text-truncate" style="cursor: pointer">@(item.Song.Album?.Title ?? "Unknown Album")</small>
-                            <small>-</small>
+                            <small>&nbsp;-&nbsp;</small>
                             <small data-artist-id="@(item.Song.Artist?.Id)" style="cursor: pointer" class="text-muted text-truncate">@(item.Song.Artist?.Name ?? "Unknown Artist")</small>
                             <div class="flex-fill"></div>
                         </div>
@@ -41,8 +41,11 @@ else if (Model.Configuration.SelectedMediaType == Enums.MediaTypes.Podcast && Mo
                 <div class="media">
                     <div class="media-body d-flex flex-column" style="overflow-x: auto">
                         <span class="mt-0 text-truncate font-weight-bold">@(item.PodcastItem.Title)</span>
-                        <div>
-                            <small data-podcast-id="@(item.PodcastItem.PodcastId)" style="cursor: pointer">@(item.PodcastItem.Podcast?.Title ?? "Unknown Podcast")</small> - <small class="text-muted">@(item.PodcastItem?.Podcast?.Author ?? "Unknown Author")</small>
+                        <div class="d-flex flex-row">
+                            <small data-podcast-id="@(item.PodcastItem.PodcastId)" style="cursor: pointer">@(item.PodcastItem.Podcast?.Title ?? "Unknown Podcast")</small>
+                            <small>&nbsp;-&nbsp;</small>
+                            <small class="text-muted">@(item.PodcastItem?.Podcast?.Author ?? "Unknown Author")</small>
+                            <div class="flex-fill"></div>
                         </div>
                     </div>
                     <div>
@@ -65,8 +68,11 @@ else if (Model.Configuration.SelectedMediaType == Enums.MediaTypes.Television &&
                 <div class="media">
                     <div class="media-body d-flex flex-column" style="overflow-x: auto">
                         <span class="mt-0 text-truncate font-weight-bold">@(item.Episode.Title)</span>
-                        <div>
-                            <small data-series-id="@(item.Episode.SeriesId)" style="cursor: pointer">@(item.Episode.Series?.Title ?? "Unknown Series")</small> - <small class="text-muted">@(item.Episode.Season.HasValue ? $"Season {item.Episode.Season.Value}" : "Unknown Season")</small>
+                        <div class="d-flex flex-row">
+                            <small data-series-id="@(item.Episode.SeriesId)" style="cursor: pointer">@(item.Episode.Series?.Title ?? "Unknown Series")</small>
+                            <small>&nbsp;-&nbsp;</small>
+                            <small class="text-muted">@(item.Episode.Season.HasValue ? $"Season {item.Episode.Season.Value}" : "Unknown Season")</small>
+                            <div class="flex-fill"></div>
                         </div>
                     </div>
                     <div>
