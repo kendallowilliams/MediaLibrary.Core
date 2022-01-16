@@ -31,7 +31,7 @@ namespace MediaLibrary.WebUI.Controllers
 
         public async Task<IActionResult> Index()
         {
-            Configuration configuration = await dataService.Get<Configuration>(item => item.Type == nameof(MediaLibraryController).Replace(nameof(Controller), string.Empty));
+            Configuration configuration = await dataService.Get<Configuration>(item => item.Type == ConfigurationTypes.MediaLibrary);
 
             mediaLibraryViewModel.Configuration = configuration?.GetConfigurationObject<MediaLibraryConfiguration>() ?? new MediaLibraryConfiguration();
 
@@ -42,13 +42,13 @@ namespace MediaLibrary.WebUI.Controllers
         {
             if (ModelState.IsValid)
             {
-                Configuration configuration = await dataService.Get<Configuration>(item => item.Type == nameof(MediaLibraryController).Replace(nameof(Controller), string.Empty));
+                Configuration configuration = await dataService.Get<Configuration>(item => item.Type == ConfigurationTypes.MediaLibrary);
 
                 if (configuration == null)
                 {
                     configuration = new Configuration()
                     {
-                        Type = nameof(MediaLibraryController).Replace(nameof(Controller), string.Empty),
+                        Type = ConfigurationTypes.MediaLibrary,
                         JsonData = JsonConvert.SerializeObject(mediaLibraryConfiguration)
                     };
                     await dataService.Insert(configuration);
@@ -65,7 +65,7 @@ namespace MediaLibrary.WebUI.Controllers
 
         public async Task<IActionResult> MediaLibraryConfiguration()
         {
-            Configuration configuration = await dataService.Get<Configuration>(item => item.Type == nameof(MediaLibraryController).Replace(nameof(Controller), string.Empty));
+            Configuration configuration = await dataService.Get<Configuration>(item => item.Type == ConfigurationTypes.MediaLibrary);
 
             mediaLibraryViewModel.Configuration = configuration?.GetConfigurationObject<MediaLibraryConfiguration>() ?? new MediaLibraryConfiguration();
 

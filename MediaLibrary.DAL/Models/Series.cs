@@ -2,6 +2,9 @@
 #nullable disable
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore;
 
 namespace MediaLibrary.DAL.Models
 {
@@ -12,11 +15,15 @@ namespace MediaLibrary.DAL.Models
             Episodes = new HashSet<Episode>();
         }
 
+        [Key]
         public int Id { get; set; }
+        [Required]
+        [StringLength(256)]
         public string Title { get; set; }
         public DateTime CreateDate { get; set; }
         public DateTime ModifyDate { get; set; }
 
+        [InverseProperty(nameof(Episode.Series))]
         public virtual ICollection<Episode> Episodes { get; set; }
     }
 }

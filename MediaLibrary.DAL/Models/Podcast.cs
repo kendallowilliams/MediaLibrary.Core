@@ -2,9 +2,13 @@
 #nullable disable
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore;
 
 namespace MediaLibrary.DAL.Models
 {
+    [Table("Podcast")]
     public partial class Podcast
     {
         public Podcast()
@@ -12,8 +16,12 @@ namespace MediaLibrary.DAL.Models
             PodcastItems = new HashSet<PodcastItem>();
         }
 
+        [Key]
         public int Id { get; set; }
+        [Required]
+        [StringLength(150)]
         public string Title { get; set; }
+        [Required]
         public string Url { get; set; }
         public string ImageUrl { get; set; }
         public string Description { get; set; }
@@ -22,6 +30,7 @@ namespace MediaLibrary.DAL.Models
         public DateTime CreateDate { get; set; }
         public DateTime ModifyDate { get; set; }
 
+        [InverseProperty(nameof(PodcastItem.Podcast))]
         public virtual ICollection<PodcastItem> PodcastItems { get; set; }
     }
 }

@@ -42,16 +42,11 @@ namespace MediaLibrary.DAL.DbContexts
                     .HasName("PK__Album__3214EC0697125AA8")
                     .IsClustered(false);
 
-                entity.ToTable("Album");
-
                 entity.Property(e => e.CreateDate).HasDefaultValueSql("(getdate())");
 
                 entity.Property(e => e.ModifyDate).HasDefaultValueSql("(getdate())");
 
-                entity.Property(e => e.Title)
-                    .IsRequired()
-                    .HasMaxLength(150)
-                    .IsUnicode(false);
+                entity.Property(e => e.Title).IsUnicode(false);
 
                 entity.HasOne(d => d.Artist)
                     .WithMany(p => p.Albums)
@@ -72,52 +67,29 @@ namespace MediaLibrary.DAL.DbContexts
                     .HasName("PK__Artist__3214EC06B29AD2A8")
                     .IsClustered(false);
 
-                entity.ToTable("Artist");
-
                 entity.Property(e => e.CreateDate).HasDefaultValueSql("(getdate())");
 
                 entity.Property(e => e.ModifyDate).HasDefaultValueSql("(getdate())");
 
-                entity.Property(e => e.Name)
-                    .IsRequired()
-                    .HasMaxLength(150)
-                    .IsUnicode(false);
+                entity.Property(e => e.Name).IsUnicode(false);
             });
 
             modelBuilder.Entity<Configuration>(entity =>
             {
-                entity.ToTable("Configuration");
-
                 entity.Property(e => e.CreateDate).HasDefaultValueSql("(getdate())");
 
-                entity.Property(e => e.JsonData)
-                    .IsRequired()
-                    .IsUnicode(false);
+                entity.Property(e => e.JsonData).IsUnicode(false);
 
                 entity.Property(e => e.ModifyDate).HasDefaultValueSql("(getdate())");
-
-                entity.Property(e => e.Type)
-                    .IsRequired()
-                    .HasMaxLength(50)
-                    .IsUnicode(false);
             });
 
             modelBuilder.Entity<Episode>(entity =>
             {
-                entity.ToTable("Episode");
-
                 entity.Property(e => e.CreateDate).HasDefaultValueSql("(getdate())");
 
                 entity.Property(e => e.ModifyDate).HasDefaultValueSql("(getdate())");
 
-                entity.Property(e => e.Path)
-                    .IsRequired()
-                    .HasMaxLength(256)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.Title)
-                    .IsRequired()
-                    .HasMaxLength(256);
+                entity.Property(e => e.Path).IsUnicode(false);
 
                 entity.HasOne(d => d.Series)
                     .WithMany(p => p.Episodes)
@@ -131,16 +103,11 @@ namespace MediaLibrary.DAL.DbContexts
                     .HasName("PK__Genre__3214EC06FC4C8FFE")
                     .IsClustered(false);
 
-                entity.ToTable("Genre");
-
                 entity.Property(e => e.CreateDate).HasDefaultValueSql("(getdate())");
 
                 entity.Property(e => e.ModifyDate).HasDefaultValueSql("(getdate())");
 
-                entity.Property(e => e.Name)
-                    .IsRequired()
-                    .HasMaxLength(150)
-                    .IsUnicode(false);
+                entity.Property(e => e.Name).IsUnicode(false);
             });
 
             modelBuilder.Entity<Playlist>(entity =>
@@ -149,16 +116,11 @@ namespace MediaLibrary.DAL.DbContexts
                     .HasName("PK__tmp_ms_x__3214EC06CFD67FC4")
                     .IsClustered(false);
 
-                entity.ToTable("Playlist");
-
                 entity.Property(e => e.CreateDate).HasDefaultValueSql("(getdate())");
 
                 entity.Property(e => e.ModifyDate).HasDefaultValueSql("(getdate())");
 
-                entity.Property(e => e.Name)
-                    .IsRequired()
-                    .HasMaxLength(150)
-                    .IsUnicode(false);
+                entity.Property(e => e.Name).IsUnicode(false);
             });
 
             modelBuilder.Entity<PlaylistEpisode>(entity =>
@@ -166,8 +128,6 @@ namespace MediaLibrary.DAL.DbContexts
                 entity.HasKey(e => e.Id)
                     .HasName("PK__Playlist__3214EC06A012CD92")
                     .IsClustered(false);
-
-                entity.ToTable("PlaylistEpisode");
 
                 entity.Property(e => e.CreateDate).HasDefaultValueSql("(getdate())");
 
@@ -190,8 +150,6 @@ namespace MediaLibrary.DAL.DbContexts
                     .HasName("PK__Playlist__3214EC061EA4E1A6")
                     .IsClustered(false);
 
-                entity.ToTable("PlaylistPodcastItem");
-
                 entity.Property(e => e.CreateDate).HasDefaultValueSql("(getdate())");
 
                 entity.Property(e => e.ModifyDate).HasDefaultValueSql("(getdate())");
@@ -212,8 +170,6 @@ namespace MediaLibrary.DAL.DbContexts
                 entity.HasKey(e => e.Id)
                     .HasName("PK__Playlist__3214EC06F2D42FC0")
                     .IsClustered(false);
-
-                entity.ToTable("PlaylistTrack");
 
                 entity.Property(e => e.CreateDate).HasDefaultValueSql("(getdate())");
 
@@ -236,8 +192,6 @@ namespace MediaLibrary.DAL.DbContexts
                     .HasName("PK__Podcast__3214EC06FA7C7167")
                     .IsClustered(false);
 
-                entity.ToTable("Podcast");
-
                 entity.Property(e => e.Author).IsUnicode(false);
 
                 entity.Property(e => e.CreateDate).HasDefaultValueSql("(getdate())");
@@ -248,14 +202,9 @@ namespace MediaLibrary.DAL.DbContexts
 
                 entity.Property(e => e.ModifyDate).HasDefaultValueSql("(getdate())");
 
-                entity.Property(e => e.Title)
-                    .IsRequired()
-                    .HasMaxLength(150)
-                    .IsUnicode(false);
+                entity.Property(e => e.Title).IsUnicode(false);
 
-                entity.Property(e => e.Url)
-                    .IsRequired()
-                    .IsUnicode(false);
+                entity.Property(e => e.Url).IsUnicode(false);
             });
 
             modelBuilder.Entity<PodcastItem>(entity =>
@@ -263,8 +212,6 @@ namespace MediaLibrary.DAL.DbContexts
                 entity.HasKey(e => e.Id)
                     .HasName("PK__tmp_ms_x__3214EC06D2DF9777")
                     .IsClustered(false);
-
-                entity.ToTable("PodcastItem");
 
                 entity.Property(e => e.CreateDate).HasDefaultValueSql("(getdate())");
 
@@ -274,14 +221,9 @@ namespace MediaLibrary.DAL.DbContexts
 
                 entity.Property(e => e.ModifyDate).HasDefaultValueSql("(getdate())");
 
-                entity.Property(e => e.Title)
-                    .IsRequired()
-                    .HasMaxLength(150)
-                    .IsUnicode(false);
+                entity.Property(e => e.Title).IsUnicode(false);
 
-                entity.Property(e => e.Url)
-                    .IsRequired()
-                    .IsUnicode(false);
+                entity.Property(e => e.Url).IsUnicode(false);
 
                 entity.HasOne(d => d.Podcast)
                     .WithMany(p => p.PodcastItems)
@@ -299,10 +241,7 @@ namespace MediaLibrary.DAL.DbContexts
 
                 entity.Property(e => e.ModifyDate).HasDefaultValueSql("(getdate())");
 
-                entity.Property(e => e.Title)
-                    .IsRequired()
-                    .HasMaxLength(256)
-                    .IsUnicode(false);
+                entity.Property(e => e.Title).IsUnicode(false);
             });
 
             modelBuilder.Entity<Track>(entity =>
@@ -311,23 +250,13 @@ namespace MediaLibrary.DAL.DbContexts
                     .HasName("PK__tmp_ms_x__3214EC0631FB28BF")
                     .IsClustered(false);
 
-                entity.ToTable("Track");
-
                 entity.Property(e => e.CreateDate).HasDefaultValueSql("(getdate())");
 
-                entity.Property(e => e.Duration).HasColumnType("decimal(18, 0)");
-
-                entity.Property(e => e.FileName)
-                    .IsRequired()
-                    .HasMaxLength(256)
-                    .IsUnicode(false);
+                entity.Property(e => e.FileName).IsUnicode(false);
 
                 entity.Property(e => e.ModifyDate).HasDefaultValueSql("(getdate())");
 
-                entity.Property(e => e.Title)
-                    .IsRequired()
-                    .HasMaxLength(150)
-                    .IsUnicode(false);
+                entity.Property(e => e.Title).IsUnicode(false);
 
                 entity.HasOne(d => d.Album)
                     .WithMany(p => p.Tracks)
@@ -360,15 +289,11 @@ namespace MediaLibrary.DAL.DbContexts
                     .HasName("PK__TrackPat__3214EC0695DF2C8D")
                     .IsClustered(false);
 
-                entity.ToTable("TrackPath");
-
                 entity.Property(e => e.CreateDate).HasDefaultValueSql("(getdate())");
 
                 entity.Property(e => e.LastScanDate).HasDefaultValueSql("(getdate())");
 
-                entity.Property(e => e.Location)
-                    .IsRequired()
-                    .IsUnicode(false);
+                entity.Property(e => e.Location).IsUnicode(false);
 
                 entity.Property(e => e.ModifyDate).HasDefaultValueSql("(getdate())");
             });
@@ -378,8 +303,6 @@ namespace MediaLibrary.DAL.DbContexts
                 entity.HasKey(e => e.Id)
                     .HasName("PK__Transact__3214EC068D74D4EC")
                     .IsClustered(false);
-
-                entity.ToTable("Transaction");
 
                 entity.Property(e => e.CreateDate).HasDefaultValueSql("(getdate())");
 

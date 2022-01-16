@@ -118,7 +118,7 @@ namespace MediaLibrary.BLL.Services
         {
             try
             {
-                var musicConfiguration = await dataService.Get<Configuration>(item => item.Type == nameof(MediaPages.Music))
+                var musicConfiguration = await dataService.Get<Configuration>(item => item.Type == ConfigurationTypes.Music)
                                                           .ContinueWith(task => task.Result.GetConfigurationObject<MusicConfiguration>() ?? 
                                                                                 new MusicConfiguration());
                 IEnumerable<string> fileTypes = configuration["FileTypes"].Split(",".ToCharArray(), StringSplitOptions.RemoveEmptyEntries),

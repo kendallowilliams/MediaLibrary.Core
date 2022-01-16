@@ -38,7 +38,7 @@ namespace MediaLibrary.WebUI.Controllers
 
         public async Task<IActionResult> Index()
         {
-            Configuration configuration = await dataService.Get<Configuration>(item => item.Type == nameof(MediaPages.Player));
+            Configuration configuration = await dataService.Get<Configuration>(item => item.Type == ConfigurationTypes.Player);
 
             playerViewModel.Configuration = configuration?.GetConfigurationObject<PlayerConfiguration>() ?? new PlayerConfiguration();
             await LoadPlayerViewModel();
@@ -50,11 +50,11 @@ namespace MediaLibrary.WebUI.Controllers
         {
             if (ModelState.IsValid)
             {
-                Configuration configuration = await dataService.Get<Configuration>(item => item.Type == nameof(MediaPages.Player));
+                Configuration configuration = await dataService.Get<Configuration>(item => item.Type == ConfigurationTypes.Player);
 
                 if (configuration == null)
                 {
-                    configuration = new Configuration() { Type = nameof(MediaPages.Player), JsonData = JsonConvert.SerializeObject(playerConfiguration) };
+                    configuration = new Configuration() { Type = ConfigurationTypes.Player, JsonData = JsonConvert.SerializeObject(playerConfiguration) };
                     await dataService.Insert(configuration);
                 }
                 else
@@ -69,7 +69,7 @@ namespace MediaLibrary.WebUI.Controllers
 
         public async Task<IActionResult> GetPlayerItems()
         {
-            Configuration configuration = await dataService.Get<Configuration>(item => item.Type == nameof(MediaPages.Player));
+            Configuration configuration = await dataService.Get<Configuration>(item => item.Type == ConfigurationTypes.Player);
 
             playerViewModel.Configuration = configuration?.GetConfigurationObject<PlayerConfiguration>() ?? new PlayerConfiguration();
             await LoadPlayerViewModel();
@@ -102,7 +102,7 @@ namespace MediaLibrary.WebUI.Controllers
 
         public async Task<IActionResult> PlayerConfiguration()
         {
-            Configuration configuration = await dataService.Get<Configuration>(item => item.Type == nameof(MediaPages.Player));
+            Configuration configuration = await dataService.Get<Configuration>(item => item.Type == ConfigurationTypes.Player);
 
             playerViewModel.Configuration = configuration?.GetConfigurationObject<PlayerConfiguration>() ?? new PlayerConfiguration();
 

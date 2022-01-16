@@ -2,11 +2,16 @@
 #nullable disable
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore;
 
 namespace MediaLibrary.DAL.Models
 {
+    [Table("Transaction")]
     public partial class Transaction
     {
+        [Key]
         public int Id { get; set; }
         public int Status { get; set; }
         public string Message { get; set; }

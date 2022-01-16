@@ -2,18 +2,27 @@
 #nullable disable
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore;
 
 namespace MediaLibrary.DAL.Models
 {
+    [Table("PlaylistEpisode")]
     public partial class PlaylistEpisode
     {
+        [Key]
         public int Id { get; set; }
         public int PlaylistId { get; set; }
         public int EpisodeId { get; set; }
         public DateTime CreateDate { get; set; }
         public DateTime ModifyDate { get; set; }
 
+        [ForeignKey(nameof(EpisodeId))]
+        [InverseProperty("PlaylistEpisodes")]
         public virtual Episode Episode { get; set; }
+        [ForeignKey(nameof(PlaylistId))]
+        [InverseProperty("PlaylistEpisodes")]
         public virtual Playlist Playlist { get; set; }
     }
 }

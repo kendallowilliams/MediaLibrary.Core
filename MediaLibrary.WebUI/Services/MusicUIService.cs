@@ -153,7 +153,7 @@ namespace MediaLibrary.WebUI.Services
             IEnumerable<Transaction> existingTransactions = await transactionService.GetActiveTransactionsByType(TransactionTypes.Read);
             var transactionData = existingTransactions.Where(item => !string.IsNullOrWhiteSpace(item.Message))
                                                       .Select(item => new { item.Id, Directories = JsonConvert.DeserializeObject<IEnumerable<string>>(item.Message) });
-            Configuration musicConfiguration = await dataService.Get<Configuration>(item => item.Type == nameof(MediaPages.Music));
+            Configuration musicConfiguration = await dataService.Get<Configuration>(item => item.Type == ConfigurationTypes.Music);
             IEnumerable<string> musicPaths = musicConfiguration.GetConfigurationObject<MusicConfiguration>().MusicPaths,
                                 directories = Enumerable.Empty<string>(),
                                 activeDirectories = transactionData.SelectMany(item => item.Directories);

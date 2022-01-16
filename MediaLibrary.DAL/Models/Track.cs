@@ -2,9 +2,13 @@
 #nullable disable
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore;
 
 namespace MediaLibrary.DAL.Models
 {
+    [Table("Track")]
     public partial class Track
     {
         public Track()
@@ -12,15 +16,21 @@ namespace MediaLibrary.DAL.Models
             PlaylistTracks = new HashSet<PlaylistTrack>();
         }
 
+        [Key]
         public int Id { get; set; }
+        [Required]
+        [StringLength(256)]
         public string FileName { get; set; }
         public int? PathId { get; set; }
+        [Required]
+        [StringLength(150)]
         public string Title { get; set; }
         public int? AlbumId { get; set; }
         public int? GenreId { get; set; }
         public int? ArtistId { get; set; }
         public int? Position { get; set; }
         public int? Year { get; set; }
+        [Column(TypeName = "decimal(18, 0)")]
         public decimal Duration { get; set; }
         public int Progress { get; set; }
         public int PlayCount { get; set; }
@@ -28,10 +38,19 @@ namespace MediaLibrary.DAL.Models
         public DateTime CreateDate { get; set; }
         public DateTime ModifyDate { get; set; }
 
+        [ForeignKey(nameof(AlbumId))]
+        [InverseProperty("Tracks")]
         public virtual Album Album { get; set; }
+        [ForeignKey(nameof(ArtistId))]
+        [InverseProperty("Tracks")]
         public virtual Artist Artist { get; set; }
+        [ForeignKey(nameof(GenreId))]
+        [InverseProperty("Tracks")]
         public virtual Genre Genre { get; set; }
+        [ForeignKey(nameof(PathId))]
+        [InverseProperty(nameof(TrackPath.Tracks))]
         public virtual TrackPath Path { get; set; }
+        [InverseProperty(nameof(PlaylistTrack.Track))]
         public virtual ICollection<PlaylistTrack> PlaylistTracks { get; set; }
     }
 }

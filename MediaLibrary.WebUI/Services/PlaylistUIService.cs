@@ -64,7 +64,7 @@ namespace MediaLibrary.WebUI.Services
             IEnumerable<Track> tracks = Enumerable.Empty<Track>();
             IEnumerable<PodcastItem> podcastItems = Enumerable.Empty<PodcastItem>();
             IEnumerable<Episode> episodes = Enumerable.Empty<Episode>();
-            Configuration configuration = await dataService.Get<Configuration>(item => item.Type == nameof(MediaPages.Playlist));
+            Configuration configuration = await dataService.Get<Configuration>(item => item.Type == ConfigurationTypes.Playlist);
             int count = 0,
                 maxPlaylistItems = (configuration?.GetConfigurationObject<PlaylistConfiguration>() ?? new PlaylistConfiguration()).MaxSystemPlaylistItems;
 
@@ -90,8 +90,8 @@ namespace MediaLibrary.WebUI.Services
             playlists = PlaylistRepository.GetSystemPlaylists<Track>(maxPlaylistItems).Select((item, index) => new Playlist()
             {
                 Id = -(++index + count),
-                Name = $"{item.Key} [{PlaylistTabs.Music}]",
-                Type = (int)PlaylistTabs.Music,
+                Name = $"{item.Key} [{PlaylistTypes.Music}]",
+                Type = PlaylistTypes.Music,
                 CreateDate = DateTime.Now,
                 ModifyDate = DateTime.Now,
                 PlaylistTracks = item.Value(tracks).Select(track => new PlaylistTrack() { Track = (Track)track }).ToList()
@@ -100,8 +100,8 @@ namespace MediaLibrary.WebUI.Services
             playlists = playlists.Concat(PlaylistRepository.GetSystemPlaylists<PodcastItem>(maxPlaylistItems).Select((item, index) => new Playlist()
             {
                 Id = -(++index + count),
-                Name = $"{item.Key} [{PlaylistTabs.Podcast}]",
-                Type = (int)PlaylistTabs.Podcast,
+                Name = $"{item.Key} [{PlaylistTypes.Podcast}]",
+                Type = PlaylistTypes.Podcast,
                 CreateDate = DateTime.Now,
                 ModifyDate = DateTime.Now,
                 PlaylistPodcastItems = item.Value(podcastItems).Select(_item => new PlaylistPodcastItem() { PodcastItem = (PodcastItem)_item }).ToList()
@@ -110,8 +110,8 @@ namespace MediaLibrary.WebUI.Services
             playlists = playlists.Concat(PlaylistRepository.GetSystemPlaylists<Episode>(maxPlaylistItems).Select((item, index) => new Playlist()
             {
                 Id = -(++index + count),
-                Name = $"{item.Key} [{PlaylistTabs.Television}]",
-                Type = (int)PlaylistTabs.Television,
+                Name = $"{item.Key} [{PlaylistTypes.Television}]",
+                Type = PlaylistTypes.Television,
                 CreateDate = DateTime.Now,
                 ModifyDate = DateTime.Now,
                 PlaylistEpisodes = item.Value(episodes).Select(episode => new PlaylistEpisode() { Episode = (Episode)episode }).ToList()

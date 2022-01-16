@@ -2,13 +2,18 @@
 #nullable disable
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore;
 
 namespace MediaLibrary.DAL.Models
 {
+    [Table("Configuration")]
     public partial class Configuration
     {
+        [Key]
         public int Id { get; set; }
-        public string Type { get; set; }
+        [Required]
         public string JsonData { get; set; }
         public DateTime CreateDate { get; set; }
         public DateTime ModifyDate { get; set; }

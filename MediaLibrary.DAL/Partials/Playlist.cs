@@ -17,6 +17,8 @@ namespace MediaLibrary.DAL.Models
             Name = name;
         }
 
+        public PlaylistTypes Type { get; set; }
+
         [JsonIgnore]
         public string Description 
         {
@@ -24,7 +26,7 @@ namespace MediaLibrary.DAL.Models
             {
                 string description = string.Empty;
 
-                switch((PlaylistTypes)this.Type)
+                switch(Type)
                 {
                     case PlaylistTypes.Music:
                         description = PlaylistTracks.Count() == 1 ? "1 song" : $"{PlaylistTracks.Count()} songs";

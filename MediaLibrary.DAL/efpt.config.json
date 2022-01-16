@@ -22,6 +22,9 @@
          "ObjectType": 0
       },
       {
+         "ExcludedColumns": [
+            "Type"
+         ],
          "Name": "[dbo].[Configuration]",
          "ObjectType": 0
       },
@@ -34,6 +37,9 @@
          "ObjectType": 0
       },
       {
+         "ExcludedColumns": [
+            "Type"
+         ],
          "Name": "[dbo].[Playlist]",
          "ObjectType": 0
       },
@@ -78,7 +84,7 @@
    "UseBoolPropertiesWithoutDefaultSql": false,
    "UseDatabaseNames": false,
    "UseDbContextSplitting": false,
-   "UseFluentApiOnly": true,
+   "UseFluentApiOnly": false,
    "UseHandleBars": false,
    "UseInflector": true,
    "UseLegacyPluralizer": false,

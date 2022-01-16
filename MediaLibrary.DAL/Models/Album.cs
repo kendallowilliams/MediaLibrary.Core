@@ -2,9 +2,13 @@
 #nullable disable
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore;
 
 namespace MediaLibrary.DAL.Models
 {
+    [Table("Album")]
     public partial class Album
     {
         public Album()
@@ -12,7 +16,10 @@ namespace MediaLibrary.DAL.Models
             Tracks = new HashSet<Track>();
         }
 
+        [Key]
         public int Id { get; set; }
+        [Required]
+        [StringLength(150)]
         public string Title { get; set; }
         public int? ArtistId { get; set; }
         public int? Year { get; set; }
@@ -20,8 +27,13 @@ namespace MediaLibrary.DAL.Models
         public DateTime CreateDate { get; set; }
         public DateTime ModifyDate { get; set; }
 
+        [ForeignKey(nameof(ArtistId))]
+        [InverseProperty("Albums")]
         public virtual Artist Artist { get; set; }
+        [ForeignKey(nameof(GenreId))]
+        [InverseProperty("Albums")]
         public virtual Genre Genre { get; set; }
+        [InverseProperty(nameof(Track.Album))]
         public virtual ICollection<Track> Tracks { get; set; }
     }
 }

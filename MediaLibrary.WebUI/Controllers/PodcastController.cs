@@ -50,7 +50,7 @@ namespace MediaLibrary.WebUI.Controllers
         public async Task<IActionResult> Index()
         {
             IActionResult result = null;
-            Configuration configuration = await dataService.Get<Configuration>(item => item.Type == nameof(MediaPages.Podcast));
+            Configuration configuration = await dataService.Get<Configuration>(item => item.Type == ConfigurationTypes.Podcast);
 
             podcastViewModel.Configuration = configuration?.GetConfigurationObject<PodcastConfiguration>() ?? new PodcastConfiguration();
             podcastViewModel.PodcastGroups = await podcastUIService.GetPodcastGroups(podcastViewModel.Configuration.SelectedPodcastSort);
@@ -72,7 +72,7 @@ namespace MediaLibrary.WebUI.Controllers
         {
             Podcast podcast = await dataService.Get<Podcast>(item => item.Url.Trim() == rssFeed.Trim()) ?? 
                               await podcastService.AddPodcast(rssFeed);
-            Configuration configuration = await dataService.Get<Configuration>(item => item.Type == nameof(MediaPages.Podcast));
+            Configuration configuration = await dataService.Get<Configuration>(item => item.Type == ConfigurationTypes.Podcast);
 
             podcastUIService.ClearPodcasts();
 
@@ -88,7 +88,7 @@ namespace MediaLibrary.WebUI.Controllers
 
         public async Task RemovePodcast(int id)
         {
-            Configuration configuration = await dataService.Get<Configuration>(item => item.Type == nameof(MediaPages.Podcast));
+            Configuration configuration = await dataService.Get<Configuration>(item => item.Type == ConfigurationTypes.Podcast);
 
             await podcastService.RemovePodcast(id);
             podcastUIService.ClearPodcasts();
@@ -119,7 +119,7 @@ namespace MediaLibrary.WebUI.Controllers
         {
             Func<PodcastItem, bool> expression = null;
             IEnumerable<PodcastItem> podcastItems = await dataService.GetList<PodcastItem>(item => item.PodcastId == id && item.PublishDate.Year == year);
-            bool hasPlaylists = await dataService.Exists<Playlist>(item => item.Type == (int)PlaylistTabs.Podcast);
+            bool hasPlaylists = await dataService.Exists<Playlist>(item => item.Type == PlaylistTypes.Podcast);
             IEnumerable<int> downloadIds = await GetActiveDownloadIds();
 
             if (filter == PodcastFilter.Downloaded) /*then*/ expression = item => !string.IsNullOrWhiteSpace(item.File);
@@ -269,11 +269,11 @@ namespace MediaLibrary.WebUI.Controllers
         {
             if (ModelState.IsValid)
             {
-                Configuration configuration = await dataService.Get<Configuration>(item => item.Type == nameof(MediaPages.Podcast));
+                Configuration configuration = await dataService.Get<Configuration>(item => item.Type == ConfigurationTypes.Podcast);
 
                 if (configuration == null)
                 {
-                    configuration = new Configuration() { Type = nameof(MediaPages.Podcast), JsonData = JsonConvert.SerializeObject(podcastConfiguration) };
+                    configuration = new Configuration() { Type = ConfigurationTypes.Podcast, JsonData = JsonConvert.SerializeObject(podcastConfiguration) };
                     await dataService.Insert(configuration);
                 }
                 else
@@ -288,7 +288,7 @@ namespace MediaLibrary.WebUI.Controllers
 
         public async Task<IActionResult> PodcastConfiguration()
         {
-            Configuration configuration = await dataService.Get<Configuration>(item => item.Type == nameof(MediaPages.Podcast));
+            Configuration configuration = await dataService.Get<Configuration>(item => item.Type == ConfigurationTypes.Podcast);
 
             podcastViewModel.Configuration = configuration?.GetConfigurationObject<PodcastConfiguration>() ?? new PodcastConfiguration();
 

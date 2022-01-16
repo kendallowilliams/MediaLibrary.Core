@@ -1,9 +1,9 @@
 ﻿@model MediaLibrary.WebUI.Models.PlaylistViewModel
 
 @{
-    var musicPlaylistGroups = Model.PlaylistGroups.Where(group => group.Any(playlist => playlist.Type == (int)Enums.PlaylistTabs.Music));
-    var podcastPlaylistGroups = Model.PlaylistGroups.Where(group => group.Any(playlist => playlist.Type == (int)Enums.PlaylistTabs.Podcast));
-    var episodePlaylistGroups = Model.PlaylistGroups.Where(group => group.Any(playlist => playlist.Type == (int)Enums.PlaylistTabs.Television));
+    var musicPlaylistGroups = Model.PlaylistGroups.Where(group => group.Any(playlist => playlist.Type == Enums.PlaylistTypes.Music));
+    var podcastPlaylistGroups = Model.PlaylistGroups.Where(group => group.Any(playlist => playlist.Type == Enums.PlaylistTypes.Podcast));
+    var episodePlaylistGroups = Model.PlaylistGroups.Where(group => group.Any(playlist => playlist.Type == Enums.PlaylistTypes.Television));
 
     ViewBag.Title = "Playlists";
 }
@@ -104,7 +104,7 @@
 
                             <div id="collapse-playlists-@(item.Index)" class="collapse @(item.Index == musicPlaylistGroups.Count() ? "show" : "")" data-parent="#accordion-playlists-@(Enums.PlaylistTabs.Podcast)">
                                 <ul class="list-group list-group-flush">
-                                    @foreach (var playlist in item.Group.Where(playlist => playlist.Type == (int)Enums.PlaylistTabs.Podcast))
+                                    @foreach (var playlist in item.Group.Where(playlist => playlist.Type == Enums.PlaylistTypes.Podcast))
                                     {
                                         <li class="list-group-item">
                                             <div class="media">
@@ -153,7 +153,7 @@
                             <div id="collapse-playlists-@(item.Index)" class="collapse @(item.Index == musicPlaylistGroups.Count() + podcastPlaylistGroups.Count() ? "show" : "")" 
                                  data-parent="#accordion-playlists-@(Enums.PlaylistTabs.Television)">
                                 <ul class="list-group list-group-flush">
-                                    @foreach (var playlist in item.Group.Where(playlist => playlist.Type == (int)Enums.PlaylistTabs.Television))
+                                    @foreach (var playlist in item.Group.Where(playlist => playlist.Type == Enums.PlaylistTypes.Television))
                                     {
                                         <li class="list-group-item">
                                             <div class="media">
