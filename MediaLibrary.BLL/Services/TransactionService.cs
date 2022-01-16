@@ -36,7 +36,7 @@ namespace MediaLibrary.BLL.Services
         {
             if (transaction != null)
             {
-                transaction.Status = (int)TransactionStatus.Completed;
+                transaction.Status = TransactionStatus.Completed;
                 transaction.StatusMessage = $"{TransactionStatus.Completed} [{Enum.GetName(typeof(TransactionTypes), transaction.Type)}]";
                 transaction.Message = message ?? transaction.Message;
                 transaction.ModifyDate = DateTime.Now;
@@ -48,7 +48,7 @@ namespace MediaLibrary.BLL.Services
         {
             if (transaction != null)
             {
-                transaction.Status = (int)TransactionStatus.InProcess;
+                transaction.Status = TransactionStatus.InProcess;
                 transaction.StatusMessage = $"{TransactionStatus.InProcess} [{Enum.GetName(typeof(TransactionTypes), transaction.Type)}]";
                 transaction.ModifyDate = DateTime.Now;
                 await dataService.Update(transaction);
@@ -59,7 +59,7 @@ namespace MediaLibrary.BLL.Services
         {
             if (transaction != null)
             {
-                transaction.Status = (int)TransactionStatus.Errored;
+                transaction.Status = TransactionStatus.Errored;
                 transaction.StatusMessage = $"{TransactionStatus.Errored} [{Enum.GetName(typeof(TransactionTypes), transaction.Type)}]";
                 transaction.ErrorMessage = exception.ToString();
                 transaction.ModifyDate = DateTime.Now;
@@ -68,7 +68,7 @@ namespace MediaLibrary.BLL.Services
         }
 
         public async Task<IEnumerable<Transaction>> GetActiveTransactionsByType(TransactionTypes transactionType) =>
-            await dataService.GetList<Transaction>(t => t.Type == (int)transactionType && t.Status == (int)TransactionStatus.InProcess);
+            await dataService.GetList<Transaction>(t => t.Type == transactionType && t.Status == TransactionStatus.InProcess);
 
         public async Task CleanUpTransactions()
         {

@@ -11,18 +11,22 @@ namespace MediaLibrary.DAL.Models
 {
     public partial class Transaction : IDataModel
     {
+        public TransactionStatus Status { get; set; }
+
+        public TransactionTypes Type { get; set; }
+
         public Transaction() : base()
         {
             Status = (int)TransactionStatus.Created;
             StatusMessage = TransactionStatus.Created.ToString();
-            Type = (int)TransactionTypes.None;
+            Type = TransactionTypes.None;
         }
 
         public Transaction(TransactionTypes transactionType) : base()
         {
             Status = (int)TransactionStatus.Created;
             StatusMessage = TransactionStatus.Created.ToString();
-            Type = (int)transactionType;
+            Type = transactionType;
         }
 
         public TransactionTypes GetTransactionType() => (TransactionTypes)Type;

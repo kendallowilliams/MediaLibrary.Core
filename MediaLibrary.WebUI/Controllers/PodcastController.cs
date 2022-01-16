@@ -131,8 +131,8 @@ namespace MediaLibrary.WebUI.Controllers
 
         private async Task<IEnumerable<int>> GetActiveDownloadIds()
         {
-            IEnumerable<Transaction> inProcessDownloads = await dataService.GetList<Transaction>(item => item.Status == (int)TransactionStatus.InProcess &&
-                                                                                                          item.Type == (int)TransactionTypes.DownloadEpisode);
+            IEnumerable<Transaction> inProcessDownloads = await dataService.GetList<Transaction>(item => item.Status == TransactionStatus.InProcess &&
+                                                                                                          item.Type == TransactionTypes.DownloadEpisode);
             IEnumerable<int> downloadIds = inProcessDownloads.Select(item => item.Message)
                                                              .Where(item => !string.IsNullOrWhiteSpace(item))
                                                              .Select(item => new { Valid = int.TryParse(item, out int value), Id = value })

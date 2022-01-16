@@ -40,8 +40,8 @@ namespace MediaLibrary.WebUI.Controllers
                      toDate = transactionViewModel.ToDate.HasValue ? transactionViewModel.ToDate.Value : DateTime.Now.Date;
             Expression<Func<Transaction, bool>> expr = transaction => (!transactionViewModel.FromDate.HasValue || transaction.CreateDate >= transactionViewModel.FromDate) &&
                                                                       (!transactionViewModel.ToDate.HasValue || transaction.CreateDate <= transactionViewModel.ToDate) &&
-                                                                      (!transactionViewModel.TransactionType.HasValue || transaction.Type == (int)transactionViewModel.TransactionType) &&
-                                                                      (!transactionViewModel.TransactionStatus.HasValue || transaction.Status == (int)transactionViewModel.TransactionStatus);
+                                                                      (!transactionViewModel.TransactionType.HasValue || transaction.Type == transactionViewModel.TransactionType) &&
+                                                                      (!transactionViewModel.TransactionStatus.HasValue || transaction.Status == transactionViewModel.TransactionStatus);
 
             transactionViewModel.FromDate = fromDate;
             transactionViewModel.ToDate = toDate.AddDays(1).AddSeconds(-1);

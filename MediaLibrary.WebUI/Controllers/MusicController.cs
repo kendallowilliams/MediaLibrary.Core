@@ -513,7 +513,7 @@ namespace MediaLibrary.WebUI.Controllers
 
         public async Task<bool> IsScanCompleted(int id)
         {
-            return await dataService.Exists<Transaction>(item => item.Id == id && item.Status == (int)TransactionStatus.Completed);
+            return await dataService.Exists<Transaction>(item => item.Id == id && item.Status == TransactionStatus.Completed);
         }
 
         public async Task AddMusicDirectory(string path)
