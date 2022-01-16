@@ -68,8 +68,7 @@ export default class Music extends BaseClass implements IView {
             playSingle: boolean = properties.SelectedMusicTab === MusicTabs.Songs && properties.SelectedMusicPage === MusicPages.Index;
 
         $('[data-play-id]').on('click', e => this.playFunc(e.currentTarget as HTMLButtonElement, playSingle));
-        $('[data-album-id]').on('click', _e => this.album.loadAlbum(parseInt($(_e.currentTarget).attr('data-album-id')), () => this.loadView()));
-        $('[data-artist-id]').on('click', _e => this.artist.loadArtist(parseInt($(_e.currentTarget).attr('data-artist-id')), () => this.loadView()));
+        this.initializeAlbumAndArtistControls(this.mediaView);
 
         $(HtmlControls.UIControls().MusicTabList).find('*[data-toggle="tab"]').on('shown.bs.tab', e => {
             const $newTab = $(e.target),
@@ -93,20 +92,14 @@ export default class Music extends BaseClass implements IView {
                                     if (this.tooltipsEnabled()) /*then*/ loadTooltips($container[0]);
                                     $container.find('*[data-play-id]')
                                         .on('click', __e => this.playFunc(__e.currentTarget as HTMLButtonElement, true));
-                                    $container.find('[data-album-id]')
-                                        .on('click', _e => this.album.loadAlbum(parseInt($(_e.currentTarget).attr('data-album-id')), () => this.loadView()));
-                                    $container.find('[data-artist-id]')
-                                        .on('click', _e => this.artist.loadArtist(parseInt($(_e.currentTarget).attr('data-artist-id')), () => this.loadView()));
+                                    this.initializeAlbumAndArtistControls($container[0]);
                                     LoadingModal.hideLoading();
                                     $btn.attr('data-group-url', '');
                                     this.updateActiveMediaFunc();
                                 });
                         }
                     });
-                    $newView.find('[data-album-id]')
-                        .on('click', _e => this.album.loadAlbum(parseInt($(_e.currentTarget).attr('data-album-id')), () => this.loadView()));
-                    $newView.find('[data-artist-id]')
-                        .on('click', _e => this.artist.loadArtist(parseInt($(_e.currentTarget).attr('data-artist-id')), () => this.loadView()));
+                    this.initializeAlbumAndArtistControls($newView[0]);
                     $('[data-group-url][data-target="#collapse-songs-0"]').trigger('click');
                     this.updateActiveMediaFunc();
                 };
@@ -125,5 +118,13 @@ export default class Music extends BaseClass implements IView {
         this.search.initializeControls();
         this.album.initializeControls();
         this.artist.initializeControls();
+    }
+
+    private initializeAlbumAndArtistControls(container: HTMLElement): void {
+        const getAlbumId = btn => parseInt($(btn).attr('data-album-id')),
+            getArtistId = btn => parseInt($(btn).attr('data-artist-id'))
+
+        $(container).find('[data-album-id]').on('click', _e => this.album.loadAlbum(getAlbumId(_e.currentTarget), () => this.loadView()));
+        $(container).find('[data-artist-id]').on('click', _e => this.artist.loadArtist(getArtistId(_e.currentTarget), () => this.loadView()));
     }
 }
