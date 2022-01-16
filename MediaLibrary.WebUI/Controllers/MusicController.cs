@@ -218,7 +218,10 @@ namespace MediaLibrary.WebUI.Controllers
 
                 if (request.IsValid())
                 {
-                    TrackPath path = await dataService.Get<TrackPath>(item => item.Location == request.Path);
+                    var dirInfo = new DirectoryInfo(request.Path);
+                    var path = await dataService.Get<TrackPath>(item => item.Location.Equals(dirInfo.FullName, StringComparison.OrdinalIgnoreCase));
+
+                    request.Path = dirInfo.FullName;
 
                     if (path != null)
                     {
@@ -523,8 +526,8 @@ namespace MediaLibrary.WebUI.Controllers
 
             if (!string.IsNullOrWhiteSpace(path) && Directory.Exists(path))
             {
-                DirectoryInfo directoryInfo =  new DirectoryInfo(path);
-                ScanDirectoryRequest request = new ScanDirectoryRequest(directoryInfo.FullName);
+                var directoryInfo =  new DirectoryInfo(path);
+                var request = new ScanDirectoryRequest(directoryInfo.FullName);
                 bool pathExists = directoryInfo != null &&
                                   await dataService.Exists<TrackPath>(item => item.Location == directoryInfo.FullName);
 
