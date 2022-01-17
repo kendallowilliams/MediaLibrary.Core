@@ -219,7 +219,7 @@ namespace MediaLibrary.WebUI.Controllers
                 if (request.IsValid())
                 {
                     var dirInfo = new DirectoryInfo(request.Path);
-                    var path = await dataService.Get<TrackPath>(item => item.Location.Equals(dirInfo.FullName, StringComparison.OrdinalIgnoreCase));
+                    var path = await dataService.Get<TrackPath>(item => item.Location.Equals(dirInfo.FullName));
 
                     request.Path = dirInfo.FullName;
 
