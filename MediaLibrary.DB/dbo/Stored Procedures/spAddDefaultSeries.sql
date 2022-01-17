@@ -318,7 +318,7 @@ END
 /* THE GOLDEN GIRLS */
 BEGIN
 	/*THE GOLDEN GIRLS SEASON ONE*/
-	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('The Engagement',@GoldenGirlsId,1,CONCAT(@GoldenGirlsPath,'/S1','/.mp4'));
+	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('The Engagement',@GoldenGirlsId,1,CONCAT(@GoldenGirlsPath,'/S1','/01.mp4'));
 	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Guess Who''s Coming to the Wedding?',@GoldenGirlsId,1,CONCAT(@GoldenGirlsPath,'/S1','/02.mp4'));
 	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Rose the Prude',@GoldenGirlsId,1,CONCAT(@GoldenGirlsPath,'/S1','/03.mp4'));
 	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Transplant',@GoldenGirlsId,1,CONCAT(@GoldenGirlsPath,'/S1','/04.mp4'));
