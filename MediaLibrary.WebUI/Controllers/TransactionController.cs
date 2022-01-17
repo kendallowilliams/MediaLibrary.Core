@@ -38,10 +38,12 @@ namespace MediaLibrary.WebUI.Controllers
             TransactionViewModel transactionViewModel = viewModel ?? new TransactionViewModel();
             DateTime fromDate = transactionViewModel.FromDate.HasValue ? transactionViewModel.FromDate.Value : DateTime.Now.Date,
                      toDate = transactionViewModel.ToDate.HasValue ? transactionViewModel.ToDate.Value : DateTime.Now.Date;
+            bool hasTypes = transactionViewModel.SelectedTransactionTypes?.Any() ?? false,
+                 hasStatuses = transactionViewModel.SelectedTransactionStatuses?.Any() ?? false;
             Expression<Func<Transaction, bool>> expr = transaction => (!transactionViewModel.FromDate.HasValue || transaction.CreateDate >= transactionViewModel.FromDate) &&
                                                                       (!transactionViewModel.ToDate.HasValue || transaction.CreateDate <= transactionViewModel.ToDate) &&
-                                                                      (!transactionViewModel.TransactionType.HasValue || transaction.Type == transactionViewModel.TransactionType) &&
-                                                                      (!transactionViewModel.TransactionStatus.HasValue || transaction.Status == transactionViewModel.TransactionStatus);
+                                                                      (!hasTypes || transactionViewModel.SelectedTransactionTypes.Contains(transaction.Type)) &&
+                                                                      (!hasStatuses || transactionViewModel.SelectedTransactionStatuses.Contains(transaction.Status));
 
             transactionViewModel.FromDate = fromDate;
             transactionViewModel.ToDate = toDate.AddDays(1).AddSeconds(-1);
