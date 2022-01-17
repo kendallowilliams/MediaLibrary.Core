@@ -14,23 +14,23 @@ namespace MediaLibrary.WebUI.Models
         public TransactionViewModel()
         {
             Transactions = Enumerable.Empty<Transaction>();
+            SelectedTransactionStatuses = new TransactionStatus[0];
+            SelectedTransactionTypes = new TransactionTypes[0];
         }
 
         public DateTime? FromDate { get; set; }
 
         public DateTime? ToDate { get; set; }
 
-        public TransactionTypes? TransactionType { get; set; }
+        public TransactionTypes[] SelectedTransactionTypes { get; set; }
 
         public IEnumerable<string> TransactionTypes { get => Enum.GetNames(typeof(TransactionTypes))
-                                                                 .OrderBy(name => name)
-                                                                 .Prepend(string.Empty); }
+                                                                 .OrderBy(name => name); }
 
-        public TransactionStatus? TransactionStatus { get; set; }
+        public TransactionStatus[] SelectedTransactionStatuses { get; set; }
 
         public IEnumerable<string> TransactionStatuses { get => Enum.GetNames(typeof(TransactionStatus))
-                                                                    .OrderBy(name => name)
-                                                                    .Prepend(string.Empty); }
+                                                                    .OrderBy(name => name); }
 
         public IEnumerable<Transaction> Transactions { get; set; }
     }
