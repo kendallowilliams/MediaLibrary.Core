@@ -43,12 +43,13 @@ export default class SettingsModal {
         $(this.modal).on('show.bs.modal', e => {
             const mediaPage = this.configurations.MediaLibary.properties.SelectedMediaPage,
                 containers = HtmlControls.Containers(),
-                settingsContainers = [containers.GeneralSettingsContainer,
-                containers.MusicSettingsContainer,
-                containers.PlayerSettingsContainer,
-                containers.PlaylistSettingsContainer,
-                containers.PodcastSettingsContainer,
-                containers.TelevisionSettingsContainer
+                settingsContainers = [
+                    containers.GeneralSettingsContainer,
+                    containers.MusicSettingsContainer,
+                    containers.PlayerSettingsContainer,
+                    containers.PlaylistSettingsContainer,
+                    containers.PodcastSettingsContainer,
+                    containers.TelevisionSettingsContainer
                 ];
 
             $(settingsContainers).addClass('d-none');
