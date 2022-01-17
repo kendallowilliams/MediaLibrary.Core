@@ -9,11 +9,12 @@ export default class MediaLibraryConfiguration extends BaseConfiguration<IMediaL
         this.applyConfiguration();
     }
 
-    updateConfiguration(callback: () => void = () => null): void {
-        super.update<IMediaLibraryConfiguration>(this.properties, () => {
-            this.applyConfiguration();
-            callback();
-        });
+    updateConfiguration(): Promise<Response> {
+        return super.update<IMediaLibraryConfiguration>(this.properties)
+            .then(response => {
+                this.applyConfiguration();
+                return response;
+            });
     }
 
     private applyConfiguration(): void {

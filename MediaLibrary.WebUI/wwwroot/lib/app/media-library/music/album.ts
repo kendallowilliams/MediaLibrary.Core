@@ -14,12 +14,14 @@ export default class Album extends BaseClass {
     loadAlbum(id: number, callback: () => void = () => null): void {
         this.musicConfiguration.properties.SelectedAlbumId = id;
         this.musicConfiguration.properties.SelectedMusicPage = MusicPages.Album;
-        this.musicConfiguration.updateConfiguration(callback);
+        this.musicConfiguration.updateConfiguration()
+            .then(() => callback());
     }
 
     private goBack(callback: () => void = () => null): void {
         this.musicConfiguration.properties.SelectedAlbumId = 0;
         this.musicConfiguration.properties.SelectedMusicPage = MusicPages.Index;
-        this.musicConfiguration.updateConfiguration(callback);
+        this.musicConfiguration.updateConfiguration()
+            .then(() => callback());
     }
 }

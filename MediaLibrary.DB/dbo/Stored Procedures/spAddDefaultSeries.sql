@@ -47,7 +47,7 @@ SELECT @StarTrekTOSId = Id FROM Series WHERE Title = 'Star Trek: The Original Se
 /* ROSEANNE */
 BEGIN
 	/*ROSEANNE SEASON ONE*/
-	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Life and Stuff',@RoseanneId,1,CONCAT(@RoseannePath,'/S1','/.mp4'));
+	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Life and Stuff',@RoseanneId,1,CONCAT(@RoseannePath,'/S1','/01.mp4'));
 	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('We''re in the Money',@RoseanneId,1,CONCAT(@RoseannePath,'/S1','/02.mp4'));
 	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('D-I-V-O-R-C-E',@RoseanneId,1,CONCAT(@RoseannePath,'/S1','/03.mp4'));
 	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Language Lessons',@RoseanneId,1,CONCAT(@RoseannePath,'/S1','/04.mp4'));
@@ -71,7 +71,7 @@ BEGIN
 	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Dear Mom and Dad',@RoseanneId,1,CONCAT(@RoseannePath,'/S1','/22.mp4'));
 	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Let''s Call It Quits',@RoseanneId,1,CONCAT(@RoseannePath,'/S1','/23.mp4'));
 	/*ROSEANNE SEASON TWO*/
-	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Inherit the Wind',@RoseanneId,2,CONCAT(@RoseannePath,'/S2','/.mp4'));
+	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Inherit the Wind',@RoseanneId,2,CONCAT(@RoseannePath,'/S2','/01.mp4'));
 	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('The Little Sister',@RoseanneId,2,CONCAT(@RoseannePath,'/S2','/02.mp4'));
 	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Guilt by Disassociation',@RoseanneId,2,CONCAT(@RoseannePath,'/S2','/03.mp4'));
 	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Somebody Stole My Gal',@RoseanneId,2,CONCAT(@RoseannePath,'/S2','/04.mp4'));
@@ -96,7 +96,7 @@ BEGIN
 	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Fathers and Daughters',@RoseanneId,2,CONCAT(@RoseannePath,'/S2','/23.mp4'));
 	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Happy Birthday',@RoseanneId,2,CONCAT(@RoseannePath,'/S2','/24.mp4'));
 	/*ROSEANNE SEASON THREE*/
-	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('The Test',@RoseanneId,3,CONCAT(@RoseannePath,'/S3','/.mp4'));
+	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('The Test',@RoseanneId,3,CONCAT(@RoseannePath,'/S3','/01.mp4'));
 	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Friends & Relatives',@RoseanneId,3,CONCAT(@RoseannePath,'/S3','/02.mp4'));
 	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Like a Virgin',@RoseanneId,3,CONCAT(@RoseannePath,'/S3','/03.mp4'));
 	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Like a New Job',@RoseanneId,3,CONCAT(@RoseannePath,'/S3','/04.mp4'));
@@ -122,7 +122,7 @@ BEGIN
 	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Scenes from a Barbecue',@RoseanneId,3,CONCAT(@RoseannePath,'/S3','/24.mp4'));
 	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('The Pied Piper of Lanford',@RoseanneId,3,CONCAT(@RoseannePath,'/S3','/25.mp4'));
 	/*ROSEANNE SEASON FOUR*/
-	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('A Bitter Pill to Swallow',@RoseanneId,4,CONCAT(@RoseannePath,'/S4','/.mp4'));
+	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('A Bitter Pill to Swallow',@RoseanneId,4,CONCAT(@RoseannePath,'/S4','/01.mp4'));
 	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Take My Bike...Please!',@RoseanneId,4,CONCAT(@RoseannePath,'/S4','/02.mp4'));
 	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Why Jackie Become a Trucker!',@RoseanneId,4,CONCAT(@RoseannePath,'/S4','/03.mp4'));
 	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Darlene Fades to Black',@RoseanneId,4,CONCAT(@RoseannePath,'/S4','/04.mp4'));
@@ -148,7 +148,7 @@ BEGIN
 	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Don''t Make Me Over',@RoseanneId,4,CONCAT(@RoseannePath,'/S4','/24.mp4'));
 	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Aliens',@RoseanneId,4,CONCAT(@RoseannePath,'/S4','/25.mp4'));
 	/*ROSEANNE SEASON FIVE*/
-	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Terms of Estrangement: Part 1',@RoseanneId,5,CONCAT(@RoseannePath,'/S5','/.mp4'));
+	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Terms of Estrangement: Part 1',@RoseanneId,5,CONCAT(@RoseannePath,'/S5','/01.mp4'));
 	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Terms of Estrangement: Part 2',@RoseanneId,5,CONCAT(@RoseannePath,'/S5','/02.mp4'));
 	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('The Dark Ages',@RoseanneId,5,CONCAT(@RoseannePath,'/S5','/03.mp4'));
 	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Mommy Nearest',@RoseanneId,5,CONCAT(@RoseannePath,'/S5','/04.mp4'));
@@ -174,7 +174,7 @@ BEGIN
 	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Tooth of Consequences',@RoseanneId,5,CONCAT(@RoseannePath,'/S5','/24.mp4'));
 	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Daughters and Other Strangers',@RoseanneId,5,CONCAT(@RoseannePath,'/S5','/25.mp4'));
 	/*ROSEANNE SEASON SIX*/
-	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Two Down, One to Go',@RoseanneId,6,CONCAT(@RoseannePath,'/S6','/.mp4'));
+	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Two Down, One to Go',@RoseanneId,6,CONCAT(@RoseannePath,'/S6','/01.mp4'));
 	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('The Mommy''s Curse',@RoseanneId,6,CONCAT(@RoseannePath,'/S6','/02.mp4'));
 	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Party Politics',@RoseanneId,6,CONCAT(@RoseannePath,'/S6','/03.mp4'));
 	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('A Stash from the Past',@RoseanneId,6,CONCAT(@RoseannePath,'/S6','/04.mp4'));
@@ -200,7 +200,7 @@ BEGIN
 	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Isn''t it Romantic?',@RoseanneId,6,CONCAT(@RoseannePath,'/S6','/24.mp4'));
 	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Altar Egos',@RoseanneId,6,CONCAT(@RoseannePath,'/S6','/25.mp4'));
 	/*ROSEANNE SEASON SEVEN*/
-	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Nine is Enough',@RoseanneId,7,CONCAT(@RoseannePath,'/S7','/.mp4'));
+	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Nine is Enough',@RoseanneId,7,CONCAT(@RoseannePath,'/S7','/01.mp4'));
 	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Two for One',@RoseanneId,7,CONCAT(@RoseannePath,'/S7','/02.mp4'));
 	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Snoop Davey Dave',@RoseanneId,7,CONCAT(@RoseannePath,'/S7','/03.mp4'));
 	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Girl Talk',@RoseanneId,7,CONCAT(@RoseannePath,'/S7','/04.mp4'));
@@ -226,7 +226,7 @@ BEGIN
 	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Couch Potatoes',@RoseanneId,7,CONCAT(@RoseannePath,'/S7','/24.mp4'));
 	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Sherwood Schwartz: A Loving Tribute',@RoseanneId,7,CONCAT(@RoseannePath,'/S7','/25.mp4'));
 	/*ROSEANNE SEASON EIGHT*/
-	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Shower the People You Love with Stuff',@RoseanneId,8,CONCAT(@RoseannePath,'/S8','/.mp4'));
+	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Shower the People You Love with Stuff',@RoseanneId,8,CONCAT(@RoseannePath,'/S8','/01.mp4'));
 	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Let Them Eat Junk',@RoseanneId,8,CONCAT(@RoseannePath,'/S8','/02.mp4'));
 	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Roseanne in the Hood',@RoseanneId,8,CONCAT(@RoseannePath,'/S8','/03.mp4'));
 	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('The Last Date',@RoseanneId,8,CONCAT(@RoseannePath,'/S8','/04.mp4'));
@@ -252,7 +252,7 @@ BEGIN
 	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Heart & Soul',@RoseanneId,8,CONCAT(@RoseannePath,'/S8','/24.mp4'));
 	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Fights and Stuff',@RoseanneId,8,CONCAT(@RoseannePath,'/S8','/25.mp4'));
 	/*ROSEANNE SEASON NINE*/
-	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Call Waiting',@RoseanneId,9,CONCAT(@RoseannePath,'/S9','/.mp4'));
+	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Call Waiting',@RoseanneId,9,CONCAT(@RoseannePath,'/S9','/01.mp4'));
 	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Millions from Heaven',@RoseanneId,9,CONCAT(@RoseannePath,'/S9','/02.mp4'));
 	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('What a Day for a Daydream',@RoseanneId,9,CONCAT(@RoseannePath,'/S9','/03.mp4'));
 	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Honor Thy Mother',@RoseanneId,9,CONCAT(@RoseannePath,'/S9','/04.mp4'));
@@ -281,7 +281,7 @@ END
 /* STRANGERS WITH CANDY */
 BEGIN
 	/*STRANGERS WITH CANDY SEASON ONE*/
-	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Old Habits, New Beginnings',@StrangersWithCandyId,1,CONCAT(@StrangersWithCandyPath,'/S1','/.mp4'));
+	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Old Habits, New Beginnings',@StrangersWithCandyId,1,CONCAT(@StrangersWithCandyPath,'/S1','/01.mp4'));
 	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('A Burden''s Burden',@StrangersWithCandyId,1,CONCAT(@StrangersWithCandyPath,'/S1','/02.mp4'));
 	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Dreams on the Rocks',@StrangersWithCandyId,1,CONCAT(@StrangersWithCandyPath,'/S1','/03.mp4'));
 	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Who Wants Cake?',@StrangersWithCandyId,1,CONCAT(@StrangersWithCandyPath,'/S1','/04.mp4'));
@@ -292,7 +292,7 @@ BEGIN
 	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Jerri is Only Skin Deep',@StrangersWithCandyId,1,CONCAT(@StrangersWithCandyPath,'/S1','/09.mp4'));
 	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('The Trip Back',@StrangersWithCandyId,1,CONCAT(@StrangersWithCandyPath,'/S1','/10.mp4'));
 	/*STRANGERS WITH CANDY SEASON TWO*/
-	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Yes, You Can''t',@StrangersWithCandyId,2,CONCAT(@StrangersWithCandyPath,'/S2','/.mp4'));
+	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Yes, You Can''t',@StrangersWithCandyId,2,CONCAT(@StrangersWithCandyPath,'/S2','/01.mp4'));
 	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Behind Blank Eyes',@StrangersWithCandyId,2,CONCAT(@StrangersWithCandyPath,'/S2','/02.mp4'));
 	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('The Virgin Jerri',@StrangersWithCandyId,2,CONCAT(@StrangersWithCandyPath,'/S2','/03.mp4'));
 	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('The Goodbye Guy',@StrangersWithCandyId,2,CONCAT(@StrangersWithCandyPath,'/S2','/04.mp4'));
@@ -303,7 +303,7 @@ BEGIN
 	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Blank Stare: Part 2',@StrangersWithCandyId,2,CONCAT(@StrangersWithCandyPath,'/S2','/09.mp4'));
 	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('A Price Too High for Riches',@StrangersWithCandyId,2,CONCAT(@StrangersWithCandyPath,'/S2','/10.mp4'));
 	/*STRANGERS WITH CANDY SEASON THREE*/
-	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Jerri''s Burning Issue',@StrangersWithCandyId,3,CONCAT(@StrangersWithCandyPath,'/S3','/.mp4'));
+	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Jerri''s Burning Issue',@StrangersWithCandyId,3,CONCAT(@StrangersWithCandyPath,'/S3','/01.mp4'));
 	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Is Freedom Free?',@StrangersWithCandyId,3,CONCAT(@StrangersWithCandyPath,'/S3','/02.mp4'));
 	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Trail of Tears',@StrangersWithCandyId,3,CONCAT(@StrangersWithCandyPath,'/S3','/03.mp4'));
 	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Is My Daddy Crazy?',@StrangersWithCandyId,3,CONCAT(@StrangersWithCandyPath,'/S3','/04.mp4'));
@@ -318,7 +318,7 @@ END
 /* THE GOLDEN GIRLS */
 BEGIN
 	/*THE GOLDEN GIRLS SEASON ONE*/
-	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('The Engagement',@GoldenGirlsId,1,CONCAT(@GoldenGirlsPath,'/S1','/.mp4'));
+	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('The Engagement',@GoldenGirlsId,1,CONCAT(@GoldenGirlsPath,'/S1','/01.mp4'));
 	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Guess Who''s Coming to the Wedding?',@GoldenGirlsId,1,CONCAT(@GoldenGirlsPath,'/S1','/02.mp4'));
 	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Rose the Prude',@GoldenGirlsId,1,CONCAT(@GoldenGirlsPath,'/S1','/03.mp4'));
 	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Transplant',@GoldenGirlsId,1,CONCAT(@GoldenGirlsPath,'/S1','/04.mp4'));
@@ -344,7 +344,7 @@ BEGIN
 	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Big Daddy',@GoldenGirlsId,1,CONCAT(@GoldenGirlsPath,'/S1','/24.mp4'));
 	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('The Way We Met',@GoldenGirlsId,1,CONCAT(@GoldenGirlsPath,'/S1','/25.mp4'));
 	/*GOLDEN GIRLS SEASON TWO*/
-	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('End of the Curse',@GoldenGirlsId,2,CONCAT(@GoldenGirlsPath,'/S2','/.mp4'));
+	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('End of the Curse',@GoldenGirlsId,2,CONCAT(@GoldenGirlsPath,'/S2','/01.mp4'));
 	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Ladies of the Evening',@GoldenGirlsId,2,CONCAT(@GoldenGirlsPath,'/S2','/02.mp4'));
 	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Take Him, He''s Mine',@GoldenGirlsId,2,CONCAT(@GoldenGirlsPath,'/S2','/03.mp4'));
 	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('It''s a Miserable Life',@GoldenGirlsId,2,CONCAT(@GoldenGirlsPath,'/S2','/04.mp4'));
@@ -371,7 +371,7 @@ BEGIN
 	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('A Piece of Cake',@GoldenGirlsId,2,CONCAT(@GoldenGirlsPath,'/S2','/25.mp4'));
 	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Empty Nests',@GoldenGirlsId,2,CONCAT(@GoldenGirlsPath,'/S2','/26.mp4'));
 	/*GOLDEN GIRLS SEASON THREE*/
-	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Old Friends',@GoldenGirlsId,3,CONCAT(@GoldenGirlsPath,'/S3','/.mp4'));
+	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Old Friends',@GoldenGirlsId,3,CONCAT(@GoldenGirlsPath,'/S3','/01.mp4'));
 	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('One for the Money',@GoldenGirlsId,3,CONCAT(@GoldenGirlsPath,'/S3','/02.mp4'));
 	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Bringing Up Baby',@GoldenGirlsId,3,CONCAT(@GoldenGirlsPath,'/S3','/03.mp4'));
 	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('The Housekeeper',@GoldenGirlsId,3,CONCAT(@GoldenGirlsPath,'/S3','/04.mp4'));
@@ -396,7 +396,7 @@ BEGIN
 	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Mister Terrific',@GoldenGirlsId,3,CONCAT(@GoldenGirlsPath,'/S3','/23.mp4'));
 	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Mother''s Day',@GoldenGirlsId,3,CONCAT(@GoldenGirlsPath,'/S3','/24.mp4'));
 	/*GOLDEN GIRLS SEASON FOUR*/
-	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Yes, We Have No Havanas',@GoldenGirlsId,4,CONCAT(@GoldenGirlsPath,'/S4','/.mp4'));
+	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Yes, We Have No Havanas',@GoldenGirlsId,4,CONCAT(@GoldenGirlsPath,'/S4','/01.mp4'));
 	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('The Days and Nights of Sophia Petrillo',@GoldenGirlsId,4,CONCAT(@GoldenGirlsPath,'/S4','/02.mp4'));
 	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('The One That Got Away',@GoldenGirlsId,4,CONCAT(@GoldenGirlsPath,'/S4','/03.mp4'));
 	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Yokel Hero',@GoldenGirlsId,4,CONCAT(@GoldenGirlsPath,'/S4','/04.mp4'));
@@ -421,7 +421,7 @@ BEGIN
 	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Foreign Exchange',@GoldenGirlsId,4,CONCAT(@GoldenGirlsPath,'/S4','/23.mp4'));
 	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('We''re Outta Here',@GoldenGirlsId,4,CONCAT(@GoldenGirlsPath,'/S4','/24.mp4'));
 	/*GOLDEN GIRLS SEASON FIVE*/
-	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Sick and Tired: Part 1',@GoldenGirlsId,5,CONCAT(@GoldenGirlsPath,'/S5','/.mp4'));
+	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Sick and Tired: Part 1',@GoldenGirlsId,5,CONCAT(@GoldenGirlsPath,'/S5','/01.mp4'));
 	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Sick and Tired: Part 2',@GoldenGirlsId,5,CONCAT(@GoldenGirlsPath,'/S5','/02.mp4'));
 	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('The Accurate Conception',@GoldenGirlsId,5,CONCAT(@GoldenGirlsPath,'/S5','/03.mp4'));
 	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Rose Fights Back',@GoldenGirlsId,5,CONCAT(@GoldenGirlsPath,'/S5','/04.mp4'));
@@ -447,7 +447,7 @@ BEGIN
 	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('All Bets Off',@GoldenGirlsId,5,CONCAT(@GoldenGirlsPath,'/S5','/24.mp4'));
 	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('The President''s Coming! The President''s Coming!',@GoldenGirlsId,5,CONCAT(@GoldenGirlsPath,'/S5','/25.mp4'));
 	/*GOLDEN GIRLS SEASON SIX*/
-	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Blanche Delivers',@GoldenGirlsId,6,CONCAT(@GoldenGirlsPath,'/S6','/.mp4'));
+	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Blanche Delivers',@GoldenGirlsId,6,CONCAT(@GoldenGirlsPath,'/S6','/01.mp4'));
 	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Once, in St. Olaf',@GoldenGirlsId,6,CONCAT(@GoldenGirlsPath,'/S6','/02.mp4'));
 	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('If at Last You Do Succeed',@GoldenGirlsId,6,CONCAT(@GoldenGirlsPath,'/S6','/03.mp4'));
 	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Snap Out of It',@GoldenGirlsId,6,CONCAT(@GoldenGirlsPath,'/S6','/04.mp4'));
@@ -473,7 +473,7 @@ BEGIN
 	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Never Yell Fire in a Crowded Retirement Home: Part 1/2',@GoldenGirlsId,6,CONCAT(@GoldenGirlsPath,'/S6','/24.mp4'));
 	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Henny Penny-Straight, No Chaser',@GoldenGirlsId,6,CONCAT(@GoldenGirlsPath,'/S6','/25.mp4'));
 	/*GOLDEN GIRLS SEASON SEVEN*/
-	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Hey, Look Me Over',@GoldenGirlsId,7,CONCAT(@GoldenGirlsPath,'/S7','/.mp4'));
+	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Hey, Look Me Over',@GoldenGirlsId,7,CONCAT(@GoldenGirlsPath,'/S7','/01.mp4'));
 	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('The Case of the Libertine Belle',@GoldenGirlsId,7,CONCAT(@GoldenGirlsPath,'/S7','/02.mp4'));
 	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Beauty and the Beast',@GoldenGirlsId,7,CONCAT(@GoldenGirlsPath,'/S7','/03.mp4'));
 	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('That''s for Me to Know',@GoldenGirlsId,7,CONCAT(@GoldenGirlsPath,'/S7','/04.mp4'));
@@ -501,7 +501,7 @@ END
 /* BEWITCHED */
 BEGIN
 	/*BEWITCHED SEASON ONE*/
-	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('I Darrin, Take This Witch, Samantha',@BewitchedId,1,CONCAT(@BewitchedPath,'/S1','/.mp4'));
+	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('I Darrin, Take This Witch, Samantha',@BewitchedId,1,CONCAT(@BewitchedPath,'/S1','/01.mp4'));
 	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Be It Ever So Mortgaged',@BewitchedId,1,CONCAT(@BewitchedPath,'/S1','/02.mp4'));
 	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Mother, Meet What''s His Name?',@BewitchedId,1,CONCAT(@BewitchedPath,'/S1','/03.mp4'));
 	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('It Shouldn''t Happen to a Dog',@BewitchedId,1,CONCAT(@BewitchedPath,'/S1','/04.mp4'));
@@ -538,7 +538,7 @@ BEGIN
 	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Eat at Mario''s',@BewitchedId,1,CONCAT(@BewitchedPath,'/S1','/35.mp4'));
 	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Cousin Edgar',@BewitchedId,1,CONCAT(@BewitchedPath,'/S1','/36.mp4'));
 	/*BEWITCHED SEASON TWO*/
-	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Alias Darrin Stephens',@BewitchedId,2,CONCAT(@BewitchedPath,'/S2','/.mp4'));
+	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Alias Darrin Stephens',@BewitchedId,2,CONCAT(@BewitchedPath,'/S2','/01.mp4'));
 	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('A Very Special Delivery',@BewitchedId,2,CONCAT(@BewitchedPath,'/S2','/02.mp4'));
 	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('We''re in for a Bad Spell',@BewitchedId,2,CONCAT(@BewitchedPath,'/S2','/03.mp4'));
 	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('My Grandson, the Warlock',@BewitchedId,2,CONCAT(@BewitchedPath,'/S2','/04.mp4'));
@@ -577,7 +577,7 @@ BEGIN
 	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('The Girl with the Golden Nose',@BewitchedId,2,CONCAT(@BewitchedPath,'/S2','/37.mp4'));
 	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Prodigy',@BewitchedId,2,CONCAT(@BewitchedPath,'/S2','/38.mp4'));
 	/*BEWITCHED SEASON THREE*/
-	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Nobody''s Perfect',@BewitchedId,3,CONCAT(@BewitchedPath,'/S3','/.mp4'));
+	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Nobody''s Perfect',@BewitchedId,3,CONCAT(@BewitchedPath,'/S3','/01.mp4'));
 	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('The Moment of Truth',@BewitchedId,3,CONCAT(@BewitchedPath,'/S3','/02.mp4'));
 	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Witches and Warlocks are My Favorite Things',@BewitchedId,3,CONCAT(@BewitchedPath,'/S3','/03.mp4'));
 	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Accidental Twins',@BewitchedId,3,CONCAT(@BewitchedPath,'/S3','/04.mp4'));
@@ -611,7 +611,7 @@ BEGIN
 	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Nobody But a Frog Knows How to Live',@BewitchedId,3,CONCAT(@BewitchedPath,'/S3','/32.mp4'));
 	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('There''s Gold in Them Thar Pills',@BewitchedId,3,CONCAT(@BewitchedPath,'/S3','/33.mp4'));
 	/*BEWITCHED SEASON FOUR*/
-	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Long Live the Queen',@BewitchedId,4,CONCAT(@BewitchedPath,'/S4','/.mp4'));
+	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Long Live the Queen',@BewitchedId,4,CONCAT(@BewitchedPath,'/S4','/01.mp4'));
 	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Toys in Babeland',@BewitchedId,4,CONCAT(@BewitchedPath,'/S4','/02.mp4'));
 	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Business, Italian Style',@BewitchedId,4,CONCAT(@BewitchedPath,'/S4','/03.mp4'));
 	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Double, Double, Toil and Trouble',@BewitchedId,4,CONCAT(@BewitchedPath,'/S4','/04.mp4'));
@@ -645,7 +645,7 @@ BEGIN
 	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Man of the Year',@BewitchedId,4,CONCAT(@BewitchedPath,'/S4','/32.mp4'));
 	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Splitsville',@BewitchedId,4,CONCAT(@BewitchedPath,'/S4','/33.mp4'));
 	/*BEWITCHED SEASON FIVE*/
-	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Samantha''s Wedding Present',@BewitchedId,5,CONCAT(@BewitchedPath,'/S5','/.mp4'));
+	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Samantha''s Wedding Present',@BewitchedId,5,CONCAT(@BewitchedPath,'/S5','/01.mp4'));
 	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Samantha Goes South for a Spell',@BewitchedId,5,CONCAT(@BewitchedPath,'/S5','/02.mp4'));
 	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Samantha on the Keyboard',@BewitchedId,5,CONCAT(@BewitchedPath,'/S5','/03.mp4'));
 	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Darrin, Gone and Forgotten',@BewitchedId,5,CONCAT(@BewitchedPath,'/S5','/04.mp4'));
@@ -676,7 +676,7 @@ BEGIN
 	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Samantha''s Shopping Spree',@BewitchedId,5,CONCAT(@BewitchedPath,'/S5','/29.mp4'));
 	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Samantha and Darrin in Mexico City',@BewitchedId,5,CONCAT(@BewitchedPath,'/S5','/30.mp4'));
 	/*BEWITCHED SEASON SIX*/
-	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Samantha and the Beanstalk',@BewitchedId,6,CONCAT(@BewitchedPath,'/S6','/.mp4'));
+	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Samantha and the Beanstalk',@BewitchedId,6,CONCAT(@BewitchedPath,'/S6','/01.mp4'));
 	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Samantha''s Yoo-Hoo Maid',@BewitchedId,6,CONCAT(@BewitchedPath,'/S6','/02.mp4'));
 	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Samantha''s Caesar Salad',@BewitchedId,6,CONCAT(@BewitchedPath,'/S6','/03.mp4'));
 	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Samantha''s Curious Cravings',@BewitchedId,6,CONCAT(@BewitchedPath,'/S6','/04.mp4'));
@@ -707,7 +707,7 @@ BEGIN
 	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Turn on the Old Charm',@BewitchedId,6,CONCAT(@BewitchedPath,'/S6','/29.mp4'));
 	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Make Love, Not Hate',@BewitchedId,6,CONCAT(@BewitchedPath,'/S6','/30.mp4'));
 	/*BEWITCHED SEASON SEVEN*/
-	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('To Go or Not to Go, That is the Question (1)',@BewitchedId,7,CONCAT(@BewitchedPath,'/S7','/.mp4'));
+	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('To Go or Not to Go, That is the Question (1)',@BewitchedId,7,CONCAT(@BewitchedPath,'/S7','/01.mp4'));
 	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Salem, Here We Come (2)',@BewitchedId,7,CONCAT(@BewitchedPath,'/S7','/02.mp4'));
 	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('The Salem Saga (1)',@BewitchedId,7,CONCAT(@BewitchedPath,'/S7','/03.mp4'));
 	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Samantha''s Hot Bed Warmer (2)',@BewitchedId,7,CONCAT(@BewitchedPath,'/S7','/04.mp4'));
@@ -736,7 +736,7 @@ BEGIN
 	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Laugh, Clown, Laugh',@BewitchedId,7,CONCAT(@BewitchedPath,'/S7','/27.mp4'));
 	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Samantha and the Antique Doll',@BewitchedId,7,CONCAT(@BewitchedPath,'/S7','/28.mp4'));
 	/*BEWITCHED SEASON EIGHT*/
-	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('How Not to Lose Your Head to King Henry VIII (1)',@BewitchedId,8,CONCAT(@BewitchedPath,'/S8','/.mp4'));
+	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('How Not to Lose Your Head to King Henry VIII (1)',@BewitchedId,8,CONCAT(@BewitchedPath,'/S8','/01.mp4'));
 	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('How Not to Lose Your Head to King Henry VIII (2)',@BewitchedId,8,CONCAT(@BewitchedPath,'/S8','/02.mp4'));
 	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Samantha and the Loch Ness Monster',@BewitchedId,8,CONCAT(@BewitchedPath,'/S8','/03.mp4'));
 	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Samantha''s Not-So-Leaning Tower of Pisa',@BewitchedId,8,CONCAT(@BewitchedPath,'/S8','/04.mp4'));
@@ -767,7 +767,7 @@ END
 /* XENA: Warrior Princess */
 BEGIN
 	/* XENA SEASON ONE */
-	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Sins of the Past',@XenaId,1,CONCAT(@XenaPath,'/S1','/.mp4'));
+	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Sins of the Past',@XenaId,1,CONCAT(@XenaPath,'/S1','/01.mp4'));
 	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Chariots of War',@XenaId,1,CONCAT(@XenaPath,'/S1','/02.mp4'));
 	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Dreamworker',@XenaId,1,CONCAT(@XenaPath,'/S1','/03.mp4'));
 	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Cradle of Hope',@XenaId,1,CONCAT(@XenaPath,'/S1','/04.mp4'));
@@ -792,7 +792,7 @@ BEGIN
 	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Death Mask',@XenaId,1,CONCAT(@XenaPath,'/S1','/23.mp4'));
 	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Is There a Doctor in the House?',@XenaId,1,CONCAT(@XenaPath,'/S1','/24.mp4'));
 	/* XENA SEASON TWO */
-	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Orphan of War',@XenaId,2,CONCAT(@XenaPath,'/S2','/.mp4'));
+	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Orphan of War',@XenaId,2,CONCAT(@XenaPath,'/S2','/01.mp4'));
 	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Remember Nothing',@XenaId,2,CONCAT(@XenaPath,'/S2','/02.mp4'));
 	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('The Giant Killer',@XenaId,2,CONCAT(@XenaPath,'/S2','/03.mp4'));
 	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Girls Just Wanna Have Fun',@XenaId,2,CONCAT(@XenaPath,'/S2','/04.mp4'));
@@ -815,7 +815,7 @@ BEGIN
 	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Lost Mariner',@XenaId,2,CONCAT(@XenaPath,'/S2','/21.mp4'));
 	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('A Comedy of Eros',@XenaId,2,CONCAT(@XenaPath,'/S2','/22.mp4'));
 	/* XENA SEASON THREE */
-	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('The Furies',@XenaId,3,CONCAT(@XenaPath,'/S3','/.mp4'));
+	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('The Furies',@XenaId,3,CONCAT(@XenaPath,'/S3','/01.mp4'));
 	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Been There, Done That',@XenaId,3,CONCAT(@XenaPath,'/S3','/02.mp4'));
 	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('The Dirty Half Dozen',@XenaId,3,CONCAT(@XenaPath,'/S3','/03.mp4'));
 	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('The Deliverer',@XenaId,3,CONCAT(@XenaPath,'/S3','/04.mp4'));
@@ -838,7 +838,7 @@ BEGIN
 	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Sacrifice, Part 1',@XenaId,3,CONCAT(@XenaPath,'/S3','/21.mp4'));
 	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Sacrifice, Part 2',@XenaId,3,CONCAT(@XenaPath,'/S3','/22.mp4'));
 	/* XENA SEASON FOUR */
-	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Adventures in the Sin Trade, Part 1',@XenaId,4,CONCAT(@XenaPath,'/S4','/.mp4'));
+	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Adventures in the Sin Trade, Part 1',@XenaId,4,CONCAT(@XenaPath,'/S4','/01.mp4'));
 	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Adventures in the Sin Trade, Part 2',@XenaId,4,CONCAT(@XenaPath,'/S4','/02.mp4'));
 	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('A Family Affair',@XenaId,4,CONCAT(@XenaPath,'/S4','/03.mp4'));
 	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('In Sickness and in Hell',@XenaId,4,CONCAT(@XenaPath,'/S4','/04.mp4'));
@@ -861,7 +861,7 @@ BEGIN
 	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('The Ides of March',@XenaId,4,CONCAT(@XenaPath,'/S4','/21.mp4'));
 	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Deja Vu All over Again',@XenaId,4,CONCAT(@XenaPath,'/S4','/22.mp4'));
 	/* XENA SEASON FIVE */
-	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Fallen Angel',@XenaId,5,CONCAT(@XenaPath,'/S5','/.mp4'));
+	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Fallen Angel',@XenaId,5,CONCAT(@XenaPath,'/S5','/01.mp4'));
 	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Chakram',@XenaId,5,CONCAT(@XenaPath,'/S5','/02.mp4'));
 	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Succession',@XenaId,5,CONCAT(@XenaPath,'/S5','/03.mp4'));
 	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Animal Attraction',@XenaId,5,CONCAT(@XenaPath,'/S5','/04.mp4'));
@@ -884,7 +884,7 @@ BEGIN
 	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Eve',@XenaId,5,CONCAT(@XenaPath,'/S5','/21.mp4'));
 	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Motherhood',@XenaId,5,CONCAT(@XenaPath,'/S5','/22.mp4'));
 	/* XENA SEASON SIX */
-	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Coming Home',@XenaId,6,CONCAT(@XenaPath,'/S6','/.mp4'));
+	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Coming Home',@XenaId,6,CONCAT(@XenaPath,'/S6','/01.mp4'));
 	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('The Haunting of Amphipolis',@XenaId,6,CONCAT(@XenaPath,'/S6','/02.mp4'));
 	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Heart of Darkness',@XenaId,6,CONCAT(@XenaPath,'/S6','/03.mp4'));
 	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Who''s Gurkhan?',@XenaId,6,CONCAT(@XenaPath,'/S6','/04.mp4'));
@@ -911,7 +911,7 @@ END
 /* WONDER WOMAN */
 BEGIN
 	/* WONDER WOMAN SEASON ONE */
-	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('The New Original Wonder Woman',@WonderWomanId,1,CONCAT(@WonderWomanPath,'/S1','/.mp4'));
+	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('The New Original Wonder Woman',@WonderWomanId,1,CONCAT(@WonderWomanPath,'/S1','/01.mp4'));
 	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Wonder Woman Meets Baroness von Gunther',@WonderWomanId,1,CONCAT(@WonderWomanPath,'/S1','/02.mp4'));
 	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('The Nazi Wonder Woman',@WonderWomanId,1,CONCAT(@WonderWomanPath,'/S1','/03.mp4'));
 	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Beauty on Parade',@WonderWomanId,1,CONCAT(@WonderWomanPath,'/S1','/04.mp4'));
@@ -926,7 +926,7 @@ BEGIN
 	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('The Bushwackers',@WonderWomanId,1,CONCAT(@WonderWomanPath,'/S1','/13.mp4'));
 	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Wonder Woman in Hollywood',@WonderWomanId,1,CONCAT(@WonderWomanPath,'/S1','/14.mp4'));
 	/* WONDER WOMAN SEASON TWO */
-	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('The Return of Wonder Woman',@WonderWomanId,2,CONCAT(@WonderWomanPath,'/S2','/.mp4'));
+	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('The Return of Wonder Woman',@WonderWomanId,2,CONCAT(@WonderWomanPath,'/S2','/01.mp4'));
 	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Anschluss ''77',@WonderWomanId,2,CONCAT(@WonderWomanPath,'/S2','/02.mp4'));
 	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('The Man Who Could Move the World',@WonderWomanId,2,CONCAT(@WonderWomanPath,'/S2','/03.mp4'));
 	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('The Bermuda Triangle Crisis',@WonderWomanId,2,CONCAT(@WonderWomanPath,'/S2','/04.mp4'));
@@ -949,7 +949,7 @@ BEGIN
 	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('The Girl from Ilandia',@WonderWomanId,2,CONCAT(@WonderWomanPath,'/S2','/21.mp4'));
 	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('The Murderous Missile',@WonderWomanId,2,CONCAT(@WonderWomanPath,'/S2','/22.mp4'));
 	/* WONDER WOMAN SEASON THREE */
-	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('My Teenage Idol is Missing',@WonderWomanId,3,CONCAT(@WonderWomanPath,'/S3','/.mp4'));
+	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('My Teenage Idol is Missing',@WonderWomanId,3,CONCAT(@WonderWomanPath,'/S3','/01.mp4'));
 	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Hot Wheels',@WonderWomanId,3,CONCAT(@WonderWomanPath,'/S3','/02.mp4'));
 	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('The Deadly Sting',@WonderWomanId,3,CONCAT(@WonderWomanPath,'/S3','/03.mp4'));
 	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('The Fine Art of Crime',@WonderWomanId,3,CONCAT(@WonderWomanPath,'/S3','/04.mp4'));
@@ -978,7 +978,7 @@ END
 /* MAMA'S FAMILY */
 BEGIN
 	/* MAMA'S FAMILY SEASON ONE */
-	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Vint and the Kids Move In',@MamasFamilyId,1,CONCAT(@MamasFamilyPath,'/S1','/.mp4'));
+	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Vint and the Kids Move In',@MamasFamilyId,1,CONCAT(@MamasFamilyPath,'/S1','/01.mp4'));
 	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('For Better or For Worse',@MamasFamilyId,1,CONCAT(@MamasFamilyPath,'/S1','/02.mp4'));
 	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('The Wedding (Part 1)',@MamasFamilyId,1,CONCAT(@MamasFamilyPath,'/S1','/03.mp4'));
 	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('The Wedding (Part 2)',@MamasFamilyId,1,CONCAT(@MamasFamilyPath,'/S1','/04.mp4'));
@@ -992,7 +992,7 @@ BEGIN
 	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Positive Thinking',@MamasFamilyId,1,CONCAT(@MamasFamilyPath,'/S1','/12.mp4'));
 	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Mama''s Silver',@MamasFamilyId,1,CONCAT(@MamasFamilyPath,'/S1','/13.mp4'));
 	/* MAMA'S FAMILY SEASON TWO */
-	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Flaming Forties',@MamasFamilyId,2,CONCAT(@MamasFamilyPath,'/S2','/.mp4'));
+	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Flaming Forties',@MamasFamilyId,2,CONCAT(@MamasFamilyPath,'/S2','/01.mp4'));
 	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('The Return of Leonard Oates',@MamasFamilyId,2,CONCAT(@MamasFamilyPath,'/S2','/02.mp4'));
 	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Country Club',@MamasFamilyId,2,CONCAT(@MamasFamilyPath,'/S2','/03.mp4'));
 	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Naomi and the Stork',@MamasFamilyId,2,CONCAT(@MamasFamilyPath,'/S2','/04.mp4'));
@@ -1015,7 +1015,7 @@ BEGIN
 	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Ask Aunt Fran',@MamasFamilyId,2,CONCAT(@MamasFamilyPath,'/S2','/21.mp4'));
 	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('A Grave Mistake',@MamasFamilyId,2,CONCAT(@MamasFamilyPath,'/S2','/22.mp4'));
 	/* MAMA'S FAMILY SEASON THREE */
-	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Farewell, Frannie',@MamasFamilyId,3,CONCAT(@MamasFamilyPath,'/S3','/.mp4'));
+	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Farewell, Frannie',@MamasFamilyId,3,CONCAT(@MamasFamilyPath,'/S3','/01.mp4'));
 	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Where There''s a Will',@MamasFamilyId,3,CONCAT(@MamasFamilyPath,'/S3','/02.mp4'));
 	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Best Medicine',@MamasFamilyId,3,CONCAT(@MamasFamilyPath,'/S3','/03.mp4'));
 	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('National Mama',@MamasFamilyId,3,CONCAT(@MamasFamilyPath,'/S3','/04.mp4'));
@@ -1041,7 +1041,7 @@ BEGIN
 	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('The Best Policy',@MamasFamilyId,3,CONCAT(@MamasFamilyPath,'/S3','/24.mp4'));
 	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('After the Fall',@MamasFamilyId,3,CONCAT(@MamasFamilyPath,'/S3','/25.mp4'));
 	/* MAMA'S FAMILY SEASON FOUR */
-	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Educating Mama',@MamasFamilyId,4,CONCAT(@MamasFamilyPath,'/S4','/.mp4'));
+	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Educating Mama',@MamasFamilyId,4,CONCAT(@MamasFamilyPath,'/S4','/01.mp4'));
 	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Zirconias Are a Girl''s Best Friend',@MamasFamilyId,4,CONCAT(@MamasFamilyPath,'/S4','/02.mp4'));
 	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('The Key to the Crime',@MamasFamilyId,4,CONCAT(@MamasFamilyPath,'/S4','/03.mp4'));
 	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Breaking Up Is Hard to Do',@MamasFamilyId,4,CONCAT(@MamasFamilyPath,'/S4','/04.mp4'));
@@ -1067,7 +1067,7 @@ BEGIN
 	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Naomi''s Identity Crisis',@MamasFamilyId,4,CONCAT(@MamasFamilyPath,'/S4','/24.mp4'));
 	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Pomp and Circumstance',@MamasFamilyId,4,CONCAT(@MamasFamilyPath,'/S4','/25.mp4'));
 	/* MAMA'S FAMILY SEASON FIVE */
-	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Ladies Choice',@MamasFamilyId,5,CONCAT(@MamasFamilyPath,'/S5','/.mp4'));
+	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Ladies Choice',@MamasFamilyId,5,CONCAT(@MamasFamilyPath,'/S5','/01.mp4'));
 	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Baby Talk',@MamasFamilyId,5,CONCAT(@MamasFamilyPath,'/S5','/02.mp4'));
 	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Naomi''s New Position',@MamasFamilyId,5,CONCAT(@MamasFamilyPath,'/S5','/03.mp4'));
 	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('The Really Loud Family',@MamasFamilyId,5,CONCAT(@MamasFamilyPath,'/S5','/04.mp4'));
@@ -1093,7 +1093,7 @@ BEGIN
 	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Dependence Day',@MamasFamilyId,5,CONCAT(@MamasFamilyPath,'/S5','/24.mp4'));
 	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Mama Makes Three',@MamasFamilyId,5,CONCAT(@MamasFamilyPath,'/S5','/25.mp4'));
 	/* MAMA'S FAMILY SEASON SIX */
-	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Mama''s Medicine Show',@MamasFamilyId,6,CONCAT(@MamasFamilyPath,'/S6','/.mp4'));
+	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Mama''s Medicine Show',@MamasFamilyId,6,CONCAT(@MamasFamilyPath,'/S6','/01.mp4'));
 	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('An Affair to Forget',@MamasFamilyId,6,CONCAT(@MamasFamilyPath,'/S6','/02.mp4'));
 	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Mr. Wrong',@MamasFamilyId,6,CONCAT(@MamasFamilyPath,'/S6','/03.mp4'));
 	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Now Hear This',@MamasFamilyId,6,CONCAT(@MamasFamilyPath,'/S6','/04.mp4'));
@@ -1118,7 +1118,7 @@ END
 /* STAR TREK: THE ANIMATED SERIES */
 BEGIN
 	/* STAR TREK: THE ANIMATED SERIES SEASON ONE */
-	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Beyond the Farthest Star',@StarTrekTASId,1,CONCAT(@StarTrekTASPath,'/S1','/.mp4'));
+	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Beyond the Farthest Star',@StarTrekTASId,1,CONCAT(@StarTrekTASPath,'/S1','/01.mp4'));
 	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Yesteryear',@StarTrekTASId,1,CONCAT(@StarTrekTASPath,'/S1','/02.mp4'));
 	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('One of Our Planets Is Missing',@StarTrekTASId,1,CONCAT(@StarTrekTASPath,'/S1','/03.mp4'));
 	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('The Lorelei Signal',@StarTrekTASId,1,CONCAT(@StarTrekTASPath,'/S1','/04.mp4'));
@@ -1135,7 +1135,7 @@ BEGIN
 	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('The Eye of the Beholder',@StarTrekTASId,1,CONCAT(@StarTrekTASPath,'/S1','/15.mp4'));
 	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('The Jihad',@StarTrekTASId,1,CONCAT(@StarTrekTASPath,'/S1','/16.mp4'));
 	/* STAR TREK: THE ANIMATED SERIES SEASON TWO */
-	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('The Pirates of Orion',@StarTrekTASId,2,CONCAT(@StarTrekTASPath,'/S2','/.mp4'));
+	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('The Pirates of Orion',@StarTrekTASId,2,CONCAT(@StarTrekTASPath,'/S2','/01.mp4'));
 	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Bem',@StarTrekTASId,2,CONCAT(@StarTrekTASPath,'/S2','/02.mp4'));
 	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('The Practical Joker',@StarTrekTASId,2,CONCAT(@StarTrekTASPath,'/S2','/03.mp4'));
 	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Albatross',@StarTrekTASId,2,CONCAT(@StarTrekTASPath,'/S2','/04.mp4'));

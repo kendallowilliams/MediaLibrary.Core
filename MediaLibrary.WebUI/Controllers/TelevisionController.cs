@@ -42,7 +42,7 @@ namespace MediaLibrary.WebUI.Controllers
         public async Task<IActionResult> Index()
         {
             IActionResult result = null;
-            Configuration configuration = await dataService.Get<Configuration>(item => item.Type == nameof(MediaPages.Television));
+            Configuration configuration = await dataService.Get<Configuration>(item => item.Type == ConfigurationTypes.Television);
 
             televisionViewModel.Configuration = configuration?.GetConfigurationObject<TelevisionConfiguration>() ?? new TelevisionConfiguration();
 
@@ -71,11 +71,11 @@ namespace MediaLibrary.WebUI.Controllers
         {
             if (ModelState.IsValid)
             {
-                Configuration configuration = await dataService.Get<Configuration>(item => item.Type == nameof(MediaPages.Television));
+                Configuration configuration = await dataService.Get<Configuration>(item => item.Type == ConfigurationTypes.Television);
 
                 if (configuration == null)
                 {
-                    configuration = new Configuration() { Type = nameof(MediaPages.Television), JsonData = JsonConvert.SerializeObject(televisionConfiguration) };
+                    configuration = new Configuration() { Type = ConfigurationTypes.Television, JsonData = JsonConvert.SerializeObject(televisionConfiguration) };
                     await dataService.Insert(configuration);
                 }
                 else
@@ -114,7 +114,7 @@ namespace MediaLibrary.WebUI.Controllers
         public async Task<IActionResult> GetSeason(int series, int season)
         {
             IEnumerable<Episode> episodes = await dataService.GetList<Episode>(item => item.SeriesId == series && item.Season == season);
-            bool hasPlaylists = await dataService.Exists<Playlist>(item => item.Type == (int)PlaylistTabs.Television);
+            bool hasPlaylists = await dataService.Exists<Playlist>(item => item.Type == PlaylistTypes.Television);
 
             return PartialView("Season", (hasPlaylists, episodes));
         }
@@ -137,7 +137,7 @@ namespace MediaLibrary.WebUI.Controllers
         
         public async Task<IActionResult> TelevisionConfiguration()
         {
-            Configuration configuration = await dataService.Get<Configuration>(item => item.Type == nameof(MediaPages.Television));
+            Configuration configuration = await dataService.Get<Configuration>(item => item.Type == ConfigurationTypes.Television);
 
             televisionViewModel.Configuration = configuration?.GetConfigurationObject<TelevisionConfiguration>() ?? new TelevisionConfiguration();
 

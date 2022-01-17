@@ -7,7 +7,7 @@ export default class PlayerConfiguration extends BaseConfiguration<IPlayerConfig
         this.properties = properties;
     }
 
-    updateConfiguration(callback: () => void = () => null): void {
-        super.update<IPlayerConfiguration>(this.properties, callback);
+    updateConfiguration(): Promise<Response> {
+        return super.update<IPlayerConfiguration>(this.properties);
     }
 }

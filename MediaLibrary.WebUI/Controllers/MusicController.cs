@@ -14,7 +14,6 @@ using MediaLibrary.Shared.Models.Configurations;
 using System.Web;
 using System.IO;
 using IO_File = System.IO.File;
-using static MediaLibrary.BLL.Extensions.ServiceCollectionExtensions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
 using System.Text.Json;
@@ -54,7 +53,7 @@ namespace MediaLibrary.WebUI.Controllers
         public async Task<IActionResult> Index()
         {
             IActionResult result = null;
-            Configuration configuration = await dataService.Get<Configuration>(item => item.Type == nameof(MediaPages.Music));
+            Configuration configuration = await dataService.Get<Configuration>(item => item.Type == ConfigurationTypes.Music);
 
             musicViewModel.Configuration = configuration?.GetConfigurationObject<MusicConfiguration>() ?? new MusicConfiguration();
             await dataService.GetList<Playlist>().ContinueWith(task => musicViewModel.Playlists = task.Result);
@@ -92,7 +91,7 @@ namespace MediaLibrary.WebUI.Controllers
         public async Task<IActionResult> GetSongGroup(string key, SongSort sort)
         {
             IGrouping<string, Track> group = default;
-            bool hasPlaylists = await dataService.Exists<Playlist>(item => item.Type == (int)PlaylistTabs.Music);
+            bool hasPlaylists = await dataService.Exists<Playlist>(item => item.Type == PlaylistTypes.Music);
 
             await musicService.GetSongGroups(sort).ContinueWith(task => group = task.Result.FirstOrDefault(item => item.Key == key));
 
@@ -184,7 +183,7 @@ namespace MediaLibrary.WebUI.Controllers
 
         private async Task<IActionResult> GetAlbum(int id)
         {
-            Configuration configuration = await dataService.Get<Configuration>(item => item.Type == nameof(MediaPages.Music));
+            Configuration configuration = await dataService.Get<Configuration>(item => item.Type == ConfigurationTypes.Music);
 
             musicViewModel.Configuration = configuration?.GetConfigurationObject<MusicConfiguration>() ?? new MusicConfiguration();
             musicViewModel.SelectedAlbum = await dataService.GetAlt<Album>(album => album.Id == id, default, "Tracks.Artist");
@@ -195,7 +194,7 @@ namespace MediaLibrary.WebUI.Controllers
 
         private async Task<IActionResult> GetArtist(int id)
         {
-            Configuration configuration = await dataService.Get<Configuration>(item => item.Type == nameof(MediaPages.Music));
+            Configuration configuration = await dataService.Get<Configuration>(item => item.Type == ConfigurationTypes.Music);
 
             musicViewModel.Configuration = configuration?.GetConfigurationObject<MusicConfiguration>() ?? new MusicConfiguration();
             musicViewModel.SelectedArtist = await dataService.GetAlt<Artist>(artist => artist.Id == id, default, "Albums.Tracks");
@@ -219,7 +218,10 @@ namespace MediaLibrary.WebUI.Controllers
 
                 if (request.IsValid())
                 {
-                    TrackPath path = await dataService.Get<TrackPath>(item => item.Location == request.Path);
+                    var dirInfo = new DirectoryInfo(request.Path);
+                    var path = await dataService.Get<TrackPath>(item => item.Location.Equals(dirInfo.FullName));
+
+                    request.Path = dirInfo.FullName;
 
                     if (path != null)
                     {
@@ -282,15 +284,16 @@ namespace MediaLibrary.WebUI.Controllers
         {
             if (ModelState.IsValid)
             {
-                Configuration configuration = await dataService.Get<Configuration>(item => item.Type == nameof(MediaPages.Music));
+                Configuration configuration = await dataService.Get<Configuration>(item => item.Type == ConfigurationTypes.Music);
 
                 if (configuration == null)
                 {
-                    configuration = new Configuration() { Type = nameof(MediaPages.Music), JsonData = JsonConvert.SerializeObject(musicConfiguration) };
+                    configuration = new Configuration() { Type = ConfigurationTypes.Music, JsonData = JsonConvert.SerializeObject(musicConfiguration) };
                     await dataService.Insert(configuration);
                 }
                 else
                 {
+                    musicConfiguration.MusicPaths = ValidateMusicPaths(musicConfiguration.MusicPaths);
                     configuration.JsonData = JsonConvert.SerializeObject(musicConfiguration);
                     await dataService.Update(configuration);
                 }
@@ -361,20 +364,21 @@ namespace MediaLibrary.WebUI.Controllers
 
             if (ModelState.IsValid)
             {
+                Configuration musicConfiguration = await dataService.Get<Configuration>(item => item.Type == ConfigurationTypes.Music);
                 string fileName = viewModel.MusicFile.FileName,
-                       filePath = Path.Combine(viewModel.MusicPath, fileName),
-                       rootPath = configuration["RootPath"];
+                       filePath = Path.Combine(viewModel.MusicPath, fileName);
+                IEnumerable<string> musicPaths = musicConfiguration.GetConfigurationObject<MusicConfiguration>().MusicPaths;
 
-                if (Directory.Exists(viewModel.MusicPath) && !System.IO.File.Exists(filePath))
+                if (Directory.Exists(viewModel.MusicPath) && !IO_File.Exists(filePath))
                 {
-                    DirectoryInfo rootPathInfo = new DirectoryInfo(rootPath),
-                                  targetPathInfo = new DirectoryInfo(viewModel.MusicPath);
-                    bool isSafePath = fileService.EnumerateDirectories(rootPathInfo.FullName, recursive: true)
-                                                 .Any(item => item.Equals(targetPathInfo.FullName));
+                    IEnumerable<DirectoryInfo> musicPathInfos = musicPaths.Select(path => new DirectoryInfo(path));
+                    DirectoryInfo targetPathInfo = new DirectoryInfo(viewModel.MusicPath);
+                    bool isSafePath = musicPathInfos.Any(info => fileService.EnumerateDirectories(info.FullName, recursive: true)
+                                                                            .Any(item => item.Equals(targetPathInfo.FullName)));
 
                     if (isSafePath)
                     {
-                        using (Stream stream = System.IO.File.OpenWrite(filePath)) { await viewModel.MusicFile.CopyToAsync(stream); }
+                        using (Stream stream = IO_File.OpenWrite(filePath)) { await viewModel.MusicFile.CopyToAsync(stream); }
                         await fileService.ReadMediaFile(filePath);
                         musicService.ClearData();
                         result = NoContent();
@@ -409,7 +413,7 @@ namespace MediaLibrary.WebUI.Controllers
 
         public async Task<IActionResult> GetAlbums()
         {
-            Configuration configuration = await dataService.Get<Configuration>(item => item.Type == nameof(MediaPages.Music));
+            Configuration configuration = await dataService.Get<Configuration>(item => item.Type == ConfigurationTypes.Music);
 
             musicViewModel.Configuration = configuration?.GetConfigurationObject<MusicConfiguration>() ?? new MusicConfiguration();
             musicViewModel.AlbumGroups = await musicService.GetAlbumGroups(musicViewModel.Configuration.SelectedAlbumSort);
@@ -420,7 +424,7 @@ namespace MediaLibrary.WebUI.Controllers
 
         public async Task<IActionResult> GetArtists()
         {
-            Configuration configuration = await dataService.Get<Configuration>(item => item.Type == nameof(MediaPages.Music));
+            Configuration configuration = await dataService.Get<Configuration>(item => item.Type == ConfigurationTypes.Music);
 
             musicViewModel.Configuration = configuration?.GetConfigurationObject<MusicConfiguration>() ?? new MusicConfiguration();
             musicViewModel.ArtistGroups = await musicService.GetArtistGroups(musicViewModel.Configuration.SelectedArtistSort);
@@ -431,7 +435,7 @@ namespace MediaLibrary.WebUI.Controllers
 
         public async Task<IActionResult> GetSongs()
         {
-            Configuration configuration = await dataService.Get<Configuration>(item => item.Type == nameof(MediaPages.Music));
+            Configuration configuration = await dataService.Get<Configuration>(item => item.Type == ConfigurationTypes.Music);
 
             musicViewModel.Configuration = configuration?.GetConfigurationObject<MusicConfiguration>() ?? new MusicConfiguration();
             musicViewModel.SongGroups = await musicService.GetSongGroups(musicViewModel.Configuration.SelectedSongSort);
@@ -442,7 +446,7 @@ namespace MediaLibrary.WebUI.Controllers
 
         public async Task<IActionResult> MusicConfiguration()
         {
-            Configuration configuration = await dataService.Get<Configuration>(item => item.Type == nameof(MediaPages.Music));
+            Configuration configuration = await dataService.Get<Configuration>(item => item.Type == ConfigurationTypes.Music);
 
             musicViewModel.Configuration = configuration?.GetConfigurationObject<MusicConfiguration>() ?? new MusicConfiguration();
 
@@ -487,9 +491,20 @@ namespace MediaLibrary.WebUI.Controllers
 
         public async Task<IActionResult> GetMusicDirectory(string path)
         {
-            MusicDirectory musicDirectory = await musicService.GetMusicDirectory(path);
+            IActionResult result = default;
 
-            return PartialView("~/Views/Shared/Controls/MusicDirectory.cshtml", musicDirectory);
+            try
+            {
+                MusicDirectory musicDirectory = await musicService.GetMusicDirectory(path);
+
+                result = PartialView("~/Views/Shared/Controls/MusicDirectory.cshtml", musicDirectory);
+            }
+            catch (Exception ex)
+            {
+                result = StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
+            }
+
+            return result;
         }
 
         public async Task<IActionResult> GetDirectorySelector(string path)
@@ -501,17 +516,25 @@ namespace MediaLibrary.WebUI.Controllers
 
         public async Task<bool> IsScanCompleted(int id)
         {
-            return await dataService.Exists<Transaction>(item => item.Id == id && item.Status == (int)TransactionStatus.Completed);
+            return await dataService.Exists<Transaction>(item => item.Id == id && item.Status == TransactionStatus.Completed);
         }
 
         public async Task AddMusicDirectory(string path)
         {
-            ScanDirectoryRequest request = new ScanDirectoryRequest(path);
-            bool pathExists = await dataService.Exists<TrackPath>(item => item.Location == path);
+            Func<DirectoryInfo, bool> canUse = dirInfo => (dirInfo.Attributes & FileAttributes.Hidden) != FileAttributes.Hidden &&
+                                                          (dirInfo.Attributes & FileAttributes.System) != FileAttributes.System;
 
-            if (!pathExists)
+            if (!string.IsNullOrWhiteSpace(path) && Directory.Exists(path))
             {
-                await Scan(request);
+                var directoryInfo =  new DirectoryInfo(path);
+                var request = new ScanDirectoryRequest(directoryInfo.FullName);
+                bool pathExists = directoryInfo != null &&
+                                  await dataService.Exists<TrackPath>(item => item.Location == directoryInfo.FullName);
+
+                if (!pathExists && canUse(directoryInfo))
+                {
+                    await Scan(request);
+                }
             }
         }
 
@@ -524,6 +547,64 @@ namespace MediaLibrary.WebUI.Controllers
                 await dataService.Delete<TrackPath>(id);
                 musicService.ClearData();
             }
+        }
+
+        public async Task<IActionResult> MusicPathValid(string path)
+        {
+            Configuration configuration = await dataService.Get<Configuration>(item => item.Type == ConfigurationTypes.Music);
+            MusicConfiguration musicConfiguration = configuration?.GetConfigurationObject<MusicConfiguration>() ?? new MusicConfiguration();
+            IActionResult result = Ok();
+            Func<DirectoryInfo, bool> canUse = dirInfo => (dirInfo.Attributes & FileAttributes.Hidden) != FileAttributes.Hidden &&
+                                                          (dirInfo.Attributes & FileAttributes.System) != FileAttributes.System;
+            var dirInfos = musicConfiguration.MusicPaths.Select(p => new DirectoryInfo(p));
+            var dirInfo = new DirectoryInfo(path?.Trim() ?? string.Empty);
+
+            if (string.IsNullOrWhiteSpace(path))
+            {
+                result = Ok("Path is missing.");
+            }
+            else if (!Directory.Exists(path))
+            {
+                result = Ok("Path not found/does not exist");
+            }
+            else if (dirInfos.Any(i => i.FullName.Equals(dirInfo.FullName, StringComparison.OrdinalIgnoreCase)))
+            {
+                result = Ok("Path already added.");
+            } 
+            else if (dirInfos.Any(i => dirInfo.FullName.StartsWith(i.FullName, StringComparison.OrdinalIgnoreCase)))
+            {
+                string parentPath = dirInfos.FirstOrDefault(i => dirInfo.FullName.StartsWith(i.FullName, StringComparison.OrdinalIgnoreCase))?.FullName;
+
+                result = Ok($"Path found within '{parentPath}' and cannot be added.");
+            }
+            else if (!canUse(new DirectoryInfo(path)))
+            {
+                result = Ok($"{path} is a hidden or system folder and cannot be used.");
+            }
+
+            return result;
+        }
+
+        public async Task<bool> MusicPathInUse(string path)
+        {
+            Configuration configuration = await dataService.Get<Configuration>(item => item.Type == ConfigurationTypes.Music);
+            MusicConfiguration musicConfiguration = configuration?.GetConfigurationObject<MusicConfiguration>() ?? new MusicConfiguration();
+            var trackPaths = await dataService.GetList<TrackPath>();
+            var dirInfo = new DirectoryInfo(path?.Trim() ?? string.Empty);
+
+            return trackPaths.Select(p => new DirectoryInfo(p.Location))
+                             .Any(p => p.FullName.StartsWith(dirInfo.FullName, StringComparison.OrdinalIgnoreCase));
+        }
+
+        private IEnumerable<string> ValidateMusicPaths(IEnumerable<string> paths)
+        {
+            paths ??= Enumerable.Empty<string>();
+
+            return paths.Where(path => !paths.Where(_path => !string.IsNullOrWhiteSpace(_path) &&
+                                                             !_path.Equals(path, StringComparison.OrdinalIgnoreCase))
+                                             .Any(_path => path.StartsWith(_path, StringComparison.OrdinalIgnoreCase)))
+                        .OrderBy(path => path)
+                        .Distinct();
         }
     }
 }

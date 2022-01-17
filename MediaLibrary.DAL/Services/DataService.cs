@@ -23,32 +23,25 @@ namespace MediaLibrary.DAL.Services
     {
         private int timeout;
         private readonly IConfiguration configuration;
+        private readonly IDbContextFactory<MediaLibraryEntities> dbContextFactory;
 
-        public DataService(IConfiguration configuration)
+        public DataService(IConfiguration configuration, IDbContextFactory<MediaLibraryEntities> dbContextFactory)
         {
             timeout = 120;
             this.configuration = configuration;
-        }
-
-        private MediaLibraryEntities GetMediaLibraryEntities()
-        {
-            DbContextOptionsBuilder<MediaLibraryEntities> optionsBuilder = new DbContextOptionsBuilder<MediaLibraryEntities>();
-
-            optionsBuilder.UseSqlServer(configuration["ConnectionStrings:MediaLibrary"]);
-
-            return new MediaLibraryEntities(optionsBuilder.Options);
+            this.dbContextFactory = dbContextFactory;
         }
 
         public string GetDbServer()
         {
-            SqlConnectionStringBuilder builder = new SqlConnectionStringBuilder(configuration["ConnectionStrings:MediaLibrary"]);
+            SqlConnectionStringBuilder builder = new SqlConnectionStringBuilder(configuration.GetConnectionString("MediaLibrary"));
 
             return builder.DataSource;
         }
 
         public string GetDbName()
         {
-            SqlConnectionStringBuilder builder = new SqlConnectionStringBuilder(configuration["ConnectionStrings:MediaLibrary"]);
+            SqlConnectionStringBuilder builder = new SqlConnectionStringBuilder(configuration.GetConnectionString("MediaLibrary"));
 
             return builder.InitialCatalog;
         }
@@ -59,7 +52,7 @@ namespace MediaLibrary.DAL.Services
         {
             IEnumerable<T> results = Enumerable.Empty<T>();
 
-            using (var db = GetMediaLibraryEntities())
+            using (var db = dbContextFactory.CreateDbContext())
             {
                 IQueryable<T> query = db.Set<T>();
 
@@ -82,7 +75,7 @@ namespace MediaLibrary.DAL.Services
         {
             T result = default(T);
 
-            using (var db = GetMediaLibraryEntities())
+            using (var db = dbContextFactory.CreateDbContext())
             {
                 IQueryable<T> query = db.Set<T>();
 
@@ -105,7 +98,7 @@ namespace MediaLibrary.DAL.Services
         {
             IEnumerable<T> results = Enumerable.Empty<T>();
 
-            using (var db = GetMediaLibraryEntities())
+            using (var db = dbContextFactory.CreateDbContext())
             {
                 IQueryable<T> query = db.Set<T>();
 
@@ -128,7 +121,7 @@ namespace MediaLibrary.DAL.Services
         {
             T result = default(T);
 
-            using (var db = GetMediaLibraryEntities())
+            using (var db = dbContextFactory.CreateDbContext())
             {
                 IQueryable<T> query = db.Set<T>();
 
@@ -149,7 +142,7 @@ namespace MediaLibrary.DAL.Services
         {
             int result = default(int);
 
-            using (var db = GetMediaLibraryEntities())
+            using (var db = dbContextFactory.CreateDbContext())
             {
                 db.Database.SetCommandTimeout(timeout);
                 entity.ModifyDate = DateTime.Now;
@@ -166,7 +159,7 @@ namespace MediaLibrary.DAL.Services
             int result = default(int);
             IList<T> items = entities.ToList();
 
-            using (var db = GetMediaLibraryEntities())
+            using (var db = dbContextFactory.CreateDbContext())
             {
                 foreach (var item in items)
                 {
@@ -186,7 +179,7 @@ namespace MediaLibrary.DAL.Services
         {
             int result = default(int);
 
-            using (var db = GetMediaLibraryEntities())
+            using (var db = dbContextFactory.CreateDbContext())
             {
                 DbSet<T> set = null;
                 T entity = null;
@@ -212,7 +205,7 @@ namespace MediaLibrary.DAL.Services
 
             if (expression != null)
             {
-                using (var db = GetMediaLibraryEntities())
+                using (var db = dbContextFactory.CreateDbContext())
                 {
                     DbSet<T> set = null;
 
@@ -234,7 +227,7 @@ namespace MediaLibrary.DAL.Services
         {
             int result = default(int);
 
-            using (var db = GetMediaLibraryEntities())
+            using (var db = dbContextFactory.CreateDbContext())
             {
                 db.Database.SetCommandTimeout(timeout);
                 entity.ModifyDate = DateTime.Now;
@@ -249,7 +242,7 @@ namespace MediaLibrary.DAL.Services
         {
             int result = default(int);
 
-            using (var db = GetMediaLibraryEntities())
+            using (var db = dbContextFactory.CreateDbContext())
             {
                 db.Database.SetCommandTimeout(timeout);
                 result = expression != null ? await db.Set<T>().CountAsync(expression, token) : await db.Set<T>().CountAsync(token);
@@ -262,7 +255,7 @@ namespace MediaLibrary.DAL.Services
         {
             bool result = default(bool);
 
-            using (var db = GetMediaLibraryEntities())
+            using (var db = dbContextFactory.CreateDbContext())
             {
                 db.Database.SetCommandTimeout(timeout);
                 result = (expression != null ? await db.Set<T>().FirstOrDefaultAsync(expression, token) : await db.Set<T>().FirstOrDefaultAsync(token)) != null;
@@ -275,7 +268,7 @@ namespace MediaLibrary.DAL.Services
         {
             int result = default(int);
 
-            using (var db = GetMediaLibraryEntities())
+            using (var db = dbContextFactory.CreateDbContext())
             {
                 db.Database.SetCommandTimeout(timeout);
                 result = await db.Database.ExecuteSqlRawAsync(sql, token, parameters);

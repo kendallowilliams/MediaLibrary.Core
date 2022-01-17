@@ -191,7 +191,8 @@ export default class MediaLibrary extends BaseClass {
         $(HtmlControls.Containers().NavBarContainer).collapse('hide');
         this.mediaLibraryConfiguration.properties.SelectedMediaPage = mediaPage;
         this.disableNavItem(getMediaPagesEnumString(mediaPage));
-        this.mediaLibraryConfiguration.updateConfiguration(() => {
+        this.mediaLibraryConfiguration.updateConfiguration()
+            .then(() => {
             this.prepareViews();
             this.showMainView(mediaPage);
 

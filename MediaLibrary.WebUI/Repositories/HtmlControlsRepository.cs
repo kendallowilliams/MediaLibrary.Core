@@ -74,6 +74,7 @@ namespace MediaLibrary.WebUI.Repositories
         public static string MusicTabListId { get => "music-tab-list"; }
         public static string PlaylistTabListId { get => "playlist-tab-list"; }
         public static string SearchQueryId { get => "search-query"; }
+        public static string StringListsClass { get => "string-list"; }
         #endregion UI Control Ids
 
         #region UI Field Ids
@@ -97,6 +98,7 @@ namespace MediaLibrary.WebUI.Repositories
         public static string AlertModalId { get => "alert-modal"; }
         public static string WarningModalId { get => "warning-modal"; }
         public static string SettingsModalId { get => "settings-modal"; }
+        public static string QuestionModalId { get => "question-modal"; }
         #endregion Modal Ids
     }
 }

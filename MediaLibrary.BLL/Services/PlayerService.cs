@@ -118,7 +118,7 @@ namespace MediaLibrary.BLL.Services
             IEnumerable<int> ids = Enumerable.Empty<int>();
             IEnumerable<Track> songs = Enumerable.Empty<Track>();
             IEnumerable<IListItem<int, int>> items = Enumerable.Empty<IListItem<int, int>>(); 
-            Configuration configuration = await dataService.Get<Configuration>(item => item.Type == nameof(MediaPages.Player));
+            Configuration configuration = await dataService.Get<Configuration>(item => item.Type == ConfigurationTypes.Player);
 
             if (configuration != null)
             {
@@ -138,7 +138,7 @@ namespace MediaLibrary.BLL.Services
             IEnumerable<int> ids = Enumerable.Empty<int>();
             IEnumerable<IListItem<int, int>> items = Enumerable.Empty<IListItem<int, int>>();
             IEnumerable<PodcastItem> podcastItems = Enumerable.Empty<PodcastItem>();
-            Configuration configuration = await dataService.Get<Configuration>(item => item.Type == nameof(MediaPages.Player));
+            Configuration configuration = await dataService.Get<Configuration>(item => item.Type == ConfigurationTypes.Player);
 
             if (configuration != null)
             {
@@ -158,7 +158,7 @@ namespace MediaLibrary.BLL.Services
             IEnumerable<int> ids = Enumerable.Empty<int>();
             IEnumerable<IListItem<int, int>> items = Enumerable.Empty<IListItem<int, int>>();
             IEnumerable<Episode> episodes = Enumerable.Empty<Episode>();
-            Configuration configuration = await dataService.Get<Configuration>(item => item.Type == nameof(MediaPages.Player));
+            Configuration configuration = await dataService.Get<Configuration>(item => item.Type == ConfigurationTypes.Player);
 
             if (configuration != null)
             {

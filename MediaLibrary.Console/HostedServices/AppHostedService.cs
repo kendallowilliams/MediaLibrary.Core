@@ -12,19 +12,16 @@ namespace MediaLibrary.Console.HostedServices
 {
     public class AppHostedService : IHostedService
     {
-        private readonly IHostApplicationLifetime appLifetime;
         private readonly IProcessorService processorService;
 
-        public AppHostedService(IProcessorService processorService, IHostApplicationLifetime appLifetime)
+        public AppHostedService(IProcessorService processorService)
         {
-            this.appLifetime = appLifetime;
             this.processorService = processorService;
         }
 
         public async Task StartAsync(CancellationToken cancellationToken)
         {
             await Task.WhenAll(processorService.RefreshMusic(), processorService.RefreshPodcasts(), processorService.PerformCleanup());
-            appLifetime.StopApplication();
         }
 
         public async Task StopAsync(CancellationToken cancellationToken)

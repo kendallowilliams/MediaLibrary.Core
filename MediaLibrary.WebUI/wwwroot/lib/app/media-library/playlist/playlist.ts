@@ -64,14 +64,16 @@ export default class Playlist extends BaseClass implements IView {
             }else if (sortType === 'SelectedTelevisionPlaylistSort') {
                 this.playlistConfiguration.properties.SelectedTelevisionPlaylistSort = getPlaylistSortEnum($target.val() as string);
             }
-            this.playlistConfiguration.updateConfiguration(() => this.loadView(() => LoadingModal.hideLoading()));
+            this.playlistConfiguration.updateConfiguration()
+                .then(() => this.loadView(() => LoadingModal.hideLoading()));
         });
 
         $(this.mediaView).find('*[data-playlist-id]').on('click', e => {
             LoadingModal.showLoading();
             this.playlistConfiguration.properties.SelectedPlaylistId = parseInt($(e.currentTarget).attr('data-playlist-id'));
             this.playlistConfiguration.properties.SelectedPlaylistPage = PlaylistPages.Playlist;
-            this.playlistConfiguration.updateConfiguration(() => this.loadView(() => LoadingModal.hideLoading()));
+            this.playlistConfiguration.updateConfiguration()
+                .then(() => this.loadView(() => LoadingModal.hideLoading()));
         });
 
         $(this.mediaView).find('*[data-playlist-action="remove-item"]').on('click', e => {
@@ -126,7 +128,8 @@ export default class Playlist extends BaseClass implements IView {
     private goBack(callback: () => void = () => null): void {
         this.playlistConfiguration.properties.SelectedPlaylistId = 0;
         this.playlistConfiguration.properties.SelectedPlaylistPage = PlaylistPages.Index;
-        this.playlistConfiguration.updateConfiguration(callback);
+        this.playlistConfiguration.updateConfiguration()
+            .then(() => callback());
     }
 
     private applyLoadFunctions(): void {

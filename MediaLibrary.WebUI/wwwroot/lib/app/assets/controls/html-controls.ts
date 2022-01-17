@@ -61,7 +61,8 @@
         PlayerSliders: document.getElementsByClassName('player-slider'),
         VolumeSliders: document.getElementsByClassName('volume-slider'),
         PlayerTimes: document.getElementsByClassName('player-time'),
-        PlayerShortTimes: document.getElementsByClassName('player-short-time')
+        PlayerShortTimes: document.getElementsByClassName('player-short-time'),
+        StringLists: document.getElementsByClassName('string-list')
     }),
     UIFields: () => ({
         NowPlayingTitle: document.getElementById('player-title')
@@ -80,6 +81,7 @@
         ErrorModal: document.getElementById('error-modal'),
         ConfirmModal: document.getElementById('confirm-modal'),
         WarningModal: document.getElementById('warning-modal'),
-        SettingsModal: document.getElementById('settings-modal')
+        SettingsModal: document.getElementById('settings-modal'),
+        QuestionModal: document.getElementById('question-modal')
     })
 }

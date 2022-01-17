@@ -37,11 +37,11 @@
     <div class="card flex-fill" style="overflow-y: auto">
         <div class="card-header p-0" id="heading-playlist-@(Model.SelectedPlaylist.Id)">
             <h5 class="mb-0">
-                @if (Model.SelectedPlaylist.Type == (int)Enums.PlaylistTabs.Music)
+                @if (Model.SelectedPlaylist.Type == Enums.PlaylistTypes.Music)
                 { <button class="btn btn-sm btn-link">Songs</button> }
-                else if (Model.SelectedPlaylist.Type == (int)Enums.PlaylistTabs.Podcast)
+                else if (Model.SelectedPlaylist.Type == Enums.PlaylistTypes.Podcast)
                 { <button class="btn btn-sm btn-link">Episodes</button> }
-                else if (Model.SelectedPlaylist.Type == (int)Enums.PlaylistTabs.Television)
+                else if (Model.SelectedPlaylist.Type == Enums.PlaylistTypes.Television)
                 { <button class="btn btn-sm btn-link">Episodes</button> }
             </h5>
         </div>
@@ -144,11 +144,11 @@
             }
             else
             {
-                if (Model.SelectedPlaylist.Type == (int)Enums.PlaylistTabs.Music)
+                if (Model.SelectedPlaylist.Type == Enums.PlaylistTypes.Music)
                 {<span>No songs added.</span> }
-                else if (Model.SelectedPlaylist.Type == (int)Enums.PlaylistTabs.Podcast)
+                else if (Model.SelectedPlaylist.Type == Enums.PlaylistTypes.Podcast)
                 { <span>No episodes added.</span> }
-                else if (Model.SelectedPlaylist.Type == (int)Enums.PlaylistTabs.Television)
+                else if (Model.SelectedPlaylist.Type == Enums.PlaylistTypes.Television)
                 { <span>No episodes added.</span>}
             }
         </div>

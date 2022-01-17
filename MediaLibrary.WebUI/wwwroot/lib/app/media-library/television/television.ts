@@ -43,7 +43,8 @@ export default class Television extends BaseClass implements IView {
             LoadingModal.showLoading();
             this.televisionConfiguration.properties.SelectedSeriesId = parseInt($(e.currentTarget).attr('data-series-id'));
             this.televisionConfiguration.properties.SelectedTelevisionPage = TelevisionPages.Series;
-            this.televisionConfiguration.updateConfiguration(() => this.loadView(() => LoadingModal.hideLoading()));
+            this.televisionConfiguration.updateConfiguration()
+                .then(() => this.loadView(() => LoadingModal.hideLoading()));
         });
 
         $(this.mediaView).find('*[data-series-action="playlist"]').on('click', e => {
@@ -86,7 +87,8 @@ export default class Television extends BaseClass implements IView {
         if (Number.isInteger(id)) {
             this.televisionConfiguration.properties.SelectedTelevisionPage = TelevisionPages.Series;
             this.televisionConfiguration.properties.SelectedSeriesId = id;
-            this.televisionConfiguration.updateConfiguration(callback);
+            this.televisionConfiguration.updateConfiguration()
+                .then(() => callback());
         }
     }
 
@@ -117,6 +119,7 @@ export default class Television extends BaseClass implements IView {
     private goBack(callback: () => void = () => null): void {
         this.televisionConfiguration.properties.SelectedSeriesId = 0;
         this.televisionConfiguration.properties.SelectedTelevisionPage = TelevisionPages.Index;
-        this.televisionConfiguration.updateConfiguration(callback);
+        this.televisionConfiguration.updateConfiguration()
+            .then(() => callback());
     }
 }

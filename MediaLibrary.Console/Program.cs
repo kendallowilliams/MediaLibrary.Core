@@ -8,6 +8,7 @@ using Microsoft.Extensions.Hosting;
 using System;
 using System.IO;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Configuration;
 
 namespace MediaLibrary.Console
 {
@@ -16,14 +17,18 @@ namespace MediaLibrary.Console
         static async Task Main(string[] args)
         {
             await Host.CreateDefaultBuilder(args)
+                      .ConfigureAppConfiguration(builder =>
+                      { 
+                          builder.AddCommandLine(args);
+                      })
                       .ConfigureServices((context, services) => 
                       {
                           services.AddMemoryCache();
                           services.AddHostedService<AppHostedService>();
-                          services.ConfigureServices();
+                          services.ConfigureServices(context.Configuration);
                       })
-                      .Build()
-                      .RunAsync();
+                      .UseConsoleLifetime()
+                      .StartAsync();
         }
     }
 }

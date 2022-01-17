@@ -90,7 +90,8 @@ export default class PlayerControls {
 
             this.controlsFunctions.setUnPlayedShuffleIds(!shuffle);
             this.playerConfiguration.properties.Shuffle = !shuffle;
-            this.playerConfiguration.updateConfiguration(() => {
+            this.playerConfiguration.updateConfiguration().
+                then(() => {
                 if (!shuffle) {
                     $btns.addClass('active');
                 } else {
@@ -116,7 +117,8 @@ export default class PlayerControls {
             }
 
             this.playerConfiguration.properties.Muted = muted;
-            this.playerConfiguration.updateConfiguration(() => this.controlsFunctions.mutePlayers(muted));
+            this.playerConfiguration.updateConfiguration()
+                .then(() => this.controlsFunctions.mutePlayers(muted));
         });
         $('button[data-repeat-type]').on('click', () => {
             let repeat = this.playerConfiguration.properties.Repeat;
@@ -133,7 +135,8 @@ export default class PlayerControls {
 
             $('button[data-repeat-type="' + getRepeatTypesEnumString(repeat) + '"]').removeClass('d-none');
             this.playerConfiguration.properties.Repeat = repeat;
-            this.playerConfiguration.updateConfiguration(() => this.enableDisablePreviousNext());
+            this.playerConfiguration.updateConfiguration()
+                .then(() => this.enableDisablePreviousNext());
         });
     }
 

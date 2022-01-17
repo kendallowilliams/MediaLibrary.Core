@@ -7,7 +7,7 @@ export default class TelevisionConfiguration extends BaseConfiguration<ITelevisi
         this.properties = properties;
     }
 
-    updateConfiguration(callback: () => void = () => null): void {
-        super.update<ITelevisionConfiguration>(this.properties, callback);
+    updateConfiguration(): Promise<Response> {
+        return super.update<ITelevisionConfiguration>(this.properties);
     }
 }

@@ -22,7 +22,8 @@ export default class Search extends BaseClass {
     initializeControls(): void {
         $('[data-back-button="search"]').on('click', () => {
             this.musicConfiguration.properties.PreviousSearchQuery = '';
-            this.musicConfiguration.updateConfiguration(() => this.goBack(this.reload));
+            this.musicConfiguration.updateConfiguration()
+                .then(() => this.goBack(this.reload));
         });
         $('[data-music-action="search-music"]').on('click', this.search.bind(this));
         $(HtmlControls.UIControls().SearchQuery).on('input', () => {
@@ -38,18 +39,21 @@ export default class Search extends BaseClass {
 
     loadSearch(callback: () => void = () => null): void {
         this.musicConfiguration.properties.SelectedMusicPage = MusicPages.Search;
-        this.musicConfiguration.updateConfiguration(callback);
+        this.musicConfiguration.updateConfiguration()
+            .then(() => callback());
     }
 
     private goBack(callback: () => void = () => null): void {
         this.musicConfiguration.properties.SelectedMusicPage = MusicPages.Index;
-        this.musicConfiguration.updateConfiguration(callback);
+        this.musicConfiguration.updateConfiguration()
+            .then(() => callback());
     }
 
     private _loadAlbum(id: number) {
         LoadingModal.showLoading();
         this.musicConfiguration.properties.PreviousSearchQuery = '';
-        this.musicConfiguration.updateConfiguration(() => {
+        this.musicConfiguration.updateConfiguration()
+            .then(() => {
             this.loadAlbum(id, this.reload);
             LoadingModal.hideLoading();
         });
@@ -58,7 +62,8 @@ export default class Search extends BaseClass {
     private _loadArtist(id: number) {
         LoadingModal.showLoading();
         this.musicConfiguration.properties.PreviousSearchQuery = '';
-        this.musicConfiguration.updateConfiguration(() => {
+        this.musicConfiguration.updateConfiguration()
+            .then(() => {
             this.loadArtist(id, this.reload);
             LoadingModal.hideLoading();
         });
@@ -85,7 +90,8 @@ export default class Search extends BaseClass {
             LoadingModal.showLoading();
 
             this.musicConfiguration.properties.PreviousSearchQuery = query;
-            this.musicConfiguration.updateConfiguration(() => {
+            this.musicConfiguration.updateConfiguration()
+                .then(() => {
                 Promise.all([
                     loadHTML(containers.SearchAlbumsContainer, 'Music/SearchAlbums', { query: query }),
                     loadHTML(containers.SearchArtistsContainer, 'Music/SearchArtists', { query: query }),
@@ -106,7 +112,8 @@ export default class Search extends BaseClass {
         } else {
             LoadingModal.showLoading();
             this.musicConfiguration.properties.PreviousSearchQuery = '';
-            this.musicConfiguration.updateConfiguration(() => {
+            this.musicConfiguration.updateConfiguration()
+                .then(() => {
                 $(containers.SearchAlbumsContainer).html('<div>No albums.</div>');
                 $(containers.SearchArtistsContainer).html('<div>No artists.</div>');
                 $(containers.SearchSongsContainer).html('<div>No songs.</div>');

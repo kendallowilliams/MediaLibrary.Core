@@ -13,9 +13,9 @@ namespace MediaLibrary.BLL.Services.Interfaces
 
         string RootFolder { get; }
 
-        Task Write(string path, string data);
+        void Write(string path, string data);
 
-        Task Write(string path, byte[] data);
+        void Write(string path, byte[] data);
 
         Task ReadDirectory(Transaction transaction, string path, bool recursive = false);
 

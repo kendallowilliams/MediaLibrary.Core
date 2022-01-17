@@ -1,23 +1,26 @@
 ﻿@model MediaLibrary.WebUI.Models.MusicViewModel
 
+@{
+}
+
 <div class="d-flex flex-column flex-fill" style="overflow-y: auto">
     <div>
         <h4>Music</h4>
         <div class="d-flex p-1" id="@(HtmlControlsRepository.MusicTabListId)">
             <div class="nav d-block flex-fill" role="tablist">
                 <a class="btn btn-sm btn-outline-secondary" id="@(HtmlControlsRepository.AlbumsContainerId)-tab" data-toggle="tab"
-                   role="tab" title="@(nameof(Enums.MusicTabs.Albums))" data-music-tab="@(nameof(Enums.MusicTabs.Albums))"
-                   data-tooltip="tooltip" href="#@(HtmlControlsRepository.AlbumsContainerId)">
+                    role="tab" title="@(nameof(Enums.MusicTabs.Albums))" data-music-tab="@(nameof(Enums.MusicTabs.Albums))"
+                    data-tooltip="tooltip" href="#@(HtmlControlsRepository.AlbumsContainerId)">
                     <i class="fa fa-compact-disc"></i>
                 </a>
                 <a class="btn btn-sm btn-outline-secondary" id="@(HtmlControlsRepository.ArtistsContainerId)-tab" data-toggle="tab"
-                   role="tab" title="@(nameof(Enums.MusicTabs.Artists))" data-music-tab="@(nameof(Enums.MusicTabs.Artists))"
-                   data-tooltip="tooltip" href="#@(HtmlControlsRepository.ArtistsContainerId)">
+                    role="tab" title="@(nameof(Enums.MusicTabs.Artists))" data-music-tab="@(nameof(Enums.MusicTabs.Artists))"
+                    data-tooltip="tooltip" href="#@(HtmlControlsRepository.ArtistsContainerId)">
                     <i class="fa fa-user"></i>
                 </a>
                 <a class="btn btn-sm btn-outline-secondary" id="@(HtmlControlsRepository.SongsContainerId)-tab" data-toggle="tab"
-                   role="tab" title="@(nameof(Enums.MusicTabs.Songs))" data-music-tab="@(nameof(Enums.MusicTabs.Songs))"
-                   data-tooltip="tooltip" href="#@(HtmlControlsRepository.SongsContainerId)">
+                    role="tab" title="@(nameof(Enums.MusicTabs.Songs))" data-music-tab="@(nameof(Enums.MusicTabs.Songs))"
+                    data-tooltip="tooltip" href="#@(HtmlControlsRepository.SongsContainerId)">
                     <i class="fa fa-music"></i>
                 </a>
             </div>

@@ -39,7 +39,7 @@ namespace MediaLibrary.WebUI.Controllers
         public async Task<IActionResult> Index()
         {
             IActionResult result = null;
-            Configuration configuration = await dataService.Get<Configuration>(item => item.Type == nameof(MediaPages.Playlist));
+            Configuration configuration = await dataService.Get<Configuration>(item => item.Type == ConfigurationTypes.Playlist);
 
             playlistViewModel.Configuration = configuration?.GetConfigurationObject<PlaylistConfiguration>() ?? new PlaylistConfiguration();
 
@@ -58,19 +58,19 @@ namespace MediaLibrary.WebUI.Controllers
             return result;
         }
 
-        public async Task<IActionResult> PlaylistList(PlaylistTabs type)
+        public async Task<IActionResult> PlaylistList(PlaylistTypes type)
         {
-            IEnumerable<Playlist> playlists = await dataService.GetList<Playlist>(item => item.Type == (int)type);
+            IEnumerable<Playlist> playlists = await dataService.GetList<Playlist>(item => item.Type == type);
 
             return PartialView(playlists);
         }
 
-        public async Task AddPlaylist(string playlistName, PlaylistTabs playlistType)
+        public async Task AddPlaylist(string playlistName, PlaylistTypes playlistType)
         {
             if (!string.IsNullOrWhiteSpace(playlistName))
             {
-                Playlist playlist = new Playlist(playlistName) { Type = (int)playlistType };
-                Configuration configuration = await dataService.Get<Configuration>(item => item.Type == nameof(MediaPages.Playlist));
+                Playlist playlist = new Playlist(playlistName) { Type = playlistType };
+                Configuration configuration = await dataService.Get<Configuration>(item => item.Type == ConfigurationTypes.Playlist);
 
                 await dataService.Insert(playlist);
 
@@ -87,7 +87,7 @@ namespace MediaLibrary.WebUI.Controllers
 
         public async Task RemovePlaylist(int id)
         {
-            Configuration configuration = await dataService.Get<Configuration>(item => item.Type == nameof(MediaPages.Playlist));
+            Configuration configuration = await dataService.Get<Configuration>(item => item.Type == ConfigurationTypes.Playlist);
             
             await dataService.Delete<Playlist>(id);
 
@@ -200,11 +200,11 @@ namespace MediaLibrary.WebUI.Controllers
         {
             if (ModelState.IsValid)
             {
-                Configuration configuration = await dataService.Get<Configuration>(item => item.Type == nameof(MediaPages.Playlist));
+                Configuration configuration = await dataService.Get<Configuration>(item => item.Type == ConfigurationTypes.Playlist);
 
                 if (configuration == null)
                 {
-                    configuration = new Configuration() { Type = nameof(MediaPages.Playlist), JsonData = JsonConvert.SerializeObject(playlistConfiguration) };
+                    configuration = new Configuration() { Type = ConfigurationTypes.Playlist, JsonData = JsonConvert.SerializeObject(playlistConfiguration) };
                     await dataService.Insert(configuration);
                 }
                 else
@@ -219,7 +219,7 @@ namespace MediaLibrary.WebUI.Controllers
 
         public async Task<IActionResult> PlaylistConfiguration()
         {
-            Configuration configuration = await dataService.Get<Configuration>(item => item.Type == nameof(MediaPages.Playlist));
+            Configuration configuration = await dataService.Get<Configuration>(item => item.Type == ConfigurationTypes.Playlist);
 
             playlistViewModel.Configuration = configuration?.GetConfigurationObject<PlaylistConfiguration>() ?? new PlaylistConfiguration();
 

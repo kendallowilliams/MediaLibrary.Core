@@ -7,11 +7,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static MediaLibrary.Shared.Enums;
 
 namespace MediaLibrary.DAL.Models
 {
     public partial class Configuration : IDataModel
     {
+        public ConfigurationTypes Type { get; set; }
+
         public T GetConfigurationObject<T>() where T: IConfiguration, new()
         {
             return !string.IsNullOrWhiteSpace(JsonData) ? JsonConvert.DeserializeObject<T>(JsonData) : new T();

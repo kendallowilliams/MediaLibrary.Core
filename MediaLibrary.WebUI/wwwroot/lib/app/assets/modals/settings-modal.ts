@@ -3,17 +3,19 @@ import { getAlbumSortEnum, getAppWidthEnum, getArtistSortEnum, getPlaylistSortEn
 import { MediaPages, MessageBoxConfirmType } from "../enums/enums";
 import IConfigurations from "../interfaces/configurations-interface";
 import ISettingsReloadFunctions from "../interfaces/settings-reload-functions";
-import { fetch_post } from "../utilities/fetch_service";
+import { fetch_get, fetch_post } from "../utilities/fetch_service";
 import * as MessageBox from "../../assets/utilities/message-box";
 import LoadingModal from "../../assets/modals/loading-modal";
 import AddNewSongModal from "./add-song-modal";
 import ManageDirectoriesModal from "./manage-directories-modal";
+import StringList from "../controls/string-list";
 
 export default class SettingsModal {
     private modal: HTMLElement;
     private autoHideTimeOut: number;
     private addNewSongModal: AddNewSongModal;
     private manageDirectoriesModal: ManageDirectoriesModal;
+    private stringList: StringList;
 
     constructor(private configurations: IConfigurations, private settingsLoadFunctions: ISettingsReloadFunctions) {
         const tooltipsEnabled = () => this.configurations.MediaLibary.properties.TooltipsEnabled;
@@ -29,17 +31,25 @@ export default class SettingsModal {
     }
 
     private initializeControls(): void {
-        const $modalBody = $(this.modal).find('.modal-body');
+        const $modalBody = $(this.modal).find('.modal-body'),
+            stringListElement = $modalBody.find('.string-list').get(0);
 
+        this.stringList = new StringList(stringListElement,
+            this.configurations.Music.properties.MusicPaths,
+            (list: string[], hasChanged: boolean) => this.updateMusicPaths(list, hasChanged),
+            (list: string[], hasChanged: boolean) => this.updateMusicPaths(list, hasChanged),
+            item => this.checkPathValid(item),
+            item => this.musicPathInUse(item).then(inUse => !inUse));
         $(this.modal).on('show.bs.modal', e => {
             const mediaPage = this.configurations.MediaLibary.properties.SelectedMediaPage,
                 containers = HtmlControls.Containers(),
-                settingsContainers = [containers.GeneralSettingsContainer,
-                containers.MusicSettingsContainer,
-                containers.PlayerSettingsContainer,
-                containers.PlaylistSettingsContainer,
-                containers.PodcastSettingsContainer,
-                containers.TelevisionSettingsContainer
+                settingsContainers = [
+                    containers.GeneralSettingsContainer,
+                    containers.MusicSettingsContainer,
+                    containers.PlayerSettingsContainer,
+                    containers.PlaylistSettingsContainer,
+                    containers.PodcastSettingsContainer,
+                    containers.TelevisionSettingsContainer
                 ];
 
             $(settingsContainers).addClass('d-none');
@@ -60,7 +70,6 @@ export default class SettingsModal {
                 $(containers.TelevisionSettingsContainer).removeClass('d-none');
             }
         });
-
         $modalBody.find('select[name="AppWidth"]').on('change', e => {
             const width = $(e.currentTarget).val() as string;
 
@@ -86,28 +95,32 @@ export default class SettingsModal {
             const sort = $(e.currentTarget).val() as string;
 
             this.configurations.Music.properties.SelectedAlbumSort = getAlbumSortEnum(sort);
-            this.configurations.Music.updateConfiguration(() => this.settingsLoadFunctions.loadMusic());
+            this.configurations.Music.updateConfiguration()
+                .then(() => this.settingsLoadFunctions.loadMusic());
             this.autoCloseModal();
         });
         $modalBody.find('select[name="SelectedArtistSort"]').on('change', e => {
             const sort = $(e.currentTarget).val() as string;
 
             this.configurations.Music.properties.SelectedArtistSort = getArtistSortEnum(sort);
-            this.configurations.Music.updateConfiguration(() => this.settingsLoadFunctions.loadMusic());
+            this.configurations.Music.updateConfiguration()
+                .then(() => this.settingsLoadFunctions.loadMusic());
             this.autoCloseModal();
         });
         $modalBody.find('select[name="SelectedSongSort"]').on('change', e => {
             const sort = $(e.currentTarget).val() as string;
 
             this.configurations.Music.properties.SelectedSongSort = getSongSortEnum(sort);
-            this.configurations.Music.updateConfiguration(() => this.settingsLoadFunctions.loadMusic());
+            this.configurations.Music.updateConfiguration()
+                .then(() => this.settingsLoadFunctions.loadMusic());
             this.autoCloseModal();
         });
         $modalBody.find('input[name="MaxSystemPlaylistItems"]').on('change', e => {
             const max = parseInt($(e.currentTarget).val() as string);
 
             this.configurations.Playlist.properties.MaxSystemPlaylistItems = max;
-            this.configurations.Playlist.updateConfiguration(() => this.settingsLoadFunctions.loadPlaylist());
+            this.configurations.Playlist.updateConfiguration()
+                .then(() => this.settingsLoadFunctions.loadPlaylist());
             this.autoCloseModal();
         });
         $modalBody.find('input[name="SkipBackwardSeconds"]').on('change', e => {
@@ -149,42 +162,48 @@ export default class SettingsModal {
             const sort = $(e.currentTarget).val() as string;
 
             this.configurations.Television.properties.SelectedSeriesSort = getSeriesSortEnum(sort);
-            this.configurations.Television.updateConfiguration(() => this.settingsLoadFunctions.loadTelevision());
+            this.configurations.Television.updateConfiguration()
+                .then(() => this.settingsLoadFunctions.loadTelevision());
             this.autoCloseModal();
         });
         $modalBody.find('select[name="SelectedTelevisionPlaylistSort"]').on('change', e => {
             const sort = $(e.currentTarget).val() as string;
 
             this.configurations.Playlist.properties.SelectedTelevisionPlaylistSort = getPlaylistSortEnum(sort);
-            this.configurations.Playlist.updateConfiguration(() => this.settingsLoadFunctions.loadPlaylist());
+            this.configurations.Playlist.updateConfiguration()
+                .then(() => this.settingsLoadFunctions.loadPlaylist());
             this.autoCloseModal();
         });
         $modalBody.find('select[name="SelectedPodcastPlaylistSort"]').on('change', e => {
             const sort = $(e.currentTarget).val() as string;
 
             this.configurations.Playlist.properties.SelectedPodcastPlaylistSort = getPlaylistSortEnum(sort);
-            this.configurations.Playlist.updateConfiguration(() => this.settingsLoadFunctions.loadPlaylist());
+            this.configurations.Playlist.updateConfiguration()
+                .then(() => this.settingsLoadFunctions.loadPlaylist());
             this.autoCloseModal();
         });
         $modalBody.find('select[name="SelectedMusicPlaylistSort"]').on('change', e => {
             const sort = $(e.currentTarget).val() as string;
 
             this.configurations.Playlist.properties.SelectedMusicPlaylistSort = getPlaylistSortEnum(sort);
-            this.configurations.Playlist.updateConfiguration(() => this.settingsLoadFunctions.loadPlaylist());
+            this.configurations.Playlist.updateConfiguration()
+                .then(() => this.settingsLoadFunctions.loadPlaylist());
             this.autoCloseModal();
         });
         $modalBody.find('select[name="SelectedPodcastSort"]').on('change', e => {
             const sort = $(e.currentTarget).val() as string;
 
             this.configurations.Podcast.properties.SelectedPodcastSort = getPodcastSortEnum(sort);
-            this.configurations.Podcast.updateConfiguration(() => this.settingsLoadFunctions.loadPodcast());
+            this.configurations.Podcast.updateConfiguration()
+                .then(() => this.settingsLoadFunctions.loadPodcast());
             this.autoCloseModal();
         });
         $modalBody.find('select[name="SelectedPodcastFilter"]').on('change', e => {
             const filter = $(e.currentTarget).val() as string;
 
             this.configurations.Podcast.properties.SelectedPodcastFilter = getPodcastFilterEnum(filter);
-            this.configurations.Podcast.updateConfiguration(() => this.settingsLoadFunctions.loadPodcast());
+            this.configurations.Podcast.updateConfiguration()
+                .then(() => this.settingsLoadFunctions.loadPodcast());
             this.autoCloseModal();
         });
 
@@ -222,5 +241,54 @@ export default class SettingsModal {
 
     public hide(): void {
         $(this.modal).modal('hide');
+    }
+
+    private updateMusicPaths(list: string[] = [], hasChanged: boolean = false): void {
+        if (hasChanged) {
+            this.configurations.Music.properties.MusicPaths = list;
+            this.configurations.Music.updateConfiguration()
+                .then(() => this.configurations.Music.refresh())
+                .then(() => this.stringList.load(this.configurations.Music.properties.MusicPaths));
+            this.autoCloseModal();
+        }
+    }
+
+    private checkPathValid(path: string): Promise<boolean> {
+        let promise: Promise<boolean> = Promise.resolve(false);
+
+        if (path.trim()) {
+            LoadingModal.showLoading();
+            promise = fetch_get('Music/MusicPathValid', { path: path })
+                .then(response => response.text())
+                .then(message => {
+                    if (message) /*then*/ MessageBox.showWarning('Warning', message);
+                    LoadingModal.hideLoading();
+
+                    return !message;
+                });
+        }
+
+        return promise;
+    }
+
+    private musicPathInUse(path: string): Promise<boolean> {
+        let promise: Promise<boolean> = Promise.resolve(false);
+
+        if (path.trim()) {
+            LoadingModal.showLoading();
+            promise = fetch_get('Music/MusicPathInUse', { path: path })
+                .then(response => response.text())
+                .then(response => {
+                    const inUse = response === 'true',
+                        message = 'This path contains folders that contain music and cannot be removed. Use the directory selector to remove all subfolders first.';
+
+                    if (inUse) /*then*/ MessageBox.showWarning('Warning', message);
+                    LoadingModal.hideLoading();
+
+                    return inUse;
+                });
+        }
+
+        return promise;
     }
 }

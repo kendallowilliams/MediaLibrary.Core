@@ -36,7 +36,7 @@ namespace MediaLibrary.WebUI.Controllers
 
         public async Task<IActionResult> HomeConfiguration()
         {
-            Configuration configuration = await dataService.Get<Configuration>(item => item.Type == nameof(MediaPages.Home));
+            Configuration configuration = await dataService.Get<Configuration>(item => item.Type == ConfigurationTypes.Home);
 
             homeViewModel.Configuration = configuration?.GetConfigurationObject<HomeConfiguration>() ?? new HomeConfiguration();
 

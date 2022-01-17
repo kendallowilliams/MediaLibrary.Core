@@ -11,6 +11,7 @@ namespace MediaLibrary.Shared.Models.Configurations
     {
         public MusicConfiguration()
         {
+            MusicPaths = Enumerable.Empty<string>();
         }
 
         public int SelectedAlbumId { get; set; }
@@ -21,5 +22,6 @@ namespace MediaLibrary.Shared.Models.Configurations
         public MusicTabs SelectedMusicTab { get; set; }
         public MusicPages SelectedMusicPage { get; set; }
         public string PreviousSearchQuery { get; set; }
+        public IEnumerable<string> MusicPaths { get; set; }
     }
 }

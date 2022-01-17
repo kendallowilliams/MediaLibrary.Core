@@ -1,0 +1,104 @@
+﻿{
+   "CodeGenerationMode": 0,
+   "ContextClassName": "MediaLibraryEntities",
+   "ContextNamespace": null,
+   "DefaultDacpacSchema": null,
+   "FilterSchemas": false,
+   "IncludeConnectionString": false,
+   "ModelNamespace": null,
+   "OutputContextPath": "DbContexts",
+   "OutputPath": "Models",
+   "ProjectRootNamespace": "MediaLibrary.DAL",
+   "Schemas": null,
+   "SelectedHandlebarsLanguage": 0,
+   "SelectedToBeGenerated": 0,
+   "Tables": [
+      {
+         "Name": "[dbo].[Album]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Artist]",
+         "ObjectType": 0
+      },
+      {
+         "ExcludedColumns": [
+            "Type"
+         ],
+         "Name": "[dbo].[Configuration]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Episode]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Genre]",
+         "ObjectType": 0
+      },
+      {
+         "ExcludedColumns": [
+            "Type"
+         ],
+         "Name": "[dbo].[Playlist]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[PlaylistEpisode]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[PlaylistPodcastItem]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[PlaylistTrack]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Podcast]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[PodcastItem]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Series]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Track]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[TrackPath]",
+         "ObjectType": 0
+      },
+      {
+         "ExcludedColumns": [
+            "Status",
+            "Type"
+         ],
+         "Name": "[dbo].[Transaction]",
+         "ObjectType": 0
+      }
+   ],
+   "UiHint": "KSERVER.MediaLibrary_DEBUG",
+   "UseBoolPropertiesWithoutDefaultSql": false,
+   "UseDatabaseNames": false,
+   "UseDbContextSplitting": false,
+   "UseFluentApiOnly": false,
+   "UseHandleBars": false,
+   "UseInflector": true,
+   "UseLegacyPluralizer": false,
+   "UseManyToManyEntity": false,
+   "UseNoConstructor": false,
+   "UseNoDefaultConstructor": true,
+   "UseNoNavigations": false,
+   "UseNoObjectFilter": false,
+   "UseNodaTime": false,
+   "UseNullableReferences": false,
+   "UseSchemaFolders": false,
+   "UseSpatial": false
+}
