@@ -27,8 +27,8 @@ namespace MediaLibrary.Console
                           services.AddHostedService<AppHostedService>();
                           services.ConfigureServices(context.Configuration);
                       })
-                      .UseConsoleLifetime()
-                      .StartAsync();
+                      .Build()
+                      .RunAsync();
         }
     }
 }
