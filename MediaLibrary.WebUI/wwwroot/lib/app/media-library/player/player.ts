@@ -184,6 +184,7 @@ export default class Player extends BaseClass implements IView {
 
             MessageBox.confirm(title, message, MessageBoxConfirmType.YesNo, () => {
                 this.playerConfiguration.properties.NowPlayingList = [];
+                this.playerConfiguration.clearNowPlayingList(this.playerConfiguration.properties.SelectedMediaType);
                 this.playerConfiguration.updateConfiguration()
                     .then(() => this.reload(() => this.loadItem()));
                 this.playerControls.showHideMainControls(false);
@@ -451,7 +452,7 @@ export default class Player extends BaseClass implements IView {
         this.playerConfiguration.properties.CurrentItemIndex = currentItem ? currentItem.Id : 0;
         this.playerConfiguration.properties.SelectedMediaType = getMediaTypesEnum(mediaType);
         this.playerConfiguration.properties.NowPlayingList = playData;
-        this.playerConfiguration.updateNowPlayingList();
+        this.playerConfiguration.updateNowPlayingLists();
         this.playerConfiguration.updateConfiguration()
             .then(() => success());
     }
