@@ -18,7 +18,7 @@ export default class PlayerConfiguration extends BaseConfiguration<IPlayerConfig
             ids = this.properties.NowPlayingList.map((item, index) => item.Value),
             newItem: IKeyValuePair<MediaTypes, number[]> = { Key: mediaType, Value: ids };
 
-        if (mediaType && ids) {
+        if (ids) {
             if (this.properties.NowPlayingLists.findIndex((item, index) => item.Key === mediaType) !== -1) {
                 const itemToUpdate = this.properties.NowPlayingLists.find((item, index) => item.Key === mediaType);
 
