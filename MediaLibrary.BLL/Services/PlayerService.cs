@@ -122,7 +122,7 @@ namespace MediaLibrary.BLL.Services
 
             if (configuration != null)
             {
-                PlayerConfiguration playerConfiguration = JsonConvert.DeserializeObject<PlayerConfiguration>(configuration.JsonData) ?? new PlayerConfiguration();
+                PlayerConfiguration playerConfiguration = configuration.GetConfigurationObject<PlayerConfiguration>();
 
                 items = playerConfiguration.NowPlayingList;
             }
@@ -142,7 +142,7 @@ namespace MediaLibrary.BLL.Services
 
             if (configuration != null)
             {
-                PlayerConfiguration playerConfiguration = JsonConvert.DeserializeObject<PlayerConfiguration>(configuration.JsonData) ?? new PlayerConfiguration();
+                PlayerConfiguration playerConfiguration = configuration.GetConfigurationObject<PlayerConfiguration>();
 
                 items = playerConfiguration.NowPlayingList;
             }
@@ -162,7 +162,7 @@ namespace MediaLibrary.BLL.Services
 
             if (configuration != null)
             {
-                PlayerConfiguration playerConfiguration = JsonConvert.DeserializeObject<PlayerConfiguration>(configuration.JsonData) ?? new PlayerConfiguration();
+                PlayerConfiguration playerConfiguration = configuration.GetConfigurationObject<PlayerConfiguration>();
 
                 items = playerConfiguration.NowPlayingList;
             }
