@@ -18,6 +18,7 @@ namespace MediaLibrary.Shared.Models.Configurations
             NowPlayingList = new List<ListItem<int, int>>();
             ProgressUpdateInterval = 5;
             AudioVisualizerBarCount = 128;
+            NowPlayingLists = new List<KeyValuePair<MediaTypes, IEnumerable<int>>>();
         }
 
         public MediaTypes SelectedMediaType { get; set; }
@@ -47,6 +48,8 @@ namespace MediaLibrary.Shared.Models.Configurations
         /// Id: indicates the index of an item in the list; necessary in case duplicates exist to maintain their order
         /// </summary>
         public IList<ListItem<int, int>> NowPlayingList { get; set; }
+
+        public IList<KeyValuePair<MediaTypes, IEnumerable<int>>> NowPlayingLists { get; set; }
 
         public int ProgressUpdateInterval { get; set; }
 
