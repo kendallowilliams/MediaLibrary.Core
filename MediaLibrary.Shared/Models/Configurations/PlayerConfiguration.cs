@@ -42,6 +42,10 @@ namespace MediaLibrary.Shared.Models.Configurations
 
         public int SkipBackwardSeconds { get; set; }
 
+        /// <summary>
+        /// List of items in now playing list
+        /// Id: indicates the index of an item in the list; necessary in case duplicates exist to maintain their order
+        /// </summary>
         public IList<ListItem<int, int>> NowPlayingList { get; set; }
 
         public int ProgressUpdateInterval { get; set; }
