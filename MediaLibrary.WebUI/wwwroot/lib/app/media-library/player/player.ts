@@ -233,7 +233,9 @@ export default class Player extends BaseClass implements IView {
                         this.playerConfiguration.properties.SelectedPlayerPage === PlayerPages.Index) {
                         $(HtmlControls.Buttons().PlayerPlaylistToggleButton).trigger('click');
                     }
-                    $player.trigger('play');
+                    $player[0].play()
+                        .then(() => null)
+                        .catch(() => null);
                 }
 
                 this.playerControls.enableDisablePreviousNext();
@@ -255,7 +257,10 @@ export default class Player extends BaseClass implements IView {
 
         if (repeat === RepeatTypes.RepeatOne) {
             $(this.getPlayer()).prop('currentTime', 0);
-            if (this.isPlaying()) /*then*/ this.getPlayer().play();
+            if (this.isPlaying()) /*then*/
+                this.getPlayer().play()
+                    .then(() => null)
+                    .catch(() => null);
         } else if (repeat === RepeatTypes.RepeatAll) {
             if (shuffle && shuffleEmpty) {
                 this.setUnPlayedShuffleIds(shuffle);
