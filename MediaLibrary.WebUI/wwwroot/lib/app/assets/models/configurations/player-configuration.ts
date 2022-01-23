@@ -2,6 +2,7 @@
 import IPlayerConfiguration from '../../interfaces/player-configuration-interface';
 import { MediaTypes } from '../../enums/enums';
 import IKeyValuePair from '../../interfaces/keyvaluepair-interface';
+import { getMediaTypesEnum } from '../../enums/enum-functions';
 
 export default class PlayerConfiguration extends BaseConfiguration<IPlayerConfiguration> {
     constructor(properties: IPlayerConfiguration) {
@@ -9,7 +10,7 @@ export default class PlayerConfiguration extends BaseConfiguration<IPlayerConfig
         this.properties = properties;
     }
 
-    updateConfiguration(): Promise<Response> {
+    public updateConfiguration(): Promise<Response> {
         return super.update<IPlayerConfiguration>(this.properties);
     }
 
@@ -35,5 +36,19 @@ export default class PlayerConfiguration extends BaseConfiguration<IPlayerConfig
 
             itemToUpdate.Value = [];
         }
+    }
+
+    public hasNowPlayingListItems(mediaType: MediaTypes | string): boolean {
+        let hasItems: boolean = false;
+
+        if (typeof mediaType === 'string') /*then*/ mediaType = getMediaTypesEnum(mediaType);
+
+        if (this.properties.NowPlayingLists.findIndex((item, index) => item.Key === mediaType) !== -1) {
+            const item = this.properties.NowPlayingLists.find((item, index) => item.Key === mediaType);
+
+            hasItems = item.Value.length > 0;
+        }
+
+        return hasItems;
     }
 }

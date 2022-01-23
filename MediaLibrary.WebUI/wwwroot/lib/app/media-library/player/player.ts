@@ -9,7 +9,7 @@ import { openFullscreen } from "../../assets/utilities/element";
 import { loadTooltips, disposeTooltips } from "../../assets/utilities/bootstrap-helper";
 import LoadingModal from '../../assets/modals/loading-modal';
 import IPlayerLoadFunctions from "../../assets/interfaces/player-load-functions-interface";
-import { getRepeatTypesEnumString, getPlayerPageEnum, getMediaTypesEnumString, getMediaTypesEnum } from "../../assets/enums/enum-functions";
+import { getRepeatTypesEnumString, getPlayerPageEnum, getMediaTypesEnumString, getMediaTypesEnum, getMediaPagesEnum } from "../../assets/enums/enum-functions";
 import * as MessageBox from '../../assets/utilities/message-box';
 import IListItem from "../../assets/interfaces/list-item-interface";
 import PlayerControls from "../../assets/controls/player-controls";
@@ -416,7 +416,8 @@ export default class Player extends BaseClass implements IView {
     }
 
     public play(btn: HTMLButtonElement, playSingleItem: boolean = false, loadPlayer: () => void = () => null): void {
-        const $playButtons = $('button[data-play-id]'),
+        const $continuePlaybackBtns = $(HtmlControls.Buttons().PlaybackContinueButtons),
+            $playButtons = $('button[data-play-id]'),
             $playGroups = $('div[data-play-ids]'),
             success = () => this.reload(() => {
                 this.loadItem(null, true);
@@ -424,13 +425,22 @@ export default class Player extends BaseClass implements IView {
                 this.playerControls.showHideMainControls(true);
                 LoadingModal.hideLoading();
             }),
-            mediaType = $(btn).attr('data-media-type') || getMediaTypesEnumString(MediaTypes.Song);
+            isContinuePlayback = $continuePlaybackBtns.is(btn),
+            mediaType = isContinuePlayback ?
+                getMediaTypesEnum($(btn).data('page')) :
+                getMediaTypesEnum($(btn).attr('data-media-type'));
         let playData: IListItem<number, number>[] = [],
             currentItem: IListItem<number, number> = null;
 
         LoadingModal.showLoading();
 
-        if (playSingleItem) {
+        if (isContinuePlayback) {
+            const listItem = this.playerConfiguration.properties.NowPlayingLists.find((item, index) => item.Key === mediaType),
+                ids = (listItem || {}).Value || [];
+
+            playData = ids.map((id, index) => ({ Id: index, Value: id, IsSelected: index == 0 }));
+        }
+        else if (playSingleItem) {
             playData = [{ Id: 0, Value: parseInt($(btn).attr('data-play-id')), IsSelected: true }];
         }
         else if ($playGroups.length > 0) {
@@ -450,9 +460,9 @@ export default class Player extends BaseClass implements IView {
 
         currentItem = playData.find((item, index) => item.IsSelected);
         this.playerConfiguration.properties.CurrentItemIndex = currentItem ? currentItem.Id : 0;
-        this.playerConfiguration.properties.SelectedMediaType = getMediaTypesEnum(mediaType);
+        this.playerConfiguration.properties.SelectedMediaType = mediaType;
         this.playerConfiguration.properties.NowPlayingList = playData;
-        this.playerConfiguration.updateNowPlayingLists();
+        if (!isContinuePlayback) /*then*/ this.playerConfiguration.updateNowPlayingLists();
         this.playerConfiguration.updateConfiguration()
             .then(() => success());
     }

@@ -183,6 +183,7 @@ export default class MediaLibrary extends BaseClass {
                 loadAllTooltips();
             }
 
+            this.loadContinuePlaybackButtons();
             LoadingModal.hideLoading();
         };
         let showHideMainControls: boolean = true;
@@ -222,6 +223,13 @@ export default class MediaLibrary extends BaseClass {
 
             this.player.getPlayerControls().showHideMainControls(showHideMainControls);
         });
+    }
+
+    private loadContinuePlaybackButtons(): void {
+        const $btns = $(HtmlControls.Buttons().PlaybackContinueButtons);
+
+        $btns.not((index, btn) => this.playerConfiguration.hasNowPlayingListItems($(btn).data('page'))).remove();
+        $btns.on('click', e => this.playWrapper(e.currentTarget as HTMLButtonElement, false));
     }
 
     private prepareViews(): void {

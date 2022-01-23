@@ -27,7 +27,8 @@
         PlayerForwardButtons: document.getElementsByClassName('btn-player-forward'),
         PlayerShuffleButtons: document.getElementsByClassName('btn-player-shuffle'),
         PlayerVolumeButtons: document.getElementsByClassName('btn-player-volume'),
-        PlayerMuteButtons: document.getElementsByClassName('btn-player-mute')
+        PlayerMuteButtons: document.getElementsByClassName('btn-player-mute'),
+        PlaybackContinueButtons: document.getElementsByClassName('btn-playback-continue')
     }),
     Containers: () => ({
         NavBarContainer: document.getElementById('navbar-container'),

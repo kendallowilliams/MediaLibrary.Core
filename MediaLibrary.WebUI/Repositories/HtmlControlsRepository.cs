@@ -38,6 +38,7 @@ namespace MediaLibrary.WebUI.Repositories
         public static string PlayerFullscreenButtonId { get => "btn-player-fullscreen"; }
         public static string PlayerClearButtonId { get => "btn-player-clear"; }
         public static string PlayerAudioVisualizerButtonId { get => "btn-audio-visualizer"; }
+        public static string PlaybackContinueButtonsClass { get => "btn-playback-continue"; }
         #endregion Button Ids
 
         #region Container Ids

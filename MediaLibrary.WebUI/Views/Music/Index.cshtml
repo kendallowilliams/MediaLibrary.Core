@@ -9,22 +9,26 @@
         <div class="d-flex p-1" id="@(HtmlControlsRepository.MusicTabListId)">
             <div class="nav d-block flex-fill" role="tablist">
                 <a class="btn btn-sm btn-outline-secondary" id="@(HtmlControlsRepository.AlbumsContainerId)-tab" data-toggle="tab"
-                    role="tab" title="@(nameof(Enums.MusicTabs.Albums))" data-music-tab="@(nameof(Enums.MusicTabs.Albums))"
-                    data-tooltip="tooltip" href="#@(HtmlControlsRepository.AlbumsContainerId)">
+                   role="tab" title="@(nameof(Enums.MusicTabs.Albums))" data-music-tab="@(nameof(Enums.MusicTabs.Albums))"
+                   data-tooltip="tooltip" href="#@(HtmlControlsRepository.AlbumsContainerId)">
                     <i class="fa fa-compact-disc"></i>
                 </a>
                 <a class="btn btn-sm btn-outline-secondary" id="@(HtmlControlsRepository.ArtistsContainerId)-tab" data-toggle="tab"
-                    role="tab" title="@(nameof(Enums.MusicTabs.Artists))" data-music-tab="@(nameof(Enums.MusicTabs.Artists))"
-                    data-tooltip="tooltip" href="#@(HtmlControlsRepository.ArtistsContainerId)">
+                   role="tab" title="@(nameof(Enums.MusicTabs.Artists))" data-music-tab="@(nameof(Enums.MusicTabs.Artists))"
+                   data-tooltip="tooltip" href="#@(HtmlControlsRepository.ArtistsContainerId)">
                     <i class="fa fa-user"></i>
                 </a>
                 <a class="btn btn-sm btn-outline-secondary" id="@(HtmlControlsRepository.SongsContainerId)-tab" data-toggle="tab"
-                    role="tab" title="@(nameof(Enums.MusicTabs.Songs))" data-music-tab="@(nameof(Enums.MusicTabs.Songs))"
-                    data-tooltip="tooltip" href="#@(HtmlControlsRepository.SongsContainerId)">
+                   role="tab" title="@(nameof(Enums.MusicTabs.Songs))" data-music-tab="@(nameof(Enums.MusicTabs.Songs))"
+                   data-tooltip="tooltip" href="#@(HtmlControlsRepository.SongsContainerId)">
                     <i class="fa fa-music"></i>
                 </a>
             </div>
             <div>
+                <button type="button" class="btn btn-sm btn-outline-secondary @(HtmlControlsRepository.PlaybackContinueButtonsClass)"
+                        data-tooltip="tooltip" title="Continue playing" data-page="@Enums.MediaTypes.Song">
+                    <i class="fa fa-play-circle"></i>
+                </button>
                 <button class="btn btn-sm btn-outline-secondary" data-music-action="search" data-tooltip="tooltip" title="Search music"><i class="fa fa-search"></i></button>
                 <button class="btn btn-sm btn-outline-secondary" data-toggle="modal" data-target="#@(HtmlControlsRepository.SettingsModalId)" data-tooltip="tooltip" title="Settings">
                     <i class="fa fa-cog"></i>
