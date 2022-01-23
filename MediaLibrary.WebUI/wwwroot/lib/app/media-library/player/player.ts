@@ -30,7 +30,7 @@ export default class Player extends BaseClass implements IView {
         skipForward: this.skipForward.bind(this),
         skipBackward: this.skipBackward.bind(this),
         pause: () => $(this.getPlayer()).attr('data-playing', 'false').trigger('pause'),
-        play: () => { if (this.getPlayer().currentSrc) /*then*/ $(this.getPlayer()).trigger('play'); },
+        play: () => { if (this.getPlayer().currentSrc) /*then*/ this.getPlayer().play().catch(() => null); },
         setUnPlayedShuffleIds: this.setUnPlayedShuffleIds.bind(this),
         canPlayNext: this.canPlayNext.bind(this),
         canPlayPrevious: this.canPlayPrevious.bind(this),
