@@ -23,7 +23,8 @@ export default class Music extends BaseClass implements IView {
     constructor(private musicConfiguration: MusicConfiguration,
         private playFunc: (btn: HTMLButtonElement, single: boolean) => void,
         private updateActiveMediaFunc: () => void,
-        private tooltipsEnabled: () => boolean = () => false) {
+        private tooltipsEnabled: () => boolean = () => false,
+        private initContinuePlaybackBtns: () => void) {
         super();
         this.mediaView = HtmlControls.Views().MediaView;
         this.artist = new Artist(musicConfiguration, this.loadView.bind(this));
@@ -44,6 +45,7 @@ export default class Music extends BaseClass implements IView {
             $('[data-music-tab="' + getMusicTabEnumString(this.musicConfiguration.properties.SelectedMusicTab) + '"]').tab('show');
             this.updateActiveMediaFunc();
             if (this.musicConfiguration.properties.SelectedMusicPage === MusicPages.Search) /*then*/ this.search.search();
+            this.initContinuePlaybackBtns();
             callback();
         }; 
 

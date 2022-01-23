@@ -19,7 +19,8 @@ export default class Podcast extends BaseClass implements IView {
     constructor(private podcastConfiguration: PodcastConfiguration,
         private playFunc: (btn: HTMLButtonElement, single: boolean) => void,
         private updateActiveMediaFunc: () => void,
-        private tooltipsEnabled: () => boolean = () => false) {
+        private tooltipsEnabled: () => boolean = () => false,
+        private initContinuePlaybackBtns: () => void) {
         super();
         this.mediaView = HtmlControls.Views().MediaView;
     }
@@ -32,6 +33,7 @@ export default class Podcast extends BaseClass implements IView {
                 this.initializeControls();
                 if (this.tooltipsEnabled()) /*then*/ loadTooltips(this.mediaView);
                 $('[data-podcast-year][data-item-index="1"]').trigger('click');
+                this.initContinuePlaybackBtns();
                 callback();
             };
         

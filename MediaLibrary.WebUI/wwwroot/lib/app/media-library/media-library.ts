@@ -17,7 +17,7 @@ import TelevisionConfiguration from '../assets/models/configurations/television-
 import MusicConfiguration from '../assets/models/configurations/music-configuration';
 import Home from './home/home';
 import EditSongModal from '../assets/modals/edit-song-modal';
-import { getMediaPagesEnum, getMediaPagesEnumString } from '../assets/enums/enum-functions';
+import { getMediaPagesEnum, getMediaPagesEnumString, getMediaTypesEnum } from '../assets/enums/enum-functions';
 import AddToPlaylistModal from '../assets/modals/add-to-playlist-modal';
 import IPlayerLoadFunctions from '../assets/interfaces/player-load-functions-interface';
 import IConfigurations from '../assets/interfaces/configurations-interface';
@@ -98,7 +98,8 @@ export default class MediaLibrary extends BaseClass {
                     this.music = new Music(this.musicConfiguration,
                         this.playWrapper.bind(this),
                         this.updateActiveMedia.bind(this),
-                        () => this.mediaLibraryConfiguration.properties.TooltipsEnabled
+                        () => this.mediaLibraryConfiguration.properties.TooltipsEnabled,
+                        this.initializeContinuePlaybackBtns.bind(this)
                     );
                     this.playlist = new Playlist(this.playlistConfiguration,
                         this.playWrapper.bind(this),
@@ -109,12 +110,14 @@ export default class MediaLibrary extends BaseClass {
                     this.podcast = new Podcast(this.podcastConfiguration,
                         this.playWrapper.bind(this),
                         this.updateActiveMedia.bind(this),
-                        () => this.mediaLibraryConfiguration.properties.TooltipsEnabled
+                        () => this.mediaLibraryConfiguration.properties.TooltipsEnabled,
+                        this.initializeContinuePlaybackBtns.bind(this)
                     );
                     this.television = new Television(this.televisionConfiguration,
                         this.playWrapper.bind(this),
                         this.updateActiveMedia.bind(this),
-                        () => this.mediaLibraryConfiguration.properties.TooltipsEnabled
+                        () => this.mediaLibraryConfiguration.properties.TooltipsEnabled,
+                        this.initializeContinuePlaybackBtns.bind(this)
                     );
                     this.player = new Player(this.playerConfiguration,
                         loadFunctions,
@@ -130,6 +133,7 @@ export default class MediaLibrary extends BaseClass {
 
     private playWrapper(btn: HTMLButtonElement, playSingleItem?: boolean): void {
         this.player.play.call(this.player, btn, playSingleItem, this.loadView.bind(this, MediaPages.Player));
+        this.initializeContinuePlaybackBtns();
     }
 
     private updateActiveMedia(): void {
@@ -183,7 +187,7 @@ export default class MediaLibrary extends BaseClass {
                 loadAllTooltips();
             }
 
-            this.loadContinuePlaybackButtons();
+            this.initializeContinuePlaybackBtns();
             LoadingModal.hideLoading();
         };
         let showHideMainControls: boolean = true;
@@ -225,10 +229,12 @@ export default class MediaLibrary extends BaseClass {
         });
     }
 
-    private loadContinuePlaybackButtons(): void {
-        const $btns = $(HtmlControls.Buttons().PlaybackContinueButtons);
+    private initializeContinuePlaybackBtns(): void {
+        const $btns = $(HtmlControls.Buttons().PlaybackContinueButtons),
+            canRemove = btn => !this.playerConfiguration.hasNowPlayingListItems($(btn).data('page')) ||
+                getMediaTypesEnum($(btn).data('page')) === this.playerConfiguration.properties.SelectedMediaType;
 
-        $btns.not((index, btn) => this.playerConfiguration.hasNowPlayingListItems($(btn).data('page'))).remove();
+        $btns.filter((index, btn) => canRemove(btn)).addClass('d-none');
         $btns.on('click', e => this.playWrapper(e.currentTarget as HTMLButtonElement, false));
     }
 

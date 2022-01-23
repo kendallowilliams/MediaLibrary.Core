@@ -16,7 +16,8 @@ export default class Television extends BaseClass implements IView {
     constructor(private televisionConfiguration: TelevisionConfiguration,
         private playFunc: (btn: HTMLButtonElement) => void,
         private updateActiveMediaFunc: () => void,
-        private tooltipsEnabled: () => boolean = () => false) {
+        private tooltipsEnabled: () => boolean = () => false,
+        private initContinuePlaybackBtns: () => void) {
         super();
         this.mediaView = HtmlControls.Views().MediaView;
     }
@@ -28,6 +29,7 @@ export default class Television extends BaseClass implements IView {
                 this.initializeControls();
                 if (this.tooltipsEnabled()) /*then*/ loadTooltips(this.mediaView);
                 $('[data-season-id][data-item-index="0"]').trigger('click');
+                this.initContinuePlaybackBtns();
                 callback();
             };
 
