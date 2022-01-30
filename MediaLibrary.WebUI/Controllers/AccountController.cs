@@ -22,12 +22,12 @@ namespace MediaLibrary.WebUI.Controllers
         }
 
         [Authorize]
-        public async Task Logout(string returnUrl = "/")
+        public async Task Logout()
         {
             var authenticationProperties = new LogoutAuthenticationPropertiesBuilder()
                 // Indicate here where Auth0 should redirect the user after a logout.
                 // Note that the resulting absolute Uri must be whitelisted in 
-                .WithRedirectUri(returnUrl)
+                .WithRedirectUri(Url.Action("Index", "MediaLibrary"))
                 .Build();
 
             await HttpContext.SignOutAsync(Auth0Constants.AuthenticationScheme, authenticationProperties);
