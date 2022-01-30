@@ -6,7 +6,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace MediaLibrary.WebUI.HostedServices
+namespace MediaLibrary.Shared.HostedServices
 {
     public class BackgroundQueueHostedService : BackgroundService
     {

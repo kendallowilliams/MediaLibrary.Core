@@ -1,9 +1,9 @@
 using Auth0.AspNetCore.Authentication;
 using MediaLibrary.BLL.Extensions;
 using MediaLibrary.BLL.Services.Interfaces;
+using MediaLibrary.Shared.HostedServices;
 using MediaLibrary.Shared.Services;
 using MediaLibrary.Shared.Services.Interfaces;
-using MediaLibrary.WebUI.HostedServices;
 using MediaLibrary.WebUI.Models;
 using MediaLibrary.WebUI.Services;
 using MediaLibrary.WebUI.Services.Interfaces;
@@ -45,11 +45,11 @@ namespace MediaLibrary.WebUI
             services.AddScoped<PodcastViewModel>();
             services.AddScoped<SettingsViewModel>();
             services.AddScoped<TelevisionViewModel>();
-            services.AddSingleton<IMusicUIService, MusicUIService>();
-            services.AddSingleton<IPlayerUIService, PlayerUIService>();
-            services.AddSingleton<IPlaylistUIService, PlaylistUIService>();
-            services.AddSingleton<IPodcastUIService, PodcastUIService>();
-            services.AddSingleton<ITelevisionUIService, TelevisionUIService>();
+            services.AddScoped<IMusicUIService, MusicUIService>();
+            services.AddScoped<IPlayerUIService, PlayerUIService>();
+            services.AddScoped<IPlaylistUIService, PlaylistUIService>();
+            services.AddScoped<IPodcastUIService, PodcastUIService>();
+            services.AddScoped<ITelevisionUIService, TelevisionUIService>();
             services.AddSingleton<IBackgroundTaskQueueService, BackgroundTaskQueueService>();
             services.AddAuth0WebAppAuthentication(options => {
                 options.Domain = Configuration["Auth0:Domain"];

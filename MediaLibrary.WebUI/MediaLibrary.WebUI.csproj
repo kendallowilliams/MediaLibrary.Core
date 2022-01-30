@@ -3,6 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <Configurations>Debug;Release;DEV</Configurations>
+    <UserSecretsId>748e40be-7aa5-4473-8007-725023b4de81</UserSecretsId>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='DEV|AnyCPU'">
