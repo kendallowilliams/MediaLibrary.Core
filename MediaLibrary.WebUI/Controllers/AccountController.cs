@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,10 +13,17 @@ namespace MediaLibrary.WebUI.Controllers
 {
     public class AccountController : Controller
     {
-        public async Task Login(string returnUrl = "/")
+        private readonly IConfiguration configuration;
+
+        public AccountController(IConfiguration configuration)
+        {
+            this.configuration = configuration;
+        }
+
+        public async Task Login()
         {
             var authenticationProperties = new LoginAuthenticationPropertiesBuilder()
-                .WithRedirectUri(returnUrl)
+                .WithRedirectUri(configuration["Auth0:LoginRedirectUrl"])
                 .Build();
 
             await HttpContext.ChallengeAsync(Auth0Constants.AuthenticationScheme, authenticationProperties);
@@ -27,7 +35,7 @@ namespace MediaLibrary.WebUI.Controllers
             var authenticationProperties = new LogoutAuthenticationPropertiesBuilder()
                 // Indicate here where Auth0 should redirect the user after a logout.
                 // Note that the resulting absolute Uri must be whitelisted in 
-                .WithRedirectUri(Url.Action("Index", "MediaLibrary"))
+                .WithRedirectUri(configuration["Auth0:LogoutRedirectUrl"])
                 .Build();
 
             await HttpContext.SignOutAsync(Auth0Constants.AuthenticationScheme, authenticationProperties);
