@@ -1,3 +1,4 @@
+using Auth0.AspNetCore.Authentication;
 using MediaLibrary.BLL.Extensions;
 using MediaLibrary.BLL.Services.Interfaces;
 using MediaLibrary.Shared.Services;
@@ -9,8 +10,6 @@ using MediaLibrary.WebUI.Services.Interfaces;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Server.IISIntegration;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -52,7 +51,10 @@ namespace MediaLibrary.WebUI
             services.AddSingleton<IPodcastUIService, PodcastUIService>();
             services.AddSingleton<ITelevisionUIService, TelevisionUIService>();
             services.AddSingleton<IBackgroundTaskQueueService, BackgroundTaskQueueService>();
-            services.AddAuthentication(IISDefaults.AuthenticationScheme);
+            services.AddAuth0WebAppAuthentication(options => {
+                options.Domain = Configuration["Auth0:Domain"];
+                options.ClientId = Configuration["Auth0:ClientId"];
+            });
             services.AddAuthorization();
             services.AddResponseCompression();
             services.AddRazorPages().AddRazorRuntimeCompilation();

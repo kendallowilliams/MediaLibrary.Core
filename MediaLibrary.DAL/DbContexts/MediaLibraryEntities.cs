@@ -34,78 +34,68 @@ namespace MediaLibrary.DAL.DbContexts
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.HasAnnotation("Relational:Collation", "SQL_Latin1_General_CP1_CI_AS");
+            modelBuilder.HasAnnotation("Scaffolding:ConnectionString", "Data Source=(local);Initial Catalog=MediaLibrary.DB;Integrated Security=true");
 
             modelBuilder.Entity<Album>(entity =>
             {
                 entity.HasKey(e => e.Id)
-                    .HasName("PK__Album__3214EC0697125AA8")
                     .IsClustered(false);
 
-                entity.Property(e => e.CreateDate).HasDefaultValueSql("(getdate())");
+                entity.Property(e => e.CreateDate).HasDefaultValueSql("getdate()");
 
-                entity.Property(e => e.ModifyDate).HasDefaultValueSql("(getdate())");
+                entity.Property(e => e.ModifyDate).HasDefaultValueSql("getdate()");
 
                 entity.Property(e => e.Title).IsUnicode(false);
 
                 entity.HasOne(d => d.Artist)
                     .WithMany(p => p.Albums)
                     .HasForeignKey(d => d.ArtistId)
-                    .OnDelete(DeleteBehavior.SetNull)
-                    .HasConstraintName("FK__Album__ArtistId__6EF57B66");
+                    .OnDelete(DeleteBehavior.SetNull);
 
                 entity.HasOne(d => d.Genre)
                     .WithMany(p => p.Albums)
                     .HasForeignKey(d => d.GenreId)
-                    .OnDelete(DeleteBehavior.SetNull)
-                    .HasConstraintName("FK__Album__GenreId__6FE99F9F");
+                    .OnDelete(DeleteBehavior.SetNull);
             });
 
             modelBuilder.Entity<Artist>(entity =>
             {
                 entity.HasKey(e => e.Id)
-                    .HasName("PK__Artist__3214EC06B29AD2A8")
                     .IsClustered(false);
 
-                entity.Property(e => e.CreateDate).HasDefaultValueSql("(getdate())");
+                entity.Property(e => e.CreateDate).HasDefaultValueSql("getdate()");
 
-                entity.Property(e => e.ModifyDate).HasDefaultValueSql("(getdate())");
+                entity.Property(e => e.ModifyDate).HasDefaultValueSql("getdate()");
 
                 entity.Property(e => e.Name).IsUnicode(false);
             });
 
             modelBuilder.Entity<Configuration>(entity =>
             {
-                entity.Property(e => e.CreateDate).HasDefaultValueSql("(getdate())");
+                entity.Property(e => e.CreateDate).HasDefaultValueSql("getdate()");
 
                 entity.Property(e => e.JsonData).IsUnicode(false);
 
-                entity.Property(e => e.ModifyDate).HasDefaultValueSql("(getdate())");
+                entity.Property(e => e.ModifyDate).HasDefaultValueSql("getdate()");
             });
 
             modelBuilder.Entity<Episode>(entity =>
             {
-                entity.Property(e => e.CreateDate).HasDefaultValueSql("(getdate())");
+                entity.Property(e => e.CreateDate).HasDefaultValueSql("getdate()");
 
-                entity.Property(e => e.ModifyDate).HasDefaultValueSql("(getdate())");
+                entity.Property(e => e.ModifyDate).HasDefaultValueSql("getdate()");
 
                 entity.Property(e => e.Path).IsUnicode(false);
-
-                entity.HasOne(d => d.Series)
-                    .WithMany(p => p.Episodes)
-                    .HasForeignKey(d => d.SeriesId)
-                    .HasConstraintName("FK__Episode__SeriesI__3D2915A8");
             });
 
             modelBuilder.Entity<Genre>(entity =>
             {
                 entity.HasKey(e => e.Id)
-                    .HasName("PK__Genre__3214EC06FC4C8FFE")
                     .IsClustered(false);
 
-                entity.Property(e => e.CreateDate).HasDefaultValueSql("(getdate())");
+                entity.Property(e => e.CreateDate).HasDefaultValueSql("getdate()");
 
-                entity.Property(e => e.ModifyDate).HasDefaultValueSql("(getdate())");
+                entity.Property(e => e.ModifyDate).HasDefaultValueSql("getdate()");
 
                 entity.Property(e => e.Name).IsUnicode(false);
             });
@@ -113,12 +103,11 @@ namespace MediaLibrary.DAL.DbContexts
             modelBuilder.Entity<Playlist>(entity =>
             {
                 entity.HasKey(e => e.Id)
-                    .HasName("PK__tmp_ms_x__3214EC06CFD67FC4")
                     .IsClustered(false);
 
-                entity.Property(e => e.CreateDate).HasDefaultValueSql("(getdate())");
+                entity.Property(e => e.CreateDate).HasDefaultValueSql("getdate()");
 
-                entity.Property(e => e.ModifyDate).HasDefaultValueSql("(getdate())");
+                entity.Property(e => e.ModifyDate).HasDefaultValueSql("getdate()");
 
                 entity.Property(e => e.Name).IsUnicode(false);
             });
@@ -126,12 +115,11 @@ namespace MediaLibrary.DAL.DbContexts
             modelBuilder.Entity<PlaylistEpisode>(entity =>
             {
                 entity.HasKey(e => e.Id)
-                    .HasName("PK__Playlist__3214EC06A012CD92")
                     .IsClustered(false);
 
-                entity.Property(e => e.CreateDate).HasDefaultValueSql("(getdate())");
+                entity.Property(e => e.CreateDate).HasDefaultValueSql("getdate()");
 
-                entity.Property(e => e.ModifyDate).HasDefaultValueSql("(getdate())");
+                entity.Property(e => e.ModifyDate).HasDefaultValueSql("getdate()");
 
                 entity.HasOne(d => d.Episode)
                     .WithMany(p => p.PlaylistEpisodes)
@@ -147,12 +135,11 @@ namespace MediaLibrary.DAL.DbContexts
             modelBuilder.Entity<PlaylistPodcastItem>(entity =>
             {
                 entity.HasKey(e => e.Id)
-                    .HasName("PK__Playlist__3214EC061EA4E1A6")
                     .IsClustered(false);
 
-                entity.Property(e => e.CreateDate).HasDefaultValueSql("(getdate())");
+                entity.Property(e => e.CreateDate).HasDefaultValueSql("getdate()");
 
-                entity.Property(e => e.ModifyDate).HasDefaultValueSql("(getdate())");
+                entity.Property(e => e.ModifyDate).HasDefaultValueSql("getdate()");
 
                 entity.HasOne(d => d.Playlist)
                     .WithMany(p => p.PlaylistPodcastItems)
@@ -168,12 +155,11 @@ namespace MediaLibrary.DAL.DbContexts
             modelBuilder.Entity<PlaylistTrack>(entity =>
             {
                 entity.HasKey(e => e.Id)
-                    .HasName("PK__Playlist__3214EC06F2D42FC0")
                     .IsClustered(false);
 
-                entity.Property(e => e.CreateDate).HasDefaultValueSql("(getdate())");
+                entity.Property(e => e.CreateDate).HasDefaultValueSql("getdate()");
 
-                entity.Property(e => e.ModifyDate).HasDefaultValueSql("(getdate())");
+                entity.Property(e => e.ModifyDate).HasDefaultValueSql("getdate()");
 
                 entity.HasOne(d => d.Playlist)
                     .WithMany(p => p.PlaylistTracks)
@@ -189,18 +175,17 @@ namespace MediaLibrary.DAL.DbContexts
             modelBuilder.Entity<Podcast>(entity =>
             {
                 entity.HasKey(e => e.Id)
-                    .HasName("PK__Podcast__3214EC06FA7C7167")
                     .IsClustered(false);
 
                 entity.Property(e => e.Author).IsUnicode(false);
 
-                entity.Property(e => e.CreateDate).HasDefaultValueSql("(getdate())");
+                entity.Property(e => e.CreateDate).HasDefaultValueSql("getdate()");
 
                 entity.Property(e => e.Description).IsUnicode(false);
 
                 entity.Property(e => e.ImageUrl).IsUnicode(false);
 
-                entity.Property(e => e.ModifyDate).HasDefaultValueSql("(getdate())");
+                entity.Property(e => e.ModifyDate).HasDefaultValueSql("getdate()");
 
                 entity.Property(e => e.Title).IsUnicode(false);
 
@@ -210,36 +195,29 @@ namespace MediaLibrary.DAL.DbContexts
             modelBuilder.Entity<PodcastItem>(entity =>
             {
                 entity.HasKey(e => e.Id)
-                    .HasName("PK__tmp_ms_x__3214EC06D2DF9777")
                     .IsClustered(false);
 
-                entity.Property(e => e.CreateDate).HasDefaultValueSql("(getdate())");
+                entity.Property(e => e.CreateDate).HasDefaultValueSql("getdate()");
 
                 entity.Property(e => e.Description).IsUnicode(false);
 
                 entity.Property(e => e.File).IsUnicode(false);
 
-                entity.Property(e => e.ModifyDate).HasDefaultValueSql("(getdate())");
+                entity.Property(e => e.ModifyDate).HasDefaultValueSql("getdate()");
 
                 entity.Property(e => e.Title).IsUnicode(false);
 
                 entity.Property(e => e.Url).IsUnicode(false);
-
-                entity.HasOne(d => d.Podcast)
-                    .WithMany(p => p.PodcastItems)
-                    .HasForeignKey(d => d.PodcastId)
-                    .HasConstraintName("FK__PodcastIt__Podca__3E1D39E1");
             });
 
             modelBuilder.Entity<Series>(entity =>
             {
                 entity.HasKey(e => e.Id)
-                    .HasName("PK__Series__3214EC067621B848")
                     .IsClustered(false);
 
-                entity.Property(e => e.CreateDate).HasDefaultValueSql("(getdate())");
+                entity.Property(e => e.CreateDate).HasDefaultValueSql("getdate()");
 
-                entity.Property(e => e.ModifyDate).HasDefaultValueSql("(getdate())");
+                entity.Property(e => e.ModifyDate).HasDefaultValueSql("getdate()");
 
                 entity.Property(e => e.Title).IsUnicode(false);
             });
@@ -247,66 +225,59 @@ namespace MediaLibrary.DAL.DbContexts
             modelBuilder.Entity<Track>(entity =>
             {
                 entity.HasKey(e => e.Id)
-                    .HasName("PK__tmp_ms_x__3214EC0631FB28BF")
                     .IsClustered(false);
 
-                entity.Property(e => e.CreateDate).HasDefaultValueSql("(getdate())");
+                entity.Property(e => e.CreateDate).HasDefaultValueSql("getdate()");
 
                 entity.Property(e => e.FileName).IsUnicode(false);
 
-                entity.Property(e => e.ModifyDate).HasDefaultValueSql("(getdate())");
+                entity.Property(e => e.ModifyDate).HasDefaultValueSql("getdate()");
 
                 entity.Property(e => e.Title).IsUnicode(false);
 
                 entity.HasOne(d => d.Album)
                     .WithMany(p => p.Tracks)
                     .HasForeignKey(d => d.AlbumId)
-                    .OnDelete(DeleteBehavior.SetNull)
-                    .HasConstraintName("FK__Track__AlbumId__2CF2ADDF");
+                    .OnDelete(DeleteBehavior.SetNull);
 
                 entity.HasOne(d => d.Artist)
                     .WithMany(p => p.Tracks)
                     .HasForeignKey(d => d.ArtistId)
-                    .OnDelete(DeleteBehavior.SetNull)
-                    .HasConstraintName("FK__Track__ArtistId__2DE6D218");
+                    .OnDelete(DeleteBehavior.SetNull);
 
                 entity.HasOne(d => d.Genre)
                     .WithMany(p => p.Tracks)
                     .HasForeignKey(d => d.GenreId)
-                    .OnDelete(DeleteBehavior.SetNull)
-                    .HasConstraintName("FK__Track__GenreId__2FCF1A8A");
+                    .OnDelete(DeleteBehavior.SetNull);
 
                 entity.HasOne(d => d.Path)
                     .WithMany(p => p.Tracks)
                     .HasForeignKey(d => d.PathId)
-                    .OnDelete(DeleteBehavior.Cascade)
-                    .HasConstraintName("FK__Track__PathId__2EDAF651");
+                    .OnDelete(DeleteBehavior.Cascade);
             });
 
             modelBuilder.Entity<TrackPath>(entity =>
             {
                 entity.HasKey(e => e.Id)
-                    .HasName("PK__TrackPat__3214EC0695DF2C8D")
                     .IsClustered(false);
 
-                entity.Property(e => e.CreateDate).HasDefaultValueSql("(getdate())");
+                entity.Property(e => e.CreateDate).HasDefaultValueSql("getdate()");
 
-                entity.Property(e => e.LastScanDate).HasDefaultValueSql("(getdate())");
+                entity.Property(e => e.LastScanDate).HasDefaultValueSql("getdate()");
 
                 entity.Property(e => e.Location).IsUnicode(false);
 
-                entity.Property(e => e.ModifyDate).HasDefaultValueSql("(getdate())");
+                entity.Property(e => e.ModifyDate).HasDefaultValueSql("getdate()");
             });
 
             modelBuilder.Entity<Transaction>(entity =>
             {
                 entity.HasKey(e => e.Id)
-                    .HasName("PK__Transact__3214EC068D74D4EC")
                     .IsClustered(false);
 
-                entity.Property(e => e.CreateDate).HasDefaultValueSql("(getdate())");
+                entity.Property(e => e.CreateDate).HasDefaultValueSql("getdate()");
 
-                entity.Property(e => e.ModifyDate).HasDefaultValueSql("(getdate())");
+                entity.Property(e => e.ModifyDate).HasDefaultValueSql("getdate()");
             });
 
             OnModelCreatingPartial(modelBuilder);

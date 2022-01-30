@@ -84,7 +84,7 @@
          "ObjectType": 0
       }
    ],
-   "UiHint": "KSERVER.MediaLibrary_DEBUG",
+   "UiHint": "MediaLibrary.DB\\MediaLibrary.DB.sqlproj",
    "UseBoolPropertiesWithoutDefaultSql": false,
    "UseDatabaseNames": false,
    "UseDbContextSplitting": false,
