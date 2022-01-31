@@ -44,9 +44,12 @@
                             <a class="nav-link" data-media-page="@(nameof(Enums.MediaPages.Player))" href="javascript: void(0)">Now Playing</a>
                             <a class="nav-link d-none disabled font-italic font-weight-bold text-dark" data-media-page="@(nameof(Enums.MediaPages.Player))">Now Playing</a>
                         </li>
+                        @if (User.Identity.IsAuthenticated)
+                        {
                         <li class="nav-item">
                             <a class="nav-link" href="@Url.Action("Logout", "Account")">Logout</a>
                         </li>
+                        }
                     </ul>
                 </div>
             </nav>
