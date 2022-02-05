@@ -10,7 +10,7 @@ namespace MediaLibrary.Shared.Models.Configurations
     {
         public BaseConfiguration() 
         {
-#if !DEV && !DEBUG
+#if !DEBUG
             PromptBeforeUnload = true;
 #endif
         }

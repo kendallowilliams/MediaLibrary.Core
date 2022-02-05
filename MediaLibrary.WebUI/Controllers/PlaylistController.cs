@@ -147,9 +147,7 @@ namespace MediaLibrary.WebUI.Controllers
             }
         }
 
-#if !DEBUG && !DEV
         [AllowAnonymous]
-#endif
         public async Task<IActionResult> GetM3UPlaylist(int id, bool random = false)
         {
             Random rand = new Random(DateTime.Now.Millisecond);

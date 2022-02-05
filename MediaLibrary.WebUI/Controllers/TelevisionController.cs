@@ -88,9 +88,7 @@ namespace MediaLibrary.WebUI.Controllers
             return NoContent();
         }
 
-#if !DEBUG && !DEV
         [AllowAnonymous]
-#endif
         public async Task<IActionResult> File(int id)
         {
             Episode episode = await dataService.Get<Episode>(item => item.Id == id);
@@ -119,9 +117,7 @@ namespace MediaLibrary.WebUI.Controllers
             return PartialView("Season", (hasPlaylists, episodes));
         }
 
-#if !DEBUG && !DEV
         [AllowAnonymous]
-#endif
         public async Task<IActionResult> GetM3UPlaylist(int seriesId, int season)
         {
             IEnumerable<Episode> episodes = await dataService.GetList<Episode>(episode => episode.SeriesId == seriesId && episode.Season == season);

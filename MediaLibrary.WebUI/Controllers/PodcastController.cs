@@ -223,9 +223,7 @@ namespace MediaLibrary.WebUI.Controllers
             await transactionService.UpdateTransactionCompleted(transaction, $"Podcast: {podcast.Title}");
         }
 
-#if !DEBUG && !DEV
         [AllowAnonymous]
-#endif
         public async Task<IActionResult> File(int id)
         {
             Transaction transaction = await transactionService.GetNewTransaction(TransactionTypes.GetPodcastFile);

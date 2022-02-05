@@ -7,7 +7,7 @@ using System.Web;
 
 namespace MediaLibrary.WebUI.Controllers
 {
-#if !DEV && !DEBUG
+#if !DEBUG
     [Authorize]
 #endif
     public abstract class BaseController : Controller
