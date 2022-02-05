@@ -25,21 +25,21 @@ namespace MediaLibrary.BLL.Extensions
             {
                 options.UseSqlServer(configuration.GetConnectionString("MediaLibrary"));
             });
-            services.AddScoped<ITPLService, TPLService>();
-            services.AddScoped<IDataService, DataService>();
-            services.AddScoped<IAlbumService, AlbumService>();
-            services.AddScoped<IArtistService, ArtistService>();
-            services.AddScoped<IFileService, FileService>();
-            services.AddScoped<IGenreService, GenreService>();
-            services.AddScoped<IId3Service, Id3Service>();
-            services.AddScoped<ILogService, LogService>();
-            services.AddScoped<IPlayerService, PlayerService>();
-            services.AddScoped<IPlaylistService, PlaylistService>();
-            services.AddScoped<IPodcastService, PodcastService>();
-            services.AddScoped<IProcessorService, ProcessorService>();
-            services.AddScoped<ITrackService, TrackService>();
-            services.AddScoped<ITransactionService, TransactionService>();
-            services.AddScoped<IWebService, WebService>();
+            services.AddTransient<ITPLService, TPLService>();
+            services.AddTransient<IDataService, DataService>();
+            services.AddTransient<IAlbumService, AlbumService>();
+            services.AddTransient<IArtistService, ArtistService>();
+            services.AddTransient<IFileService, FileService>();
+            services.AddTransient<IGenreService, GenreService>();
+            services.AddTransient<IId3Service, Id3Service>();
+            services.AddTransient<ILogService, LogService>();
+            services.AddTransient<IPlayerService, PlayerService>();
+            services.AddTransient<IPlaylistService, PlaylistService>();
+            services.AddTransient<IPodcastService, PodcastService>();
+            services.AddTransient<ITrackService, TrackService>();
+            services.AddTransient<ITransactionService, TransactionService>();
+            services.AddTransient<IWebService, WebService>();
+            services.AddTransient<IProcessorService, ProcessorService>();
         }
     }
 }

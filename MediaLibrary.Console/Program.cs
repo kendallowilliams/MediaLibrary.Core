@@ -9,6 +9,7 @@ using System;
 using System.IO;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
+using System.Reflection;
 
 namespace MediaLibrary.Console
 {
@@ -17,9 +18,18 @@ namespace MediaLibrary.Console
         static async Task Main(string[] args)
         {
             await Host.CreateDefaultBuilder(args)
-                      .ConfigureAppConfiguration(builder =>
-                      { 
+                      .ConfigureAppConfiguration((context, builder) =>
+                      {
+                          var env = context.HostingEnvironment;
+
                           builder.AddCommandLine(args);
+
+                          if (env.IsDevelopment())
+                          {
+                              var assembly = Assembly.Load(new AssemblyName(env.ApplicationName));
+
+                              builder.AddUserSecrets(assembly);
+                          }
                       })
                       .ConfigureServices((context, services) => 
                       {
