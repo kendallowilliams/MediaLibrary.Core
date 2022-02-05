@@ -29,14 +29,16 @@ namespace MediaLibrary.WebUI.Controllers
         private readonly IDataService dataService;
         private readonly TelevisionViewModel televisionViewModel;
         private readonly ITransactionService transactionService;
+        private readonly ILogService logService;
 
         public TelevisionController(ITelevisionUIService televisionService, IDataService dataService, TelevisionViewModel televisionViewModel,
-                                    ITransactionService transactionService)
+                                    ITransactionService transactionService, ILogService logService)
         {
             this.televisionService = televisionService;
             this.dataService = dataService;
             this.televisionViewModel = televisionViewModel;
             this.transactionService = transactionService;
+            this.logService = logService;
         }
 
         public async Task<IActionResult> Index()
@@ -100,10 +102,12 @@ namespace MediaLibrary.WebUI.Controllers
 
                 contentTypeProvider.TryGetContentType(episode.Path, out string contentType);
                 result = File(IO_File.OpenRead(episode.Path), contentType, true);
+                await logService.Info($"{nameof(TelevisionController)} -> {nameof(File)} -> Id: {episode.Id}");
             }
             else
             {
                 result = new StatusCodeResult((int)HttpStatusCode.NotFound);
+                await logService.Warn($"{nameof(TelevisionController)} -> {nameof(File)} -> Id: {id} -> Not Found");
             }
 
             return result;

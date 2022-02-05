@@ -26,14 +26,16 @@ namespace MediaLibrary.WebUI.Controllers
         private readonly IDataService dataService;
         private readonly PlaylistViewModel playlistViewModel;
         private readonly ITransactionService transactionService;
+        private readonly ILogService logService;
 
         public PlaylistController(IPlaylistUIService playlistService, IDataService dataService, PlaylistViewModel playlistViewModel,
-                                  ITransactionService transactionService)
+                                  ITransactionService transactionService, ILogService logService)
         {
             this.playlistService = playlistService;
             this.dataService = dataService;
             this.playlistViewModel = playlistViewModel;
             this.transactionService = transactionService;
+            this.logService = logService;
         }
 
         public async Task<IActionResult> Index()
@@ -165,13 +167,19 @@ namespace MediaLibrary.WebUI.Controllers
             IEnumerable<Track> tracks = playlistTracks.Select(list => list.Track);
             IEnumerable<PodcastItem> podcastItems = playlistPodcastItems.Select(list => list.PodcastItem);
             IEnumerable<Episode> episodes = playlistEpisodes.Select(list => list.Episode);
-            string path = $"{Request.Scheme}://{Request.Host}{Request.PathBase}";
+            string path = $"{Request.Scheme}://{Request.Host}{Request.PathBase}",
+                   data,
+                   timestamp = DateTime.Now.ToString("yyyyMMddHHmmss"),
+                   fileName = $"{playlist.Name.Trim()}_{timestamp}.m3u";
             IEnumerable<string> lines = GetM3UPlaylistLines((PlaylistTabs)playlist.Type, path, tracks, podcastItems, episodes);
-            string data = $"#EXTM3U{Environment.NewLine}{string.Join(Environment.NewLine, lines)}";
-            byte[] content = Encoding.UTF8.GetBytes(data);
-            string timestamp = DateTime.Now.ToString("yyyyMMddHHmmss");
+            byte[] content;
 
-            return File(content, "audio/mpegurl", $"{playlist.Name.Trim()}_{timestamp}.m3u");
+            data = $"#EXTM3U{Environment.NewLine}{string.Join(Environment.NewLine, lines)}";
+            content = Encoding.UTF8.GetBytes(data);
+
+            await logService.Info($"{nameof(PlaylistController)} -> {nameof(GetM3UPlaylist)} -> File: {fileName}");
+
+            return File(content, "audio/mpegurl", fileName);
         }
 
         private IEnumerable<string> GetM3UPlaylistLines(PlaylistTabs type, string path, IEnumerable<Track> songs, IEnumerable<PodcastItem> podcastItems, IEnumerable<Episode> episodes)

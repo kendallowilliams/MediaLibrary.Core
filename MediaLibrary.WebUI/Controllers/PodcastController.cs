@@ -33,10 +33,11 @@ namespace MediaLibrary.WebUI.Controllers
         private readonly IPodcastService podcastService;
         private readonly ITransactionService transactionService;
         private readonly IFileService fileService;
+        private readonly ILogService logService;
 
         public PodcastController(IBackgroundTaskQueueService backgroundTaskQueue, IPodcastUIService podcastUIService, IDataService dataService,
                                  PodcastViewModel podcastViewModel, IPodcastService podcastService, ITransactionService transactionService,
-                                 IFileService fileService)
+                                 IFileService fileService, ILogService logService)
         {
             this.podcastUIService = podcastUIService;
             this.dataService = dataService;
@@ -45,6 +46,7 @@ namespace MediaLibrary.WebUI.Controllers
             this.transactionService = transactionService;
             this.fileService = fileService;
             this.backgroundTaskQueue = backgroundTaskQueue;
+            this.logService = logService;
         }
 
         public async Task<IActionResult> Index()
@@ -226,7 +228,6 @@ namespace MediaLibrary.WebUI.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> File(int id)
         {
-            Transaction transaction = await transactionService.GetNewTransaction(TransactionTypes.GetPodcastFile);
             IActionResult result = null;
 
             try
@@ -246,17 +247,17 @@ namespace MediaLibrary.WebUI.Controllers
                         contentTypeProvider.TryGetContentType(podcastItem.File, out string contentType);
                         result = File(IO_File.OpenRead(podcastItem.File), contentType, true);
                     }
-                    await transactionService.UpdateTransactionCompleted(transaction);
+                    await logService.Info($"{nameof(PodcastController)} -> {nameof(File)} -> Id: {podcastItem.Id}");
                 }
                 else
                 {
                     result = new StatusCodeResult((int)HttpStatusCode.NotFound);
-                    await transactionService.UpdateTransactionCompleted(transaction, $"Podcast item: {id} not found.");
+                    await logService.Warn($"{nameof(PodcastController)} -> {nameof(File)} -> Id: {id} -> Not Found");
                 }
             }
             catch(Exception ex)
             {
-                await transactionService.UpdateTransactionErrored(transaction, ex);
+                await logService.Error(ex);
                 result = new StatusCodeResult((int)HttpStatusCode.InternalServerError);
             }
 

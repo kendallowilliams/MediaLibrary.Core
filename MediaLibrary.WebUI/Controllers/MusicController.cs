@@ -35,10 +35,11 @@ namespace MediaLibrary.WebUI.Controllers
         private readonly ITrackService trackService;
         private readonly IFileService fileService;
         private readonly ITransactionService transactionService;
+        private readonly ILogService logService;
 
         public MusicController(IDataService dataService, IBackgroundTaskQueueService backgroundTaskQueue, IConfiguration configuration,
                                IMusicUIService musicService, MusicViewModel musicViewModel, ITrackService trackService,
-                               IFileService fileService, ITransactionService transactionService)
+                               IFileService fileService, ITransactionService transactionService, ILogService logService)
         {
             this.dataService = dataService;
             this.musicService = musicService;
@@ -48,6 +49,7 @@ namespace MediaLibrary.WebUI.Controllers
             this.transactionService = transactionService;
             this.configuration = configuration;
             this.backgroundTaskQueue = backgroundTaskQueue;
+            this.logService = logService;
         }
 
         public async Task<IActionResult> Index()
@@ -97,6 +99,7 @@ namespace MediaLibrary.WebUI.Controllers
 
             return PartialView("~/Views/Music/SongGroup.cshtml", (Group: group, PlaylistCount: hasPlaylists));
         }
+
         [AllowAnonymous]
         public async Task<IActionResult> File(int id)
         {
@@ -110,10 +113,12 @@ namespace MediaLibrary.WebUI.Controllers
 
                 contentTypeProvider.TryGetContentType(filePath, out string contentType);
                 result = File(IO_File.OpenRead(filePath), contentType, true);
+                await logService.Info($"{nameof(MusicController)} -> {nameof(File)} -> Id: {track.Id}");
             }
             else
             {
                 result = new StatusCodeResult((int)HttpStatusCode.NotFound);
+                await logService.Warn($"{nameof(MusicController)} -> {nameof(File)} -> Id: {id} -> Not Found");
             }
 
             return result;
