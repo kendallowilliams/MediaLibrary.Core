@@ -18,5 +18,6 @@ namespace MediaLibrary.Shared.Models.Configurations
         public int SelectedSeason { get; set; }
         public TelevisionPages SelectedTelevisionPage { get; set; }
         public SeriesSort SelectedSeriesSort { get; set; }
+        public string FilePath { get; set; }
     }
 }

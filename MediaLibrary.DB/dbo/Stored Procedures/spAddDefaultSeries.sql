@@ -10,15 +10,15 @@ DECLARE @BewitchedId int,
 		@XenaId int,
 		@StarTrekTASId int,
 		@StarTrekTOSId int,
-		@BewitchedPath VARCHAR(256) = N'$(series_root)/BEWITCHED',
-		@GoldenGirlsPath VARCHAR(256) = N'$(series_root)/GOLDEN_GIRLS',
-		@MamasFamilyPath VARCHAR(256) = N'$(series_root)/MAMAS_FAMILY',
-		@RoseannePath VARCHAR(256) = N'$(series_root)/ROSEANNE',
-		@StrangersWithCandyPath VARCHAR(256) = N'$(series_root)/STRANGERS_WITH_CANDY',
-		@WonderWomanPath VARCHAR(256) = N'$(series_root)/WONDER_WOMAN',
-		@XenaPath VARCHAR(256) = N'$(series_root)/XENA',
-		@StarTrekTASPath VARCHAR(256) = N'$(series_root)/STAR_TREK_TAS',
-		@StarTrekTOSPath VARCHAR(256) = N'$(series_root)/STAR_TREK_TOS';
+		@BewitchedPath VARCHAR(256) = N'BEWITCHED',
+		@GoldenGirlsPath VARCHAR(256) = N'GOLDEN_GIRLS',
+		@MamasFamilyPath VARCHAR(256) = N'MAMAS_FAMILY',
+		@RoseannePath VARCHAR(256) = N'ROSEANNE',
+		@StrangersWithCandyPath VARCHAR(256) = N'STRANGERS_WITH_CANDY',
+		@WonderWomanPath VARCHAR(256) = N'WONDER_WOMAN',
+		@XenaPath VARCHAR(256) = N'XENA',
+		@StarTrekTASPath VARCHAR(256) = N'STAR_TREK_TAS',
+		@StarTrekTOSPath VARCHAR(256) = N'STAR_TREK_TOS';
 
 DELETE Series;
 

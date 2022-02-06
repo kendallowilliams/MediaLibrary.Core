@@ -28,17 +28,17 @@ namespace MediaLibrary.WebUI.Controllers
         private readonly ITelevisionUIService televisionService;
         private readonly IDataService dataService;
         private readonly TelevisionViewModel televisionViewModel;
-        private readonly ITransactionService transactionService;
         private readonly ILogService logService;
+        private readonly IFileService fileService;
 
         public TelevisionController(ITelevisionUIService televisionService, IDataService dataService, TelevisionViewModel televisionViewModel,
-                                    ITransactionService transactionService, ILogService logService)
+                                    ILogService logService, IFileService fileService)
         {
             this.televisionService = televisionService;
             this.dataService = dataService;
             this.televisionViewModel = televisionViewModel;
-            this.transactionService = transactionService;
             this.logService = logService;
+            this.fileService = fileService;
         }
 
         public async Task<IActionResult> Index()
@@ -82,6 +82,10 @@ namespace MediaLibrary.WebUI.Controllers
                 }
                 else
                 {
+                    var existingTVConfiguration = configuration.GetConfigurationObject<TelevisionConfiguration>();
+
+                    if (!fileService.CanUseDirectory(televisionConfiguration.FilePath)) /*then*/ televisionConfiguration.FilePath = existingTVConfiguration.FilePath;
+                    else /*then*/ televisionConfiguration.FilePath = new System.IO.DirectoryInfo(televisionConfiguration.FilePath).FullName;
                     configuration.JsonData = JsonConvert.SerializeObject(televisionConfiguration);
                     await dataService.Update(configuration);
                 }
@@ -93,21 +97,24 @@ namespace MediaLibrary.WebUI.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> File(int id)
         {
+            var configuration = await dataService.Get<Configuration>(item => item.Type == ConfigurationTypes.Television)
+                                                 .ContinueWith(t => t.Result.GetConfigurationObject<TelevisionConfiguration>());
             Episode episode = await dataService.Get<Episode>(item => item.Id == id);
             IActionResult result = null;
+            string filePath = System.IO.Path.Combine(configuration.FilePath, episode?.Path);
 
-            if (episode != null)
+            if (IO_File.Exists(filePath))
             {
                 FileExtensionContentTypeProvider contentTypeProvider = new FileExtensionContentTypeProvider();
 
-                contentTypeProvider.TryGetContentType(episode.Path, out string contentType);
-                result = File(IO_File.OpenRead(episode.Path), contentType, true);
+                contentTypeProvider.TryGetContentType(filePath, out string contentType);
+                result = File(IO_File.OpenRead(filePath), contentType, true);
                 await logService.Info($"{nameof(TelevisionController)} -> {nameof(File)} -> Id: {episode.Id}");
             }
             else
             {
                 result = new StatusCodeResult((int)HttpStatusCode.NotFound);
-                await logService.Warn($"{nameof(TelevisionController)} -> {nameof(File)} -> Id: {id} -> Not Found");
+                await logService.Warn($"{nameof(TelevisionController)} -> {nameof(File)} -> Path: {filePath} -> Not Found");
             }
 
             return result;
@@ -147,17 +154,15 @@ namespace MediaLibrary.WebUI.Controllers
         public async Task AddEpisodeToPlaylist(int itemId, int playlistId)
         {
             PlaylistEpisode item = new PlaylistEpisode() { PlaylistId = playlistId, EpisodeId = itemId };
-            Transaction transaction = null;
 
             try
             {
-                transaction = await transactionService.GetNewTransaction(TransactionTypes.AddPlaylistEpisode);
                 await dataService.Insert(item);
-                await transactionService.UpdateTransactionCompleted(transaction, $"Playlist: {playlistId}, Track: {itemId}");
+                await logService.Info($"Action: {nameof(TransactionTypes.AddPlaylistEpisode)}, Playlist: {playlistId}, Track: {itemId}");
             }
             catch (Exception ex)
             {
-                await transactionService.UpdateTransactionErrored(transaction, ex);
+                await logService.Error(ex);
             }
         }
     }

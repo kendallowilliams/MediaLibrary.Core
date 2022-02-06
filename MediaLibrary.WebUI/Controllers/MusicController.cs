@@ -523,17 +523,13 @@ namespace MediaLibrary.WebUI.Controllers
 
         public async Task AddMusicDirectory(string path)
         {
-            Func<DirectoryInfo, bool> canUse = dirInfo => (dirInfo.Attributes & FileAttributes.Hidden) != FileAttributes.Hidden &&
-                                                          (dirInfo.Attributes & FileAttributes.System) != FileAttributes.System;
-
-            if (!string.IsNullOrWhiteSpace(path) && Directory.Exists(path))
+            if (fileService.CanUseDirectory(path))
             {
                 var directoryInfo =  new DirectoryInfo(path);
                 var request = new ScanDirectoryRequest(directoryInfo.FullName);
-                bool pathExists = directoryInfo != null &&
-                                  await dataService.Exists<TrackPath>(item => item.Location == directoryInfo.FullName);
+                bool pathExists = await dataService.Exists<TrackPath>(item => item.Location == directoryInfo.FullName);
 
-                if (!pathExists && canUse(directoryInfo))
+                if (!pathExists)
                 {
                     await Scan(request);
                 }
@@ -556,8 +552,6 @@ namespace MediaLibrary.WebUI.Controllers
             Configuration configuration = await dataService.Get<Configuration>(item => item.Type == ConfigurationTypes.Music);
             MusicConfiguration musicConfiguration = configuration?.GetConfigurationObject<MusicConfiguration>() ?? new MusicConfiguration();
             IActionResult result = Ok();
-            Func<DirectoryInfo, bool> canUse = dirInfo => (dirInfo.Attributes & FileAttributes.Hidden) != FileAttributes.Hidden &&
-                                                          (dirInfo.Attributes & FileAttributes.System) != FileAttributes.System;
             var dirInfos = musicConfiguration.MusicPaths.Select(p => new DirectoryInfo(p));
             var dirInfo = new DirectoryInfo(path?.Trim() ?? string.Empty);
 
@@ -579,7 +573,7 @@ namespace MediaLibrary.WebUI.Controllers
 
                 result = Ok($"Path found within '{parentPath}' and cannot be added.");
             }
-            else if (!canUse(new DirectoryInfo(path)))
+            else if (!fileService.CanUseDirectory(path))
             {
                 result = Ok($"{path} is a hidden or system folder and cannot be used.");
             }

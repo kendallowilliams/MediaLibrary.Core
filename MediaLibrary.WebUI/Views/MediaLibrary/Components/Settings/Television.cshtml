@@ -5,16 +5,30 @@
 }
 
 <div class="d-flex flex-column flex-fill overflow-auto">
-    <div class="row m-0 p-0">
+    <div class="row m-0 p-0 mb-3">
         <div class="col-auto border-right">
-            <h6>Interface</h6>
+            <h6 style="width: 100px">Interface</h6>
         </div>
         <div class="col">
             <div class="row">
                 <div class="col">
                     <div class="form-group">
                         @Html.LabelFor(x => x.SelectedSeriesSort, "Series Sort")
-                        @Html.DropDownListFor(x => x.SelectedSeriesSort, seriesSortList, null, new { @class = "custom-select" })
+                        @Html.DropDownListFor(x => x.SelectedSeriesSort, seriesSortList, null, new { @class = "custom-select custom-select-sm" })
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row m-0 p-0 mb-3">
+        <div class="col-auto border-right">
+            <h6 style="width: 100px">Path</h6>
+        </div>
+        <div class="col">
+            <div class="row">
+                <div class="col">
+                    <div class="form-group">
+                        @Html.TextBoxFor(x => x.FilePath, new { @class = "form-control form-control-sm" })
                     </div>
                 </div>
             </div>

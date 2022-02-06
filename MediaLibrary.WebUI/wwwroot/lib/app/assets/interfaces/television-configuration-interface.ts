@@ -1,4 +1,4 @@
-﻿import { AlbumSort, ArtistSort, SongSort, MusicTabs, MusicPages, TelevisionPages, SeriesSort } from "../enums/enums";
+﻿import { TelevisionPages, SeriesSort } from "../enums/enums";
 import IConfiguration from "./configuration-interface";
 
 export default interface ITelevisionConfiguration extends IConfiguration {
@@ -6,4 +6,5 @@ export default interface ITelevisionConfiguration extends IConfiguration {
     SelectedSeason: number;
     SelectedTelevisionPage: TelevisionPages;
     SelectedSeriesSort: SeriesSort;
+    FilePath: string;
 }

@@ -190,5 +190,13 @@ namespace MediaLibrary.BLL.Services
                 await transactionService.UpdateTransactionErrored(transaction, ex);
             }
         }
+
+        public bool CanUseDirectory(string path)
+        {
+            Func<DirectoryInfo, bool> canUse = dirInfo => (dirInfo.Attributes & FileAttributes.Hidden) != FileAttributes.Hidden &&
+                                                          (dirInfo.Attributes & FileAttributes.System) != FileAttributes.System;
+
+            return !string.IsNullOrWhiteSpace(path) && Directory.Exists(path) && canUse(new DirectoryInfo(path));
+        }
     }
 }

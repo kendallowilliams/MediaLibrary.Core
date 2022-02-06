@@ -28,5 +28,7 @@ namespace MediaLibrary.BLL.Services.Interfaces
         IEnumerable<string> EnumerateDirectories(string path, string searchPattern = "*", bool recursive = false);
 
         IEnumerable<string> EnumerateFiles(string path, string searchPattern = "*", bool recursive = false);
+
+        bool CanUseDirectory(string path);
     }
 }

@@ -166,6 +166,13 @@ export default class SettingsModal {
                 .then(() => this.settingsLoadFunctions.loadTelevision());
             this.autoCloseModal();
         });
+        $modalBody.find('input[name="FilePath"]').on('change', e => {
+            const path = $(e.currentTarget).val() as string;
+
+            this.configurations.Television.properties.FilePath = path;
+            this.configurations.Television.updateConfiguration();
+            this.autoCloseModal();
+        });
         $modalBody.find('select[name="SelectedTelevisionPlaylistSort"]').on('change', e => {
             const sort = $(e.currentTarget).val() as string;
 
