@@ -11,5 +11,6 @@ namespace MediaLibrary.WebUI.Services.Interfaces
     public interface ITelevisionUIService
     {
         Task<IEnumerable<IGrouping<string, Series>>> GetSeriesGroups(SeriesSort sort);
+        void ClearData();
     }
 }

@@ -214,7 +214,7 @@ export default class SettingsModal {
             this.autoCloseModal();
         });
 
-        $('[data-settings-action="refresh"]').on('click', e => {
+        $('[data-music-settings-action="refresh"]').on('click', e => {
             const title = 'Refresh Music',
                 question = 'Do you want the refresh to delete missing/invalid files?',
                 formData = new FormData(),
@@ -232,6 +232,12 @@ export default class SettingsModal {
 
             this.autoCloseModal();
             MessageBox.confirm(title, question, MessageBoxConfirmType.YesNoCancel, yesCallback, noCallback);
+        });
+
+        $('[data-television-settings-action="refresh"]').on('click', e => {
+            fetch_post('Television/Refresh')
+                .then(_ => this.settingsLoadFunctions.loadTelevision());
+            this.autoCloseModal();
         });
     }
 

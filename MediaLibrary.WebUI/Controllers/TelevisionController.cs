@@ -165,5 +165,11 @@ namespace MediaLibrary.WebUI.Controllers
                 await logService.Error(ex);
             }
         }
+
+        public async Task Refresh()
+        {
+            await dataService.Execute("EXEC spAddDefaultSeries")
+                .ContinueWith(t => televisionService.ClearData());
+        }
     }
 }

@@ -42,6 +42,8 @@ namespace MediaLibrary.DAL.Services.Interfaces
 
         Task<bool> Exists<T>(Expression<Func<T, bool>> expression = null, CancellationToken token = default(CancellationToken)) where T : class, IDataModel;
 
+        Task<int> Execute(string sql, CancellationToken token = default(CancellationToken), params object[] parameters);
+
         SqlParameter CreateParameter(string name, object value);
     }
 }

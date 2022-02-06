@@ -271,7 +271,7 @@ namespace MediaLibrary.DAL.Services
             using (var db = dbContextFactory.CreateDbContext())
             {
                 db.Database.SetCommandTimeout(timeout);
-                result = await db.Database.ExecuteSqlRawAsync(sql, token, parameters);
+                result = await db.Database.ExecuteSqlRawAsync(sql, parameters, token);
             }
 
             return result;

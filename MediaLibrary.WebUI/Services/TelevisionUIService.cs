@@ -48,5 +48,10 @@ namespace MediaLibrary.WebUI.Services
         {
             return series.GroupBy(s => getCharLabel(s.Title)).OrderBy(group => group.Key);
         }
+
+        public void ClearData()
+        {
+            memoryCache.Remove(nameof(CacheKeys.Series));
+        }
     }
 }
