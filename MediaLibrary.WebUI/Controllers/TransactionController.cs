@@ -44,16 +44,12 @@ namespace MediaLibrary.WebUI.Controllers
             Expression<Func<Transaction, bool>> expr = transaction => (!transactionViewModel.FromDate.HasValue || transaction.CreateDate >= transactionViewModel.FromDate) &&
                                                                       (!transactionViewModel.ToDate.HasValue || transaction.CreateDate <= transactionViewModel.ToDate) &&
                                                                       (!hasTypes || transactionViewModel.SelectedTransactionTypes.Contains(transaction.Type)) &&
-                                                                      (!hasStatuses || transactionViewModel.SelectedTransactionStatuses.Contains(transaction.Status));
+                                                                      (!hasStatuses || transactionViewModel.SelectedTransactionStatuses.Contains(transaction.Status) ||
+                                                                      (includeErrors && transaction.Type == TransactionTypes.LogError));
 
-            if (includeErrors && hasTypes) /*then*/ transactionViewModel.SelectedTransactionTypes = 
-                    transactionViewModel.SelectedTransactionTypes.Append(TransactionTypes.LogError)
-                                                                 .Distinct()
-                                                                 .ToArray();
             transactionViewModel.FromDate = fromDate;
             transactionViewModel.ToDate = toDate.AddDays(1).AddSeconds(-1);
             transactionViewModel.Transactions = await dataService.GetList(expr).ContinueWith(task => task.Result.OrderByDescending(item => item.CreateDate));
-            ModelState.Clear();
 
             return View(transactionViewModel);
         }
