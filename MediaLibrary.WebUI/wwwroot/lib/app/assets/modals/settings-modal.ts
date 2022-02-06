@@ -1,6 +1,6 @@
 ﻿import HtmlControls from "../controls/html-controls";
 import { getAlbumSortEnum, getAppWidthEnum, getArtistSortEnum, getPlaylistSortEnum, getPodcastFilterEnum, getPodcastSortEnum, getSeriesSortEnum, getSongSortEnum } from "../enums/enum-functions";
-import { MediaPages, MessageBoxConfirmType } from "../enums/enums";
+import { MediaPages, MediaTypes, MessageBoxConfirmType } from "../enums/enums";
 import IConfigurations from "../interfaces/configurations-interface";
 import ISettingsReloadFunctions from "../interfaces/settings-reload-functions";
 import { fetch_get, fetch_post } from "../utilities/fetch_service";
@@ -218,14 +218,19 @@ export default class SettingsModal {
             const title = 'Refresh Music',
                 question = 'Do you want the refresh to delete missing/invalid files?',
                 formData = new FormData(),
+                clearNowPlaying = () => {
+                    if (this.configurations.Player.properties.SelectedMediaType === MediaTypes.Song) /*then*/ this.settingsLoadFunctions.clearNowPlaying();
+                },
                 yesCallback = () => {
                     LoadingModal.showLoading();
+                    clearNowPlaying();
                     formData.set('deleteFiles', 'true');
                     fetch_post('Music/Refresh', formData)
                         .then(_ => this.settingsLoadFunctions.loadMusic());
                 },
                 noCallback = () => {
                     LoadingModal.showLoading();
+                    clearNowPlaying();
                     fetch_post('Music/Refresh')
                         .then(_ => this.settingsLoadFunctions.loadMusic());
                 };
@@ -235,6 +240,7 @@ export default class SettingsModal {
         });
 
         $('[data-television-settings-action="refresh"]').on('click', e => {
+            if (this.configurations.Player.properties.SelectedMediaType === MediaTypes.Television) /*then*/ this.settingsLoadFunctions.clearNowPlaying();
             fetch_post('Television/Refresh')
                 .then(_ => this.settingsLoadFunctions.loadTelevision());
             this.autoCloseModal();

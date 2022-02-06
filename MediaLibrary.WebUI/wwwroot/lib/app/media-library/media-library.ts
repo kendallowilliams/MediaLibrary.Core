@@ -75,7 +75,8 @@ export default class MediaLibrary extends BaseClass {
                 loadMusic: () => this.music.loadView(),
                 loadPodcast: () => this.podcast.loadView(),
                 loadPlaylist: () => this.playlist.loadView(),
-                loadPlayer: () => this.player.loadView()
+                loadPlayer: () => this.player.loadView(),
+                clearNowPlaying: () => this.player.clearNowPlaying()
             },
             success: () => void = () => {
                 const configurations: IConfigurations = {

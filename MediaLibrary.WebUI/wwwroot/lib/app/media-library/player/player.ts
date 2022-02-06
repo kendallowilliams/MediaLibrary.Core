@@ -182,14 +182,16 @@ export default class Player extends BaseClass implements IView {
             const title = 'Clear now playing',
                 message = 'Are you sure you want to clear now playing?';
 
-            MessageBox.confirm(title, message, MessageBoxConfirmType.YesNo, () => {
-                this.playerConfiguration.properties.NowPlayingList = [];
-                this.playerConfiguration.clearNowPlayingList(this.playerConfiguration.properties.SelectedMediaType);
-                this.playerConfiguration.updateConfiguration()
-                    .then(() => this.reload(() => this.loadItem()));
-                this.playerControls.showHideMainControls(false);
-            });
+            MessageBox.confirm(title, message, MessageBoxConfirmType.YesNo, this.clearNowPlaying);
         });
+    }
+
+    public clearNowPlaying(): void {
+        this.playerConfiguration.properties.NowPlayingList = [];
+        this.playerConfiguration.clearNowPlayingList(this.playerConfiguration.properties.SelectedMediaType);
+        this.playerConfiguration.updateConfiguration()
+            .then(() => this.reload(() => this.loadItem()));
+        this.playerControls.showHideMainControls(false);
     }
 
     private loadItem(item: HTMLElement = null, triggerPlay: boolean = false): void {

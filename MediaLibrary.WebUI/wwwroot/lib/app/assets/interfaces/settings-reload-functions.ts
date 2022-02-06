@@ -3,5 +3,6 @@
     loadTelevision: () => void,
     loadPlayer: () => void,
     loadPodcast: () => void,
-    loadPlaylist: () => void
+    loadPlaylist: () => void,
+    clearNowPlaying: () => void
 }
