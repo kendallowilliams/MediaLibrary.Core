@@ -17,18 +17,23 @@ export default class AddNewPodcastModal {
         });
 
         $(this.modal).find('*[data-podcast-action="save"]').on('click', e => {
-            LoadingModal.showLoading();
-            $(this.modal).modal('hide').on('hidden.bs.modal', () => {
-                const formData = new FormData();
+            const formData = new FormData(),
+                feed = $('#txtNewPodcast').val() as string;
 
-                formData.set('rssFeed', $('#txtNewPodcast').val() as string);
+            $(this.modal).modal('hide');
+
+            if (feed.trim()) {
+                LoadingModal.showLoading();
+                formData.set('rssFeed', feed);
                 fetch_post('Podcast/AddPodcast', formData)
                     .then(_ => this.loadFunc(() => LoadingModal.hideLoading()))
                     .catch(_ => {
                         LoadingModal.hideLoading();
                         MessageBox.showError('Error', 'Failed to load podcast feed.');
                     });
-            });
+            } else {
+                MessageBox.showWarning("Warning", "Missing/Invalid RSS feed. Try again.")
+            }
         });
     }
 }
