@@ -20,9 +20,8 @@ export default class AddNewPodcastModal {
             const formData = new FormData(),
                 feed = $('#txtNewPodcast').val() as string;
 
-            $(this.modal).modal('hide');
-
             if (feed.trim()) {
+                $(this.modal).modal('hide');
                 LoadingModal.showLoading();
                 formData.set('rssFeed', feed);
                 fetch_post('Podcast/AddPodcast', formData)
