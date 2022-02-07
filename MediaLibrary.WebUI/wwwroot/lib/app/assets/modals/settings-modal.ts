@@ -240,9 +240,11 @@ export default class SettingsModal {
         });
 
         $('[data-television-settings-action="refresh"]').on('click', e => {
+            LoadingModal.showLoading();
             if (this.configurations.Player.properties.SelectedMediaType === MediaTypes.Television) /*then*/ this.settingsLoadFunctions.clearNowPlaying();
             fetch_post('Television/Refresh')
-                .then(_ => this.settingsLoadFunctions.loadTelevision());
+                .then(_ => this.settingsLoadFunctions.loadTelevision())
+                .then(() => LoadingModal.hideLoading());
             this.autoCloseModal();
         });
     }
