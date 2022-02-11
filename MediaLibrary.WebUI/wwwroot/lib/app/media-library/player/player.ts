@@ -182,7 +182,7 @@ export default class Player extends BaseClass implements IView {
             const title = 'Clear now playing',
                 message = 'Are you sure you want to clear now playing?';
 
-            MessageBox.confirm(title, message, MessageBoxConfirmType.YesNo, this.clearNowPlaying);
+            MessageBox.confirm(title, message, MessageBoxConfirmType.YesNo, this.clearNowPlaying.bind(this));
         });
     }
 
