@@ -21,6 +21,7 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using System.Web;
 using static MediaLibrary.Shared.Enums;
+using System.Threading;
 
 namespace MediaLibrary.WebUI.Controllers
 {
@@ -34,10 +35,11 @@ namespace MediaLibrary.WebUI.Controllers
         private readonly ITransactionService transactionService;
         private readonly IFileService fileService;
         private readonly ILogService logService;
+        private readonly ITPLService tplService;
 
         public PodcastController(IBackgroundTaskQueueService backgroundTaskQueue, IPodcastUIService podcastUIService, IDataService dataService,
                                  PodcastViewModel podcastViewModel, IPodcastService podcastService, ITransactionService transactionService,
-                                 IFileService fileService, ILogService logService)
+                                 IFileService fileService, ILogService logService, ITPLService tplService)
         {
             this.podcastUIService = podcastUIService;
             this.dataService = dataService;
@@ -47,6 +49,7 @@ namespace MediaLibrary.WebUI.Controllers
             this.fileService = fileService;
             this.backgroundTaskQueue = backgroundTaskQueue;
             this.logService = logService;
+            this.tplService = tplService;
         }
 
         public async Task<IActionResult> Index()
@@ -215,14 +218,31 @@ namespace MediaLibrary.WebUI.Controllers
             }
         }
 
-        public async Task RefreshPodcast(int id)
+        public async Task Refresh(int id = 0)
         {
-            Transaction transaction = await transactionService.GetNewTransaction(TransactionTypes.RefreshPodcast);
-            Podcast podcast = await dataService.Get<Podcast>(item => item.Id == id);
+            if (id > 0)
+            {
+                Podcast podcast = await dataService.Get<Podcast>(item => item.Id == id);
 
-            await podcastService.RefreshPodcast(podcast);
+                if (podcast != null)
+                {
+                    await logService.Info($"Refreshing podcast: {podcast.Title}");
+                    await podcastService.RefreshPodcast(podcast);
+                }
+                else
+                {
+                    await logService.Warn($"Podcast [Id: {id}] not found.");
+                }
+            }
+            else
+            {
+                IEnumerable<Podcast> podcasts = await dataService.GetList<Podcast>();
+
+                await logService.Info($"Refreshing podcasts: {string.Join(", ", podcasts.Select(p => p.Title))}");
+                await tplService.ConcurrentAsync(async podcast => await podcastService.RefreshPodcast(podcast), podcasts, 4, default(CancellationToken));
+            }
+
             podcastUIService.ClearPodcasts();
-            await transactionService.UpdateTransactionCompleted(transaction, $"Podcast: {podcast.Title}");
         }
 
         [AllowAnonymous]

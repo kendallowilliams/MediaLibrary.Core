@@ -1,6 +1,6 @@
 ﻿import HtmlControls from "../controls/html-controls";
 import { getAlbumSortEnum, getAppWidthEnum, getArtistSortEnum, getPlaylistSortEnum, getPodcastFilterEnum, getPodcastSortEnum, getSeriesSortEnum, getSongSortEnum } from "../enums/enum-functions";
-import { MediaPages, MediaTypes, MessageBoxConfirmType } from "../enums/enums";
+import { MediaPages, MediaTypes, MessageBoxConfirmType, PodcastPages } from "../enums/enums";
 import IConfigurations from "../interfaces/configurations-interface";
 import ISettingsReloadFunctions from "../interfaces/settings-reload-functions";
 import { fetch_get, fetch_post } from "../utilities/fetch_service";
@@ -237,6 +237,27 @@ export default class SettingsModal {
 
             this.autoCloseModal();
             MessageBox.confirm(title, question, MessageBoxConfirmType.YesNoCancel, yesCallback, noCallback);
+        });
+
+        $('[data-podcast-settings-action="refresh"]').on('click', e => {
+            const isIndexPage = this.configurations.Podcast.properties.SelectedPodcastPage === PodcastPages.Index,
+                selectedPodcastId = this.configurations.Podcast.properties.SelectedPodcastId,
+                formData = new FormData(),
+                success = () => {
+                    LoadingModal.hideLoading();
+                };
+
+            LoadingModal.showLoading();
+            if (isIndexPage) {
+                fetch_post('Podcast/Refresh')
+                    .then(_ => success());
+            } else if (selectedPodcastId > 0) {
+                formData.append('id', selectedPodcastId.toString());
+                fetch_post('Podcast/Refresh', formData)
+                    .then(_ => success());
+            }
+
+            this.autoCloseModal();
         });
 
         $('[data-television-settings-action="refresh"]').on('click', e => {
