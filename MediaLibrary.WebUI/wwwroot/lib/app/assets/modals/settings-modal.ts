@@ -9,6 +9,7 @@ import LoadingModal from "../../assets/modals/loading-modal";
 import AddNewSongModal from "./add-song-modal";
 import ManageDirectoriesModal from "./manage-directories-modal";
 import StringList from "../controls/string-list";
+import AddNewPodcastModal from "./add-podcast-modal";
 
 export default class SettingsModal {
     private modal: HTMLElement;
@@ -16,6 +17,7 @@ export default class SettingsModal {
     private addNewSongModal: AddNewSongModal;
     private manageDirectoriesModal: ManageDirectoriesModal;
     private stringList: StringList;
+    private addNewPodcastModal: AddNewPodcastModal;
 
     constructor(private configurations: IConfigurations, private settingsLoadFunctions: ISettingsReloadFunctions) {
         const tooltipsEnabled = () => this.configurations.MediaLibary.properties.TooltipsEnabled;
@@ -27,6 +29,7 @@ export default class SettingsModal {
         this.manageDirectoriesModal = new ManageDirectoriesModal(() => this.settingsLoadFunctions.loadMusic(),
             tooltipsEnabled,
             () => this.hide());
+        this.addNewPodcastModal = new AddNewPodcastModal(() => this.settingsLoadFunctions.loadPodcast());
         this.initializeControls();
     }
 
@@ -258,6 +261,11 @@ export default class SettingsModal {
             }
 
             this.autoCloseModal();
+        });
+
+        $('[data-podcast-settings-action="add"]').on('click', e => {
+            this.autoCloseModal();
+            this.addNewPodcastModal.show();
         });
 
         $('[data-television-settings-action="refresh"]').on('click', e => {

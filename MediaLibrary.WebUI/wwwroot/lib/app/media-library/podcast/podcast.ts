@@ -4,7 +4,6 @@ import PodcastConfiguration from "../../assets/models/configurations/podcast-con
 import HtmlControls from '../../assets/controls/html-controls';
 import { MessageBoxConfirmType, PodcastPages } from "../../assets/enums/enums";
 import IPodcastConfiguration from "../../assets/interfaces/podcast-configuration-interface";
-import AddNewPodcastModal from "../../assets/modals/add-podcast-modal";
 import LoadingModal from "../../assets/modals/loading-modal";
 import { disposeTooltips, loadTooltips, disposePopovers } from "../../assets/utilities/bootstrap-helper";
 import { getPodcastSortEnum, getPodcastFilterEnum } from "../../assets/enums/enum-functions";
@@ -14,7 +13,6 @@ import { fetch_get, fetch_post, loadHTML } from "../../assets/utilities/fetch_se
 export default class Podcast extends BaseClass implements IView {
     private readonly mediaView: HTMLElement;
     private podcastView: HTMLElement;
-    private addNewPodcastModal: AddNewPodcastModal;
 
     constructor(private podcastConfiguration: PodcastConfiguration,
         private playFunc: (btn: HTMLButtonElement, single: boolean) => void,
@@ -29,7 +27,6 @@ export default class Podcast extends BaseClass implements IView {
         const properties: IPodcastConfiguration = this.podcastConfiguration.properties,
             success: () => void = () => {
                 this.podcastView = HtmlControls.Views().PodcastView;
-                this.addNewPodcastModal = new AddNewPodcastModal(this.loadView.bind(this));
                 this.initializeControls();
                 if (this.tooltipsEnabled()) /*then*/ loadTooltips(this.mediaView);
                 $('[data-podcast-year][data-item-index="1"]').trigger('click');
