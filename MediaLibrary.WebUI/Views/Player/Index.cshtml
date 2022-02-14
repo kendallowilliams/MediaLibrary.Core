@@ -8,13 +8,6 @@
     <div class="d-flex flex-row pt-1">
         <h4 class="flex-fill text-truncate">Now Playing<span id="@(HtmlControlsRepository.NowPlayingTitleId)"></span></h4>
         <div class="pr-1 text-nowrap">
-            <button id="@(HtmlControlsRepository.PlayerAudioVisualizerButtonId)" class="btn btn-sm btn-outline-secondary @(Model.Configuration.AudioVisualizerEnabled ? "active" : string.Empty)"
-                    data-tooltip="tooltip" title="Toggle audio visualizer">
-                <i class="fa fa-eye"></i>
-            </button>
-            <button id="@(HtmlControlsRepository.PlayerClearButtonId)" class="btn btn-sm btn-outline-danger" title="Clear now playing" data-tooltip="tooltip">
-                <i class="fa fa-trash"></i>
-            </button>
             <button class="btn btn-sm btn-outline-secondary" data-toggle="modal" data-target="#@(HtmlControlsRepository.SettingsModalId)" data-tooltip="tooltip" title="Settings">
                 <i class="fa fa-cog"></i>
             </button>

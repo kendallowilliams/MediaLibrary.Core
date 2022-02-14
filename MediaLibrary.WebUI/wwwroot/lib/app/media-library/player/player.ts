@@ -155,35 +155,28 @@ export default class Player extends BaseClass implements IView {
             }
             this.playerConfiguration.updateConfiguration();
         });
-        $(buttons.PlayerAudioVisualizerButton).on('click', e => {
-            const button: HTMLElement = e.currentTarget;
+    }
 
-            if (!this.audioVisualizer.isInitialized()) /*then*/ this.audioVisualizer.init();
+    public toggleAudioVisualizer(button: HTMLButtonElement): void {
+        if (!this.audioVisualizer.isInitialized()) /*then*/ this.audioVisualizer.init();
 
-            if ($(button).hasClass('active')) {
-                this.playerConfiguration.properties.AudioVisualizerEnabled = false;
-                this.playerConfiguration.updateConfiguration()
-                    .then(() => {
+        if ($(button).hasClass('active')) {
+            this.playerConfiguration.properties.AudioVisualizerEnabled = false;
+            this.playerConfiguration.updateConfiguration()
+                .then(() => {
                     $(button).removeClass('active');
                     this.audioVisualizer.disable();
                 });
-            } else {
-                this.playerConfiguration.properties.AudioVisualizerEnabled = true;
-                this.playerConfiguration.updateConfiguration()
-                    .then(() => {
+        } else {
+            this.playerConfiguration.properties.AudioVisualizerEnabled = true;
+            this.playerConfiguration.updateConfiguration()
+                .then(() => {
                     $(button).addClass('active');
                     this.audioVisualizer.enable();
 
                     if (this.isPlaying()) /*then*/ this.audioVisualizer.start();
                 });
-            }
-        });
-        $(buttons.PlayerClearButton).on('click', e => {
-            const title = 'Clear now playing',
-                message = 'Are you sure you want to clear now playing?';
-
-            MessageBox.confirm(title, message, MessageBoxConfirmType.YesNo, this.clearNowPlaying.bind(this));
-        });
+        }
     }
 
     public clearNowPlaying(): void {

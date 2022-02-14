@@ -35,7 +35,8 @@ export default class SettingsModal {
 
     private initializeControls(): void {
         const $modalBody = $(this.modal).find('.modal-body'),
-            stringListElement = $modalBody.find('.string-list').get(0);
+            stringListElement = $modalBody.find('.string-list').get(0),
+            buttons = HtmlControls.Buttons();
 
         this.stringList = new StringList(stringListElement,
             this.configurations.Music.properties.MusicPaths,
@@ -274,6 +275,22 @@ export default class SettingsModal {
             fetch_post('Television/Refresh')
                 .then(_ => this.settingsLoadFunctions.loadTelevision())
                 .then(() => LoadingModal.hideLoading());
+            this.autoCloseModal();
+        });
+
+        $(buttons.PlayerClearButton).on('click', e => {
+            const title = 'Clear now playing',
+                message = 'Are you sure you want to clear now playing?',
+                yesCallback = () => {
+                    this.settingsLoadFunctions.clearNowPlaying();
+                    this.autoCloseModal();
+                };
+
+            MessageBox.confirm(title, message, MessageBoxConfirmType.YesNo, yesCallback);
+        });
+
+        $(buttons.PlayerAudioVisualizerButton).on('click', e => {
+            this.settingsLoadFunctions.toggleAudioVisualizer(e.currentTarget as HTMLButtonElement);
             this.autoCloseModal();
         });
     }
