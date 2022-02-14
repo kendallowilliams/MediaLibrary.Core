@@ -54,7 +54,8 @@ export default class SettingsModal {
                     containers.PlaylistSettingsContainer,
                     containers.PodcastSettingsContainer,
                     containers.TelevisionSettingsContainer
-                ];
+                ],
+                mediaType = this.configurations.Player.properties.SelectedMediaType;
 
             $(settingsContainers).addClass('d-none');
             this.addNewSongModal.hide();
@@ -73,6 +74,9 @@ export default class SettingsModal {
             } else if (mediaPage === MediaPages.Television) {
                 $(containers.TelevisionSettingsContainer).removeClass('d-none');
             }
+
+            if (mediaType === MediaTypes.Song) /*then*/ $(buttons.PlayerAudioVisualizerButton).removeClass('d-none');
+            else /*then*/ $(buttons.PlayerAudioVisualizerButton).addClass('d-none');
         });
         $modalBody.find('select[name="AppWidth"]').on('change', e => {
             const width = $(e.currentTarget).val() as string;
