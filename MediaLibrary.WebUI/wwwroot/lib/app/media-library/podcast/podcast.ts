@@ -65,14 +65,6 @@ export default class Podcast extends BaseClass implements IView {
             }
         });
 
-        $(this.mediaView).find('*[data-podcast-action="refresh"]').on('click', e => {
-            const formData = new FormData();
-
-            formData.set('id', this.podcastConfiguration.properties.SelectedPodcastId.toString());
-            LoadingModal.showLoading();
-            fetch_post('Podcast/RefreshPodcast', formData)
-                .then(_ => this.loadView(() => LoadingModal.hideLoading()));
-        });
         $(this.mediaView).find('*[data-podcast-action="delete"]').on('click', e => {
             const $btn = $(e.currentTarget),
                 id = $btn.attr('data-item-id'),
