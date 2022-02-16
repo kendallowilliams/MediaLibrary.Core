@@ -19,35 +19,58 @@ namespace MediaLibrary.BLL.Services
         private readonly IDataService dataService;
         private readonly IPodcastService podcastService;
         private readonly IFileService fileService;
-        private readonly ITransactionService transactionService;
+        private readonly ILogService logService;
         private readonly ITPLService tplService;
+        private readonly ITransactionService transactionService;
 
         public ProcessorService(IDataService dataService, IPodcastService podcastService, IFileService fileService,
-                                ITransactionService transactionService, ITPLService tplService)
+                                ILogService logService, ITPLService tplService, ITransactionService transactionService)
         {
             this.dataService = dataService;
             this.podcastService = podcastService;
             this.fileService = fileService;
-            this.transactionService = transactionService;
+            this.logService = logService;
             this.tplService = tplService;
+            this.transactionService = transactionService;
         }
 
         public async Task RefreshPodcasts()
         {
-            Transaction transaction = null;
             IEnumerable<Podcast> podcasts = null;
 
             try
             {
-                transaction = await transactionService.GetNewTransaction(TransactionTypes.RefreshPodcasts);
                 podcasts = await dataService.GetList<Podcast>();
-                await tplService.ConcurrentAsync(async podcast => await podcastService.RefreshPodcast(podcast), podcasts, 4, default(CancellationToken));
+                await tplService.ConcurrentAsync(async podcast =>
+                    {
+                        string message = $"{nameof(ProcessorService)} -> {nameof(RefreshPodcasts)} -> {nameof(PodcastService.RefreshPodcast)}";
+
+                        try
+                        {
+                            await logService.Info($"{message} [{podcast.Title}] started...");
+                            await podcastService.RefreshPodcast(podcast);
+                            await logService.Info($"{message} [{podcast.Title}] completed.");
+                        }
+                        catch(AggregateException ex)
+                        {
+                            await logService.Warn($"{message} [{podcast.Title}] failed.");
+                            await logService.Error(ex);
+                        }
+                        catch(Exception ex)
+                        {
+                            await logService.Warn($"{message} [{podcast.Title}] failed.");
+                            await logService.Error(ex);
+                        }
+                    }, podcasts, 4, default(CancellationToken));
                 await podcastService.CleanMissingPodcastFiles();
-                await transactionService.UpdateTransactionCompleted(transaction);
+            }
+            catch (AggregateException ex)
+            {
+                await logService.Error(ex);
             }
             catch (Exception ex)
             {
-                await transactionService.UpdateTransactionErrored(transaction, ex);
+                await logService.Error(ex);
             }
         }
 
