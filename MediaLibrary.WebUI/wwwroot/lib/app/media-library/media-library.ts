@@ -281,16 +281,18 @@ export default class MediaLibrary extends BaseClass {
     }
 
     public handleKeyDown(evt: KeyboardEvent): void {
-        if (evt) {
-            if (evt.repeat) {
+        if (this.mediaLibraryConfiguration.properties.KeysEnabled) {
+            if (evt) {
+                if (evt.repeat) {
 
-            } else {
-                if (evt.key === 'ArrowLeft') {
-                    this.player.loadPrevious();
-                } else if (evt.key === 'ArrowRight') {
-                    this.player.loadNext();
-                } else if (evt.key === ' ') {
-                    this.player.playOrPause();
+                } else {
+                    if (evt.key === 'ArrowLeft') {
+                        this.player.loadPrevious();
+                    } else if (evt.key === 'ArrowRight') {
+                        this.player.loadNext();
+                    } else if (evt.key === ' ') {
+                        this.player.playOrPause();
+                    }
                 }
             }
         }
