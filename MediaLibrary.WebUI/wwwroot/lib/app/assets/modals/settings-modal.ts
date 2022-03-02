@@ -166,6 +166,13 @@ export default class SettingsModal {
             this.configurations.MediaLibary.updateConfiguration();
             this.autoCloseModal();
         });
+        $modalBody.find('input[name="KeysEnabled"]').on('change', e => {
+            const enabled = (e.currentTarget as HTMLInputElement).checked;
+
+            this.configurations.MediaLibary.properties.KeysEnabled = enabled;
+            this.configurations.MediaLibary.updateConfiguration();
+            this.autoCloseModal();
+        });
         $modalBody.find('select[name="SelectedSeriesSort"]').on('change', e => {
             const sort = $(e.currentTarget).val() as string;
 

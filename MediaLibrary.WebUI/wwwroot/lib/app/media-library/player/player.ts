@@ -242,7 +242,7 @@ export default class Player extends BaseClass implements IView {
         $(this.getPlayers()).on('timeupdate', this.timeUpdated.bind(this));
     }
 
-    private loadNext(): void {
+    public loadNext(): void {
         const shuffle = this.playerConfiguration.properties.Shuffle,
             nextIndex = shuffle ? this.unPlayedShuffleIds[getRandomInteger(0, this.unPlayedShuffleIds.length - 1)] :
                 this.playerConfiguration.properties.CurrentItemIndex + 1,
@@ -280,7 +280,7 @@ export default class Player extends BaseClass implements IView {
         }
     }
 
-    private loadPrevious(): void {
+    public loadPrevious(): void {
         const shuffle = this.playerConfiguration.properties.Shuffle,
             previousIndex = shuffle ? this.unPlayedShuffleIds[getRandomInteger(0, this.unPlayedShuffleIds.length - 1)] :
                 this.playerConfiguration.properties.CurrentItemIndex - 1,
@@ -528,5 +528,10 @@ export default class Player extends BaseClass implements IView {
                 this.getPlaybackTime(currentTime, player.duration),
                 () => this.updatePlayerProgress(currentTime));
         }
+    }
+
+    public playOrPause(): void {
+        if (this.isPlaying()) /*then*/ this.controlsFunctions.pause();
+        else /*then*/ this.controlsFunctions.play();
     }
 }

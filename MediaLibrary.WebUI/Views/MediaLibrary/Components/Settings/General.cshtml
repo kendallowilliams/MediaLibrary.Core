@@ -42,10 +42,13 @@
                         <label>Settings Auto-Hide Delay (seconds)</label>
                         @Html.TextBoxFor(x => x.SettingsDelay, new { @class = "form-control", type = "number" })
                     </div>
-                    <div class="form-check">
-                        <input type="checkbox" class="form-check-input" id="exampleCheck1">
+                    <div class="form-check form-check-inline">
                         @Html.CheckBoxFor(x => x.TooltipsEnabled, new { @class = "form-check-input" })
                         @Html.LabelFor(x => x.TooltipsEnabled, "Tooltips Enabled", new { @class = "form-check-label" })
+                    </div>
+                    <div class="form-check form-check-inline">
+                        @Html.CheckBoxFor(x => x.KeysEnabled, new { @class = "form-check-input" })
+                        @Html.LabelFor(x => x.KeysEnabled, "Keys Enabled", new { @class = "form-check-label" })
                     </div>
                 </div>
             </div>

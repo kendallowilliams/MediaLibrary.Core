@@ -24,5 +24,7 @@ namespace MediaLibrary.Shared.Models.Configurations
         public bool TooltipsEnabled { get;set; }
 
         public byte SettingsDelay { get; set; }
+
+        public bool KeysEnabled { get; set; }
     }
 }
