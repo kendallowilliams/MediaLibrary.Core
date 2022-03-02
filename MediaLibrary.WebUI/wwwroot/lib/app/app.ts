@@ -27,6 +27,6 @@ export default class App {
                 evt.preventDefault();
                 evt.returnValue = false;
             }
-        }
+        };
     }
 }
