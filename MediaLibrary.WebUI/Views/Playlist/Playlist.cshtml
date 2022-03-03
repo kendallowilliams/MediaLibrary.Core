@@ -58,7 +58,7 @@
                                     <span class="mt-0 text-truncate font-weight-bold">@(list.Track.Title)</span>
                                     <div class="d-flex flex-row">
                                         <small data-album-id="@(list.Track.Album?.Id)" class="text-truncate" style="cursor: pointer">@(list.Track.Album?.Title ?? "Unknown Album")</small>
-                                        <small>-</small>
+                                        <small>&nbsp;-&nbsp;</small>
                                         <small data-artist-id="@(list.Track.Artist?.Id)" style="cursor: pointer" class="text-muted text-truncate">@(list.Track.Artist?.Name ?? "Unknown Artist")</small>
                                         <div class="flex-fill"></div>
                                     </div>
