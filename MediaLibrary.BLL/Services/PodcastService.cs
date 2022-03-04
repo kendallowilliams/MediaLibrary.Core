@@ -21,14 +21,16 @@ namespace MediaLibrary.BLL.Services
         private readonly IWebService webService;
         private readonly ITransactionService transactionService;
         private readonly IFileService fileService;
+        private readonly ILogService logService;
 
         public PodcastService(IDataService dataService, IWebService webService, ITransactionService transactionService,
-                              IFileService fileService)
+                              IFileService fileService, ILogService logService)
         {
             this.dataService = dataService;
             this.webService = webService;
             this.transactionService = transactionService;
             this.fileService = fileService;
+            this.logService = logService;
         }
 
         public async Task<Podcast> AddPodcast(string url) => await ParseRssFeed(new Podcast { Url = url });
@@ -56,6 +58,8 @@ namespace MediaLibrary.BLL.Services
             List<ISyndicationItem> items = new List<ISyndicationItem>();
             IEnumerable<PodcastItem> podcastItems = Enumerable.Empty<PodcastItem>();
             Podcast podcast = null;
+
+            await logService.Trace($"{nameof(PodcastService)} -> {nameof(ParseRssFeed)} -> {podcastData?.Url} -> Started");
 
             using (var xmlReader = XmlReader.Create(podcastData.Url, new XmlReaderSettings { Async = true }))
             {
@@ -131,6 +135,8 @@ namespace MediaLibrary.BLL.Services
                 podcast.PodcastItems = podcast.PodcastItems.Concat(podcastItems).ToList();
                 await dataService.Update(podcast);
             }
+
+            await logService.Trace($"{nameof(PodcastService)} -> {nameof(ParseRssFeed)} -> {podcastData?.Url} -> Completed");
 
             return podcast;
         }
