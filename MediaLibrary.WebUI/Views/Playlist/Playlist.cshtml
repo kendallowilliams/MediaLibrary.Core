@@ -18,9 +18,7 @@
             }
             @if (Model.SelectedPlaylist.PlaylistTracks.Any() || Model.SelectedPlaylist.PlaylistEpisodes.Any() || Model.SelectedPlaylist.PlaylistPodcastItems.Any())
             {
-                <button class="btn btn-sm btn-outline-secondary" data-href="@Url.Action(nameof(PlaylistController.GetDynamicM3UPlaylist), "Playlist", new { Model.SelectedPlaylist.Id })"
-                        data-random-href="@Url.Action(nameof(PlaylistController.GetDynamicM3UPlaylist), "Playlist", new { Model.SelectedPlaylist.Id, random = true })"
-                        data-toggle="modal" data-target="#@(HtmlControlsRepository.DownloadM3UPlaylistModalId)"
+                <button class="btn btn-sm btn-outline-secondary" data-playlist-id="@Model.SelectedPlaylist.Id" data-playlist-action="download"
                         data-tooltip="tooltip" title="Download M3U playlist" data-playlist-name="@(Model.SelectedPlaylist.Name)">
                     <i class="fa fa-download"></i>
                 </button>
@@ -156,4 +154,3 @@
 </div>
 
 <partial name="~/Views/Shared/Modals/EditPlaylistModal.cshtml" />
-<partial name="~/Views/Shared/Modals/DownloadM3UPlaylistModal.cshtml" />

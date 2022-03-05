@@ -8,16 +8,14 @@ import LoadingModal from "../../assets/modals/loading-modal";
 import EditPlaylistModal from "../../assets/modals/edit-playlist-modal";
 import { loadTooltips, disposeTooltips } from "../../assets/utilities/bootstrap-helper";
 import { getPlaylistSortEnum, getPlaylistTabEnumString, getPlaylistTabEnum, getPlaylistSortEnumString } from "../../assets/enums/enum-functions";
-import DownloadM3UPlaylistModal from "../../assets/modals/download-m3u-playlist-modal";
 import IPlayerLoadFunctions from "../../assets/interfaces/player-load-functions-interface";
 import * as MessageBox from '../../assets/utilities/message-box';
-import { fetch_post, loadHTML } from "../../assets/utilities/fetch_service";
+import { fetch_get, fetch_post, loadHTML } from "../../assets/utilities/fetch_service";
 
 export default class Playlist extends BaseClass implements IView {
     private readonly mediaView: HTMLElement;
     private addPlaylistModal: AddNewPlaylistModal;
     private editPlaylistModal: EditPlaylistModal;
-    private downloadM3UPlaylistModal: DownloadM3UPlaylistModal;
     private playlistView: HTMLElement;
 
     constructor(private playlistConfiguration: PlaylistConfiguration,
@@ -34,7 +32,6 @@ export default class Playlist extends BaseClass implements IView {
         const success: () => void = () => {
             this.addPlaylistModal = new AddNewPlaylistModal(this.loadView.bind(this), this.playlistConfiguration);
             this.editPlaylistModal = new EditPlaylistModal(this.loadView.bind(this));
-            this.downloadM3UPlaylistModal = new DownloadM3UPlaylistModal();
             this.initializeControls();
             this.updateActiveMediaFunc();
             this.applyLoadFunctions();
@@ -91,6 +88,22 @@ export default class Playlist extends BaseClass implements IView {
                 fetch_post('Playlist/RemovePlaylistItem', formData)
                     .then(_ => this.loadView(() => LoadingModal.hideLoading()));
             });
+        });
+
+        $(this.mediaView).find('[data-playlist-action="download"]').on('click', e => {
+            const $btn = $(e.currentTarget),
+                playlistId: string = $btn.attr('data-playlist-id'),
+                playlistName: string = $btn.attr('data-playlist-name'),
+                title = playlistName,
+                message = 'Randomize '.concat(playlistName).concat('?'),
+                path = 'Playlist/GetDynamicM3UPlaylist/'.concat(playlistId),
+                randomPath = 'Playlist/GetDynamicM3UPlaylist/'.concat(playlistId).concat('?random=true'),
+                $link = $('<a download></a>');
+
+            MessageBox.confirm(title, message, MessageBoxConfirmType.YesNo,
+                () => $link.attr('href', randomPath).each((index, link) => link.click()),
+                () => $link.attr('href', path).each((index, link) => link.click())
+            );
         });
 
         $(this.mediaView).find('*[data-playlist-action="delete"]').on('click', e => {
