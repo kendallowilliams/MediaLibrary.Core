@@ -150,6 +150,28 @@ namespace MediaLibrary.WebUI.Controllers
         }
 
         [AllowAnonymous]
+        public async Task<IActionResult> GetDynamicM3UPlaylist(int id, bool random = false)
+        {
+            Random rand = new Random(DateTime.Now.Millisecond);
+            IEnumerable<Playlist> systemPlaylists = id < 0 ? await playlistService.GetSystemPlaylists(true, true) : Enumerable.Empty<Playlist>();
+            Playlist playlist = id > 0 ? await dataService.GetAlt<Playlist>(list => list.Id == id, default) :
+                                         systemPlaylists.FirstOrDefault(item => item.Id == id);
+            string path = $"{Request.Scheme}://{Request.Host}{Request.PathBase}/Playlist",
+                      data,
+                      timestamp = DateTime.Now.ToString("yyyyMMddHHmmss"),
+                      fileName = $"{playlist.Name.Trim()}_Dynamic_{timestamp}.m3u",
+                      line = $"{path}/{nameof(GetM3UPlaylist)}/{playlist.Id}?random={random}";
+            byte[] content;
+
+            data = $"#EXTM3U{Environment.NewLine}{$"#EXTINF:0,{playlist.Name}{Environment.NewLine}{line}"}";
+            content = Encoding.UTF8.GetBytes(data);
+
+            await logService.Info($"{nameof(PlaylistController)} -> {nameof(GetDynamicM3UPlaylist)} -> File: {fileName}");
+
+            return File(content, "audio/mpegurl", fileName);
+        }
+
+        [AllowAnonymous]
         public async Task<IActionResult> GetM3UPlaylist(int id, bool random = false)
         {
             Random rand = new Random(DateTime.Now.Millisecond);
