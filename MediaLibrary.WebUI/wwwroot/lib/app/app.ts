@@ -27,6 +27,7 @@ export default class App {
                 evt.preventDefault();
                 evt.returnValue = false;
             }
-        }
+        };
+        window.onkeydown = (evt: KeyboardEvent) => this.mediaLibrary.handleKeyDown(evt);
     }
 }

@@ -69,12 +69,15 @@ namespace MediaLibrary.WebUI.Controllers
 
         public async Task AddPlaylist(string playlistName, PlaylistTypes playlistType)
         {
+            playlistName = playlistName?.Trim();
+
             if (!string.IsNullOrWhiteSpace(playlistName))
             {
-                Playlist playlist = new Playlist(playlistName) { Type = playlistType };
+                var existingPlaylist = await dataService.Get<Playlist>(item => item.Name.Equals(playlistName) && item.Type == playlistType);
+                Playlist playlist = existingPlaylist ?? new Playlist(playlistName) { Type = playlistType };
                 Configuration configuration = await dataService.Get<Configuration>(item => item.Type == ConfigurationTypes.Playlist);
 
-                await dataService.Insert(playlist);
+                if (existingPlaylist == null) /*then*/ await dataService.Insert(playlist);
 
                 if (configuration != null)
                 {

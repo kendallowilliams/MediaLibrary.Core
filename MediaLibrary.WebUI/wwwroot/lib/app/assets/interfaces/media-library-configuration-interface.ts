@@ -7,4 +7,5 @@ export default interface IMediaLibraryConfiguration extends IConfiguration {
     NavBarDelay: number;
     TooltipsEnabled: boolean;
     SettingsDelay: number;
+    KeysEnabled: boolean
 }
