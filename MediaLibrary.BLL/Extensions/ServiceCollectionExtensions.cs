@@ -26,14 +26,12 @@ namespace MediaLibrary.BLL.Extensions
             {
                 options.UseSqlServer(configuration.GetConnectionString("MediaLibrary"));
             });
-            services.AddHttpClient();
-            services.AddHttpClient("DecompressionClient")
-                    .ConfigureHttpClient(client =>
-                    {
-                        client.DefaultRequestHeaders.AcceptEncoding.Add(new StringWithQualityHeaderValue("gzip"));
-                        client.DefaultRequestHeaders.AcceptEncoding.Add(new StringWithQualityHeaderValue("deflate"));
-                    })
-                    .ConfigurePrimaryHttpMessageHandler(() => httpClientHandler);
+            services.AddHttpClient<HttpClient>(client =>
+            {
+                client.DefaultRequestHeaders.AcceptEncoding.Add(new StringWithQualityHeaderValue("gzip"));
+                client.DefaultRequestHeaders.AcceptEncoding.Add(new StringWithQualityHeaderValue("deflate"));
+            })
+            .ConfigurePrimaryHttpMessageHandler(() => httpClientHandler);
             services.AddTransient<ITPLService, TPLService>();
             services.AddTransient<IDataService, DataService>();
             services.AddTransient<IAlbumService, AlbumService>();

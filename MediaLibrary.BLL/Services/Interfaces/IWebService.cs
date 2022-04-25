@@ -11,8 +11,5 @@ namespace MediaLibrary.BLL.Services.Interfaces
     {
         Task<byte[]> DownloadData(string address, CancellationToken token = default);
         Task<bool> DownloadFile(string address, string filename, CancellationToken token = default);
-        Task<T> Get<T>(Uri baseUri, string relativePath, string username = default, string password = default);
-        Task PostJSON(Uri baseUri, string relativePath, object objectToSerialize, string username, string password);
-        Task<bool> IsAuthorized(Uri baseUri, string relativePath, string username = default, string password = default);
     }
 }
