@@ -45,7 +45,7 @@ namespace MediaLibrary.BLL.Services
                 {
                     using (var fileStream = File.OpenWrite(filename))
                     {
-                        await stream.CopyToAsync(fileStream);
+                        await stream.CopyToAsync(fileStream).ContinueWith(_ => result = true);
                     }
                 }
             }
