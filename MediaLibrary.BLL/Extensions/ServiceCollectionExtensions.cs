@@ -7,13 +7,9 @@ using MediaLibrary.Shared.Services;
 using MediaLibrary.Shared.Services.Interfaces;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using System.Net.Http;
+using System.Net.Http.Headers;
 
 namespace MediaLibrary.BLL.Extensions
 {
@@ -21,10 +17,21 @@ namespace MediaLibrary.BLL.Extensions
     {
         public static void ConfigureServices(this IServiceCollection services, IConfiguration configuration)
         {
+            var httpClientHandler = new HttpClientHandler()
+            {
+                AutomaticDecompression = System.Net.DecompressionMethods.GZip | System.Net.DecompressionMethods.Deflate
+            };
+
             services.AddDbContextFactory<MediaLibraryEntities>(options =>
             {
                 options.UseSqlServer(configuration.GetConnectionString("MediaLibrary"));
             });
+            services.AddHttpClient<HttpClient>(client =>
+            {
+                client.DefaultRequestHeaders.AcceptEncoding.Add(new StringWithQualityHeaderValue("gzip"));
+                client.DefaultRequestHeaders.AcceptEncoding.Add(new StringWithQualityHeaderValue("deflate"));
+            })
+            .ConfigurePrimaryHttpMessageHandler(() => httpClientHandler);
             services.AddTransient<ITPLService, TPLService>();
             services.AddTransient<IDataService, DataService>();
             services.AddTransient<IAlbumService, AlbumService>();
