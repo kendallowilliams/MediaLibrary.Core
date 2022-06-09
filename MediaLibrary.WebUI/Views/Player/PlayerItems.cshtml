@@ -42,9 +42,9 @@ else if (Model.Configuration.SelectedMediaType == Enums.MediaTypes.Podcast && Mo
                     <div class="media-body d-flex flex-column" style="overflow-x: auto">
                         <span class="mt-0 text-truncate font-weight-bold">@(item.PodcastItem.Title)</span>
                         <div class="d-flex flex-row">
-                            <small data-podcast-id="@(item.PodcastItem.PodcastId)" style="cursor: pointer">@(item.PodcastItem.Podcast?.Title ?? "Unknown Podcast")</small>
+                            <small data-podcast-id="@(item.PodcastItem.PodcastId)" style="cursor: pointer" class="text-truncate">@(item.PodcastItem.Podcast?.Title ?? "Unknown Podcast")</small>
                             <small>&nbsp;-&nbsp;</small>
-                            <small class="text-muted">@(item.PodcastItem?.Podcast?.Author ?? "Unknown Author")</small>
+                            <small class="text-muted text-truncate">@(item.PodcastItem?.Podcast?.Author ?? "Unknown Author")</small>
                             <div class="flex-fill"></div>
                         </div>
                     </div>
@@ -69,9 +69,9 @@ else if (Model.Configuration.SelectedMediaType == Enums.MediaTypes.Television &&
                     <div class="media-body d-flex flex-column" style="overflow-x: auto">
                         <span class="mt-0 text-truncate font-weight-bold">@(item.Episode.Title)</span>
                         <div class="d-flex flex-row">
-                            <small data-series-id="@(item.Episode.SeriesId)" style="cursor: pointer">@(item.Episode.Series?.Title ?? "Unknown Series")</small>
+                            <small data-series-id="@(item.Episode.SeriesId)" style="cursor: pointer" class="text-truncate">@(item.Episode.Series?.Title ?? "Unknown Series")</small>
                             <small>&nbsp;-&nbsp;</small>
-                            <small class="text-muted">@(item.Episode.Season.HasValue ? $"Season {item.Episode.Season.Value}" : "Unknown Season")</small>
+                            <small class="text-muted text-truncate">@(item.Episode.Season.HasValue ? $"Season {item.Episode.Season.Value}" : "Unknown Season")</small>
                             <div class="flex-fill"></div>
                         </div>
                     </div>
