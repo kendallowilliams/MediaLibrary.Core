@@ -10,6 +10,7 @@ DECLARE @BewitchedId int,
 		@XenaId int,
 		@StarTrekTASId int,
 		@StarTrekTOSId int,
+		@DuckmanId int,
 		@BewitchedPath VARCHAR(256) = N'BEWITCHED',
 		@GoldenGirlsPath VARCHAR(256) = N'GOLDEN_GIRLS',
 		@MamasFamilyPath VARCHAR(256) = N'MAMAS_FAMILY',
@@ -18,7 +19,8 @@ DECLARE @BewitchedId int,
 		@WonderWomanPath VARCHAR(256) = N'WONDER_WOMAN',
 		@XenaPath VARCHAR(256) = N'XENA',
 		@StarTrekTASPath VARCHAR(256) = N'STAR_TREK_TAS',
-		@StarTrekTOSPath VARCHAR(256) = N'STAR_TREK_TOS';
+		@StarTrekTOSPath VARCHAR(256) = N'STAR_TREK_TOS',
+		@DuckmanPath VARCHAR(256) = N'DUCKMAN';
 
 DELETE Series;
 
@@ -32,6 +34,7 @@ BEGIN
 	INSERT INTO Series ([Title]) VALUES ('Xena: Warrior Princess');
 	INSERT INTO Series ([Title]) VALUES ('Star Trek: The Animated Series');
 	INSERT INTO Series ([Title]) VALUES ('Star Trek: The Original Series');
+	INSERT INTO Series ([Title]) VALUES ('Duckman');
 END
 
 SELECT @BewitchedId = Id FROM Series WHERE Title = 'Bewitched';
@@ -43,6 +46,7 @@ SELECT @WonderWomanId = Id FROM Series WHERE Title = 'Wonder Woman';
 SELECT @XenaId = Id FROM Series WHERE Title = 'Xena: Warrior Princess';
 SELECT @StarTrekTASId = Id FROM Series WHERE Title = 'Star Trek: The Animated Series';
 SELECT @StarTrekTOSId = Id FROM Series WHERE Title = 'Star Trek: The Original Series';
+SELECT @DuckmanId = Id FROM Series WHERE Title = 'Duckman';
 
 /* ROSEANNE */
 BEGIN
@@ -1228,4 +1232,82 @@ BEGIN
 	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('The Savage Curtain',@StarTrekTOSId,3,CONCAT(@StarTrekTOSPath,'/S3','/22.mp4'));
 	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('All Our Yesterdays',@StarTrekTOSId,3,CONCAT(@StarTrekTOSPath,'/S3','/23.mp4'));
 	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Turnabout Intruder',@StarTrekTOSId,3,CONCAT(@StarTrekTOSPath,'/S3','/24.mp4'));
+END
+
+/* DUCKMAN */
+BEGIN
+	/* DUCKMAN: SEASON ONE */
+	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('I, Duckman',@DuckmanId,1,CONCAT(@DuckmanPath,'/S1','/01.mp4'));
+	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('T.V. Or Not To Be',@DuckmanId,1,CONCAT(@DuckmanPath,'/S1','/02.mp4'));
+	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Gripes Of Wrath',@DuckmanId,1,CONCAT(@DuckmanPath,'/S1','/03.mp4'));
+	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Psyche',@DuckmanId,1,CONCAT(@DuckmanPath,'/S1','/04.mp4'));
+	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Gland Of Opportunity',@DuckmanId,1,CONCAT(@DuckmanPath,'/S1','/05.mp4'));
+	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Ride The High School',@DuckmanId,1,CONCAT(@DuckmanPath,'/S1','/06.mp4'));
+	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('A Civil War',@DuckmanId,1,CONCAT(@DuckmanPath,'/S1','/07.mp4'));
+	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Not So Easy Rider',@DuckmanId,1,CONCAT(@DuckmanPath,'/S1','/08.mp4'));
+	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('It''s The Thing Of The Principal',@DuckmanId,1,CONCAT(@DuckmanPath,'/S1','/09.mp4'));
+	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Cellar Beware',@DuckmanId,1,CONCAT(@DuckmanPath,'/S1','/10.mp4'));
+	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('American Dicks',@DuckmanId,1,CONCAT(@DuckmanPath,'/S1','/11.mp4'));
+	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('About Face',@DuckmanId,1,CONCAT(@DuckmanPath,'/S1','/12.mp4'));
+	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Joking The Chicken',@DuckmanId,1,CONCAT(@DuckmanPath,'/S1','/13.mp4'));
+	/* DUCKAMAN SEASON TW0 */
+	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Papa Oom M.O.W. M.O.W.',@DuckmanId,2,CONCAT(@DuckmanPath,'/S2','/01.mp4'));
+	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Married Alive',@DuckmanId,2,CONCAT(@DuckmanPath,'/S2','/02.mp4'));
+	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Days Of Whining And Neurosis',@DuckmanId,2,CONCAT(@DuckmanPath,'/S2','/03.mp4'));
+	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Inherit The Judgment: The Dope''s Trial',@DuckmanId,2,CONCAT(@DuckmanPath,'/S2','/04.mp4'));
+	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('America The Beautiful',@DuckmanId,2,CONCAT(@DuckmanPath,'/S2','/05.mp4'));
+	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('The Germ Turns',@DuckmanId,2,CONCAT(@DuckmanPath,'/S2','/06.mp4'));
+	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('In The Nam Of The Father',@DuckmanId,2,CONCAT(@DuckmanPath,'/S2','/07.mp4'));
+	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Research And Destroy',@DuckmanId,2,CONCAT(@DuckmanPath,'/S2','/08.mp4'));
+	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Clip Job',@DuckmanId,2,CONCAT(@DuckmanPath,'/S2','/09.mp4'));
+	/* DUCKMAN SEASON THREE */
+	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Noir Gang',@DuckmanId,3,CONCAT(@DuckmanPath,'/S3','/01.mp4'));
+	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Forbidden Fruit',@DuckmanId,3,CONCAT(@DuckmanPath,'/S3','/02.mp4'));
+	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Grandma-ma''s Flatulent Adventure',@DuckmanId,3,CONCAT(@DuckmanPath,'/S3','/03.mp4'));
+	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Color Of Naught',@DuckmanId,3,CONCAT(@DuckmanPath,'/S3','/04.mp4'));
+	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Sperms Of Endearment',@DuckmanId,3,CONCAT(@DuckmanPath,'/S3','/05.mp4'));
+	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('A Room With A Bellevue',@DuckmanId,3,CONCAT(@DuckmanPath,'/S3','/06.mp4'));
+	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Apocalypse Not',@DuckmanId,3,CONCAT(@DuckmanPath,'/S3','/07.mp4'));
+	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Clear And Presidente Danger',@DuckmanId,3,CONCAT(@DuckmanPath,'/S3','/08.mp4'));
+	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('The Girls Of Route Canal',@DuckmanId,3,CONCAT(@DuckmanPath,'/S3','/09.mp4'));
+	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('The Mallardian Candidate',@DuckmanId,3,CONCAT(@DuckmanPath,'/S3','/10.mp4'));
+	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Pig Amok',@DuckmanId,3,CONCAT(@DuckmanPath,'/S3','/11.mp4'));
+	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('The Once And Future Duck',@DuckmanId,3,CONCAT(@DuckmanPath,'/S3','/12.mp4'));
+	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Planet Of The Dopes',@DuckmanId,3,CONCAT(@DuckmanPath,'/S3','/13.mp4'));
+	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Aged Heat',@DuckmanId,3,CONCAT(@DuckmanPath,'/S3','/14.mp4'));
+	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('They Craved Duckman''s Brain',@DuckmanId,3,CONCAT(@DuckmanPath,'/S3','/15.mp4'));
+	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('The Road To Dendron',@DuckmanId,3,CONCAT(@DuckmanPath,'/S3','/16.mp4'));
+	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Exile In Guyville',@DuckmanId,3,CONCAT(@DuckmanPath,'/S3','/17.mp4'));
+	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('The Longest Weekend',@DuckmanId,3,CONCAT(@DuckmanPath,'/S3','/18.mp4'));
+	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('The Amazing Colossal Duckman',@DuckmanId,3,CONCAT(@DuckmanPath,'/S3','/19.mp4'));
+	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Cock Tales For Four',@DuckmanId,3,CONCAT(@DuckmanPath,'/S3','/20.mp4'));
+	/* DUCKMAN SEASON FOUR */
+	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Dammit, Hollywood',@DuckmanId,3,CONCAT(@DuckmanPath,'/S4','/01.mp4'));
+	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Coolio Runnings',@DuckmanId,3,CONCAT(@DuckmanPath,'/S4','/02.mp4'));
+	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Aged Heat 2: Women In Heat',@DuckmanId,3,CONCAT(@DuckmanPath,'/S4','/03.mp4'));
+	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('All About Elliot',@DuckmanId,3,CONCAT(@DuckmanPath,'/S4','/04.mp4'));
+	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('From Brad To Worse',@DuckmanId,3,CONCAT(@DuckmanPath,'/S4','/05.mp4'));
+	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Bonfire Of The Panties',@DuckmanId,3,CONCAT(@DuckmanPath,'/S4','/06.mp4'));
+	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Role With It',@DuckmanId,3,CONCAT(@DuckmanPath,'/S4','/07.mp4'));
+	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Ajax and Ajaxer',@DuckmanId,3,CONCAT(@DuckmanPath,'/S4','/08.mp4'));
+	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('With Friends Like These',@DuckmanId,3,CONCAT(@DuckmanPath,'/S4','/09.mp4'));
+	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('A Trophied Duck',@DuckmanId,3,CONCAT(@DuckmanPath,'/S4','/10.mp4'));
+	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('A Star is Abhorred',@DuckmanId,3,CONCAT(@DuckmanPath,'/S4','/11.mp4'));
+	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Bev Takes a Holiday',@DuckmanId,3,CONCAT(@DuckmanPath,'/S4','/12.mp4'));
+	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Love! Anger! Kvetching!',@DuckmanId,3,CONCAT(@DuckmanPath,'/S4','/13.mp4'));
+	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Duckman and Cornfed in ''Haunted Society Plumbers''',@DuckmanId,3,CONCAT(@DuckmanPath,'/S4','/14.mp4'));
+	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Ebony, Baby',@DuckmanId,3,CONCAT(@DuckmanPath,'/S4','/15.mp4'));
+	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Vuuck, as in Duck',@DuckmanId,3,CONCAT(@DuckmanPath,'/S4','/16.mp4'));
+	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Crime, Punishment, War, Peace, and the Idiot',@DuckmanId,3,CONCAT(@DuckmanPath,'/S4','/17.mp4'));
+	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Kidney, Popsicle, and Nuts',@DuckmanId,3,CONCAT(@DuckmanPath,'/S4','/18.mp4'));
+	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('The Tami Show',@DuckmanId,3,CONCAT(@DuckmanPath,'/S4','/19.mp4'));
+	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('My Feral Lady',@DuckmanId,3,CONCAT(@DuckmanPath,'/S4','/20.mp4'));
+	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Westward, No!',@DuckmanId,3,CONCAT(@DuckmanPath,'/S4','/21.mp4'));
+	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Short, Plush and Deadly',@DuckmanId,3,CONCAT(@DuckmanPath,'/S4','/22.mp4'));
+	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('How to Suck in Business Without Really Trying',@DuckmanId,3,CONCAT(@DuckmanPath,'/S4','/23.mp4'));
+	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('You''ve Come the Wrong Way, Baby',@DuckmanId,3,CONCAT(@DuckmanPath,'/S4','/24.mp4'));
+	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Hamlet 2: This Time It''s Personal',@DuckmanId,3,CONCAT(@DuckmanPath,'/S4','/25.mp4'));
+	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Das Sub',@DuckmanId,3,CONCAT(@DuckmanPath,'/S4','/26.mp4'));
+	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Where No Duckman Has Gone Before',@DuckmanId,3,CONCAT(@DuckmanPath,'/S4','/27.mp4'));
+	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Four Weddings Inconceivable',@DuckmanId,3,CONCAT(@DuckmanPath,'/S4','/28.mp4'));
 END
