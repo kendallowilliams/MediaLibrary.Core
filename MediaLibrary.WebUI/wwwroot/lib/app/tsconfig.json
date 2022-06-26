@@ -3,7 +3,7 @@
     "noImplicitAny": false,
     "noEmitOnError": true,
     "removeComments": false,
-    "target": "ES2017",
+    "target": "ESNext",
     "module": "AMD",
     "outFile": "app.js",
     "moduleResolution": "Node"

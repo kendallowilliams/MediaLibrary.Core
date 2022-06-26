@@ -9,4 +9,5 @@ export default interface IMediaLibraryConfiguration extends IConfiguration {
     SettingsDelay: number;
     KeysEnabled: boolean;
     ConsoleAppRunInterval: number;
+    ConsoleAppLastRunTimeStamp: string;
 }

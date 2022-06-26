@@ -56,7 +56,10 @@ export default class SettingsModal {
                     containers.TelevisionSettingsContainer
                 ],
                 mediaType = this.configurations.Player.properties.SelectedMediaType;
+            let lastRunDate: string = null;
 
+            this.configurations.MediaLibary.refresh();
+            lastRunDate = this.configurations.MediaLibary.properties.ConsoleAppLastRunTimeStamp;
             $(settingsContainers).addClass('d-none');
             this.addNewSongModal.hide();
             this.manageDirectoriesModal.hide();
@@ -77,6 +80,8 @@ export default class SettingsModal {
 
             if (mediaType === MediaTypes.Song) /*then*/ $(buttons.PlayerAudioVisualizerButton).removeClass('d-none');
             else /*then*/ $(buttons.PlayerAudioVisualizerButton).addClass('d-none');
+
+            $modalBody.find('input[name="ConsoleAppLastRunTimeStamp"]').val(lastRunDate);
         });
         $modalBody.find('select[name="AppWidth"]').on('change', e => {
             const width = $(e.currentTarget).val() as string;
