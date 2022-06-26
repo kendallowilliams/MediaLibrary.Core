@@ -13,6 +13,8 @@ namespace MediaLibrary.Shared.Models.Configurations
         {
             SelectedMediaPage = MediaPages.Home;
             NavBarDelay = 3;
+            ConsoleAppRunInterval = 5;
+            ConsoleAppLastRunTimeStamp = DateTime.MinValue.Date;
         }
 
         public MediaPages SelectedMediaPage { get; set; }
@@ -26,5 +28,9 @@ namespace MediaLibrary.Shared.Models.Configurations
         public byte SettingsDelay { get; set; }
 
         public bool KeysEnabled { get; set; }
+
+        public int ConsoleAppRunInterval { get; set; }
+
+        public DateTime ConsoleAppLastRunTimeStamp { get; set; }
     }
 }

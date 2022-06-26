@@ -99,6 +99,13 @@ export default class SettingsModal {
             this.configurations.MediaLibary.updateConfiguration();
             this.autoCloseModal();
         });
+        $modalBody.find('input[name="ConsoleAppRunInterval"]').on('change', e => {
+            const interval = parseInt($(e.currentTarget).val() as string);
+
+            this.configurations.MediaLibary.properties.ConsoleAppRunInterval = interval;
+            this.configurations.MediaLibary.updateConfiguration();
+            this.autoCloseModal();
+        });
         $modalBody.find('select[name="SelectedAlbumSort"]').on('change', e => {
             const sort = $(e.currentTarget).val() as string;
 
@@ -311,7 +318,7 @@ export default class SettingsModal {
 
         if (delay > 0) {
             if (this.autoHideTimeOut) /*then*/ window.clearTimeout(this.autoHideTimeOut);
-            this.autoHideTimeOut = window.setTimeout(this.hide, this.configurations.MediaLibary.properties.SettingsDelay * 1000);
+            this.autoHideTimeOut = window.setTimeout(this.hide.bind(this), this.configurations.MediaLibary.properties.SettingsDelay * 1000);
         } else {
             this.hide();
         }
