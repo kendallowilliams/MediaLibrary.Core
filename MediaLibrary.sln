@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.31005.135
+# Visual Studio Version 17
+VisualStudioVersion = 17.2.32616.157
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MediaLibrary.DAL", "MediaLibrary.DAL\MediaLibrary.DAL.csproj", "{AF773EDF-4694-470C-926A-00122E531F6B}"
 EndProject
@@ -14,6 +14,14 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MediaLibrary.Console", "MediaLibrary.Console\MediaLibrary.Console.csproj", "{E40456E5-1A56-46F0-AFB9-778CFA878F4F}"
 EndProject
 Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "MediaLibrary.DB", "MediaLibrary.DB\MediaLibrary.DB.sqlproj", "{60D923B3-75D7-4843-ACDD-C8CCE5B7A16D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Libraries", "Libraries", "{0F6496AA-6C58-4DED-BA3B-B176B9F06D2E}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Web", "Web", "{71891360-9D32-412D-AA5E-1AA9D062F246}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Apps", "Apps", "{AEA11F42-F191-4457-BCBC-1FF29AEE7D1B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DB", "DB", "{DC24D3DB-91E0-4F3B-A189-302D311E934E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -38,7 +46,9 @@ Global
 		{3D49FE51-60BA-4577-9CEF-C1D8CAA9F1D4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3D49FE51-60BA-4577-9CEF-C1D8CAA9F1D4}.Release|Any CPU.Build.0 = Release|Any CPU
 		{E40456E5-1A56-46F0-AFB9-778CFA878F4F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E40456E5-1A56-46F0-AFB9-778CFA878F4F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E40456E5-1A56-46F0-AFB9-778CFA878F4F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E40456E5-1A56-46F0-AFB9-778CFA878F4F}.Release|Any CPU.Build.0 = Release|Any CPU
 		{60D923B3-75D7-4843-ACDD-C8CCE5B7A16D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{60D923B3-75D7-4843-ACDD-C8CCE5B7A16D}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
 		{60D923B3-75D7-4843-ACDD-C8CCE5B7A16D}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -46,6 +56,14 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{AF773EDF-4694-470C-926A-00122E531F6B} = {0F6496AA-6C58-4DED-BA3B-B176B9F06D2E}
+		{0C6AEB83-1BE3-42AA-B5B6-DF82F2130530} = {0F6496AA-6C58-4DED-BA3B-B176B9F06D2E}
+		{DA9D5224-78E5-4FCF-BE62-C94114AF5AB0} = {71891360-9D32-412D-AA5E-1AA9D062F246}
+		{3D49FE51-60BA-4577-9CEF-C1D8CAA9F1D4} = {0F6496AA-6C58-4DED-BA3B-B176B9F06D2E}
+		{E40456E5-1A56-46F0-AFB9-778CFA878F4F} = {AEA11F42-F191-4457-BCBC-1FF29AEE7D1B}
+		{60D923B3-75D7-4843-ACDD-C8CCE5B7A16D} = {DC24D3DB-91E0-4F3B-A189-302D311E934E}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {FF08ECE3-9CE3-4D4C-A4A4-F8E41817B44B}
