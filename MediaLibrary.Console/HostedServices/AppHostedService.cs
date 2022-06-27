@@ -56,18 +56,24 @@ namespace MediaLibrary.Console.HostedServices
             nextRunTime = nextRunTime.AddMilliseconds(-nextRunTime.Millisecond);
             Trace.WriteLine($"{nameof(RunAsync)}: Now [{dtNow}], Next [{nextRunTime}]");
 
-            if (nextRunTime <= dtNow)
+            if (Math.Floor(nextRunTime.Subtract(dtNow).TotalSeconds) <= 0.0)
             {
-                await Task.WhenAll(tasksToRun.Select(task => task()));
                 mediaLibraryConfig.ConsoleAppLastRunTimeStamp = dtNow;
                 config.JsonData = JsonConvert.SerializeObject(mediaLibraryConfig);
-                await dataService.Update(config);
+                ;
+                tasksToRun.Add(() => dataService.Update(config));
+
+                Trace.WriteLine($"{nameof(RunAsync)}: Started...");
+                await Task.WhenAll(tasksToRun.Select(task => task()));
+                Trace.WriteLine($"{nameof(RunAsync)}: Finished.");
             }
             else
             {
                 int delayMs = (nextRunTime.Subtract(dtNow).Minutes * 60 + nextRunTime.Subtract(dtNow).Seconds) * 1000;
 
+                Trace.WriteLine($"{nameof(RunAsync)}: Delay started: {delayMs} milliseconds...");
                 await Task.Delay(delayMs);
+                Trace.WriteLine($"{nameof(RunAsync)}: Delay completed.");
             }
         }
     }
