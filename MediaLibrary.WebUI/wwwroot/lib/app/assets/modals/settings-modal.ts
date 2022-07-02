@@ -61,7 +61,7 @@ export default class SettingsModal {
                 .then(() => {
                     const lastRunDate = new Date(this.configurations.MediaLibary.properties.ConsoleAppLastRunTimeStamp);
 
-                    $modalBody.find('input[name="ConsoleAppLastRunTimeStamp"]').val(lastRunDate.toISOString());
+                    $modalBody.find('input[name="ConsoleAppLastRunTimeStamp"]').val(lastRunDate.toLocaleString());
                 });
             $(settingsContainers).addClass('d-none');
             this.addNewSongModal.hide();
