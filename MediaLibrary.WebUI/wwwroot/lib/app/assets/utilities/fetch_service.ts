@@ -46,7 +46,7 @@ function validateResponse(response: Response): Promise<Response> {
 
     if (response && !response.ok) {
         const title = 'Fetch Error',
-            message = { Status: response.status, StatusText: response.statusText };
+            message = { Url: response.url, Status: response.status, StatusText: response.statusText };
 
         MessageBox.showError(title, JSON.stringify(message));
     }
