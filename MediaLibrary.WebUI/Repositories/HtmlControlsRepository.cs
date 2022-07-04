@@ -100,6 +100,7 @@ namespace MediaLibrary.WebUI.Repositories
         public static string WarningModalId { get => "warning-modal"; }
         public static string SettingsModalId { get => "settings-modal"; }
         public static string QuestionModalId { get => "question-modal"; }
+        public static string PlayerControlsModalId { get => "player-controls-modal"; }
         #endregion Modal Ids
     }
 }
