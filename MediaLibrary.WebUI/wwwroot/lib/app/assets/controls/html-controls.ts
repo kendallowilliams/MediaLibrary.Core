@@ -15,7 +15,7 @@
         PlayerRepeatButton: document.getElementById('btn-player-repeat'),
         PlayerRepeatOneButton: document.getElementById('btn-player-repeat-one'),
         PlayerRepeatAllButton: document.getElementById('btn-player-repeat-all'),
-        PlayerPlaylistToggleButton: document.getElementById('btn-player-playlist-toggle'),
+        PlayerPlaylistToggleButtons: document.getElementsByClassName('btn-player-playlist-toggle'),
         PlayerFullscreenButton: document.getElementById('btn-player-fullscreen'),
         PlayerClearButton: document.getElementById('btn-player-clear'),
         PlayerAudioVisualizerButton: document.getElementById('btn-audio-visualizer'),

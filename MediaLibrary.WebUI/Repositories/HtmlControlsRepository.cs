@@ -32,7 +32,7 @@ namespace MediaLibrary.WebUI.Repositories
         public static string PlayerRepeatButtonsClass { get => "btn-player-repeat"; }
         public static string PlayerRepeatOneButtonsClass { get => "btn-player-repeat-one"; }
         public static string PlayerRepeatAllButtonsClass { get => "btn-player-repeat-all"; }
-        public static string PlayerPlaylistToggleButtonId { get => "btn-player-playlist-toggle"; }
+        public static string PlayerPlaylistToggleButtonClass { get => "btn-player-playlist-toggle"; }
         public static string PlayerVolumeButtonsClass { get => "btn-player-volume"; }
         public static string PlayerMuteButtonsClass { get => "btn-player-mute"; }
         public static string PlayerFullscreenButtonId { get => "btn-player-fullscreen"; }

@@ -41,7 +41,7 @@
                 <div class="text-muted @(HtmlControlsRepository.PlayerShortTimesClass) d-lg-none">00:00</div>
             </div>
             <div class="d-none d-lg-block">
-                <button id="@(HtmlControlsRepository.PlayerPlaylistToggleButtonId)" class="btn btn-sm btn-outline-secondary @(Model.Configuration.SelectedPlayerPage == Enums.PlayerPages.Index ? "active" : string.Empty)">
+                <button class="btn btn-sm btn-outline-secondary @(HtmlControlsRepository.PlayerPlaylistToggleButtonClass) @(Model.Configuration.SelectedPlayerPage == Enums.PlayerPages.Index ? "active" : string.Empty)">
                     <i class="fa fa-list-ul"></i>
                 </button>
                 <span>
