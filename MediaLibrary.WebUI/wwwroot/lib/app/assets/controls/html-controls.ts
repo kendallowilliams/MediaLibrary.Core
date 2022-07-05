@@ -83,6 +83,7 @@
         ConfirmModal: document.getElementById('confirm-modal'),
         WarningModal: document.getElementById('warning-modal'),
         SettingsModal: document.getElementById('settings-modal'),
-        QuestionModal: document.getElementById('question-modal')
+        QuestionModal: document.getElementById('question-modal'),
+        PlayerControlsModal: document.getElementById('player-controls-modal')
     })
 }

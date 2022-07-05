@@ -25,6 +25,7 @@ import { disposeAllTooltips, loadAllTooltips } from '../assets/utilities/bootstr
 import { fetch_get, loadHTML } from '../assets/utilities/fetch_service';
 import SettingsModal from '../assets/modals/settings-modal';
 import ISettingsReloadFunctions from '../assets/interfaces/settings-reload-functions';
+import PlayerControlsModal from '../assets/modals/player-controls-modal';
 
 export default class MediaLibrary extends BaseClass {
     private home: Home;
@@ -34,6 +35,7 @@ export default class MediaLibrary extends BaseClass {
     private television: Television;
     private podcast: Podcast;
     private settingsModal: SettingsModal;
+    private playerControlsModal: PlayerControlsModal;
     private homeConfiguration: HomeConfiguration;
     private mediaLibraryConfiguration: MediaLibraryConfiguration;
     private playerConfiguration: PlayerConfiguration;
@@ -96,6 +98,7 @@ export default class MediaLibrary extends BaseClass {
                     this.editSongModal = new EditSongModal(this.mediaLibraryConfiguration, this.loadView.bind(this));
                     this.addToPlaylistModal = new AddToPlaylistModal();
                     this.settingsModal = new SettingsModal(configurations, settingsLoadFunctions);
+                    this.playerControlsModal = new PlayerControlsModal(this.mediaLibraryConfiguration);
                     this.home = new Home(this.homeConfiguration);
                     this.music = new Music(this.musicConfiguration,
                         this.playWrapper.bind(this),
