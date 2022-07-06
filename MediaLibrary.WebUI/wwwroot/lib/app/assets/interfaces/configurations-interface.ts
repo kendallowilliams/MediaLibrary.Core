@@ -7,7 +7,7 @@ import PodcastConfiguration from "../models/configurations/podcast-configuration
 import TelevisionConfiguration from "../models/configurations/television-configuration";
 
 export default interface IConfigurations {
-    MediaLibary: MediaLibraryConfiguration;
+    MediaLibrary: MediaLibraryConfiguration;
     Music: MusicConfiguration;
     Player: PlayerConfiguration;
     Home: HomeConfiguration;

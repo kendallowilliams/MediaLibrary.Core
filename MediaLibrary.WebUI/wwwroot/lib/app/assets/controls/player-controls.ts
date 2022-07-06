@@ -5,11 +5,12 @@ import IPlayerControlsFunctions from '../interfaces/player-controls-functions-in
 import PlayerConfiguration from '../models/configurations/player-configuration';
 import * as LocalStorage from '../../assets/utilities/local_storage';
 import { fetch_get } from '../utilities/fetch_service';
+import PlayerControlsModal from '../modals/player-controls-modal';
 
 export default class PlayerControls {
     private volumeSliders: HTMLElement[];
 
-    constructor(private controlsFunctions: IPlayerControlsFunctions, private playerConfiguration: PlayerConfiguration) {
+    constructor(private controlsFunctions: IPlayerControlsFunctions, private playerConfiguration: PlayerConfiguration, private playerControlsModal: PlayerControlsModal) {
         this.volumeSliders = [];
         this.initialize();
     }
@@ -63,6 +64,7 @@ export default class PlayerControls {
                 this.playerConfiguration.properties.Muted = volume === 0;
                 this.controlsFunctions.setPlayerVolume(volume);
                 $(controls.VolumeTexts).text(this.playerConfiguration.properties.Volume);
+                this.playerControlsModal.playerControlsModalChanged();
             });
             $volumeSlider.on('slidestop', (e, ui) => {
                 this.playerConfiguration.updateConfiguration();
@@ -104,6 +106,7 @@ export default class PlayerControls {
                 }
 
                 this.enableDisablePreviousNext();
+                this.playerControlsModal.playerControlsModalChanged();
             });
         });
         $muteVolumeButtons.on('click', e => {
@@ -141,7 +144,8 @@ export default class PlayerControls {
             $('button[data-repeat-type="' + getRepeatTypesEnumString(repeat) + '"]').removeClass('d-none');
             this.playerConfiguration.properties.Repeat = repeat;
             this.playerConfiguration.updateConfiguration()
-                .then(() => this.enableDisablePreviousNext());
+                .then(() => this.enableDisablePreviousNext())
+                .then(() => this.playerControlsModal.playerControlsModalChanged());
         });
     }
 

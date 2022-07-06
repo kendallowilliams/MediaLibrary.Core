@@ -20,7 +20,7 @@ export default class SettingsModal {
     private addNewPodcastModal: AddNewPodcastModal;
 
     constructor(private configurations: IConfigurations, private settingsLoadFunctions: ISettingsReloadFunctions) {
-        const tooltipsEnabled = () => this.configurations.MediaLibary.properties.TooltipsEnabled;
+        const tooltipsEnabled = () => this.configurations.MediaLibrary.properties.TooltipsEnabled;
 
         this.modal = HtmlControls.Modals().SettingsModal;
         this.addNewSongModal = new AddNewSongModal(() => this.settingsLoadFunctions.loadMusic(),
@@ -45,7 +45,7 @@ export default class SettingsModal {
             item => this.checkPathValid(item),
             item => this.musicPathInUse(item).then(inUse => !inUse));
         $(this.modal).on('show.bs.modal', e => {
-            const mediaPage = this.configurations.MediaLibary.properties.SelectedMediaPage,
+            const mediaPage = this.configurations.MediaLibrary.properties.SelectedMediaPage,
                 containers = HtmlControls.Containers(),
                 settingsContainers = [
                     containers.GeneralSettingsContainer,
@@ -57,9 +57,9 @@ export default class SettingsModal {
                 ],
                 mediaType = this.configurations.Player.properties.SelectedMediaType;
 
-            this.configurations.MediaLibary.refresh()
+            this.configurations.MediaLibrary.refresh()
                 .then(() => {
-                    const lastRunDate = new Date(this.configurations.MediaLibary.properties.ConsoleAppLastRunTimeStamp);
+                    const lastRunDate = new Date(this.configurations.MediaLibrary.properties.ConsoleAppLastRunTimeStamp);
 
                     $modalBody.find('input[name="ConsoleAppLastRunTimeStamp"]').val(lastRunDate.toLocaleString());
                 });
@@ -87,29 +87,29 @@ export default class SettingsModal {
         $modalBody.find('select[name="AppWidth"]').on('change', e => {
             const width = $(e.currentTarget).val() as string;
 
-            this.configurations.MediaLibary.properties.AppWidth = getAppWidthEnum(width);
-            this.configurations.MediaLibary.updateConfiguration();
+            this.configurations.MediaLibrary.properties.AppWidth = getAppWidthEnum(width);
+            this.configurations.MediaLibrary.updateConfiguration();
             this.autoCloseModal();
         });
         $modalBody.find('input[name="NavBarDelay"]').on('change', e => {
             const timeout = parseInt($(e.currentTarget).val() as string);
 
-            this.configurations.MediaLibary.properties.NavBarDelay = timeout;
-            this.configurations.MediaLibary.updateConfiguration();
+            this.configurations.MediaLibrary.properties.NavBarDelay = timeout;
+            this.configurations.MediaLibrary.updateConfiguration();
             this.autoCloseModal();
         });
         $modalBody.find('input[name="SettingsDelay"]').on('change', e => {
             const timeout = parseInt($(e.currentTarget).val() as string);
 
-            this.configurations.MediaLibary.properties.SettingsDelay = timeout;
-            this.configurations.MediaLibary.updateConfiguration();
+            this.configurations.MediaLibrary.properties.SettingsDelay = timeout;
+            this.configurations.MediaLibrary.updateConfiguration();
             this.autoCloseModal();
         });
         $modalBody.find('input[name="ConsoleAppRunInterval"]').on('change', e => {
             const interval = parseInt($(e.currentTarget).val() as string);
 
-            this.configurations.MediaLibary.properties.ConsoleAppRunInterval = interval;
-            this.configurations.MediaLibary.updateConfiguration();
+            this.configurations.MediaLibrary.properties.ConsoleAppRunInterval = interval;
+            this.configurations.MediaLibrary.updateConfiguration();
             this.autoCloseModal();
         });
         $modalBody.find('select[name="SelectedAlbumSort"]').on('change', e => {
@@ -175,15 +175,15 @@ export default class SettingsModal {
         $modalBody.find('input[name="TooltipsEnabled"]').on('change', e => {
             const enabled = (e.currentTarget as HTMLInputElement).checked;
 
-            this.configurations.MediaLibary.properties.TooltipsEnabled = enabled;
-            this.configurations.MediaLibary.updateConfiguration();
+            this.configurations.MediaLibrary.properties.TooltipsEnabled = enabled;
+            this.configurations.MediaLibrary.updateConfiguration();
             this.autoCloseModal();
         });
         $modalBody.find('input[name="KeysEnabled"]').on('change', e => {
             const enabled = (e.currentTarget as HTMLInputElement).checked;
 
-            this.configurations.MediaLibary.properties.KeysEnabled = enabled;
-            this.configurations.MediaLibary.updateConfiguration();
+            this.configurations.MediaLibrary.properties.KeysEnabled = enabled;
+            this.configurations.MediaLibrary.updateConfiguration();
             this.autoCloseModal();
         });
         $modalBody.find('select[name="SelectedSeriesSort"]').on('change', e => {
@@ -320,11 +320,11 @@ export default class SettingsModal {
     }
 
     private autoCloseModal(): void {
-        const delay = this.configurations.MediaLibary.properties.SettingsDelay;
+        const delay = this.configurations.MediaLibrary.properties.SettingsDelay;
 
         if (delay > 0) {
             if (this.autoHideTimeOut) /*then*/ window.clearTimeout(this.autoHideTimeOut);
-            this.autoHideTimeOut = window.setTimeout(this.hide.bind(this), this.configurations.MediaLibary.properties.SettingsDelay * 1000);
+            this.autoHideTimeOut = window.setTimeout(this.hide.bind(this), this.configurations.MediaLibrary.properties.SettingsDelay * 1000);
         } else {
             this.hide();
         }
