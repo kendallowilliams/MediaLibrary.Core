@@ -17,6 +17,8 @@ import IPlayerControlsFunctions from "../../assets/interfaces/player-controls-fu
 import Error from "../../assets/data/error";
 import * as LocalStorage from '../../assets/utilities/local_storage';
 import { fetch_get, fetch_post, loadHTML } from "../../assets/utilities/fetch_service";
+import PlayerControlsModal from '../../assets/modals/player-controls-modal';
+import MediaLibraryConfiguration from "../../assets/models/configurations/media-library-configuration";
 
 export default class Player extends BaseClass implements IView {
     private players: { VideoPlayer: HTMLMediaElement, MusicPlayer: HTMLMediaElement };
@@ -24,6 +26,7 @@ export default class Player extends BaseClass implements IView {
     private audioVisualizer: AudioVisualizer;
     private playerView: HTMLElement;
     private playerControls: PlayerControls;
+    private playerControlsModal: PlayerControlsModal;
     private controlsFunctions: IPlayerControlsFunctions = {
         next: this.loadNext.bind(this),
         previous: this.loadPrevious.bind(this),
@@ -44,7 +47,7 @@ export default class Player extends BaseClass implements IView {
     };
 
     constructor(private playerConfiguration: PlayerConfiguration, private loadFunctions: IPlayerLoadFunctions, private updateActiveMedia: () => void = () => null,
-        private tooltipsEnabled: () => boolean = () => false) {
+        private mediaLibraryConfiguration: MediaLibraryConfiguration, private tooltipsEnabled: () => boolean = () => false) {
         super();
 
         this.players = HtmlControls.Players();
@@ -52,7 +55,8 @@ export default class Player extends BaseClass implements IView {
         this.unPlayedShuffleIds = [];
         this.audioVisualizer = new AudioVisualizer(this.playerConfiguration, this.players.MusicPlayer);
         this.initPlayer();
-        this.playerControls = new PlayerControls(this.controlsFunctions, this.playerConfiguration);
+        this.playerControlsModal = new PlayerControlsModal(this.mediaLibraryConfiguration);
+        this.playerControls = new PlayerControls(this.controlsFunctions, this.playerConfiguration, this.playerControlsModal);
     }
 
     loadView(callback: () => void = () => null): void {
@@ -156,7 +160,8 @@ export default class Player extends BaseClass implements IView {
                 $playerItems.removeClass('d-none');
                 $(buttons.PlayerPlaylistToggleButtons).addClass('active');
             }
-            this.playerConfiguration.updateConfiguration();
+            this.playerConfiguration.updateConfiguration()
+                .then(() => this.playerControlsModal.playerControlsModalChanged());
         });
     }
 

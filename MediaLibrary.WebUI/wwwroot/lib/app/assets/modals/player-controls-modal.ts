@@ -4,6 +4,7 @@ import MediaLibraryConfiguration from '../models/configurations/media-library-co
 
 export default class PlayerControlsModal {
     private modal: HTMLElement;
+    private autoHideTimeOut: number;
 
     constructor(private mediaLibraryConfiguration: MediaLibraryConfiguration) {
         this.modal = HtmlControls.Modals().PlayerControlsModal;
@@ -22,6 +23,27 @@ export default class PlayerControlsModal {
             } else {
                 $playlistToggleButton.addClass('d-none');
             }
+
+            this.autoCloseModal();
         });
+    }
+
+    private autoCloseModal(): void {
+        const delay = this.mediaLibraryConfiguration.properties.SettingsDelay;
+
+        if (delay > 0) {
+            if (this.autoHideTimeOut) /*then*/ window.clearTimeout(this.autoHideTimeOut);
+            this.autoHideTimeOut = window.setTimeout(this.hide.bind(this), this.mediaLibraryConfiguration.properties.SettingsDelay * 1000);
+        } else {
+            this.hide();
+        }
+    }
+
+    public hide(): void {
+        $(this.modal).modal('hide');
+    }
+
+    public playerControlsModalChanged(): void {
+        this.autoCloseModal();
     }
 }
