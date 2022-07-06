@@ -28,6 +28,7 @@ export default class PlayerControls {
         $muteVolumeButtons.attr('data-volume', this.playerConfiguration.properties.Volume);
         if (this.playerConfiguration.properties.Muted) /*then*/ $(buttons.PlayerMuteButtons).removeClass('d-none');
         else $(buttons.PlayerVolumeButtons).removeClass('d-none');
+        $(controls.VolumeTexts).text(this.playerConfiguration.properties.Volume);
 
         $(controls.PlayerSliders).slider({ min: 0, max: 100 });
         $(containers.PlayerVolumeContainers).each((index: number, element: HTMLElement) => {
@@ -61,6 +62,7 @@ export default class PlayerControls {
                 this.playerConfiguration.properties.Volume = volume;
                 this.playerConfiguration.properties.Muted = volume === 0;
                 this.controlsFunctions.setPlayerVolume(volume);
+                $(controls.VolumeTexts).text(this.playerConfiguration.properties.Volume);
             });
             $volumeSlider.on('slidestop', (e, ui) => {
                 this.playerConfiguration.updateConfiguration();
