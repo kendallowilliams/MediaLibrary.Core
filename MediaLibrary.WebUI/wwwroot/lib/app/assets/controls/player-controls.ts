@@ -28,11 +28,12 @@ export default class PlayerControls {
         $muteVolumeButtons.attr('data-volume', this.playerConfiguration.properties.Volume);
         if (this.playerConfiguration.properties.Muted) /*then*/ $(buttons.PlayerMuteButtons).removeClass('d-none');
         else $(buttons.PlayerVolumeButtons).removeClass('d-none');
+        $(controls.VolumeTexts).text(this.playerConfiguration.properties.Volume);
 
         $(controls.PlayerSliders).slider({ min: 0, max: 100 });
-        $(containers.PlayerVolumeContainers).each((index, element) => {
+        $(containers.PlayerVolumeContainers).each((index: number, element: HTMLElement) => {
             const $container = $(element),
-                $volumeSlider = $('<div id="volume-slider" class="m-1"></div>');
+                $volumeSlider = $('<div class="m-1 volume-slider" data-orientation="vertical"></div>');
 
             this.volumeSliders.push($volumeSlider.get(0));
             $container.popover({
@@ -42,14 +43,17 @@ export default class PlayerControls {
                 html: true,
                 container: element
             });
+        });
+        $(controls.VolumeSliders).add(this.volumeSliders).each((index: number, element: HTMLElement) => {
+            const $volumeSlider = $(element);
 
+            if (!this.volumeSliders.includes(element)) /*then*/ this.volumeSliders.push(element);
             $volumeSlider.slider({
                 min: 0,
                 max: 100,
-                orientation: 'vertical',
+                orientation: $volumeSlider.attr('data-orientation') || 'horizontal',
                 value: this.playerConfiguration.properties.Muted ? 0 : this.playerConfiguration.properties.Volume
             });
-
             $volumeSlider.on('slide', (e, ui) => {
                 const volume = ui.value;
 
@@ -58,10 +62,11 @@ export default class PlayerControls {
                 this.playerConfiguration.properties.Volume = volume;
                 this.playerConfiguration.properties.Muted = volume === 0;
                 this.controlsFunctions.setPlayerVolume(volume);
+                $(controls.VolumeTexts).text(this.playerConfiguration.properties.Volume);
             });
-
-            $volumeSlider.on('slidechange', (e, ui) => {
+            $volumeSlider.on('slidestop', (e, ui) => {
                 this.playerConfiguration.updateConfiguration();
+                $(this.volumeSliders).slider('value', this.playerConfiguration.properties.Volume);
             });
         });
         $(controls.PlayerSliders).on('slide', (e, ui) => {

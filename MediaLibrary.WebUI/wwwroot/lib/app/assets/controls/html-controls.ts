@@ -15,7 +15,7 @@
         PlayerRepeatButton: document.getElementById('btn-player-repeat'),
         PlayerRepeatOneButton: document.getElementById('btn-player-repeat-one'),
         PlayerRepeatAllButton: document.getElementById('btn-player-repeat-all'),
-        PlayerPlaylistToggleButton: document.getElementById('btn-player-playlist-toggle'),
+        PlayerPlaylistToggleButtons: document.getElementsByClassName('btn-player-playlist-toggle'),
         PlayerFullscreenButton: document.getElementById('btn-player-fullscreen'),
         PlayerClearButton: document.getElementById('btn-player-clear'),
         PlayerAudioVisualizerButton: document.getElementById('btn-audio-visualizer'),
@@ -63,7 +63,8 @@
         VolumeSliders: document.getElementsByClassName('volume-slider'),
         PlayerTimes: document.getElementsByClassName('player-time'),
         PlayerShortTimes: document.getElementsByClassName('player-short-time'),
-        StringLists: document.getElementsByClassName('string-list')
+        StringLists: document.getElementsByClassName('string-list'),
+        VolumeTexts: document.getElementsByClassName('volume-text')
     }),
     UIFields: () => ({
         NowPlayingTitle: document.getElementById('player-title')
@@ -83,6 +84,7 @@
         ConfirmModal: document.getElementById('confirm-modal'),
         WarningModal: document.getElementById('warning-modal'),
         SettingsModal: document.getElementById('settings-modal'),
-        QuestionModal: document.getElementById('question-modal')
+        QuestionModal: document.getElementById('question-modal'),
+        PlayerControlsModal: document.getElementById('player-controls-modal')
     })
 }

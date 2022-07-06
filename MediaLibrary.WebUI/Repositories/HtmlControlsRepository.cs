@@ -32,7 +32,7 @@ namespace MediaLibrary.WebUI.Repositories
         public static string PlayerRepeatButtonsClass { get => "btn-player-repeat"; }
         public static string PlayerRepeatOneButtonsClass { get => "btn-player-repeat-one"; }
         public static string PlayerRepeatAllButtonsClass { get => "btn-player-repeat-all"; }
-        public static string PlayerPlaylistToggleButtonId { get => "btn-player-playlist-toggle"; }
+        public static string PlayerPlaylistToggleButtonClass { get => "btn-player-playlist-toggle"; }
         public static string PlayerVolumeButtonsClass { get => "btn-player-volume"; }
         public static string PlayerMuteButtonsClass { get => "btn-player-mute"; }
         public static string PlayerFullscreenButtonId { get => "btn-player-fullscreen"; }
@@ -76,6 +76,7 @@ namespace MediaLibrary.WebUI.Repositories
         public static string PlaylistTabListId { get => "playlist-tab-list"; }
         public static string SearchQueryId { get => "search-query"; }
         public static string StringListsClass { get => "string-list"; }
+        public static string VolumeTextsClass { get => "volume-text"; }
         #endregion UI Control Ids
 
         #region UI Field Ids
@@ -100,6 +101,7 @@ namespace MediaLibrary.WebUI.Repositories
         public static string WarningModalId { get => "warning-modal"; }
         public static string SettingsModalId { get => "settings-modal"; }
         public static string QuestionModalId { get => "question-modal"; }
+        public static string PlayerControlsModalId { get => "player-controls-modal"; }
         #endregion Modal Ids
     }
 }

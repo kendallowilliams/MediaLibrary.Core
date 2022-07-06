@@ -132,10 +132,13 @@ export default class Player extends BaseClass implements IView {
             containers = HtmlControls.Containers();
 
         $(buttons.PlayerFullscreenButton).on('click', () => openFullscreen(this.getPlayer()));
-        $(buttons.PlayerPlaylistToggleButton).on('click', e => {
+        $(buttons.PlayerPlaylistToggleButtons).each((index, element) => {
+            if (this.playerConfiguration.properties.SelectedPlayerPage === PlayerPages.Index) /*then*/ $(element).addClass('active');
+            else /*then*/ $(element).removeClass('active');
+        });
+        $(buttons.PlayerPlaylistToggleButtons).on('click', e => {
             const $player = $(this.getPlayer()),
-                $playerItems = $(containers.PlayerItemsContainer),
-                $btn = $(e.currentTarget);
+                $playerItems = $(containers.PlayerItemsContainer);
             let page = this.playerConfiguration.properties.SelectedPlayerPage;
 
             $(buttons.PlayerFullscreenButton).addClass('d-none');
@@ -143,15 +146,15 @@ export default class Player extends BaseClass implements IView {
                 this.playerConfiguration.properties.SelectedPlayerPage = getPlayerPageEnum($player.attr('data-player-page'));
                 $player.parent().removeClass('d-none');
                 $playerItems.addClass('d-none');
-                $btn.removeClass('active');
                 page = this.playerConfiguration.properties.SelectedPlayerPage;
                 if (page === PlayerPages.Video) /*then*/ $(buttons.PlayerFullscreenButton).removeClass('d-none');
                 else if (page === PlayerPages.Audio) /*then*/ this.audioVisualizer.prepareCanvas();
+                $(buttons.PlayerPlaylistToggleButtons).removeClass('active');
             } else {
                 this.playerConfiguration.properties.SelectedPlayerPage = PlayerPages.Index;
                 $player.parent().addClass('d-none');
                 $playerItems.removeClass('d-none');
-                $btn.addClass('active');
+                $(buttons.PlayerPlaylistToggleButtons).addClass('active');
             }
             this.playerConfiguration.updateConfiguration();
         });
@@ -226,7 +229,7 @@ export default class Player extends BaseClass implements IView {
                 if (triggerPlay) {
                     if (mediaType === MediaTypes.Television &&
                         this.playerConfiguration.properties.SelectedPlayerPage === PlayerPages.Index) {
-                        $(HtmlControls.Buttons().PlayerPlaylistToggleButton).trigger('click');
+                        $(HtmlControls.Buttons().PlayerPlaylistToggleButtons).first().trigger('click');
                     }
                     $player[0].play()
                         .then(() => null)
