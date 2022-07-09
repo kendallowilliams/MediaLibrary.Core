@@ -80,9 +80,6 @@ export default class SettingsModal {
             } else if (mediaPage === MediaPages.Television) {
                 $(containers.TelevisionSettingsContainer).removeClass('d-none');
             }
-
-            if (mediaType === MediaTypes.Song) /*then*/ $(buttons.PlayerAudioVisualizerButton).removeClass('d-none');
-            else /*then*/ $(buttons.PlayerAudioVisualizerButton).addClass('d-none');
         });
         $modalBody.find('select[name="AppWidth"]').on('change', e => {
             const width = $(e.currentTarget).val() as string;
@@ -311,11 +308,6 @@ export default class SettingsModal {
                 };
 
             MessageBox.confirm(title, message, MessageBoxConfirmType.YesNo, yesCallback);
-        });
-
-        $(buttons.PlayerAudioVisualizerButton).on('click', e => {
-            this.settingsLoadFunctions.toggleAudioVisualizer(e.currentTarget as HTMLButtonElement);
-            this.autoCloseModal();
         });
     }
 

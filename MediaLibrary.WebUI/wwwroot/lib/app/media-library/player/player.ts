@@ -9,7 +9,7 @@ import { openFullscreen } from "../../assets/utilities/element";
 import { loadTooltips, disposeTooltips } from "../../assets/utilities/bootstrap-helper";
 import LoadingModal from '../../assets/modals/loading-modal';
 import IPlayerLoadFunctions from "../../assets/interfaces/player-load-functions-interface";
-import { getRepeatTypesEnumString, getPlayerPageEnum, getMediaTypesEnumString, getMediaTypesEnum, getMediaPagesEnum } from "../../assets/enums/enum-functions";
+import { getPlayerPageEnum, getMediaTypesEnum } from "../../assets/enums/enum-functions";
 import * as MessageBox from '../../assets/utilities/message-box';
 import IListItem from "../../assets/interfaces/list-item-interface";
 import PlayerControls from "../../assets/controls/player-controls";
@@ -17,7 +17,6 @@ import IPlayerControlsFunctions from "../../assets/interfaces/player-controls-fu
 import Error from "../../assets/data/error";
 import * as LocalStorage from '../../assets/utilities/local_storage';
 import { fetch_get, fetch_post, loadHTML } from "../../assets/utilities/fetch_service";
-import PlayerControlsModal from '../../assets/modals/player-controls-modal';
 import MediaLibraryConfiguration from "../../assets/models/configurations/media-library-configuration";
 
 export default class Player extends BaseClass implements IView {
@@ -26,7 +25,6 @@ export default class Player extends BaseClass implements IView {
     private audioVisualizer: AudioVisualizer;
     private playerView: HTMLElement;
     private playerControls: PlayerControls;
-    private playerControlsModal: PlayerControlsModal;
     private controlsFunctions: IPlayerControlsFunctions = {
         next: this.loadNext.bind(this),
         previous: this.loadPrevious.bind(this),
@@ -43,7 +41,8 @@ export default class Player extends BaseClass implements IView {
         getPlaybackTime: this.getPlaybackTime.bind(this),
         updatePlayerProgress: this.updatePlayerProgress.bind(this),
         nowPlayingEmpty: () => this.playerConfiguration.properties.NowPlayingList.length === 0,
-        getPlayer: this.getPlayer.bind(this)
+        getPlayer: this.getPlayer.bind(this),
+        toggleAudioVisualizer: this.toggleAudioVisualizer.bind(this)
     };
 
     constructor(private playerConfiguration: PlayerConfiguration, private loadFunctions: IPlayerLoadFunctions, private updateActiveMedia: () => void = () => null,
@@ -55,12 +54,12 @@ export default class Player extends BaseClass implements IView {
         this.unPlayedShuffleIds = [];
         this.audioVisualizer = new AudioVisualizer(this.playerConfiguration, this.players.MusicPlayer);
         this.initPlayer();
-        this.playerControlsModal = new PlayerControlsModal(this.mediaLibraryConfiguration);
-        this.playerControls = new PlayerControls(this.controlsFunctions, this.playerConfiguration, this.playerControlsModal);
+        this.playerControls = new PlayerControls(this.controlsFunctions, this.playerConfiguration, this.mediaLibraryConfiguration);
     }
 
     loadView(callback: () => void = () => null): void {
         this.audioVisualizer.prepareCanvas();
+        this.playerControls.showHideAudioVisualizer();
         callback();
     }
 
@@ -161,25 +160,27 @@ export default class Player extends BaseClass implements IView {
                 $(buttons.PlayerPlaylistToggleButtons).addClass('active');
             }
             this.playerConfiguration.updateConfiguration()
-                .then(() => this.playerControlsModal.playerControlsModalChanged());
+                .then(() => this.playerControls.playerControlsModalChanged());
         });
     }
 
-    public toggleAudioVisualizer(button: HTMLButtonElement): void {
+    public toggleAudioVisualizer(): void {
+        const buttons = HtmlControls.Buttons().PlayerAudioVisualizerButtons;
+
         if (!this.audioVisualizer.isInitialized()) /*then*/ this.audioVisualizer.init();
 
-        if ($(button).hasClass('active')) {
+        if ($(buttons).hasClass('active')) {
             this.playerConfiguration.properties.AudioVisualizerEnabled = false;
             this.playerConfiguration.updateConfiguration()
                 .then(() => {
-                    $(button).removeClass('active');
+                    $(buttons).removeClass('active');
                     this.audioVisualizer.disable();
                 });
         } else {
             this.playerConfiguration.properties.AudioVisualizerEnabled = true;
             this.playerConfiguration.updateConfiguration()
                 .then(() => {
-                    $(button).addClass('active');
+                    $(buttons).addClass('active');
                     this.audioVisualizer.enable();
 
                     if (this.isPlaying()) /*then*/ this.audioVisualizer.start();

@@ -13,7 +13,7 @@
                         <h6 style="width: 100px">Options</h6>
                     </div>
                     <div class="col">
-                        <button class="btn btn-sm btn-outline-secondary @(HtmlControlsRepository.PlayerPlaylistToggleButtonClass)">
+                        <button class="btn btn-sm btn-outline-secondary @(HtmlControlsRepository.PlayerPlaylistToggleButtonsClass)">
                             <i class="fa fa-list-ul"></i>
                         </button>
                         <button class="btn btn-sm btn-outline-secondary @(HtmlControlsRepository.PlayerShuffleButtonsClass)"><i class="fa fa-random"></i></button>
@@ -25,6 +25,10 @@
                         </button>
                         <button data-repeat-type="@(nameof(Enums.RepeatTypes.RepeatAll))" class="btn btn-sm btn-outline-secondary active d-none @(HtmlControlsRepository.PlayerRepeatAllButtonsClass)">
                             <i class="fa fa-sync"></i>
+                        </button>
+                        <button class="btn btn-sm btn-outline-secondary @(HtmlControlsRepository.PlayerAudioVisualizerButtonsClass)"
+                                data-tooltip="tooltip" title="Toggle audio visualizer">
+                            <i class="fa fa-eye"></i>
                         </button>
                     </div>
                 </div>

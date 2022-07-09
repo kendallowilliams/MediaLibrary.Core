@@ -18,7 +18,7 @@
         PlayerPlaylistToggleButtons: document.getElementsByClassName('btn-player-playlist-toggle'),
         PlayerFullscreenButton: document.getElementById('btn-player-fullscreen'),
         PlayerClearButton: document.getElementById('btn-player-clear'),
-        PlayerAudioVisualizerButton: document.getElementById('btn-audio-visualizer'),
+        PlayerAudioVisualizerButtons: document.getElementsByClassName('btn-audio-visualizer'),
         PlayerPlayButtons: document.getElementsByClassName('btn-player-play'),
         PlayerPauseButtons: document.getElementsByClassName('btn-player-pause'),
         PlayerNextButtons: document.getElementsByClassName('btn-player-next'),

@@ -5,5 +5,5 @@
     loadPodcast: () => void,
     loadPlaylist: () => void,
     clearNowPlaying: () => void,
-    toggleAudioVisualizer: (btn: HTMLButtonElement) => void
+    toggleAudioVisualizer: () => void
 }
