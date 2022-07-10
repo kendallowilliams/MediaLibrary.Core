@@ -402,6 +402,7 @@ export default class SettingsModal {
         $container.find('.modal-content').toggleClass('bg-dark text-light', enabled);
         $container.find('.page-link').toggleClass('bg-dark text-light', enabled);
         $container.find('.btn-link').toggleClass('bg-dark text-light', enabled);
+        $container.find('.jumbotron').toggleClass('text-dark', enabled);
 
 
         if (enabled) {
