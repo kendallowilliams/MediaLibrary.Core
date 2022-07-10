@@ -385,34 +385,23 @@ export default class SettingsModal {
     }
 
     private toggleGlobalDarkMode(): void {
-        const body = document.body;
+        const body = document.body,
+            enabled = this.configurations.MediaLibrary.properties.DarkMode;
 
-        if (this.configurations.MediaLibrary.properties.DarkMode) {
-            $('body').addClass('bg-dark text-light');
-        } else {
-            $('body').removeClass('bg-dark text-light');
-        }
-
+        $(body).toggleClass('bg-dark text-light', enabled);
         this.toggleDarkMode(body);
     }
 
     public toggleDarkMode(container: HTMLElement): void {
-        const $container = $(container);
+        const $container = $(container),
+            enabled = this.configurations.MediaLibrary.properties.DarkMode;
 
-        if (this.configurations.MediaLibrary.properties.DarkMode) {
-            $container.find('.bg-light').removeClass('bg-light').addClass('bg-dark');
-            $container.find('.navbar-light').removeClass('navbar-light').addClass('navbar-dark');
-            $container.find('.text-dark').removeClass('text-dark').addClass('text-light');
-            $container.find('.btn').addClass('btn-light');
-            $container.find('.list-group-item').addClass('bg-dark');
-            $container.find('.card').addClass('bg-dark');
-        } else {
-            $container.find('.navbar-dark').removeClass('navbar-dark').addClass('navbar-light');
-            $container.find('.text-light').removeClass('text-light').addClass('text-dark');
-            $container.find('.btn').removeClass('btn-light');
-            $container.find('.list-group-item').removeClass('bg-dark');
-            $container.find('.bg-dark').removeClass('bg-dark').addClass('bg-light');
-            $container.find('.card').removeClass('bg-dark');
-        }
+        $container.find('.card').toggleClass('bg-dark', enabled);
+        $container.find('.btn').toggleClass('btn-light', enabled);
+        $container.find('.list-group-item').toggleClass('bg-dark', enabled);
+        $container.find('.modal-content').toggleClass('bg-dark text-light', enabled);
+        $container.find('.bg-light').toggleClass('bg-light', !enabled).toggleClass('bg-dark', enabled);
+        $container.find('.navbar-light').toggleClass('navbar-light', !enabled).toggleClass('navbar-dark', enabled);
+        $container.find('.text-dark').toggleClass('text-dark', !enabled).toggleClass('text-light', enabled);
     }
 }
