@@ -223,28 +223,28 @@ export default class Player extends BaseClass implements IView {
                 mediaType = this.playerConfiguration.properties.SelectedMediaType;
 
             this.updateActiveMedia();
-            $('li[data-play-index].list-group-item').removeClass('active');
+            $('li[data-play-index].list-group-item').removeClass('active border-light');
             this.playerConfiguration.properties.CurrentItemIndex = index;
             this.playerConfiguration.updateConfiguration()
                 .then(() => {
-                $item.addClass('active');
-                $player.attr('data-item-id', id);
-                $(fields.NowPlayingTitle).text(title.length > 0 ? ': ' + title : title);
-                if (shuffleEnabled && $.inArray(index, this.unPlayedShuffleIds) >= 0) /*then*/ this.unPlayedShuffleIds.splice(this.unPlayedShuffleIds.indexOf(index), 1);
-                $player.prop('src', url);
-                this.updateActiveMedia();
-                this.audioVisualizer.stop();
-                if (triggerPlay) {
-                    if (mediaType === MediaTypes.Television &&
-                        this.playerConfiguration.properties.SelectedPlayerPage === PlayerPages.Index) {
-                        $(HtmlControls.Buttons().PlayerPlaylistToggleButtons).first().trigger('click');
+                    $item.addClass('active').toggleClass('border-light', this.mediaLibraryConfiguration.properties.DarkMode);
+                    $player.attr('data-item-id', id);
+                    $(fields.NowPlayingTitle).text(title.length > 0 ? ': ' + title : title);
+                    if (shuffleEnabled && $.inArray(index, this.unPlayedShuffleIds) >= 0) /*then*/ this.unPlayedShuffleIds.splice(this.unPlayedShuffleIds.indexOf(index), 1);
+                    $player.prop('src', url);
+                    this.updateActiveMedia();
+                    this.audioVisualizer.stop();
+                    if (triggerPlay) {
+                        if (mediaType === MediaTypes.Television &&
+                            this.playerConfiguration.properties.SelectedPlayerPage === PlayerPages.Index) {
+                            $(HtmlControls.Buttons().PlayerPlaylistToggleButtons).first().trigger('click');
+                        }
+                        $player[0].play()
+                            .then(() => null)
+                            .catch(() => null);
                     }
-                    $player[0].play()
-                        .then(() => null)
-                        .catch(() => null);
-                }
 
-                this.playerControls.enableDisablePreviousNext();
+                    this.playerControls.enableDisablePreviousNext();
             });
         } else if ($('li[data-play-index].active').length === 1) {
             this.loadItem($('li[data-play-index].active')[0], triggerPlay);
