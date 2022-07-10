@@ -400,8 +400,17 @@ export default class SettingsModal {
         $container.find('.btn').toggleClass('btn-light', enabled);
         $container.find('.list-group-item').toggleClass('bg-dark', enabled);
         $container.find('.modal-content').toggleClass('bg-dark text-light', enabled);
-        $container.find('.bg-light').toggleClass('bg-light', !enabled).toggleClass('bg-dark', enabled);
-        $container.find('.navbar-light').toggleClass('navbar-light', !enabled).toggleClass('navbar-dark', enabled);
-        $container.find('.text-dark').toggleClass('text-dark', !enabled).toggleClass('text-light', enabled);
+
+        if (enabled) {
+            $container.find('.bg-light').removeClass('bg-light').addClass('bg-dark');
+            $container.find('.navbar-light').removeClass('navbar-light').addClass('navbar-dark');
+            $container.find('.text-dark').removeClass('text-dark').addClass('text-light');
+        } else {
+            $container.find('.navbar-dark').removeClass('navbar-dark').addClass('navbar-light');
+            $container.find('.text-light').removeClass('text-light').addClass('text-dark');
+            $container.find('.bg-dark').removeClass('bg-dark').addClass('bg-light');
+        }
+
+
     }
 }
