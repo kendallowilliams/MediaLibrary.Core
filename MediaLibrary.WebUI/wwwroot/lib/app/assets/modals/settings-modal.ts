@@ -397,9 +397,12 @@ export default class SettingsModal {
             enabled = this.configurations.MediaLibrary.properties.DarkMode;
 
         $container.find('.card').toggleClass('bg-dark', enabled);
-        $container.find('.btn').toggleClass('btn-light', enabled);
-        $container.find('.list-group-item').toggleClass('bg-dark', enabled);
+        $container.find('.btn').not('.btn-link').toggleClass('btn-light', enabled);
+        $container.find('.list-group-item').toggleClass('bg-dark text-light', enabled);
         $container.find('.modal-content').toggleClass('bg-dark text-light', enabled);
+        $container.find('.page-link').toggleClass('bg-dark text-light', enabled);
+        $container.find('.btn-link').toggleClass('bg-dark text-light', enabled);
+
 
         if (enabled) {
             $container.find('.bg-light').removeClass('bg-light').addClass('bg-dark');
