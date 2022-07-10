@@ -389,6 +389,7 @@ export default class SettingsModal {
             enabled = this.configurations.MediaLibrary.properties.DarkMode;
 
         $(body).toggleClass('bg-dark text-light', enabled);
+        $(body).find('.jumbotron').toggleClass('text-dark', enabled);
         this.toggleDarkMode(body);
     }
 
@@ -402,8 +403,6 @@ export default class SettingsModal {
         $container.find('.modal-content').toggleClass('bg-dark text-light', enabled);
         $container.find('.page-link').toggleClass('bg-dark text-light', enabled);
         $container.find('.btn-link').toggleClass('bg-dark text-light', enabled);
-        $container.find('.jumbotron').toggleClass('text-dark', enabled);
-
 
         if (enabled) {
             $container.find('.bg-light').removeClass('bg-light').addClass('bg-dark');
