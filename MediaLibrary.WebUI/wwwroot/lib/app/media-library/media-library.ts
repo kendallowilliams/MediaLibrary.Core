@@ -146,21 +146,25 @@ export default class MediaLibrary extends BaseClass {
 
     private updateActiveMedia(): void {
         const $mediaView: JQuery<HTMLElement> = $(this.mainViews.MediaView),
-            currentId: number = this.player.getCurrentlyLoadedId();
+            currentId: number = this.player.getCurrentlyLoadedId(),
+            enabled = this.mediaLibraryConfiguration.properties.DarkMode;
 
-        $mediaView.find('.list-group-item[data-song-id].active').removeClass('active');
-        $mediaView.find('.list-group-item[data-episode-id].active').removeClass('active');
+        $mediaView.find('.list-group-item[data-song-id].active').removeClass('active border-light border');
+        $mediaView.find('.list-group-item[data-episode-id].active').removeClass('active border-light border');
 
         if (this.playerConfiguration.properties.SelectedMediaType === MediaTypes.Song &&
             (this.mediaLibraryConfiguration.properties.SelectedMediaPage === MediaPages.Music ||
                 this.mediaLibraryConfiguration.properties.SelectedMediaPage === MediaPages.Playlist)) {
-            $mediaView.find('.list-group-item[data-song-id="' + currentId + '"]').addClass('active');
+            $mediaView.find('.list-group-item[data-song-id="' + currentId + '"]').addClass('active')
+                .toggleClass('border-light border', enabled);
         } else if (this.playerConfiguration.properties.SelectedMediaType === MediaTypes.Television &&
             this.mediaLibraryConfiguration.properties.SelectedMediaPage === MediaPages.Television) {
-            $mediaView.find('.list-group-item[data-episode-id="' + currentId + '"]').addClass('active');
+            $mediaView.find('.list-group-item[data-episode-id="' + currentId + '"]').addClass('active')
+                .toggleClass('border-light border', enabled);
         } else if (this.playerConfiguration.properties.SelectedMediaType === MediaTypes.Podcast &&
             this.mediaLibraryConfiguration.properties.SelectedMediaPage === MediaPages.Podcast) {
-            $mediaView.find('.list-group-item[data-episode-id="' + currentId + '"]').addClass('active');
+            $mediaView.find('.list-group-item[data-episode-id="' + currentId + '"]').addClass('active')
+                .toggleClass('border-light border', enabled);
         }
     }
 
