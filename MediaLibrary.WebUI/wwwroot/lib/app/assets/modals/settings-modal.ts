@@ -388,9 +388,9 @@ export default class SettingsModal {
         const body = document.body,
             enabled = this.configurations.MediaLibrary.properties.DarkMode;
 
+        this.toggleDarkMode(body);
         $(body).toggleClass('bg-dark text-light', enabled);
         $(body).find('.jumbotron').toggleClass('text-dark', enabled);
-        this.toggleDarkMode(body);
     }
 
     public toggleDarkMode(container: HTMLElement): void {
