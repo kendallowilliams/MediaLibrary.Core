@@ -24,7 +24,8 @@ export default class Music extends BaseClass implements IView {
         private playFunc: (btn: HTMLButtonElement, single: boolean) => void,
         private updateActiveMediaFunc: () => void,
         private tooltipsEnabled: () => boolean = () => false,
-        private initContinuePlaybackBtns: () => void) {
+        private initContinuePlaybackBtns: () => void,
+        private toggleDarkMode: (container) => void) {
         super();
         this.mediaView = HtmlControls.Views().MediaView;
         this.artist = new Artist(musicConfiguration, this.loadView.bind(this));
@@ -46,6 +47,7 @@ export default class Music extends BaseClass implements IView {
             this.updateActiveMediaFunc();
             if (this.musicConfiguration.properties.SelectedMusicPage === MusicPages.Search) /*then*/ this.search.search();
             this.initContinuePlaybackBtns();
+            this.toggleDarkMode(this.mediaView);
             callback();
         }; 
 
@@ -98,12 +100,14 @@ export default class Music extends BaseClass implements IView {
                                     LoadingModal.hideLoading();
                                     $btn.attr('data-group-url', '');
                                     this.updateActiveMediaFunc();
+                                    this.toggleDarkMode(this.mediaView);
                                 });
                         }
                     });
                     this.initializeAlbumAndArtistControls($newView[0]);
                     $('[data-group-url][data-target="#collapse-songs-0"]').trigger('click');
                     this.updateActiveMediaFunc();
+                    this.toggleDarkMode(this.mediaView);
                 };
             LoadingModal.showLoading();
             this.musicConfiguration.properties.SelectedMusicTab = getMusicTabEnum($newTab.attr('data-music-tab'));

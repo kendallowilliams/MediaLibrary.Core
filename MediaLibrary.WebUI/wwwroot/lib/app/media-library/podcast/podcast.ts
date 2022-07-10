@@ -18,7 +18,8 @@ export default class Podcast extends BaseClass implements IView {
         private playFunc: (btn: HTMLButtonElement, single: boolean) => void,
         private updateActiveMediaFunc: () => void,
         private tooltipsEnabled: () => boolean = () => false,
-        private initContinuePlaybackBtns: () => void) {
+        private initContinuePlaybackBtns: () => void,
+        private toggleDarkMode: (container) => void) {
         super();
         this.mediaView = HtmlControls.Views().MediaView;
     }
@@ -31,6 +32,7 @@ export default class Podcast extends BaseClass implements IView {
                 if (this.tooltipsEnabled()) /*then*/ loadTooltips(this.mediaView);
                 $('[data-podcast-year][data-item-index="1"]').trigger('click');
                 this.initContinuePlaybackBtns();
+                this.toggleDarkMode(this.mediaView);
                 callback();
             };
         
@@ -63,6 +65,8 @@ export default class Podcast extends BaseClass implements IView {
                 $('li.page-item').removeClass('active');
                 this.loadPodcastView(e.currentTarget);
             }
+
+            this.toggleDarkMode(this.podcastView);
         });
 
         $(this.mediaView).find('*[data-podcast-action="delete"]').on('click', e => {
@@ -95,7 +99,7 @@ export default class Podcast extends BaseClass implements IView {
         return $('li.page-item.active a.page-link[data-podcast-year]').attr('data-podcast-year');
     }
 
-    private loadPodcastView(item): void {
+    private loadPodcastView(item: HTMLElement): void {
         const success = () => {
             $(item).parent('li.page-item:first').addClass('active');
             this.updateMobileYears(parseInt($(item).attr('data-item-index')));
@@ -152,6 +156,7 @@ export default class Podcast extends BaseClass implements IView {
                 $(this.podcastView).find('[data-podcast-item-options-popover]').popover('hide');
             });
             this.updateActiveMediaFunc();
+            this.toggleDarkMode(this.podcastView);
             LoadingModal.hideLoading();
             this.refreshPodcastDownloads();
         },

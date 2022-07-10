@@ -22,7 +22,8 @@ export default class Playlist extends BaseClass implements IView {
         private playFunc: (btn: HTMLButtonElement) => void,
         private updateActiveMediaFunc: () => void,
         private loadFunctions: IPlayerLoadFunctions,
-        private tooltipsEnabled: () => boolean = () => false) {
+        private tooltipsEnabled: () => boolean = () => false,
+        private toggleDarkMode: (container) => void) {
         super();
         this.playlistView = HtmlControls.Views().MediaView;
         this.mediaView = HtmlControls.Views().MediaView;
@@ -36,6 +37,7 @@ export default class Playlist extends BaseClass implements IView {
             this.updateActiveMediaFunc();
             this.applyLoadFunctions();
             $('[data-playlist-tab="' + getPlaylistTabEnumString(this.playlistConfiguration.properties.SelectedPlaylistTab) + '"]').tab('show');
+            this.toggleDarkMode(this.mediaView);
             callback();
             if (this.tooltipsEnabled()) /*then*/ loadTooltips(this.mediaView);
         };

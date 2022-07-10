@@ -31,6 +31,7 @@ export default class SettingsModal {
             () => this.hide());
         this.addNewPodcastModal = new AddNewPodcastModal(() => this.settingsLoadFunctions.loadPodcast());
         this.initializeControls();
+        this.toggleGlobalDarkMode();
     }
 
     private initializeControls(): void {
@@ -174,6 +175,14 @@ export default class SettingsModal {
 
             this.configurations.MediaLibrary.properties.TooltipsEnabled = enabled;
             this.configurations.MediaLibrary.updateConfiguration();
+            this.autoCloseModal();
+        });
+        $modalBody.find('input[name="DarkMode"]').on('change', e => {
+            const enabled = (e.currentTarget as HTMLInputElement).checked;
+
+            this.configurations.MediaLibrary.properties.DarkMode = enabled;
+            this.configurations.MediaLibrary.updateConfiguration()
+                .then(() => this.toggleGlobalDarkMode());
             this.autoCloseModal();
         });
         $modalBody.find('input[name="KeysEnabled"]').on('change', e => {
@@ -373,5 +382,37 @@ export default class SettingsModal {
         }
 
         return promise;
+    }
+
+    private toggleGlobalDarkMode(): void {
+        const body = document.body;
+
+        if (this.configurations.MediaLibrary.properties.DarkMode) {
+            $('body').addClass('bg-dark text-light');
+        } else {
+            $('body').removeClass('bg-dark text-light');
+        }
+
+        this.toggleDarkMode(body);
+    }
+
+    public toggleDarkMode(container: HTMLElement): void {
+        const $container = $(container);
+
+        if (this.configurations.MediaLibrary.properties.DarkMode) {
+            $container.find('.bg-light').removeClass('bg-light').addClass('bg-dark');
+            $container.find('.navbar-light').removeClass('navbar-light').addClass('navbar-dark');
+            $container.find('.text-dark').removeClass('text-dark').addClass('text-light');
+            $container.find('.btn').addClass('btn-light');
+            $container.find('.list-group-item').addClass('bg-dark');
+            $container.find('.card').addClass('bg-dark');
+        } else {
+            $container.find('.navbar-dark').removeClass('navbar-dark').addClass('navbar-light');
+            $container.find('.text-light').removeClass('text-light').addClass('text-dark');
+            $container.find('.btn').removeClass('btn-light');
+            $container.find('.list-group-item').removeClass('bg-dark');
+            $container.find('.bg-dark').removeClass('bg-dark').addClass('bg-light');
+            $container.find('.card').removeClass('bg-dark');
+        }
     }
 }
