@@ -44,10 +44,10 @@ export default class Music extends BaseClass implements IView {
             this.initializeControls();
             if (this.tooltipsEnabled()) /*then*/ loadTooltips(this.mediaView);
             $('[data-music-tab="' + getMusicTabEnumString(this.musicConfiguration.properties.SelectedMusicTab) + '"]').tab('show');
-            this.updateActiveMediaFunc();
             if (this.musicConfiguration.properties.SelectedMusicPage === MusicPages.Search) /*then*/ this.search.search();
             this.initContinuePlaybackBtns();
             this.toggleDarkMode(this.mediaView);
+            this.updateActiveMediaFunc();
             callback();
         }; 
 
@@ -99,8 +99,8 @@ export default class Music extends BaseClass implements IView {
                                     this.initializeAlbumAndArtistControls($container[0]);
                                     LoadingModal.hideLoading();
                                     $btn.attr('data-group-url', '');
-                                    this.updateActiveMediaFunc();
                                     this.toggleDarkMode(this.mediaView);
+                                    this.updateActiveMediaFunc();
                                 });
                         }
                     });

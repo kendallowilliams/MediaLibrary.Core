@@ -146,26 +146,45 @@ export default class MediaLibrary extends BaseClass {
 
     private updateActiveMedia(): void {
         const $mediaView: JQuery<HTMLElement> = $(this.mainViews.MediaView),
+            $playerView: JQuery<HTMLElement> = $(this.mainViews.PlayerView),
             currentId: number = this.player.getCurrentlyLoadedId(),
-            enabled = this.mediaLibraryConfiguration.properties.DarkMode;
+            darkModeEnabled = this.mediaLibraryConfiguration.properties.DarkMode;
 
-        $mediaView.find('.list-group-item[data-song-id].active').removeClass('active border-light border');
-        $mediaView.find('.list-group-item[data-episode-id].active').removeClass('active border-light border');
+        $mediaView.find('.list-group-item[data-song-id].active')
+            .removeClass('active border-dark border bg-light text-dark')
+            .toggleClass('bg-dark text-light', darkModeEnabled);
+        $mediaView.find('.list-group-item[data-episode-id].active')
+            .removeClass('active border-dark border bg-light text-dark')
+            .toggleClass('bg-dark text-light', darkModeEnabled);
+        $playerView.find('.list-group-item[data-play-index].active')
+            .removeClass('active border-dark border bg-light text-dark')
+            .toggleClass('bg-dark text-light', darkModeEnabled);
 
         if (this.playerConfiguration.properties.SelectedMediaType === MediaTypes.Song &&
             (this.mediaLibraryConfiguration.properties.SelectedMediaPage === MediaPages.Music ||
                 this.mediaLibraryConfiguration.properties.SelectedMediaPage === MediaPages.Playlist)) {
-            $mediaView.find('.list-group-item[data-song-id="' + currentId + '"]').addClass('active')
-                .toggleClass('border-light border', enabled);
+            $mediaView.find('.list-group-item[data-song-id="' + currentId + '"]')
+                .addClass('active', 100)
+                .toggleClass('border-dark border bg-light text-dark', darkModeEnabled, 100)
+                .removeClass('bg-dark text-light');
         } else if (this.playerConfiguration.properties.SelectedMediaType === MediaTypes.Television &&
             this.mediaLibraryConfiguration.properties.SelectedMediaPage === MediaPages.Television) {
-            $mediaView.find('.list-group-item[data-episode-id="' + currentId + '"]').addClass('active')
-                .toggleClass('border-light border', enabled);
+            $mediaView.find('.list-group-item[data-episode-id="' + currentId + '"]')
+                .addClass('active', 100)
+                .toggleClass('border-dark border bg-light text-dark', darkModeEnabled, 100)
+                .removeClass('bg-dark text-light');
         } else if (this.playerConfiguration.properties.SelectedMediaType === MediaTypes.Podcast &&
             this.mediaLibraryConfiguration.properties.SelectedMediaPage === MediaPages.Podcast) {
-            $mediaView.find('.list-group-item[data-episode-id="' + currentId + '"]').addClass('active')
-                .toggleClass('border-light border', enabled);
+            $mediaView.find('.list-group-item[data-episode-id="' + currentId + '"]')
+                .addClass('active', 100)
+                .toggleClass('border-dark border bg-light text-dark', darkModeEnabled, 100)
+                .removeClass('bg-dark text-light');
         }
+
+        $playerView.find('.list-group-item[data-item-id="' + currentId + '"]')
+            .addClass('active', 100)
+            .toggleClass('border-dark border bg-light text-dark', darkModeEnabled, 100)
+            .removeClass('bg-dark text-light');
     }
 
     private loadConfigurations(callback: () => void = () => null): void {
@@ -201,6 +220,7 @@ export default class MediaLibrary extends BaseClass {
 
             this.initializeContinuePlaybackBtns();
             this.settingsModal.toggleDarkMode(this.mainViews.MediaView);
+            this.updateActiveMedia();
             LoadingModal.hideLoading();
         };
         let showHideMainControls: boolean = true;

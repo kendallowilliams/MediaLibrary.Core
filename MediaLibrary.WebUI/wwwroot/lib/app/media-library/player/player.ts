@@ -222,12 +222,9 @@ export default class Player extends BaseClass implements IView {
                 title = $item.attr('data-title') || '',
                 mediaType = this.playerConfiguration.properties.SelectedMediaType;
 
-            this.updateActiveMedia();
-            $('li[data-play-index].list-group-item').removeClass('active border-light');
             this.playerConfiguration.properties.CurrentItemIndex = index;
             this.playerConfiguration.updateConfiguration()
                 .then(() => {
-                    $item.addClass('active').toggleClass('border-light', this.mediaLibraryConfiguration.properties.DarkMode);
                     $player.attr('data-item-id', id);
                     $(fields.NowPlayingTitle).text(title.length > 0 ? ': ' + title : title);
                     if (shuffleEnabled && $.inArray(index, this.unPlayedShuffleIds) >= 0) /*then*/ this.unPlayedShuffleIds.splice(this.unPlayedShuffleIds.indexOf(index), 1);

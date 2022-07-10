@@ -395,16 +395,21 @@ export default class SettingsModal {
 
     public toggleDarkMode(container: HTMLElement): void {
         const $container = $(container),
-            enabled = this.configurations.MediaLibrary.properties.DarkMode;
+            darkModeEnabled = this.configurations.MediaLibrary.properties.DarkMode;
 
-        $container.find('.card').toggleClass('bg-dark', enabled);
-        $container.find('.btn').not('.btn-link').toggleClass('btn-light', enabled);
-        $container.find('.list-group-item').toggleClass('bg-dark text-light', enabled);
-        $container.find('.modal-content').toggleClass('bg-dark text-light', enabled);
-        $container.find('.page-link').toggleClass('bg-dark text-light', enabled);
-        $container.find('.btn-link').toggleClass('bg-dark text-light', enabled);
+        $container.find('.card').toggleClass('bg-dark', darkModeEnabled);
+        $container.find('.btn').not('.btn-link').toggleClass('btn-light', darkModeEnabled);
+        $container.find('.list-group-item')
+            .removeClass('border-dark border bg-light text-dark')
+            .toggleClass('bg-dark text-light', darkModeEnabled)
+            .filter('.active')
+            .toggleClass('bg-light text-dark border border-dark', darkModeEnabled)
+            .removeClass('bg-dark text-light');
+        $container.find('.modal-content').toggleClass('bg-dark text-light', darkModeEnabled);
+        $container.find('.page-link').toggleClass('bg-dark text-light', darkModeEnabled);
+        $container.find('.btn-link').toggleClass('bg-dark text-light', darkModeEnabled);
 
-        if (enabled) {
+        if (darkModeEnabled) {
             $container.find('.bg-light').removeClass('bg-light').addClass('bg-dark');
             $container.find('.navbar-light').removeClass('navbar-light').addClass('navbar-dark');
             $container.find('.text-dark').removeClass('text-dark').addClass('text-light');
@@ -413,7 +418,5 @@ export default class SettingsModal {
             $container.find('.text-light').removeClass('text-light').addClass('text-dark');
             $container.find('.bg-dark').removeClass('bg-dark').addClass('bg-light');
         }
-
-
     }
 }
