@@ -1,21 +1,24 @@
 ﻿import HtmlControls from '../controls/html-controls';
-import { MediaPages } from '../enums/enums';
+import PlayerControls from '../controls/player-controls';
+import { MediaPages, MediaTypes } from '../enums/enums';
 import MediaLibraryConfiguration from '../models/configurations/media-library-configuration';
+import PlayerConfiguration from '../models/configurations/player-configuration';
 
 export default class PlayerControlsModal {
     private modal: HTMLElement;
     private autoHideTimeOut: number;
 
-    constructor(private mediaLibraryConfiguration: MediaLibraryConfiguration) {
+    constructor(private mediaLibraryConfiguration: MediaLibraryConfiguration, private playerControls: PlayerControls) {
         this.modal = HtmlControls.Modals().PlayerControlsModal;
         this.initializeControls();
     }
 
     private initializeControls(): void {
-        const $modal = $(this.modal);
+        const $modal = $(this.modal),
+            buttons = HtmlControls.Buttons();
 
         $modal.on('show.bs.modal', e => {
-            const $playlistToggleButton = $(HtmlControls.Buttons().PlayerPlaylistToggleButtons)
+            const $playlistToggleButton = $(buttons.PlayerPlaylistToggleButtons)
                 .filter((index, element) => $(this.modal).find(element).length > 0);
 
             if (this.mediaLibraryConfiguration.properties.SelectedMediaPage === MediaPages.Player) {
@@ -24,6 +27,7 @@ export default class PlayerControlsModal {
                 $playlistToggleButton.addClass('d-none');
             }
 
+            this.playerControls.showHideAudioVisualizer();
             this.autoCloseModal();
         });
     }

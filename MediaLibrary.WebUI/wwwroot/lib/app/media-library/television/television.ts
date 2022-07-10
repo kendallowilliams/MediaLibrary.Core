@@ -17,7 +17,8 @@ export default class Television extends BaseClass implements IView {
         private playFunc: (btn: HTMLButtonElement) => void,
         private updateActiveMediaFunc: () => void,
         private tooltipsEnabled: () => boolean = () => false,
-        private initContinuePlaybackBtns: () => void) {
+        private initContinuePlaybackBtns: () => void,
+        private toggleDarkMode: (container) => void) {
         super();
         this.mediaView = HtmlControls.Views().MediaView;
     }
@@ -30,6 +31,7 @@ export default class Television extends BaseClass implements IView {
                 if (this.tooltipsEnabled()) /*then*/ loadTooltips(this.mediaView);
                 $('[data-season-id][data-item-index="0"]').trigger('click');
                 this.initContinuePlaybackBtns();
+                this.toggleDarkMode(this.mediaView);
                 callback();
             };
 
@@ -64,6 +66,7 @@ export default class Television extends BaseClass implements IView {
                     if (this.tooltipsEnabled()) /*then*/ loadTooltips(this.seasonView);
                     $(this.seasonView).find('*[data-play-id]').on('click', e => this.playFunc(e.currentTarget as HTMLButtonElement));
                     this.updateActiveMediaFunc();
+                    this.toggleDarkMode(this.mediaView);
                     LoadingModal.hideLoading();
                 },
                 series = this.televisionConfiguration.properties.SelectedSeriesId.toString(),

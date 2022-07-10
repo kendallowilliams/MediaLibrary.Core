@@ -77,7 +77,7 @@ export default class MediaLibrary extends BaseClass {
                 loadPlaylist: () => this.playlist.loadView(),
                 loadPlayer: () => this.player.loadView(),
                 clearNowPlaying: () => this.player.clearNowPlaying(),
-                toggleAudioVisualizer: btn => this.player.toggleAudioVisualizer(btn)
+                toggleAudioVisualizer: () => this.player.toggleAudioVisualizer()
             },
             success: () => void = () => {
                 const configurations: IConfigurations = {
@@ -101,31 +101,36 @@ export default class MediaLibrary extends BaseClass {
                         this.playWrapper.bind(this),
                         this.updateActiveMedia.bind(this),
                         () => this.mediaLibraryConfiguration.properties.TooltipsEnabled,
-                        this.initializeContinuePlaybackBtns.bind(this)
+                        this.initializeContinuePlaybackBtns.bind(this),
+                        container => this.settingsModal.toggleDarkMode(container)
                     );
                     this.playlist = new Playlist(this.playlistConfiguration,
                         this.playWrapper.bind(this),
                         this.updateActiveMedia.bind(this),
                         loadFunctions,
-                        () => this.mediaLibraryConfiguration.properties.TooltipsEnabled
+                        () => this.mediaLibraryConfiguration.properties.TooltipsEnabled,
+                        container => this.settingsModal.toggleDarkMode(container)
                     );
                     this.podcast = new Podcast(this.podcastConfiguration,
                         this.playWrapper.bind(this),
                         this.updateActiveMedia.bind(this),
                         () => this.mediaLibraryConfiguration.properties.TooltipsEnabled,
-                        this.initializeContinuePlaybackBtns.bind(this)
+                        this.initializeContinuePlaybackBtns.bind(this),
+                        container => this.settingsModal.toggleDarkMode(container)
                     );
                     this.television = new Television(this.televisionConfiguration,
                         this.playWrapper.bind(this),
                         this.updateActiveMedia.bind(this),
                         () => this.mediaLibraryConfiguration.properties.TooltipsEnabled,
-                        this.initializeContinuePlaybackBtns.bind(this)
+                        this.initializeContinuePlaybackBtns.bind(this),
+                        container => this.settingsModal.toggleDarkMode(container)
                     );
                     this.player = new Player(this.playerConfiguration,
                         loadFunctions,
                         this.updateActiveMedia.bind(this),
                         this.mediaLibraryConfiguration,
-                        () => this.mediaLibraryConfiguration.properties.TooltipsEnabled
+                        () => this.mediaLibraryConfiguration.properties.TooltipsEnabled,
+                        container => this.settingsModal.toggleDarkMode(container)
                     );
                     this.loadView(this.mediaLibraryConfiguration.properties.SelectedMediaPage);
                 });
@@ -191,6 +196,7 @@ export default class MediaLibrary extends BaseClass {
             }
 
             this.initializeContinuePlaybackBtns();
+            this.settingsModal.toggleDarkMode(this.mainViews.MediaView);
             LoadingModal.hideLoading();
         };
         let showHideMainControls: boolean = true;

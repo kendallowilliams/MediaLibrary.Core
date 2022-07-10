@@ -10,4 +10,5 @@ export default interface IMediaLibraryConfiguration extends IConfiguration {
     KeysEnabled: boolean;
     ConsoleAppRunInterval: number;
     ConsoleAppLastRunTimeStamp: string;
+    DarkMode: boolean;
 }

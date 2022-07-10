@@ -14,5 +14,6 @@
     getPlaybackTime: (time: number, duration: number) => string,
     updatePlayerProgress: (time: number) => void,
     nowPlayingEmpty: () => boolean,
-    getPlayer: () => HTMLMediaElement
+    getPlayer: () => HTMLMediaElement,
+    toggleAudioVisualizer: () => void
 }

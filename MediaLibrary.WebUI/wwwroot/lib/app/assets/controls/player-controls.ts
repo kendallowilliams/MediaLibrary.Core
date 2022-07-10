@@ -1,17 +1,20 @@
 ﻿import HtmlControls from '../controls/html-controls';
 import { getRepeatTypesEnumString } from '../enums/enum-functions';
-import { MediaTypes, RepeatTypes } from '../enums/enums';
+import { MediaPages, MediaTypes, RepeatTypes } from '../enums/enums';
 import IPlayerControlsFunctions from '../interfaces/player-controls-functions-interface';
 import PlayerConfiguration from '../models/configurations/player-configuration';
 import * as LocalStorage from '../../assets/utilities/local_storage';
 import { fetch_get } from '../utilities/fetch_service';
 import PlayerControlsModal from '../modals/player-controls-modal';
+import MediaLibraryConfiguration from '../models/configurations/media-library-configuration';
 
 export default class PlayerControls {
     private volumeSliders: HTMLElement[];
+    private playerControlsModal: PlayerControlsModal;
 
-    constructor(private controlsFunctions: IPlayerControlsFunctions, private playerConfiguration: PlayerConfiguration, private playerControlsModal: PlayerControlsModal) {
+    constructor(private controlsFunctions: IPlayerControlsFunctions, private playerConfiguration: PlayerConfiguration, private mediaLibraryConfiguration: MediaLibraryConfiguration) {
         this.volumeSliders = [];
+        this.playerControlsModal = new PlayerControlsModal(this.mediaLibraryConfiguration, this);
         this.initialize();
     }
 
@@ -30,6 +33,11 @@ export default class PlayerControls {
         if (this.playerConfiguration.properties.Muted) /*then*/ $(buttons.PlayerMuteButtons).removeClass('d-none');
         else $(buttons.PlayerVolumeButtons).removeClass('d-none');
         $(controls.VolumeTexts).text(this.playerConfiguration.properties.Volume);
+        this.showHideAudioVisualizer();
+
+        $(buttons.PlayerAudioVisualizerButtons).on('click', e => {
+            this.controlsFunctions.toggleAudioVisualizer();
+        });
 
         $(controls.PlayerSliders).slider({ min: 0, max: 100 });
         $(containers.PlayerVolumeContainers).each((index: number, element: HTMLElement) => {
@@ -168,6 +176,19 @@ export default class PlayerControls {
         $(buttons.PlayerPreviousButtons).prop('disabled', !this.controlsFunctions.canPlayPrevious());
     }
 
+    public showHideAudioVisualizer(): void {
+        const mediaType = this.playerConfiguration.properties.SelectedMediaType,
+            buttons = HtmlControls.Buttons(),
+            audioVisualizerEnabled = this.playerConfiguration.properties.AudioVisualizerEnabled,
+            mediaPage = this.mediaLibraryConfiguration.properties.SelectedMediaPage;
+
+        if (mediaType === MediaTypes.Song && mediaPage == MediaPages.Player) /*then*/ $(buttons.PlayerAudioVisualizerButtons).removeClass('d-none');
+        else /*then*/ $(buttons.PlayerAudioVisualizerButtons).addClass('d-none');
+
+        if (audioVisualizerEnabled) /*then*/ $(buttons.PlayerAudioVisualizerButtons).addClass('active');
+        else /*then*/ $(buttons.PlayerAudioVisualizerButtons).removeClass('active');
+    }
+
     public durationChanged(duration: number, playbackTime: string): void {
         const controls = HtmlControls.UIControls();
 
@@ -222,5 +243,9 @@ export default class PlayerControls {
                 this.controlsFunctions.play();
             }
         }
+    }
+
+    public playerControlsModalChanged(): void {
+        this.playerControlsModal.playerControlsModalChanged();
     }
 }

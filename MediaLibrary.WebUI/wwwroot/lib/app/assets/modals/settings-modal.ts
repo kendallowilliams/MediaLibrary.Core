@@ -31,6 +31,7 @@ export default class SettingsModal {
             () => this.hide());
         this.addNewPodcastModal = new AddNewPodcastModal(() => this.settingsLoadFunctions.loadPodcast());
         this.initializeControls();
+        this.toggleGlobalDarkMode();
     }
 
     private initializeControls(): void {
@@ -80,9 +81,6 @@ export default class SettingsModal {
             } else if (mediaPage === MediaPages.Television) {
                 $(containers.TelevisionSettingsContainer).removeClass('d-none');
             }
-
-            if (mediaType === MediaTypes.Song) /*then*/ $(buttons.PlayerAudioVisualizerButton).removeClass('d-none');
-            else /*then*/ $(buttons.PlayerAudioVisualizerButton).addClass('d-none');
         });
         $modalBody.find('select[name="AppWidth"]').on('change', e => {
             const width = $(e.currentTarget).val() as string;
@@ -177,6 +175,14 @@ export default class SettingsModal {
 
             this.configurations.MediaLibrary.properties.TooltipsEnabled = enabled;
             this.configurations.MediaLibrary.updateConfiguration();
+            this.autoCloseModal();
+        });
+        $modalBody.find('input[name="DarkMode"]').on('change', e => {
+            const enabled = (e.currentTarget as HTMLInputElement).checked;
+
+            this.configurations.MediaLibrary.properties.DarkMode = enabled;
+            this.configurations.MediaLibrary.updateConfiguration()
+                .then(() => this.toggleGlobalDarkMode());
             this.autoCloseModal();
         });
         $modalBody.find('input[name="KeysEnabled"]').on('change', e => {
@@ -312,11 +318,6 @@ export default class SettingsModal {
 
             MessageBox.confirm(title, message, MessageBoxConfirmType.YesNo, yesCallback);
         });
-
-        $(buttons.PlayerAudioVisualizerButton).on('click', e => {
-            this.settingsLoadFunctions.toggleAudioVisualizer(e.currentTarget as HTMLButtonElement);
-            this.autoCloseModal();
-        });
     }
 
     private autoCloseModal(): void {
@@ -381,5 +382,38 @@ export default class SettingsModal {
         }
 
         return promise;
+    }
+
+    private toggleGlobalDarkMode(): void {
+        const body = document.body,
+            enabled = this.configurations.MediaLibrary.properties.DarkMode;
+
+        $(body).toggleClass('bg-dark text-light', enabled);
+        this.toggleDarkMode(body);
+    }
+
+    public toggleDarkMode(container: HTMLElement): void {
+        const $container = $(container),
+            enabled = this.configurations.MediaLibrary.properties.DarkMode;
+
+        $container.find('.card').toggleClass('bg-dark', enabled);
+        $container.find('.btn').not('.btn-link').toggleClass('btn-light', enabled);
+        $container.find('.list-group-item').toggleClass('bg-dark text-light', enabled);
+        $container.find('.modal-content').toggleClass('bg-dark text-light', enabled);
+        $container.find('.page-link').toggleClass('bg-dark text-light', enabled);
+        $container.find('.btn-link').toggleClass('bg-dark text-light', enabled);
+
+
+        if (enabled) {
+            $container.find('.bg-light').removeClass('bg-light').addClass('bg-dark');
+            $container.find('.navbar-light').removeClass('navbar-light').addClass('navbar-dark');
+            $container.find('.text-dark').removeClass('text-dark').addClass('text-light');
+        } else {
+            $container.find('.navbar-dark').removeClass('navbar-dark').addClass('navbar-light');
+            $container.find('.text-light').removeClass('text-light').addClass('text-dark');
+            $container.find('.bg-dark').removeClass('bg-dark').addClass('bg-light');
+        }
+
+
     }
 }
