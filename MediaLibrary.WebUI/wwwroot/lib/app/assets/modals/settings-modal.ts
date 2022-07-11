@@ -400,11 +400,11 @@ export default class SettingsModal {
         $container.find('.card').toggleClass('bg-dark', darkModeEnabled);
         $container.find('.btn').not('.btn-link').toggleClass('btn-light', darkModeEnabled);
         $container.find('.list-group-item')
-            .removeClass('border-dark border bg-light text-dark')
-            .toggleClass('bg-dark text-light', darkModeEnabled)
+            .removeClass('border-secondary border bg-light text-dark')
+            .toggleClass('bg-secondary text-light', darkModeEnabled)
             .filter('.active')
             .toggleClass('bg-light text-dark border border-dark', darkModeEnabled)
-            .removeClass('bg-dark text-light');
+            .removeClass('bg-secondary text-light');
         $container.find('.modal-content').toggleClass('bg-dark text-light', darkModeEnabled);
         $container.find('.page-link, .btn-link')
             .removeClass('bg-dark text-light bg-light text-dark border border-dark')
