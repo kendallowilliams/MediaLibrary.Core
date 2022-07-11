@@ -55,6 +55,9 @@ namespace MediaLibrary.WebUI.Controllers
                 }
                 else
                 {
+                    var savedMediaLibraryConfiguration = configuration.GetConfigurationObject<MediaLibraryConfiguration>();
+
+                    mediaLibraryConfiguration.ConsoleAppLastRunTimeStamp = savedMediaLibraryConfiguration.ConsoleAppLastRunTimeStamp;
                     configuration.JsonData = JsonConvert.SerializeObject(mediaLibraryConfiguration);
                     await dataService.Update(configuration);
                 }
