@@ -65,8 +65,6 @@ export default class Podcast extends BaseClass implements IView {
                 $('li.page-item').removeClass('active');
                 this.loadPodcastView(e.currentTarget);
             }
-
-            this.toggleDarkMode(this.podcastView);
         });
 
         $(this.mediaView).find('*[data-podcast-action="delete"]').on('click', e => {
@@ -156,7 +154,7 @@ export default class Podcast extends BaseClass implements IView {
                 $(this.podcastView).find('[data-podcast-item-options-popover]').popover('hide');
             });
             this.updateActiveMediaFunc();
-            this.toggleDarkMode(this.podcastView);
+            this.toggleDarkMode(this.mediaView);
             LoadingModal.hideLoading();
             this.refreshPodcastDownloads();
         },

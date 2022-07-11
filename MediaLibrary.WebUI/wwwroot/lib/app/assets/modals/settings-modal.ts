@@ -406,17 +406,33 @@ export default class SettingsModal {
             .toggleClass('bg-light text-dark border border-dark', darkModeEnabled)
             .removeClass('bg-dark text-light');
         $container.find('.modal-content').toggleClass('bg-dark text-light', darkModeEnabled);
-        $container.find('.page-link').toggleClass('bg-dark text-light', darkModeEnabled);
-        $container.find('.btn-link').toggleClass('bg-dark text-light', darkModeEnabled);
+        $container.find('.page-link, .btn-link')
+            .removeClass('bg-dark text-light bg-light text-dark border border-dark')
+            .toggleClass('bg-dark text-light', darkModeEnabled)
+            .filter('.active > *')
+            .toggleClass('bg-light text-dark border border-dark', darkModeEnabled)
+            .removeClass('bg-dark text-light');
 
         if (darkModeEnabled) {
-            $container.find('.bg-light').removeClass('bg-light').addClass('bg-dark');
             $container.find('.navbar-light').removeClass('navbar-light').addClass('navbar-dark');
-            $container.find('.text-dark').removeClass('text-dark').addClass('text-light');
+            $container.find('.bg-light')
+                .not('.list-group-item, .btn-link, .page-link')
+                .removeClass('bg-light')
+                .addClass('bg-dark');
+            $container.find('.text-dark')
+                .not('.list-group-item, .btn-link, .page-link')
+                .removeClass('text-dark')
+                .addClass('text-light');
         } else {
             $container.find('.navbar-dark').removeClass('navbar-dark').addClass('navbar-light');
-            $container.find('.text-light').removeClass('text-light').addClass('text-dark');
-            $container.find('.bg-dark').removeClass('bg-dark').addClass('bg-light');
+            $container.find('.text-light')
+                .not('.list-group-item, .btn-link, .page-item')
+                .removeClass('text-light')
+                .addClass('text-dark');
+            $container.find('.bg-dark')
+                .not('.list-group-item, .btn-link, .page-link')
+                .removeClass('bg-dark')
+                .addClass('bg-light');
         }
     }
 }
