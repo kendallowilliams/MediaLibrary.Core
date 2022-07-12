@@ -389,7 +389,7 @@ export default class SettingsModal {
             enabled = this.configurations.MediaLibrary.properties.DarkMode;
 
         this.toggleDarkMode(body);
-        $(body).toggleClass('bg-dark text-light', enabled);
+        $(body).toggleClass('bg-dark text-white', enabled);
         $(body).find('.jumbotron').toggleClass('text-dark', enabled);
     }
 
@@ -401,17 +401,17 @@ export default class SettingsModal {
         $container.find('.btn').not('.btn-link').toggleClass('btn-light', darkModeEnabled);
         $container.find('.list-group-item')
             .removeClass('border-secondary border bg-light text-dark')
-            .toggleClass('bg-secondary text-light', darkModeEnabled)
+            .toggleClass('bg-secondary text-white', darkModeEnabled)
             .filter('.active')
             .toggleClass('bg-light text-dark border border-dark', darkModeEnabled)
-            .removeClass('bg-secondary text-light');
-        $container.find('.modal-content').toggleClass('bg-dark text-light', darkModeEnabled);
+            .removeClass('bg-secondary text-white');
+        $container.find('.modal-content').toggleClass('bg-dark text-white', darkModeEnabled);
         $container.find('.page-link, .btn-link')
-            .removeClass('bg-dark text-light bg-light text-dark border border-dark')
-            .toggleClass('bg-dark text-light', darkModeEnabled)
+            .removeClass('bg-dark text-white bg-light text-dark border border-dark')
+            .toggleClass('bg-dark text-white', darkModeEnabled)
             .filter('.active > *')
             .toggleClass('bg-light text-dark border border-dark', darkModeEnabled)
-            .removeClass('bg-dark text-light');
+            .removeClass('bg-dark text-white');
 
         if (darkModeEnabled) {
             $container.find('.navbar-light').removeClass('navbar-light').addClass('navbar-dark');
@@ -422,17 +422,25 @@ export default class SettingsModal {
             $container.find('.text-dark')
                 .not('.list-group-item, .btn-link, .page-link')
                 .removeClass('text-dark')
-                .addClass('text-light');
+                .addClass('text-white');
+            $container.find('.text-muted')
+                .not('.list-group-item, .btn-link, .page-link')
+                .removeClass('text-muted')
+                .addClass('text-light')
         } else {
             $container.find('.navbar-dark').removeClass('navbar-dark').addClass('navbar-light');
-            $container.find('.text-light')
+            $container.find('.text-white')
                 .not('.list-group-item, .btn-link, .page-item')
-                .removeClass('text-light')
+                .removeClass('text-white')
                 .addClass('text-dark');
             $container.find('.bg-dark')
                 .not('.list-group-item, .btn-link, .page-link')
                 .removeClass('bg-dark')
                 .addClass('bg-light');
+            $container.find('.text-light')
+                .not('.list-group-item, .btn-link, .page-link')
+                .removeClass('text-light')
+                .addClass('text-muted')
         }
     }
 }
