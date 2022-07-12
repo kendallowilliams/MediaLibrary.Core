@@ -412,6 +412,7 @@ export default class SettingsModal {
             .filter('.active > *')
             .toggleClass('bg-light text-dark border border-dark', darkModeEnabled)
             .removeClass('bg-dark text-white');
+        $container.find('hr').toggleClass('bg-secondary', darkModeEnabled);
 
         if (darkModeEnabled) {
             $container.find('.navbar-light').removeClass('navbar-light').addClass('navbar-dark');
