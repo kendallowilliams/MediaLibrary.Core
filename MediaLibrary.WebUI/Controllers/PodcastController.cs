@@ -1,27 +1,24 @@
 ﻿using MediaLibrary.BLL.Services.Interfaces;
 using MediaLibrary.DAL.Models;
 using MediaLibrary.DAL.Services.Interfaces;
+using MediaLibrary.Shared.Models.Configurations;
 using MediaLibrary.Shared.Services.Interfaces;
 using MediaLibrary.WebUI.Models;
-using MediaLibrary.Shared.Models.Configurations;
 using MediaLibrary.WebUI.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.StaticFiles;
+using Microsoft.Extensions.Caching.Memory;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using IO_File = System.IO.File;
 using System.Linq;
 using System.Net;
-using System.Net.Http;
-using System.Net.Http.Headers;
-using System.Text;
 using System.Text.Json;
-using System.Threading.Tasks;
-using System.Web;
-using static MediaLibrary.Shared.Enums;
 using System.Threading;
+using System.Threading.Tasks;
+using static MediaLibrary.Shared.Enums;
+using IO_File = System.IO.File;
 
 namespace MediaLibrary.WebUI.Controllers
 {
@@ -36,10 +33,13 @@ namespace MediaLibrary.WebUI.Controllers
         private readonly IFileService fileService;
         private readonly ILogService logService;
         private readonly ITPLService tplService;
+        private readonly IWebService webService;
+        private readonly IMemoryCache memoryCache;
 
         public PodcastController(IBackgroundTaskQueueService backgroundTaskQueue, IPodcastUIService podcastUIService, IDataService dataService,
                                  PodcastViewModel podcastViewModel, IPodcastService podcastService, ITransactionService transactionService,
-                                 IFileService fileService, ILogService logService, ITPLService tplService)
+                                 IFileService fileService, ILogService logService, ITPLService tplService,
+                                 IWebService webService, IMemoryCache memoryCache)
         {
             this.podcastUIService = podcastUIService;
             this.dataService = dataService;
@@ -50,6 +50,8 @@ namespace MediaLibrary.WebUI.Controllers
             this.backgroundTaskQueue = backgroundTaskQueue;
             this.logService = logService;
             this.tplService = tplService;
+            this.webService = webService;
+            this.memoryCache = memoryCache;
         }
 
         public async Task<IActionResult> Index()
@@ -258,7 +260,26 @@ namespace MediaLibrary.WebUI.Controllers
                 {
                     if (string.IsNullOrWhiteSpace(podcastItem.File))
                     {
-                        result = new RedirectResult(podcastItem.Url);
+                        string cacheKey = podcastService.GetPodcastItemCacheKey(podcastItem.Id);
+                        bool cacheFound = memoryCache.TryGetValue(cacheKey, out byte[] itemData);
+
+                        if (cacheFound && itemData != null)
+                        {
+                            result = File(itemData, "audio/mpeg", true);
+                        }
+                        else
+                        {
+                            if (!cacheFound)
+                            {
+                                var expiration = DateTimeOffset.Now.AddDays(1);
+
+                                memoryCache.Set<byte[]>(cacheKey, null, expiration);
+                                backgroundTaskQueue.QueueBackgroundWorkItem(async token =>
+                                    await webService.DownloadData(podcastItem.Url)
+                                                    .ContinueWith(t => memoryCache.Set(cacheKey, t.Result, expiration)));
+                            }
+                            result = new RedirectResult(podcastItem.Url);
+                        }
                     }
                     else
                     {
@@ -356,6 +377,7 @@ namespace MediaLibrary.WebUI.Controllers
             podcastItem.LastPlayedDate = DateTime.Now;
             await dataService.Update(podcastItem);
             podcastUIService.ClearPodcasts();
+            memoryCache.Remove(podcastService.GetPodcastItemCacheKey(id));
         }
 
         public async Task MarkPodcastItemUnplayed(int id)
