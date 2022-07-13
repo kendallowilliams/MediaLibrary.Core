@@ -19,5 +19,7 @@ namespace MediaLibrary.BLL.Services.Interfaces
         Task<string> AddPodcastFile(Transaction transaction, int podcastItemId);
 
         Task CleanMissingPodcastFiles();
+
+        string GetPodcastItemCacheKey(int id);
     }
 }

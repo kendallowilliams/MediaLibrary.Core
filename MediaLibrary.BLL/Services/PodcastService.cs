@@ -12,6 +12,7 @@ using MediaLibrary.BLL.Services.Interfaces;
 using MediaLibrary.DAL.Services.Interfaces;
 using System.Linq.Expressions;
 using MediaLibrary.DAL.Models;
+using Microsoft.Extensions.Caching.Memory;
 
 namespace MediaLibrary.BLL.Services
 {
@@ -22,15 +23,17 @@ namespace MediaLibrary.BLL.Services
         private readonly ITransactionService transactionService;
         private readonly IFileService fileService;
         private readonly ILogService logService;
+        private readonly IMemoryCache memoryCache;
 
         public PodcastService(IDataService dataService, IWebService webService, ITransactionService transactionService,
-                              IFileService fileService, ILogService logService)
+                              IFileService fileService, ILogService logService, IMemoryCache memoryCache)
         {
             this.dataService = dataService;
             this.webService = webService;
             this.transactionService = transactionService;
             this.fileService = fileService;
             this.logService = logService;
+            this.memoryCache = memoryCache;
         }
 
         public async Task<Podcast> AddPodcast(string url) => await ParseRssFeed(new Podcast { Url = url });
@@ -161,6 +164,7 @@ namespace MediaLibrary.BLL.Services
                         string title = podcastItem.Podcast.Title,
                                podcastFolder = fileService.PodcastFolder,
                                path = string.Empty;
+                        bool cacheFound = memoryCache.TryGetValue<byte[]>(GetPodcastItemCacheKey(podcastItemId), out byte[] itemData);
 
                         foreach (char c in Path.GetInvalidFileNameChars()) { title = title.Replace(c.ToString(), "_"); }
                         foreach (char c in Path.GetInvalidPathChars()) { path = path.Replace(c.ToString(), "_"); }
@@ -168,7 +172,16 @@ namespace MediaLibrary.BLL.Services
                         if (!Directory.Exists(path)) { Directory.CreateDirectory(path); }
                         fileName = Path.Combine(path, Path.GetFileName((new Uri(podcastItem.Url)).LocalPath));
                         podcastItem.File = fileName;
-                        File.WriteAllBytes(fileName, await webService.DownloadData(podcastItem.Url));
+
+                        if (cacheFound && itemData != null && itemData.Any())
+                        {
+                            File.WriteAllBytes(fileName, itemData);
+                        }
+                        else
+                        {
+                            File.WriteAllBytes(fileName, await webService.DownloadData(podcastItem.Url));
+                        }
+
                         await dataService.Update(podcastItem);
                         await transactionService.UpdateTransactionCompleted(transaction);
                     }
@@ -200,5 +213,7 @@ namespace MediaLibrary.BLL.Services
                 await dataService.Update(item);
             }
         }
+
+        public string GetPodcastItemCacheKey(int id) => $"PodcastItemFile_{id}";
     }
 }
