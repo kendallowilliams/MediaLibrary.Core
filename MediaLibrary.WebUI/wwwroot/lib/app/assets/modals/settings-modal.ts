@@ -412,11 +412,7 @@ export default class SettingsModal {
             .removeClass('bg-secondary text-white');
         $container.find('.modal-content').toggleClass('bg-dark text-white', darkModeEnabled);
         $container.find('.page-link, .btn-link')
-            .removeClass('bg-dark text-white bg-light text-dark border border-dark')
-            .toggleClass('bg-dark text-white', darkModeEnabled)
-            .filter('.active > *')
-            .toggleClass('bg-light text-dark border border-dark', darkModeEnabled)
-            .removeClass('bg-dark text-white');
+            .toggleClass('bg-transparent text-white', darkModeEnabled)
         $container.find('hr').toggleClass('bg-white', darkModeEnabled);
 
         if (darkModeEnabled) {
