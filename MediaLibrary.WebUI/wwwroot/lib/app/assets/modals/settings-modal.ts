@@ -388,16 +388,21 @@ export default class SettingsModal {
         const body = document.body,
             enabled = this.configurations.MediaLibrary.properties.DarkMode;
 
-        this.toggleDarkMode(body);
         $(body).toggleClass('bg-black text-white', enabled);
         $(body).find('.jumbotron').toggleClass('bg-dark text-light', enabled);
+        $(body).find('.navbar')
+            .toggleClass('border', enabled)
+            .toggleClass('navbar-light bg-light', !enabled)
+            .find('.nav-link').toggleClass('text-light', enabled);
+        $(body).find('.navbar-brand').toggleClass('border', enabled);
+        this.toggleDarkMode(body);
     }
 
     public toggleDarkMode(container: HTMLElement): void {
         const $container = $(container),
             darkModeEnabled = this.configurations.MediaLibrary.properties.DarkMode;
 
-        $container.find('.card').toggleClass('bg-dark', darkModeEnabled);
+        $container.find('.card').toggleClass('bg-transparent border', darkModeEnabled);
         $container.find('.btn').not('.btn-link').toggleClass('btn-light', darkModeEnabled);
         $container.find('.list-group-item')
             .removeClass('border-secondary border bg-light text-dark')
@@ -412,10 +417,9 @@ export default class SettingsModal {
             .filter('.active > *')
             .toggleClass('bg-light text-dark border border-dark', darkModeEnabled)
             .removeClass('bg-dark text-white');
-        $container.find('hr').toggleClass('bg-secondary', darkModeEnabled);
+        $container.find('hr').toggleClass('bg-white', darkModeEnabled);
 
         if (darkModeEnabled) {
-            $container.find('.navbar-light').removeClass('navbar-light').addClass('navbar-dark');
             $container.find('.bg-light')
                 .not('.list-group-item, .btn-link, .page-link')
                 .removeClass('bg-light')
@@ -429,7 +433,6 @@ export default class SettingsModal {
                 .removeClass('text-muted')
                 .addClass('text-light')
         } else {
-            $container.find('.navbar-dark').removeClass('navbar-dark').addClass('navbar-light');
             $container.find('.text-white')
                 .not('.list-group-item, .btn-link, .page-item')
                 .removeClass('text-white')
