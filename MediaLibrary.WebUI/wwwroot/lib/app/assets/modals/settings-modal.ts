@@ -395,6 +395,10 @@ export default class SettingsModal {
             .toggleClass('navbar-light bg-light', !enabled)
             .find('.nav-link').toggleClass('text-light', enabled);
         $(body).find('.navbar-brand').toggleClass('border', enabled);
+        $(HtmlControls.Containers().MainControlsContainers)
+            .children('div')
+            .toggleClass('bg-transparent', enabled)
+            .toggleClass('bg-light', !enabled);
         this.toggleDarkMode(body);
     }
 
@@ -403,40 +407,17 @@ export default class SettingsModal {
             darkModeEnabled = this.configurations.MediaLibrary.properties.DarkMode;
 
         $container.find('.card').toggleClass('bg-transparent border', darkModeEnabled);
-        $container.find('.btn').not('.btn-link').toggleClass('btn-light', darkModeEnabled);
         $container.find('.list-group-item')
-            .toggleClass('bg-transparent border', darkModeEnabled);
+            .toggleClass('bg-transparent border text-white', darkModeEnabled);
         $container.find('.modal-content').toggleClass('bg-dark text-white', darkModeEnabled);
         $container.find('.page-link, .btn-link')
             .toggleClass('bg-transparent text-white', darkModeEnabled)
         $container.find('hr').toggleClass('bg-white', darkModeEnabled);
+        $container.find('.btn-outline-secondary').toggleClass('btn-outline-light', darkModeEnabled);
+        $container.find('.btn-outline-light').toggleClass('btn-outline-secondary', !darkModeEnabled);
 
         if (darkModeEnabled) {
-            $container.find('.bg-light')
-                .not('.list-group-item, .btn-link, .page-link')
-                .removeClass('bg-light')
-                .addClass('bg-dark');
-            $container.find('.text-dark')
-                .not('.list-group-item, .btn-link, .page-link')
-                .removeClass('text-dark')
-                .addClass('text-white');
-            $container.find('.text-muted')
-                .not('.list-group-item, .btn-link, .page-link')
-                .removeClass('text-muted')
-                .addClass('text-light')
         } else {
-            $container.find('.text-white')
-                .not('.list-group-item, .btn-link, .page-item')
-                .removeClass('text-white')
-                .addClass('text-dark');
-            $container.find('.bg-dark')
-                .not('.list-group-item, .btn-link, .page-link')
-                .removeClass('bg-dark')
-                .addClass('bg-light');
-            $container.find('.text-light')
-                .not('.list-group-item, .btn-link, .page-link')
-                .removeClass('text-light')
-                .addClass('text-muted')
         }
     }
 }
