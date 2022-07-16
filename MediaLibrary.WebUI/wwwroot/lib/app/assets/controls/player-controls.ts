@@ -255,7 +255,10 @@ export default class PlayerControls {
 
     public showHideFullScreen(show: boolean): void {
         const page = this.mediaLibraryConfiguration.properties.SelectedMediaPage,
-            canShow = page === MediaPages.Player && show;
+            mediaType = this.playerConfiguration.properties.SelectedMediaType,
+            canShow = page === MediaPages.Player &&
+                show &&
+                mediaType == MediaTypes.Television;
 
         $(HtmlControls.Buttons().PlayerFullscreenButtons).toggleClass('d-none', !canShow);
     }
