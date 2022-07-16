@@ -65,7 +65,7 @@
                         <i class="fa fa-volume-mute"></i>
                     </button>
                 </span>
-                <button id="@(HtmlControlsRepository.PlayerFullscreenButtonId)" class="btn btn-sm btn-outline-secondary @(Model.Configuration.SelectedPlayerPage == Enums.PlayerPages.Video ? string.Empty : "d-none")">
+                <button class="btn btn-sm btn-outline-secondary @(HtmlControlsRepository.PlayerFullscreenButtonsClass)">
                     <i class="fa fa-expand"></i>
                 </button>
                 <button class="btn btn-sm btn-outline-secondary @(HtmlControlsRepository.PlayerAudioVisualizerButtonsClass)"

@@ -388,60 +388,36 @@ export default class SettingsModal {
         const body = document.body,
             enabled = this.configurations.MediaLibrary.properties.DarkMode;
 
+        $(body).toggleClass('bg-black text-white', enabled);
+        $(body).find('.jumbotron').toggleClass('bg-dark text-light', enabled);
+        $(body).find('.navbar')
+            .toggleClass('border', enabled)
+            .toggleClass('navbar-light bg-light', !enabled)
+            .find('.nav-link').toggleClass('text-light', enabled);
+        $(body).find('.navbar-brand').toggleClass('border', enabled);
+        $(HtmlControls.Containers().MainControlsContainers)
+            .children('div')
+            .toggleClass('bg-transparent', enabled)
+            .toggleClass('bg-light', !enabled);
         this.toggleDarkMode(body);
-        $(body).toggleClass('bg-dark text-white', enabled);
-        $(body).find('.jumbotron').toggleClass('text-dark', enabled);
     }
 
     public toggleDarkMode(container: HTMLElement): void {
         const $container = $(container),
             darkModeEnabled = this.configurations.MediaLibrary.properties.DarkMode;
 
-        $container.find('.card').toggleClass('bg-dark', darkModeEnabled);
-        $container.find('.btn').not('.btn-link').toggleClass('btn-light', darkModeEnabled);
+        $container.find('.card').toggleClass('bg-transparent border', darkModeEnabled);
         $container.find('.list-group-item')
-            .removeClass('border-secondary border bg-light text-dark')
-            .toggleClass('bg-secondary text-white', darkModeEnabled)
-            .filter('.active')
-            .toggleClass('bg-light text-dark border border-dark', darkModeEnabled)
-            .removeClass('bg-secondary text-white');
+            .toggleClass('bg-transparent border text-white', darkModeEnabled);
         $container.find('.modal-content').toggleClass('bg-dark text-white', darkModeEnabled);
         $container.find('.page-link, .btn-link')
-            .removeClass('bg-dark text-white bg-light text-dark border border-dark')
-            .toggleClass('bg-dark text-white', darkModeEnabled)
-            .filter('.active > *')
-            .toggleClass('bg-light text-dark border border-dark', darkModeEnabled)
-            .removeClass('bg-dark text-white');
-        $container.find('hr').toggleClass('bg-secondary', darkModeEnabled);
+            .toggleClass('bg-transparent text-white', darkModeEnabled)
+        $container.find('hr').toggleClass('bg-white', darkModeEnabled);
+        $container.find('.btn-outline-secondary').toggleClass('btn-outline-light', darkModeEnabled);
+        $container.find('.btn-outline-light').toggleClass('btn-outline-secondary', !darkModeEnabled);
 
         if (darkModeEnabled) {
-            $container.find('.navbar-light').removeClass('navbar-light').addClass('navbar-dark');
-            $container.find('.bg-light')
-                .not('.list-group-item, .btn-link, .page-link')
-                .removeClass('bg-light')
-                .addClass('bg-dark');
-            $container.find('.text-dark')
-                .not('.list-group-item, .btn-link, .page-link')
-                .removeClass('text-dark')
-                .addClass('text-white');
-            $container.find('.text-muted')
-                .not('.list-group-item, .btn-link, .page-link')
-                .removeClass('text-muted')
-                .addClass('text-light')
         } else {
-            $container.find('.navbar-dark').removeClass('navbar-dark').addClass('navbar-light');
-            $container.find('.text-white')
-                .not('.list-group-item, .btn-link, .page-item')
-                .removeClass('text-white')
-                .addClass('text-dark');
-            $container.find('.bg-dark')
-                .not('.list-group-item, .btn-link, .page-link')
-                .removeClass('bg-dark')
-                .addClass('bg-light');
-            $container.find('.text-light')
-                .not('.list-group-item, .btn-link, .page-link')
-                .removeClass('text-light')
-                .addClass('text-muted')
         }
     }
 }

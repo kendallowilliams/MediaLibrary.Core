@@ -35,7 +35,7 @@ namespace MediaLibrary.WebUI.Repositories
         public static string PlayerPlaylistToggleButtonsClass { get => "btn-player-playlist-toggle"; }
         public static string PlayerVolumeButtonsClass { get => "btn-player-volume"; }
         public static string PlayerMuteButtonsClass { get => "btn-player-mute"; }
-        public static string PlayerFullscreenButtonId { get => "btn-player-fullscreen"; }
+        public static string PlayerFullscreenButtonsClass { get => "btn-player-fullscreen"; }
         public static string PlayerClearButtonId { get => "btn-player-clear"; }
         public static string PlayerAudioVisualizerButtonsClass { get => "btn-audio-visualizer"; }
         public static string PlaybackContinueButtonsClass { get => "btn-playback-continue"; }

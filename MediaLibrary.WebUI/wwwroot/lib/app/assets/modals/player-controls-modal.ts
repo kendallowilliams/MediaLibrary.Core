@@ -19,15 +19,12 @@ export default class PlayerControlsModal {
 
         $modal.on('show.bs.modal', e => {
             const $playlistToggleButton = $(buttons.PlayerPlaylistToggleButtons)
-                .filter((index, element) => $(this.modal).find(element).length > 0);
+                .filter((index, element) => $(this.modal).find(element).length > 0),
+                page = this.mediaLibraryConfiguration.properties.SelectedMediaPage;
 
-            if (this.mediaLibraryConfiguration.properties.SelectedMediaPage === MediaPages.Player) {
-                $playlistToggleButton.removeClass('d-none');
-            } else {
-                $playlistToggleButton.addClass('d-none');
-            }
-
+            $playlistToggleButton.toggleClass('d-none', page !== MediaPages.Player);
             this.playerControls.showHideAudioVisualizer();
+            this.playerControls.showHideFullScreen(page === MediaPages.Player);
             this.autoCloseModal();
         });
     }
