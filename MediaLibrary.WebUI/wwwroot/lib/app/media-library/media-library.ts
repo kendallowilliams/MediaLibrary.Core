@@ -148,61 +148,25 @@ export default class MediaLibrary extends BaseClass {
         const $mediaView: JQuery<HTMLElement> = $(this.mainViews.MediaView),
             $playerView: JQuery<HTMLElement> = $(this.mainViews.PlayerView),
             currentId: number = this.player.getCurrentlyLoadedId(),
-            darkModeEnabled = this.mediaLibraryConfiguration.properties.DarkMode,
-            classListToRemove = 'active border-dark border bg-light text-dark bg-secondary text-white';
+            darkModeEnabled = this.mediaLibraryConfiguration.properties.DarkMode;
 
-        $mediaView.find('.list-group-item[data-song-id].active')
-            .removeClass(classListToRemove)
-            .toggleClass('bg-secondary text-white', darkModeEnabled)
-            .find('.text-muted')
-            .removeClass('text-muted')
-            .toggleClass('text-light', darkModeEnabled);
-        $mediaView.find('.list-group-item[data-episode-id].active')
-            .removeClass(classListToRemove)
-            .toggleClass('bg-secondary text-white', darkModeEnabled)
-            .find('.text-muted')
-            .removeClass('text-muted')
-            .toggleClass('text-light', darkModeEnabled);
-        $playerView.find('.list-group-item[data-play-index].active')
-            .removeClass(classListToRemove)
-            .toggleClass('bg-secondary text-white', darkModeEnabled)
-            .find('.text-muted')
-            .removeClass('text-muted')
-            .toggleClass('text-light', darkModeEnabled);
+        $mediaView.find('.list-group-item[data-song-id].active').removeClass('active');
+        $mediaView.find('.list-group-item[data-episode-id].active').removeClass('active');
+        $playerView.find('.list-group-item[data-play-index].active').removeClass('active');
 
         if (this.playerConfiguration.properties.SelectedMediaType === MediaTypes.Song &&
             (this.mediaLibraryConfiguration.properties.SelectedMediaPage === MediaPages.Music ||
                 this.mediaLibraryConfiguration.properties.SelectedMediaPage === MediaPages.Playlist)) {
-            $mediaView.find('.list-group-item[data-song-id="' + currentId + '"]')
-                .addClass('active')
-                .toggleClass('border-dark border bg-light text-dark', darkModeEnabled)
-                .removeClass('bg-secondary text-white')
-                .find('.text-light')
-                .switchClass('text-light', 'text-muted');
+            $mediaView.find('.list-group-item[data-song-id="' + currentId + '"]').addClass('active');
         } else if (this.playerConfiguration.properties.SelectedMediaType === MediaTypes.Television &&
             this.mediaLibraryConfiguration.properties.SelectedMediaPage === MediaPages.Television) {
-            $mediaView.find('.list-group-item[data-episode-id="' + currentId + '"]')
-                .addClass('active')
-                .toggleClass('border-dark border bg-light text-dark', darkModeEnabled)
-                .removeClass('bg-secondary text-white')
-                .find('.text-light')
-                .switchClass('text-light', 'text-muted');
+            $mediaView.find('.list-group-item[data-episode-id="' + currentId + '"]').addClass('active');
         } else if (this.playerConfiguration.properties.SelectedMediaType === MediaTypes.Podcast &&
             this.mediaLibraryConfiguration.properties.SelectedMediaPage === MediaPages.Podcast) {
-            $mediaView.find('.list-group-item[data-episode-id="' + currentId + '"]')
-                .addClass('active')
-                .toggleClass('border-dark border bg-light text-dark', darkModeEnabled)
-                .removeClass('bg-secondary text-white')
-                .find('.text-light')
-                .switchClass('text-light', 'text-muted');
+            $mediaView.find('.list-group-item[data-episode-id="' + currentId + '"]').addClass('active');
         }
 
-        $playerView.find('.list-group-item[data-item-id="' + currentId + '"]')
-            .addClass('active')
-            .toggleClass('border-dark border bg-light text-dark', darkModeEnabled)
-            .removeClass('bg-dark text-white')
-            .find('.text-light')
-            .switchClass('text-light', 'text-muted');
+        $playerView.find('.list-group-item[data-item-id="' + currentId + '"]').addClass('active');
     }
 
     private loadConfigurations(callback: () => void = () => null): void {
