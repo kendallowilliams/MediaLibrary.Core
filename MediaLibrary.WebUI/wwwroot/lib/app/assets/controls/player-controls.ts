@@ -1,12 +1,13 @@
 ﻿import HtmlControls from '../controls/html-controls';
 import { getRepeatTypesEnumString } from '../enums/enum-functions';
-import { MediaPages, MediaTypes, RepeatTypes } from '../enums/enums';
+import { MediaPages, MediaTypes, PlayerPages, RepeatTypes } from '../enums/enums';
 import IPlayerControlsFunctions from '../interfaces/player-controls-functions-interface';
 import PlayerConfiguration from '../models/configurations/player-configuration';
 import * as LocalStorage from '../../assets/utilities/local_storage';
 import { fetch_get } from '../utilities/fetch_service';
 import PlayerControlsModal from '../modals/player-controls-modal';
 import MediaLibraryConfiguration from '../models/configurations/media-library-configuration';
+import { openFullscreen } from '../utilities/element';
 
 export default class PlayerControls {
     private volumeSliders: HTMLElement[];
@@ -26,8 +27,11 @@ export default class PlayerControls {
         const buttons = HtmlControls.Buttons(),
             controls = HtmlControls.UIControls(),
             containers = HtmlControls.Containers(),
-            $muteVolumeButtons = $(Array.from(buttons.PlayerMuteButtons).concat(Array.from(buttons.PlayerVolumeButtons)));
+            $muteVolumeButtons = $(Array.from(buttons.PlayerMuteButtons).concat(Array.from(buttons.PlayerVolumeButtons))),
+            page = this.playerConfiguration.properties.SelectedPlayerPage;
 
+        this.showHideFullScreen(page === PlayerPages.Video);
+        $(buttons.PlayerFullscreenButtons).on('click', () => openFullscreen(this.controlsFunctions.getPlayer()));
         $('button[data-repeat-type="' + getRepeatTypesEnumString(this.playerConfiguration.properties.Repeat) + '"]').removeClass('d-none');
         $muteVolumeButtons.attr('data-volume', this.playerConfiguration.properties.Volume);
         if (this.playerConfiguration.properties.Muted) /*then*/ $(buttons.PlayerMuteButtons).removeClass('d-none');
@@ -35,10 +39,10 @@ export default class PlayerControls {
         $(controls.VolumeTexts).text(this.playerConfiguration.properties.Volume);
         this.showHideAudioVisualizer();
 
+        $(buttons.PlayerPlaylistToggleButtons).toggleClass('active', page === PlayerPages.Index);
         $(buttons.PlayerAudioVisualizerButtons).on('click', e => {
             this.controlsFunctions.toggleAudioVisualizer();
         });
-
         $(controls.PlayerSliders).slider({ min: 0, max: 100 });
         $(containers.PlayerVolumeContainers).each((index: number, element: HTMLElement) => {
             const $container = $(element),
@@ -247,5 +251,12 @@ export default class PlayerControls {
 
     public playerControlsModalChanged(): void {
         this.playerControlsModal.playerControlsModalChanged();
+    }
+
+    public showHideFullScreen(show: boolean): void {
+        const page = this.mediaLibraryConfiguration.properties.SelectedMediaPage,
+            canShow = page === MediaPages.Player && show;
+
+        $(HtmlControls.Buttons().PlayerFullscreenButtons).toggleClass('d-none', !canShow);
     }
 }

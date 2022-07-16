@@ -5,7 +5,6 @@ import HtmlControls from '../../assets/controls/html-controls'
 import { MediaTypes, RepeatTypes, PlayerPages, MessageBoxConfirmType } from "../../assets/enums/enums";
 import { getRandomInteger } from "../../assets/utilities/math";
 import AudioVisualizer from "../audio-visualizer/audio-visualizer";
-import { openFullscreen } from "../../assets/utilities/element";
 import { loadTooltips, disposeTooltips } from "../../assets/utilities/bootstrap-helper";
 import LoadingModal from '../../assets/modals/loading-modal';
 import IPlayerLoadFunctions from "../../assets/interfaces/player-load-functions-interface";
@@ -61,6 +60,7 @@ export default class Player extends BaseClass implements IView {
     loadView(callback: () => void = () => null): void {
         this.audioVisualizer.prepareCanvas();
         this.playerControls.showHideAudioVisualizer();
+        this.playerControls.showHideFullScreen(true);
         this.toggleDarkMode(this.playerView);
         callback();
     }
@@ -136,23 +136,18 @@ export default class Player extends BaseClass implements IView {
         const buttons = HtmlControls.Buttons(),
             containers = HtmlControls.Containers();
 
-        $(buttons.PlayerFullscreenButton).on('click', () => openFullscreen(this.getPlayer()));
-        $(buttons.PlayerPlaylistToggleButtons).each((index, element) => {
-            if (this.playerConfiguration.properties.SelectedPlayerPage === PlayerPages.Index) /*then*/ $(element).addClass('active');
-            else /*then*/ $(element).removeClass('active');
-        });
         $(buttons.PlayerPlaylistToggleButtons).on('click', e => {
             const $player = $(this.getPlayer()),
                 $playerItems = $(containers.PlayerItemsContainer);
             let page = this.playerConfiguration.properties.SelectedPlayerPage;
 
-            $(buttons.PlayerFullscreenButton).addClass('d-none');
+            this.playerControls.showHideFullScreen(false);
             if (page === PlayerPages.Index) {
                 this.playerConfiguration.properties.SelectedPlayerPage = getPlayerPageEnum($player.attr('data-player-page'));
                 $player.parent().removeClass('d-none');
                 $playerItems.addClass('d-none');
                 page = this.playerConfiguration.properties.SelectedPlayerPage;
-                if (page === PlayerPages.Video) /*then*/ $(buttons.PlayerFullscreenButton).removeClass('d-none');
+                if (page === PlayerPages.Video) /*then*/ this.playerControls.showHideFullScreen(true);
                 else if (page === PlayerPages.Audio) /*then*/ this.audioVisualizer.prepareCanvas();
                 $(buttons.PlayerPlaylistToggleButtons).removeClass('active');
             } else {
@@ -407,7 +402,7 @@ export default class Player extends BaseClass implements IView {
 
         if (selectedPlayerPage !== this.playerConfiguration.properties.SelectedPlayerPage) {
             selectedPlayerPage = this.playerConfiguration.properties.SelectedPlayerPage;
-            $(buttons.PlayerFullscreenButton).addClass('d-none');
+            this.playerControls.showHideFullScreen(false);
 
             this.playerConfiguration.updateConfiguration()
                 .then(() =>
@@ -419,7 +414,7 @@ export default class Player extends BaseClass implements IView {
                 })
             );
 
-            if (selectedPlayerPage === PlayerPages.Video) /*then*/ $(buttons.PlayerFullscreenButton).removeClass('d-none');
+            this.playerControls.showHideFullScreen(selectedPlayerPage === PlayerPages.Video);
         }
     }
 
