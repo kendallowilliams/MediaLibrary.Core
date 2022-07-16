@@ -391,10 +391,10 @@ export default class SettingsModal {
         $(body).toggleClass('bg-black text-white', enabled);
         $(body).find('.jumbotron').toggleClass('bg-dark text-light', enabled);
         $(body).find('.navbar')
-            .toggleClass('border', enabled)
+            .toggleClass('border rounded', enabled)
             .toggleClass('navbar-light bg-light', !enabled)
             .find('.nav-link').toggleClass('text-light', enabled);
-        $(body).find('.navbar-brand').toggleClass('border', enabled);
+        $(body).find('.navbar-brand').toggleClass('border rounded', enabled);
         $(HtmlControls.Containers().MainControlsContainers)
             .children('div')
             .toggleClass('bg-transparent', enabled)
