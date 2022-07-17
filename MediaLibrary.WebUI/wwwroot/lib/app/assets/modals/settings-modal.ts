@@ -393,7 +393,10 @@ export default class SettingsModal {
         $(body).find('.navbar')
             .toggleClass('border rounded navbar-dark', enabled)
             .toggleClass('navbar-light bg-light', !enabled)
-            .find('.nav-link').toggleClass('text-light', enabled);
+            .find('.nav-link')
+            .toggleClass('text-light', enabled)
+            .filter('.disabled')
+            .toggleClass('text-dark', !enabled);
         $(body).find('.navbar-brand').toggleClass('border rounded', enabled);
         $(HtmlControls.Containers().MainControlsContainers)
             .children('div')
@@ -413,9 +416,9 @@ export default class SettingsModal {
         $container.find('.page-link, .btn-link')
             .toggleClass('bg-transparent text-white', darkModeEnabled)
         $container.find('hr').toggleClass('bg-white', darkModeEnabled);
-        $container.find('.btn-outline-secondary')
+        $container.find('.btn-outline-secondary, .btn-outline-light')
             .not('[data-podcast-item-options] .btn')
-            .toggleClass('btn-outline-light', darkModeEnabled);
-        $container.find('.btn-outline-light').toggleClass('btn-outline-secondary', !darkModeEnabled);
+            .toggleClass('btn-outline-light', darkModeEnabled)
+            .toggleClass('btn-outline-secondary', !darkModeEnabled);
     }
 }
