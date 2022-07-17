@@ -386,7 +386,10 @@ export default class SettingsModal {
 
     private toggleGlobalDarkMode(): void {
         const body = document.body,
-            enabled = this.configurations.MediaLibrary.properties.DarkMode;
+            enabled = this.configurations.MediaLibrary.properties.DarkMode,
+            controls = HtmlControls.UIControls(),
+            playerTimes = Array.from(controls.PlayerTimes),
+            playerShortTimes = Array.from(controls.PlayerShortTimes);
 
         $(body).toggleClass('bg-black text-white', enabled);
         $(body).find('.jumbotron').toggleClass('bg-dark text-light', enabled);
@@ -402,6 +405,9 @@ export default class SettingsModal {
             .children('div')
             .toggleClass('bg-transparent', enabled)
             .toggleClass('bg-light', !enabled);
+        $(playerTimes.concat(playerShortTimes))
+            .toggleClass('text-light', enabled)
+            .toggleClass('text-secondary', !enabled);
         this.toggleDarkMode(body);
     }
 
