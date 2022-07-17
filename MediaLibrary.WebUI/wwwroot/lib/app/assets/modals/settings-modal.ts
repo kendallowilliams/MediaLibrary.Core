@@ -391,7 +391,7 @@ export default class SettingsModal {
         $(body).toggleClass('bg-black text-white', enabled);
         $(body).find('.jumbotron').toggleClass('bg-dark text-light', enabled);
         $(body).find('.navbar')
-            .toggleClass('border rounded', enabled)
+            .toggleClass('border rounded navbar-dark', enabled)
             .toggleClass('navbar-light bg-light', !enabled)
             .find('.nav-link').toggleClass('text-light', enabled);
         $(body).find('.navbar-brand').toggleClass('border rounded', enabled);
@@ -413,11 +413,9 @@ export default class SettingsModal {
         $container.find('.page-link, .btn-link')
             .toggleClass('bg-transparent text-white', darkModeEnabled)
         $container.find('hr').toggleClass('bg-white', darkModeEnabled);
-        $container.find('.btn-outline-secondary').toggleClass('btn-outline-light', darkModeEnabled);
+        $container.find('.btn-outline-secondary')
+            .not('[data-podcast-item-options] .btn')
+            .toggleClass('btn-outline-light', darkModeEnabled);
         $container.find('.btn-outline-light').toggleClass('btn-outline-secondary', !darkModeEnabled);
-
-        if (darkModeEnabled) {
-        } else {
-        }
     }
 }

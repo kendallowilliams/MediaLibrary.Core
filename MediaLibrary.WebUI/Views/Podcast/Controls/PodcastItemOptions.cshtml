@@ -1,9 +1,5 @@
 ﻿@model (PodcastItem PodcastItem, bool IsDownloading)
 
-@{
-    string unique = Guid.NewGuid().ToString("N");
-}
-
 <div class="d-flex flex-column" data-podcast-item-options="@(Model.PodcastItem.Id)">
     @if (!Model.PodcastItem.LastPlayedDate.HasValue)
     {
