@@ -11,6 +11,7 @@ DECLARE @BewitchedId int,
 		@StarTrekTASId int,
 		@StarTrekTOSId int,
 		@DuckmanId int,
+		@WhatsHappening int,
 		@BewitchedPath VARCHAR(256) = N'BEWITCHED',
 		@GoldenGirlsPath VARCHAR(256) = N'GOLDEN_GIRLS',
 		@MamasFamilyPath VARCHAR(256) = N'MAMAS_FAMILY',
@@ -20,7 +21,8 @@ DECLARE @BewitchedId int,
 		@XenaPath VARCHAR(256) = N'XENA',
 		@StarTrekTASPath VARCHAR(256) = N'STAR_TREK_TAS',
 		@StarTrekTOSPath VARCHAR(256) = N'STAR_TREK_TOS',
-		@DuckmanPath VARCHAR(256) = N'DUCKMAN';
+		@DuckmanPath VARCHAR(256) = N'DUCKMAN',
+		@WhatsHappeningPath VARCHAR(256) = N'WHATS_HAPPENING';
 
 DELETE Series;
 
@@ -35,6 +37,7 @@ BEGIN
 	INSERT INTO Series ([Title]) VALUES ('Star Trek: The Animated Series');
 	INSERT INTO Series ([Title]) VALUES ('Star Trek: The Original Series');
 	INSERT INTO Series ([Title]) VALUES ('Duckman');
+	INSERT INTO Series ([Title]) VALUES ('What''s Happening!!');
 END
 
 SELECT @BewitchedId = Id FROM Series WHERE Title = 'Bewitched';
@@ -47,6 +50,7 @@ SELECT @XenaId = Id FROM Series WHERE Title = 'Xena: Warrior Princess';
 SELECT @StarTrekTASId = Id FROM Series WHERE Title = 'Star Trek: The Animated Series';
 SELECT @StarTrekTOSId = Id FROM Series WHERE Title = 'Star Trek: The Original Series';
 SELECT @DuckmanId = Id FROM Series WHERE Title = 'Duckman';
+SELECT @WhatsHappening = Id FROM Series WHERE Title = 'What''s Happening!!';
 
 /* ROSEANNE */
 BEGIN
@@ -1311,3 +1315,154 @@ BEGIN
 	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Where No Duckman Has Gone Before',@DuckmanId,4,CONCAT(@DuckmanPath,'/S4','/27.mp4'));
 	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Four Weddings Inconceivable',@DuckmanId,4,CONCAT(@DuckmanPath,'/S4','/28.mp4'));
 END
+
+/* WHAT'S HAPPENING!! */
+BEGIN
+
+	/* WHAT'S HAPPENING!!: SEASON ONE */
+	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('The Runaway',@WhatsHappening,1,CONCAT(@WhatsHappeningPath,'/S1','/01.mp4'));
+	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('The Birthday Present',@WhatsHappening,1,CONCAT(@WhatsHappeningPath,'/S1','/02.mp4'));
+	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('When Daddy Comes Marching Home',@WhatsHappening,1,CONCAT(@WhatsHappeningPath,'/S1','/03.mp4'));
+	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('My Three Tons',@WhatsHappening,1,CONCAT(@WhatsHappeningPath,'/S1','/04.mp4'));
+	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Saturday''s Hero',@WhatsHappening,1,CONCAT(@WhatsHappeningPath,'/S1','/05.mp4'));
+	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('The Burger Queen',@WhatsHappening,1,CONCAT(@WhatsHappeningPath,'/S1','/06.mp4'));
+	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Speak for Yourself, Dwayne',@WhatsHappening,1,CONCAT(@WhatsHappeningPath,'/S1','/07.mp4'));
+	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Shirley''s Date',@WhatsHappening,1,CONCAT(@WhatsHappeningPath,'/S1','/08.mp4'));
+	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Christmas',@WhatsHappening,1,CONCAT(@WhatsHappeningPath,'/S1','/09.mp4'));
+	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Puppy Love',@WhatsHappening,1,CONCAT(@WhatsHappeningPath,'/S1','/10.mp4'));
+	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('The Maid Did It',@WhatsHappening,1,CONCAT(@WhatsHappeningPath,'/S1','/11.mp4'));
+	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('The Incomplete Shakespeare',@WhatsHappening,1,CONCAT(@WhatsHappeningPath,'/S1','/12.mp4'));
+	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('The Hospital Stay',@WhatsHappening,1,CONCAT(@WhatsHappeningPath,'/S1','/13.mp4'));
+	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('The Sunday Father',@WhatsHappening,1,CONCAT(@WhatsHappeningPath,'/S1','/14.mp4'));
+	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('The Firing Squad',@WhatsHappening,1,CONCAT(@WhatsHappeningPath,'/S1','/15.mp4'));
+	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('The Boarder',@WhatsHappening,1,CONCAT(@WhatsHappeningPath,'/S1','/16.mp4'));
+	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Dwayne''s Dilemma',@WhatsHappening,1,CONCAT(@WhatsHappeningPath,'/S1','/17.mp4'));
+	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('The Tickets',@WhatsHappening,1,CONCAT(@WhatsHappeningPath,'/S1','/18.mp4'));
+	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('What''s Wrong with Raj?',@WhatsHappening,1,CONCAT(@WhatsHappeningPath,'/S1','/19.mp4'));
+	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Nice Guys Finish Last',@WhatsHappening,1,CONCAT(@WhatsHappeningPath,'/S1','/20.mp4'));
+	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('From Here to Maternity',@WhatsHappening,1,CONCAT(@WhatsHappeningPath,'/S1','/21.mp4'));
+
+	/* WHAT'S HAPPENING!!: SEASON TWO */
+	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Rerun Gets Married',@WhatsHappening,2,CONCAT(@WhatsHappeningPath,'/S2','/01.mp4'));
+	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('It''s All in Your Head',@WhatsHappening,2,CONCAT(@WhatsHappeningPath,'/S2','/02.mp4'));
+	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Trial and Error',@WhatsHappening,2,CONCAT(@WhatsHappeningPath,'/S2','/03.mp4'));
+	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Raj Goes to Press',@WhatsHappening,2,CONCAT(@WhatsHappeningPath,'/S2','/04.mp4'));
+	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Nothing Personal',@WhatsHappening,2,CONCAT(@WhatsHappeningPath,'/S2','/05.mp4'));
+	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('If I''m Elected',@WhatsHappening,2,CONCAT(@WhatsHappeningPath,'/S2','/06.mp4'));
+	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('The Play''s the Big Thing',@WhatsHappening,2,CONCAT(@WhatsHappeningPath,'/S2','/07.mp4'));
+	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Give Me Odds',@WhatsHappening,2,CONCAT(@WhatsHappeningPath,'/S2','/08.mp4'));
+	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Bill Gets Married',@WhatsHappening,2,CONCAT(@WhatsHappeningPath,'/S2','/09.mp4'));
+	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Mama, the School Girl',@WhatsHappening,2,CONCAT(@WhatsHappeningPath,'/S2','/10.mp4'));
+	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('One Strike and You''re Out',@WhatsHappening,2,CONCAT(@WhatsHappeningPath,'/S2','/11.mp4'));
+	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('The Testimonial',@WhatsHappening,2,CONCAT(@WhatsHappeningPath,'/S2','/12.mp4'));
+	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Black and White Blues',@WhatsHappening,2,CONCAT(@WhatsHappeningPath,'/S2','/13.mp4'));
+	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Going, Going, Gong',@WhatsHappening,2,CONCAT(@WhatsHappeningPath,'/S2','/14.mp4'));
+	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Dee''s First Date',@WhatsHappening,2,CONCAT(@WhatsHappeningPath,'/S2','/15.mp4'));
+	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Doobie or Not Doobie (1)',@WhatsHappening,2,CONCAT(@WhatsHappeningPath,'/S2','/16.mp4'));
+	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Doobie or Not Doobie (2)',@WhatsHappening,2,CONCAT(@WhatsHappeningPath,'/S2','/17.mp4'));
+	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Rerun Sees the Light',@WhatsHappening,2,CONCAT(@WhatsHappeningPath,'/S2','/18.mp4'));
+	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Raj and the Older Woman',@WhatsHappening,2,CONCAT(@WhatsHappeningPath,'/S2','/19.mp4'));
+	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Diplomatic Immunity',@WhatsHappening,2,CONCAT(@WhatsHappeningPath,'/S2','/20.mp4'));
+	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Shirley Is a Mother',@WhatsHappening,2,CONCAT(@WhatsHappeningPath,'/S2','/21.mp4'));
+	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('The Apartment',@WhatsHappening,2,CONCAT(@WhatsHappeningPath,'/S2','/22.mp4'));
+
+	/* WHAT'S HAPPENING!!: SEASON THREE */
+	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Disco Dollar Disaster',@WhatsHappening,3,CONCAT(@WhatsHappeningPath,'/S3','/01.mp4'));
+	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Shirley''s Boyfriend',@WhatsHappening,3,CONCAT(@WhatsHappeningPath,'/S3','/02.mp4'));
+	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Basketball Brain',@WhatsHappening,3,CONCAT(@WhatsHappeningPath,'/S3','/03.mp4'));
+	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('The Creep Detective',@WhatsHappening,3,CONCAT(@WhatsHappeningPath,'/S3','/04.mp4'));
+	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Shirley''s Cookies',@WhatsHappening,3,CONCAT(@WhatsHappeningPath,'/S3','/05.mp4'));
+	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('The Landlady',@WhatsHappening,3,CONCAT(@WhatsHappeningPath,'/S3','/06.mp4'));
+	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Charge',@WhatsHappening,3,CONCAT(@WhatsHappeningPath,'/S3','/07.mp4'));
+	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Raj Moves Out',@WhatsHappening,3,CONCAT(@WhatsHappeningPath,'/S3','/08.mp4'));
+	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('No Clothes Make the Man',@WhatsHappening,3,CONCAT(@WhatsHappeningPath,'/S3','/09.mp4'));
+	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Positive Identification',@WhatsHappening,3,CONCAT(@WhatsHappeningPath,'/S3','/10.mp4'));
+	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Making Out',@WhatsHappening,3,CONCAT(@WhatsHappeningPath,'/S3','/11.mp4'));
+	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Dee, the Cheerleader',@WhatsHappening,3,CONCAT(@WhatsHappeningPath,'/S3','/12.mp4'));
+	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('A Present for Dee',@WhatsHappening,3,CONCAT(@WhatsHappeningPath,'/S3','/13.mp4'));
+	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Dwayne''s Dream',@WhatsHappening,3,CONCAT(@WhatsHappeningPath,'/S3','/14.mp4'));
+	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Shirley''s Fired',@WhatsHappening,3,CONCAT(@WhatsHappeningPath,'/S3','/15.mp4'));
+	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Food Poisoning',@WhatsHappening,3,CONCAT(@WhatsHappeningPath,'/S3','/16.mp4'));
+	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('The Eviction',@WhatsHappening,3,CONCAT(@WhatsHappeningPath,'/S3','/17.mp4'));
+	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('The Thomas Treasure',@WhatsHappening,3,CONCAT(@WhatsHappeningPath,'/S3','/18.mp4'));
+	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('The Last Page',@WhatsHappening,3,CONCAT(@WhatsHappeningPath,'/S3','/19.mp4'));
+	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('First Class Coach',@WhatsHappening,3,CONCAT(@WhatsHappeningPath,'/S3','/20.mp4'));
+	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('Dwayne''s Debate',@WhatsHappening,3,CONCAT(@WhatsHappeningPath,'/S3','/21.mp4'));
+	INSERT INTO Episode ([Title],[SeriesId],[Season],[Path]) VALUES ('The Benefit Show',@WhatsHappening,3,CONCAT(@WhatsHappeningPath,'/S3','/22.mp4'));
+END
+
+/*
+Season 1
+ 
+The Runaway
+The Birthday Present
+When Daddy Comes Marching Home
+My Three Tons
+Saturday's Hero
+The Burger Queen
+Speak for Yourself, Dwayne
+Shirley's Date
+Christmas
+Puppy Love
+The Maid Did It
+The Incomplete Shakespeare
+The Hospital Stay
+The Sunday Father
+The Firing Squad
+The Boarder
+Dwayne's Dilemma
+The Tickets
+What's Wrong with Raj?
+Nice Guys Finish Last
+From Here to Maternity
+ 
+Season 2
+ 
+Rerun Gets Married
+It's All in Your Head
+Trial and Error
+Raj Goes to Press
+Nothing Personal
+If I'm Elected
+The Play's the Big Thing
+Give Me Odds
+Bill Gets Married
+Mama, the School Girl
+One Strike and You're Out
+The Testimonial
+Black and White Blues
+Going, Going, Gong
+Dee's First Date
+Doobie or Not Doobie (1)
+Doobie or Not Doobie (2)
+Rerun Sees the Light
+Raj and the Older Woman
+Diplomatic Immunity
+Shirley Is a Mother
+The Apartment
+ 
+Season 3
+ 
+Disco Dollar Disaster
+Shirley's Boyfriend
+Basketball Brain
+The Creep Detective
+Shirley's Cookies
+The Landlady
+Charge
+Raj Moves Out
+No Clothes Make the Man
+Positive Identification
+Making Out
+Dee, the Cheerleader
+A Present for Dee
+Dwayne's Dream
+Shirley's Fired
+Food Poisoning
+The Eviction
+The Thomas Treasure
+The Last Page
+First Class Coach
+Dwayne's Debate
+The Benefit Show
+*/
