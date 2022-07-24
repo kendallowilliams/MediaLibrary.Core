@@ -26,23 +26,33 @@
                     <ul class="navbar-nav mr-auto">
                         <li class="nav-item">
                             <a class="nav-link" data-media-page="@(nameof(Enums.MediaPages.Music))" href="javascript: void(0)">@(nameof(Enums.MediaPages.Music))</a>
-                            <a class="nav-link d-none disabled font-italic font-weight-bold text-dark" data-media-page="@(nameof(Enums.MediaPages.Music))">@(nameof(Enums.MediaPages.Music))</a>
+                            <a class="nav-link d-none disabled font-italic font-weight-bold text-dark" data-media-page="@(nameof(Enums.MediaPages.Music))">
+                                <span class="border-right border-left">&nbsp;@(nameof(Enums.MediaPages.Music))&nbsp;</span>
+                            </a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" data-media-page="@(nameof(Enums.MediaPages.Podcast))" href="javascript: void(0)">@(nameof(Enums.MediaPages.Podcast))s</a>
-                            <a class="nav-link d-none disabled font-italic font-weight-bold text-dark" data-media-page="@(nameof(Enums.MediaPages.Podcast))">@(nameof(Enums.MediaPages.Podcast))s</a>
+                            <a class="nav-link d-none disabled font-italic font-weight-bold text-dark" data-media-page="@(nameof(Enums.MediaPages.Podcast))">
+                                <span class="border-right border-left">&nbsp;@(nameof(Enums.MediaPages.Podcast))s&nbsp;</span>
+                            </a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" data-media-page="@(nameof(Enums.MediaPages.Television))" href="javascript: void(0)">@(nameof(Enums.MediaPages.Television))</a>
-                            <a class="nav-link d-none disabled font-italic font-weight-bold text-dark" data-media-page="@(nameof(Enums.MediaPages.Television))">@(nameof(Enums.MediaPages.Television))</a>
+                            <a class="nav-link d-none disabled font-italic font-weight-bold text-dark" data-media-page="@(nameof(Enums.MediaPages.Television))">
+                                <span class="border-right border-left">&nbsp;@(nameof(Enums.MediaPages.Television))&nbsp;</span>
+                            </a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" data-media-page="@(nameof(Enums.MediaPages.Playlist))" href="javascript: void(0)">@(nameof(Enums.MediaPages.Playlist))s</a>
-                            <a class="nav-link d-none disabled font-italic font-weight-bold text-dark" data-media-page="@(nameof(Enums.MediaPages.Playlist))">@(nameof(Enums.MediaPages.Playlist))s</a>
+                            <a class="nav-link d-none disabled font-italic font-weight-bold text-dark" data-media-page="@(nameof(Enums.MediaPages.Playlist))">
+                                <span class="border-right border-left">&nbsp;@(nameof(Enums.MediaPages.Playlist))s&nbsp;</span>
+                            </a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" data-media-page="@(nameof(Enums.MediaPages.Player))" href="javascript: void(0)">Now Playing</a>
-                            <a class="nav-link d-none disabled font-italic font-weight-bold text-dark" data-media-page="@(nameof(Enums.MediaPages.Player))">Now Playing</a>
+                            <a class="nav-link d-none disabled font-italic font-weight-bold text-dark" data-media-page="@(nameof(Enums.MediaPages.Player))">
+                                <span class="border-right border-left">&nbsp;Now Playing&nbsp;</span>
+                            </a>
                         </li>
                         @if (User.Identity.IsAuthenticated)
                         {
