@@ -278,5 +278,26 @@ namespace MediaLibrary.DAL.Services
         }
 
         public SqlParameter CreateParameter(string name, object value) => new SqlParameter(name, value);
+
+        public async Task<TResult> Max<TEntity, TResult>(Expression<Func<TEntity, TResult>> expression,
+                                                         CancellationToken token = default(CancellationToken)) where TEntity : class
+        {
+            TResult result = default(TResult);
+
+            using (var db = dbContextFactory.CreateDbContext())
+            {
+                var dbSet = db.Set<TEntity>();
+                bool isEmpty = !dbSet.Any();
+
+                db.Database.SetCommandTimeout(timeout);
+
+                if (!isEmpty)
+                {
+                    result = await db.Set<TEntity>().MaxAsync(expression);
+                }
+            }
+
+            return result;
+        }
     }
 }
