@@ -56,8 +56,18 @@ namespace MediaLibrary.WebUI.Controllers
 
         public async Task<IActionResult> Index()
         {
-            IActionResult result = null;
+            IActionResult result = default;
+            string latestUpdateDateKey = $"{nameof(Podcast)}->LatestUpdateDate";
             Configuration configuration = await dataService.Get<Configuration>(item => item.Type == ConfigurationTypes.Podcast);
+            DateTime latestUpdateDate = await dataService.Max<Podcast, DateTime>(p => p.LastUpdateDate);
+
+            memoryCache.TryGetValue(latestUpdateDateKey, out DateTime currentLatestUpdateDate);
+
+            if (latestUpdateDate > currentLatestUpdateDate)
+            {
+                podcastUIService.ClearPodcasts();
+                memoryCache.Set(latestUpdateDateKey, latestUpdateDate, DateTimeOffset.Now.AddDays(1));
+            }
 
             podcastViewModel.Configuration = configuration?.GetConfigurationObject<PodcastConfiguration>() ?? new PodcastConfiguration();
             podcastViewModel.PodcastGroups = await podcastUIService.GetPodcastGroups(podcastViewModel.Configuration.SelectedPodcastSort);

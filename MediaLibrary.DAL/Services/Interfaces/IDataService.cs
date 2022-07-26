@@ -45,5 +45,7 @@ namespace MediaLibrary.DAL.Services.Interfaces
         Task<int> Execute(string sql, CancellationToken token = default(CancellationToken), params object[] parameters);
 
         SqlParameter CreateParameter(string name, object value);
+
+        Task<TResult> Max<TEntity, TResult>(Expression<Func<TEntity, TResult>> expression, CancellationToken token = default(CancellationToken)) where TEntity : class;
     }
 }
