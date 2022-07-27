@@ -1,9 +1,23 @@
 ﻿@model IEnumerable<Playlist>
 
-<ul class="list-group list-group-flush">
-    @foreach (var playlist in Model.Where(playlist => playlist.Id > 0))
-    {
-    <li data-playlist-item="enabled" data-playlist-id="@(playlist.Id)" class="list-group-item list-group-item-action" data-tooltip="tooltip" title="@(playlist.Name)"
-        data-playlist-action="add" data-playlist-type="@((Enums.PlaylistTabs)playlist.Type)">@(playlist.Name)</li>
-    }
-</ul>
+<div class="row">
+    <div class="col-auto border-right">
+        <h6>Playlists</h6>
+    </div>
+    <div class="col d-flex flex-row flex-wrap">
+        @foreach (var playlist in Model.Where(playlist => playlist.Id > 0))
+        {
+            <div class="input-group input-group-sm w-auto m-1">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">@(playlist.Name)</span>
+                </div>
+                <div class="input-group-append">
+                    <button class="btn btn-sm btn-outline-primary" data-tooltip="tooltip" title="@(playlist.Name)" data-playlist-action="add"
+                        data-playlist-type="@((Enums.PlaylistTabs)playlist.Type)" data-playlist-item="enabled" data-playlist-id="@(playlist.Id)">
+                        <i class="fa fa-plus"></i>
+                    </button>
+                </div>
+            </div>
+        }
+    </div>
+</div>
