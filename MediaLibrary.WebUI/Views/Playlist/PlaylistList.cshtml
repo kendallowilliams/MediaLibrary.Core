@@ -5,7 +5,8 @@
         <h6>Playlists</h6>
     </div>
     <div class="col d-flex flex-row flex-wrap">
-        @foreach (var playlist in Model.Where(playlist => playlist.Id > 0))
+        @foreach (var playlist in Model.Where(playlist => playlist.Id > 0)
+                                       .OrderBy(playlist => playlist.Name, StringComparer.OrdinalIgnoreCase))
         {
             <div class="input-group input-group-sm w-auto m-1">
                 <div class="input-group-prepend">
