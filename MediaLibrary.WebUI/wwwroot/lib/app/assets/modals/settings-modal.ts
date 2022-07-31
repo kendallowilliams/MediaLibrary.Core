@@ -402,7 +402,7 @@ export default class SettingsModal {
             .toggleClass('text-dark', !enabled);
         $(body).find('.navbar-brand').toggleClass('border rounded', enabled);
         $(HtmlControls.Containers().MainControlsContainers)
-            .children('div')
+            .children('[data-section="controls"]')
             .toggleClass('bg-transparent', enabled)
             .toggleClass('bg-light', !enabled);
         $(playerTimes.concat(playerShortTimes))
