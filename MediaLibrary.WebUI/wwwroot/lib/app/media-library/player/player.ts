@@ -91,8 +91,10 @@ export default class Player extends BaseClass implements IView {
         $(this.getPlayers()).on('ended', e => {
             if (!this.canPlayNext()) /*then*/ (e.currentTarget as HTMLMediaElement).currentTime = 0;
             this.audioVisualizer.stop();
-            this.updatePlayCount(e.currentTarget as HTMLMediaElement, () => this.loadNext());
-            this.updatePlayerProgress(0);
+
+            this.updatePlayCount(e.currentTarget as HTMLMediaElement)
+                .then(() => this.updatePlayerProgress(0))
+                .then(() => this.loadNext());
         });
         $(this.getPlayers()).prop('volume', this.playerConfiguration.properties.Volume / 100.0);
 
@@ -349,14 +351,14 @@ export default class Player extends BaseClass implements IView {
         this.unPlayedShuffleIds = shuffle && $items.length > 0 ? $.makeArray($items.map((index, element) => parseInt($(element).attr('data-play-index')))) : [];
     }
 
-    private updatePlayCount(player: HTMLMediaElement, callback: () => void = () => null) {
+    private updatePlayCount(player: HTMLMediaElement) : Promise<any> {
         const id = $(player).attr('data-item-id'),
             formData = new FormData();
 
         formData.set('mediaType', this.playerConfiguration.properties.SelectedMediaType.toString());
         formData.set('id', id);
-        fetch_post('Player/UpdatePlayCount', formData)
-            .then(_ => callback());
+
+        return fetch_post('Player/UpdatePlayCount', formData);
     }
 
     private reload(callback: () => void = () => null): void {
@@ -474,7 +476,7 @@ export default class Player extends BaseClass implements IView {
         return parseInt($(this.getPlayer()).attr('data-item-id'));
     }
 
-    private updatePlayerProgress(progress: number): void {
+    private updatePlayerProgress(progress: number): Promise<void> {
         const currentIndex: number = this.playerConfiguration.properties.CurrentItemIndex,
             id: number = parseInt($('[data-play-index="' + currentIndex + '"]').attr('data-item-id')),
             mediaType: MediaTypes = this.playerConfiguration.properties.SelectedMediaType,
@@ -488,6 +490,7 @@ export default class Player extends BaseClass implements IView {
                 progress: progress > localStorageProgress ? progress : localStorageProgress
             },
             formData = new FormData();
+        let promise = Promise.resolve();
 
         formData.set('id', data.id);
         formData.set('mediaType', data.mediaType.toString());
@@ -495,10 +498,12 @@ export default class Player extends BaseClass implements IView {
         if ($currentItem.attr('data-current-time') !== data.progress.toString() && data.progress % progressUpdateInterval === 0 && !isNaN(id)) {
             $currentItem.attr('data-current-time', data.progress);
 
-            fetch_post('Player/UpdatePlayerProgress', formData)
-                .then(_ => LocalStorage.removeItem(localStorageKey))
-                .catch(_ => LocalStorage.set(localStorageKey, data.progress.toString()));
+            promise = fetch_post('Player/UpdatePlayerProgress', formData)
+                        .then(_ => LocalStorage.removeItem(localStorageKey))
+                        .catch(_ => LocalStorage.set(localStorageKey, data.progress.toString()));
         }
+
+        return promise;
     }
 
     private skipForward(): void {
