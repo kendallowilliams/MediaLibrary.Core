@@ -32,7 +32,7 @@ export default class Search extends BaseClass {
                 this.searchTimeout = null;
             }
 
-            this.searchTimeout = setTimeout(this.search.bind(this), this.searchDelay * 1000);
+            this.searchTimeout = window.setTimeout(this.search.bind(this), this.searchDelay * 1000);
         });
         $(HtmlControls.UIControls().SearchQuery).val(this.musicConfiguration.properties.PreviousSearchQuery);
     }
