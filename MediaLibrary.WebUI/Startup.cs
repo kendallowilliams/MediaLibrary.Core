@@ -58,6 +58,7 @@ namespace MediaLibrary.WebUI
             services.AddAuthorization();
             services.AddResponseCompression();
             services.AddRazorPages().AddRazorRuntimeCompilation();
+            services.AddSignalR();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
