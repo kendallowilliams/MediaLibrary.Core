@@ -4,6 +4,7 @@ using MediaLibrary.BLL.Services.Interfaces;
 using MediaLibrary.Shared.HostedServices;
 using MediaLibrary.Shared.Services;
 using MediaLibrary.Shared.Services.Interfaces;
+using MediaLibrary.WebUI.Hubs;
 using MediaLibrary.WebUI.Models;
 using MediaLibrary.WebUI.Services;
 using MediaLibrary.WebUI.Services.Interfaces;
@@ -58,6 +59,7 @@ namespace MediaLibrary.WebUI
             services.AddAuthorization();
             services.AddResponseCompression();
             services.AddRazorPages().AddRazorRuntimeCompilation();
+            services.AddSignalR();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -99,6 +101,8 @@ namespace MediaLibrary.WebUI
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=MediaLibrary}/{action=Index}/{id?}");
+
+                endpoints.MapHub<MediaLibraryHub>("/medialibraryhub");
             });
         }
     }

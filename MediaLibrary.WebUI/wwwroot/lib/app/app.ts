@@ -2,6 +2,7 @@
 import HtmlControls from './assets/controls/html-controls';
 import * as MessageBox from './assets/utilities/message-box';
 import Error from './assets/data/error';
+import * as signalR from '@microsoft/signalr';
 
 export default class App {
     private mediaLibrary: MediaLibrary;
@@ -29,5 +30,20 @@ export default class App {
             }
         };
         window.onkeydown = (evt: KeyboardEvent) => this.mediaLibrary.handleKeyDown(evt);
+    }
+
+    private testSignalR(): void {
+        const connection = new signalR.HubConnectionBuilder()
+            .withUrl('/medialibraryhub')
+            .build();
+
+        connection.on('testCalled', (message) => {
+            MessageBox.alert('SignalR', message);
+            connection.stop();
+        });
+
+        connection.start()
+            .then(() => connection.send('test'))
+            .catch((err) => MessageBox.showError('Error', err));
     }
 }

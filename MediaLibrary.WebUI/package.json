@@ -8,7 +8,9 @@
     "typescript": "latest",
     "@types/jquery": "latest",
     "@types/jqueryui": "latest",
-    "@types/bootstrap": "4.5.1"
+    "@types/bootstrap": "4.5.1",
+    "@microsoft/signalr": "5.0.17",
+    "@types/node": "18.7.13"
   },
   "dependencies": {
     "gulp": "latest",
@@ -16,6 +18,8 @@
     "typescript": "latest",
     "@types/jquery": "latest",
     "@types/jqueryui": "latest",
-    "@types/bootstrap": "4.5.1"
+    "@types/bootstrap": "4.5.1",
+    "@microsoft/signalr": "5.0.17",
+    "@types/node": "18.7.13"
   }
 }

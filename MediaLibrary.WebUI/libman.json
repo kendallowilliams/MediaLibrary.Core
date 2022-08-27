@@ -40,8 +40,13 @@
       "destination": "wwwroot/lib/require.js/"
     },
     {
-      "library": "jqueryui@1.12.1",
-      "destination": "wwwroot/lib/jqueryui/"
+      "provider": "unpkg",
+      "library": "@microsoft/signalr@latest",
+      "destination": "wwwroot/lib/microsoft/signalr/",
+      "files": [
+        "dist/browser/signalr.min.js",
+        "dist/browser/signalr.js"
+      ]
     }
   ]
 }

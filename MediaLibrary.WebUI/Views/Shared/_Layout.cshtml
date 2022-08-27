@@ -90,12 +90,13 @@
             paths: {
                 jquery: '../jquery/jquery.min',
                 'jquery-ui': '../jquery-ui-1.12.1.custom/jquery-ui.min',
-                bootstrap: '../bootstrap/dist/js/bootstrap.bundle.min'
+                bootstrap: '../bootstrap/dist/js/bootstrap.bundle.min',
+                '@@microsoft/signalr': '../microsoft/signalr/dist/browser/signalr.min'
             },
-            deps: ['jquery', 'jquery-ui', 'bootstrap']
+            deps: ['jquery', 'jquery-ui', 'bootstrap', '@@microsoft/signalr']
         });
 
-        requirejs(['jquery', 'jquery-ui', 'bootstrap', 'app'], function (jquery, jquery_ui, bootstrap, App) {
+        requirejs(['jquery', 'jquery-ui', 'bootstrap', '@@microsoft/signalr', 'app'], function (jquery, jquery_ui, bootstrap, signalr, App) {
             let app = new App.default();
         });
     </script>
