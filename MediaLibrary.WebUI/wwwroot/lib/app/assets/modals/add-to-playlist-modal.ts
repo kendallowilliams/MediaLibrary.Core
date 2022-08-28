@@ -11,7 +11,7 @@ export default class AddToPlaylistModal {
     }
 
     private initializeControls(): void {
-        $(this.modal).on('show.bs.modal', (e: any) => {
+        $(this.modal).on('show.bs.modal', e => {
             const $btn = $(e.relatedTarget),
                 url = $btn.attr('data-playlist-url'),
                 id = $btn.attr('data-item-id'),

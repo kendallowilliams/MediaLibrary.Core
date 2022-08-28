@@ -123,7 +123,7 @@ export default class Playlist extends BaseClass implements IView {
             });
         });
 
-        $(HtmlControls.UIControls().PlaylistTabList).find('*[data-toggle="tab"]').on('shown.bs.tab', (e: any) => {
+        $(HtmlControls.UIControls().PlaylistTabList).find('*[data-toggle="tab"]').on('shown.bs.tab', e => {
             const $newTab = $(e.target),
                 $oldTab = $(e.relatedTarget);
 

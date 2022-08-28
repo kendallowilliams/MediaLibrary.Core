@@ -74,7 +74,7 @@ export default class Music extends BaseClass implements IView {
         $('[data-play-id]').on('click', e => this.playFunc(e.currentTarget as HTMLButtonElement, playSingle));
         this.initializeAlbumAndArtistControls(this.mediaView);
 
-        $(HtmlControls.UIControls().MusicTabList).find('*[data-toggle="tab"]').on('shown.bs.tab', (e: any) => {
+        $(HtmlControls.UIControls().MusicTabList).find('*[data-toggle="tab"]').on('shown.bs.tab', e => {
             const $newTab = $(e.target),
                 $oldTab = $(e.relatedTarget),
                 $newView = $($newTab.attr('href')),
