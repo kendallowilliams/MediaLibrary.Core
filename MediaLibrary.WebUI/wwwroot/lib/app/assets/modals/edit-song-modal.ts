@@ -13,7 +13,7 @@ export default class EditSongModal {
     }
 
     private initializeControls(): void {
-        $(this.modal).on('show.bs.modal', e => {
+        $(this.modal).on('show.bs.modal', (e: any) => {
             const id = $(e.relatedTarget).attr('data-item-id'),
                 success = data => {
                     this.clearEditSongModal();

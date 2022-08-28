@@ -7,7 +7,7 @@
     "gulp-typescript": "latest",
     "typescript": "latest",
     "@types/jquery": "latest",
-    "@types/bootstrap": "4.5.1",
+    "@types/bootstrap": "5.2.0",
     "@microsoft/signalr": "5.0.17",
     "@types/node": "18.7.13"
   },
@@ -16,7 +16,7 @@
     "gulp-typescript": "latest",
     "typescript": "latest",
     "@types/jquery": "latest",
-    "@types/bootstrap": "4.5.1",
+    "@types/bootstrap": "5.2.0",
     "@microsoft/signalr": "5.0.17",
     "@types/node": "18.7.13"
   }
