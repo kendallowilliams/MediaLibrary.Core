@@ -28,7 +28,10 @@
                                 <img class="mr-3 track-img" src="@(Url.Content("~/images/audio.png"))" title="@(item.Title)">
                                 <div class="media-body d-flex flex-column" style="overflow-x: auto">
                                     <span class="mt-0 text-truncate font-weight-bold">@(item.Title)</span>
-                                    <small data-album-id="@item.Id" style="cursor: pointer">@($"{trackCount} {songLabel}")</small>
+                                    <div class="d-flex">
+                                        <small data-album-id="@item.Id" style="cursor: pointer">@($"{trackCount} {songLabel}")</small>
+                                        <div class="flex-fill"></div>
+                                    </div>
                                 </div>
                                 <div>
                                     <button class="btn btn-sm btn-outline-secondary" data-album-id="@(item.Id)" data-tooltip="tooltip" title="View album">
