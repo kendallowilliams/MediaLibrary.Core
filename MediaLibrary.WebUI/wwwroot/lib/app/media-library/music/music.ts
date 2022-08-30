@@ -76,7 +76,7 @@ export default class Music extends BaseClass implements IView {
 
         $(HtmlControls.UIControls().MusicTabList).find('*[data-toggle="tab"]').on('shown.bs.tab', e => {
             const $newTab = $(e.target),
-                $oldTab = $(e.relatedTarget),
+                $oldTab = $(e["relatedTarget"]),
                 $newView = $($newTab.attr('href')),
                 $oldView = $($oldTab.attr('href')),
                 url = $newView.attr('data-load-url'),

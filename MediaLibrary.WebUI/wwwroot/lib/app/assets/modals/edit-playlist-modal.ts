@@ -12,8 +12,8 @@ export default class EditPlaylistModal {
 
     private initializeControls(): void {
         $(this.modal).on('show.bs.modal', function (e) {
-            $('#txtPlaylistId').val($(e.relatedTarget).attr('data-item-id'));
-            $('#txtPlaylistName').val($(e.relatedTarget).attr('data-item-name'));
+            $('#txtPlaylistId').val($(e["relatedTarget"]).attr('data-item-id'));
+            $('#txtPlaylistName').val($(e["relatedTarget"]).attr('data-item-name'));
         });
 
         $('[data-playlist-action="edit"]').on('click', e => {

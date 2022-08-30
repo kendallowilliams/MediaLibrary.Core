@@ -14,7 +14,7 @@ export default class EditSongModal {
 
     private initializeControls(): void {
         $(this.modal).on('show.bs.modal', e => {
-            const id = $(e.relatedTarget).attr('data-item-id'),
+            const id = $(e["relatedTarget"]).attr('data-item-id'),
                 success = data => {
                     this.clearEditSongModal();
                     $('#txtEditSongTitle').text(data.Title || 'Song')
