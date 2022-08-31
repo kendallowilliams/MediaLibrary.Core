@@ -1,4 +1,6 @@
-﻿export function loadTooltips(parent: HTMLElement): void {
+﻿import bootstrap = require("bootstrap");
+
+export function loadTooltips(parent: HTMLElement): void {
     if (parent) /*then*/ $(parent).find('*[data-tooltip="tooltip"]')
         .not('[data-disabled]')
         .tooltip({ trigger: 'hover', placement: 'auto' });
@@ -9,13 +11,18 @@ export function disposeTooltips(parent: HTMLElement): void {
 }
 
 export function loadAllTooltips(): void {
-    if (parent) /*then*/ $('*[data-tooltip="tooltip"]')
+    $('*[data-tooltip="tooltip"]')
         .not('[data-disabled]')
-        .tooltip({ trigger: 'hover', placement: 'auto' });
+        .each((index, element) => {
+            new bootstrap.Tooltip(element, { trigger: 'hover', placement: 'auto' });
+        });
 }
 
 export function disposeAllTooltips(): void {
-    if (parent) /*then*/ $('*[data-tooltip="tooltip"]').tooltip('dispose');
+    $('*[data-tooltip="tooltip"]')
+        .each((index, element) => {
+            bootstrap.Tooltip.getInstance(element)?.dispose();
+        });
 }
 
 export function loadPopovers(parent: HTMLElement): void {
