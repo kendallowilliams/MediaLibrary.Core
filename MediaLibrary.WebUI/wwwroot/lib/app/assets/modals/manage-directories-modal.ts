@@ -5,6 +5,7 @@ import { loadTooltips, disposeTooltips } from "../../assets/utilities/bootstrap-
 import * as MessageBox from '../../assets/utilities/message-box';
 import { MessageBoxConfirmType } from '../enums/enums';
 import { fetch_get, fetch_post, loadHTML } from '../utilities/fetch_service';
+import { Modal } from 'bootstrap';
 
 export default class ManageDirectoriesModal {
     private modal: HTMLElement;
@@ -27,7 +28,9 @@ export default class ManageDirectoriesModal {
         });
         
         $('[data-settings-action="manage-directories"]').on('click', e => {
-            this.loadMusicDirectory(null, () => $(this.modal).modal('show'));
+            const bsModal = Modal.getOrCreateInstance(this.modal);
+
+            this.loadMusicDirectory(null, () => bsModal.show());
         });
     }
 
@@ -69,7 +72,7 @@ export default class ManageDirectoriesModal {
         formData.set('path', path);
         MessageBox.confirm(title, message, MessageBoxConfirmType.YesNo, () => {
             LoadingModal.showLoading();
-            $(this.modal).modal('hide');
+            this.hide();
             fetch_post(action, formData)
                 .then(_ => LoadingModal.hideLoading());
         });
@@ -86,7 +89,7 @@ export default class ManageDirectoriesModal {
         formData.set('id', id);
         MessageBox.confirm(title, message, MessageBoxConfirmType.YesNo, () => {
             LoadingModal.showLoading();
-            $(this.modal).modal('hide');
+            this.hide();
             fetch_post(action, formData)
                 .then(_ => this.loadFunc(() => LoadingModal.hideLoading()));
         });
@@ -115,6 +118,6 @@ export default class ManageDirectoriesModal {
     }
 
     public hide(): void {
-        $(this.modal).modal('hide');
+        Modal.getOrCreateInstance(this.modal).hide();
     }
 }
