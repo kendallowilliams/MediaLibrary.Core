@@ -25,6 +25,7 @@ import { disposeAllTooltips, loadAllTooltips } from '../assets/utilities/bootstr
 import { fetch_get, loadHTML } from '../assets/utilities/fetch_service';
 import SettingsModal from '../assets/modals/settings-modal';
 import ISettingsReloadFunctions from '../assets/interfaces/settings-reload-functions';
+import { Collapse } from 'bootstrap';
 
 export default class MediaLibrary extends BaseClass {
     private home: Home;
@@ -208,7 +209,7 @@ export default class MediaLibrary extends BaseClass {
         let showHideMainControls: boolean = true;
 
         LoadingModal.showLoading();
-        $(HtmlControls.Containers().NavBarContainer).collapse('hide');
+        Collapse.getOrCreateInstance(HtmlControls.Containers().NavBarContainer).hide();
         this.mediaLibraryConfiguration.properties.SelectedMediaPage = mediaPage;
         this.disableNavItem(getMediaPagesEnumString(mediaPage));
         this.mediaLibraryConfiguration.updateConfiguration()
@@ -280,12 +281,13 @@ export default class MediaLibrary extends BaseClass {
     }
 
     private autoCloseNavBar(): void {
-        const $navBar = $(HtmlControls.Containers().NavBarContainer);
+        const $navBar = $(HtmlControls.Containers().NavBarContainer),
+            bsNavBar = Collapse.getOrCreateInstance(HtmlControls.Containers().NavBarContainer);
 
         window.clearTimeout(this.navBarTimeOut);
 
         if (!$navBar.hasClass('collapsed')) {
-            this.navBarTimeOut = window.setTimeout(() => $navBar.collapse('hide'), this.mediaLibraryConfiguration.properties.NavBarDelay * 1000);
+            this.navBarTimeOut = window.setTimeout(() => bsNavBar.hide(), this.mediaLibraryConfiguration.properties.NavBarDelay * 1000);
         }
     }
 
