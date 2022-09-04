@@ -38,7 +38,7 @@
                             {
                                 <li class="list-group-item">
                                     <div class="media">
-                                        <img class="mr-3 track-img" src="@(Url.Content("~/images/audio.png"))" title="@(series.Title)">
+                                        <img class="me-3 track-img" src="@(Url.Content("~/images/audio.png"))" title="@(series.Title)">
                                         <div class="media-body d-flex flex-column" style="overflow-x: auto">
                                             <span class="mt-0 text-truncate font-weight-bold">@(series.Title)</span>
                                             <small>@(series.Episodes.GroupBy(e => e.Season).Count()) season@(series.Episodes.GroupBy(e => e.Season).Count() == 1 ? string.Empty : "s")</small>
