@@ -2,6 +2,7 @@
 import LoadingModal from './loading-modal';
 import * as MessageBox from '../utilities/message-box';
 import { fetch_post } from "../utilities/fetch_service";
+import { Modal } from "bootstrap";
 
 export default class AddNewPodcastModal {
     private modal: HTMLElement;
@@ -18,9 +19,10 @@ export default class AddNewPodcastModal {
 
         $(this.modal).find('*[data-podcast-action="save"]').on('click', e => {
             const formData = new FormData(),
-                feed = $('#txtNewPodcast').val() as string;
+                feed = $('#txtNewPodcast').val() as string,
+                bsModal = Modal.getOrCreateInstance(this.modal);
 
-            $(this.modal).modal('hide');
+            bsModal.hide();
             if (feed.trim()) {
                 LoadingModal.showLoading();
                 formData.set('rssFeed', feed);
@@ -37,6 +39,6 @@ export default class AddNewPodcastModal {
     }
 
     public show(): void {
-        $(this.modal).modal('show');
+        Modal.getOrCreateInstance(this.modal).show();
     }
 }

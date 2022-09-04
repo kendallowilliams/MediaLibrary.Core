@@ -1,4 +1,5 @@
-﻿import HtmlControls from "../controls/html-controls";
+﻿import { Modal } from "bootstrap";
+import HtmlControls from "../controls/html-controls";
 import { fetch_post } from "../utilities/fetch_service";
 import LoadingModal from "./loading-modal";
 
@@ -17,17 +18,19 @@ export default class EditPlaylistModal {
         });
 
         $('[data-playlist-action="edit"]').on('click', e => {
-            var formData = new FormData();
+            const formData = new FormData(),
+                bsModal = Modal.getOrCreateInstance(this.modal);
 
             formData.set('id', $('#txtPlaylistId').val() as string);
             formData.set('name', $('#txtPlaylistName').val() as string);
 
-            $(this.modal).modal('hide').on('hidden.bs.modal', () => {
+            $(this.modal).on('hidden.bs.modal', () => {
                 LoadingModal.showLoading();
                 $('#txtPlaylistId, #txtPlaylistName').val('');
                 fetch_post('Playlist/EditPlaylist', formData)
                     .then(_ => this.loadFunc(() => LoadingModal.hideLoading()));
             });
+            bsModal.hide();
         });
     }
 }

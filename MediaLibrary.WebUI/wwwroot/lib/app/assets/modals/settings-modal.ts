@@ -10,6 +10,7 @@ import AddNewSongModal from "./add-song-modal";
 import ManageDirectoriesModal from "./manage-directories-modal";
 import StringList from "../controls/string-list";
 import AddNewPodcastModal from "./add-podcast-modal";
+import { Modal } from "bootstrap";
 
 export default class SettingsModal {
     private modal: HTMLElement;
@@ -332,7 +333,7 @@ export default class SettingsModal {
     }
 
     public hide(): void {
-        $(this.modal).modal('hide');
+        Modal.getOrCreateInstance(this.modal).hide();
     }
 
     private updateMusicPaths(list: string[] = [], hasChanged: boolean = false): void {
