@@ -3,11 +3,16 @@
 export function loadTooltips(parent: HTMLElement): void {
     if (parent) /*then*/ $(parent).find('*[data-bs-tooltip="tooltip"]')
         .not('[data-disabled]')
-        .tooltip({ trigger: 'hover', placement: 'auto' });
+        .each((index, element) => {
+            new bootstrap.Tooltip(element, { trigger: 'hover', placement: 'auto' });
+        });
 }
 
 export function disposeTooltips(parent: HTMLElement): void {
-    if (parent) /*then*/ $(parent).find('*[data-bs-tooltip="tooltip"]').tooltip('dispose');
+    if (parent) /*then*/ $(parent).find('*[data-bs-tooltip="tooltip"]')
+        .each((index, element) => {
+            bootstrap.Tooltip.getInstance(element)?.dispose();
+        });
 }
 
 export function loadAllTooltips(): void {
