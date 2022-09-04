@@ -14,12 +14,10 @@
 
         <div>
             <div class="input-group input-group-sm">
-                <div class="input-group-prepend">
-                    <button class="btn btn-sm btn-outline-secondary" data-directory-action="get" data-directory-path="@(directory.Path)"
-                            data-bs-tooltip="tooltip" title="Go back">
-                        <i class="fa fa-arrow-left fa-1x"></i>
-                    </button>
-                </div>
+                <button class="btn btn-sm btn-outline-secondary" data-directory-action="get" data-directory-path="@(directory.Path)"
+                        data-bs-tooltip="tooltip" title="Go back">
+                    <i class="fa fa-arrow-left fa-1x"></i>
+                </button>
                 <input class="form-control font-weight-bold text-truncate text-right" readonly="readonly" value="@(Model.Path)" />
             </div>
             <hr />
@@ -36,41 +34,37 @@
                 <div class="input-group input-group-sm mb-1">
                     @if (item.IsLoading || item.Id.HasValue || item.HasFiles)
                     {
-                        <div class="input-group-prepend">
-                            @if (item.IsLoading)
-                            {
-                                <button class="btn btn-outline-success" disabled="disabled" data-transaction-id="@(item.TransactionId)" data-directory-status="loading"
-                                        style="cursor: default">
-                                    <i class="fa fa-spinner fa-spin"></i>
-                                </button>
-                            }
-                            else if (item.Id.HasValue)
-                            {
-                                <button class="btn btn-outline-danger" data-path-id="@(item.Id)" data-directory-action-type="remove"
-                                        data-directory-action="@(Url.Action(nameof(MusicController.RemoveMusicDirectory), "Music"))"
-                                        data-bs-tooltip="tooltip" title="Remove directory">
-                                    <i class="fa fa-folder-minus"></i>
-                                </button>
-                            }
-                            else if (item.HasFiles)
-                            {
-                                <button class="btn btn-outline-success" data-directory-action="@(Url.Action(nameof(MusicController.AddMusicDirectory), "Music"))"
-                                        data-directory-path="@(item.Path)" data-directory-action-type="add"
-                                        data-bs-tooltip="tooltip" title="Add directory">
-                                    <i class="fa fa-folder-plus"></i>
-                                </button>
-                            }
-                        </div>
+                        @if (item.IsLoading)
+                        {
+                            <button class="btn btn-outline-success" disabled="disabled" data-transaction-id="@(item.TransactionId)" data-directory-status="loading"
+                                    style="cursor: default">
+                                <i class="fa fa-spinner fa-spin"></i>
+                            </button>
+                        }
+                        else if (item.Id.HasValue)
+                        {
+                            <button class="btn btn-outline-danger" data-path-id="@(item.Id)" data-directory-action-type="remove"
+                                    data-directory-action="@(Url.Action(nameof(MusicController.RemoveMusicDirectory), "Music"))"
+                                    data-bs-tooltip="tooltip" title="Remove directory">
+                                <i class="fa fa-folder-minus"></i>
+                            </button>
+                        }
+                        else if (item.HasFiles)
+                        {
+                            <button class="btn btn-outline-success" data-directory-action="@(Url.Action(nameof(MusicController.AddMusicDirectory), "Music"))"
+                                    data-directory-path="@(item.Path)" data-directory-action-type="add"
+                                    data-bs-tooltip="tooltip" title="Add directory">
+                                <i class="fa fa-folder-plus"></i>
+                            </button>
+                        }
                     }
                     <input class="form-control font-weight-bold text-truncate" readonly="readonly" value="@(directoryName)" />
                     @if (item.HasDirectories)
                     {
-                        <div class="input-group-append">
-                            <button class="btn btn-outline-secondary" data-directory-action="get" data-directory-path="@(item.Path)"
-                                    data-bs-tooltip="tooltip" title="Browse">
-                                <i class="fa fa-arrow-right"></i>
-                            </button>
-                        </div>
+                        <button class="btn btn-outline-secondary" data-directory-action="get" data-directory-path="@(item.Path)"
+                                data-bs-tooltip="tooltip" title="Browse">
+                            <i class="fa fa-arrow-right"></i>
+                        </button>
                     }
                 </div>
             }
