@@ -1,38 +1,40 @@
 ﻿@model (IGrouping<string, Track> Group, bool HasPlaylists)
 
-<ul class="list-group list-group-flush">
-    @foreach (var song in Model.Group)
-    {
-        <li class="list-group-item" data-song-id="@(song.Id)">
-            <div class="media">
-                <img class="me-3 track-img" src="@(Url.Content("~/images/audio.png"))" title="@(song.Title)">
-                <div class="media-body d-flex flex-column" style="overflow-x: auto">
-                    <span class="mt-0 text-truncate font-weight-bold">@(song.Title)</span>
-                    <div class="d-flex flex-row">
-                        <small data-album-id="@(song.Album?.Id)" class="text-truncate" style="cursor: pointer">@(song.Album?.Title ?? "Unknown Album")</small>
-                        <small>&nbsp;-&nbsp;</small>
-                        <small data-artist-id="@(song.Artist?.Id)" class="text-truncate text-muted" style="cursor: pointer">@(song.Artist?.Name ?? "Unknown Artist")</small>
-                        <div class="flex-fill"></div>
+<div class="accordion-body p-1">
+    <ul class="list-group list-group-flush">
+        @foreach (var song in Model.Group)
+        {
+            <li class="list-group-item" data-song-id="@(song.Id)">
+                <div class="media">
+                    <img class="me-3 track-img" src="@(Url.Content("~/images/audio.png"))" title="@(song.Title)">
+                    <div class="media-body d-flex flex-column" style="overflow-x: auto">
+                        <span class="mt-0 text-truncate font-weight-bold">@(song.Title)</span>
+                        <div class="d-flex flex-row">
+                            <small data-album-id="@(song.Album?.Id)" class="text-truncate" style="cursor: pointer">@(song.Album?.Title ?? "Unknown Album")</small>
+                            <small>&nbsp;-&nbsp;</small>
+                            <small data-artist-id="@(song.Artist?.Id)" class="text-truncate text-muted" style="cursor: pointer">@(song.Artist?.Name ?? "Unknown Artist")</small>
+                            <div class="flex-fill"></div>
+                        </div>
                     </div>
-                </div>
-                <div>
-                    <button type="button" class="btn btn-sm btn-outline-secondary" data-play-id="@(song.Id)" data-bs-tooltip="tooltip" title="Play">
-                        <i class="fa fa-play"></i>
-                    </button>
-                    <button type="button" class="btn btn-sm btn-outline-secondary d-none d-lg-inline-block" data-bs-toggle="modal" data-bs-target="#@(HtmlControlsRepository.EditSongModalId)" data-item-id="@(song.Id)" data-bs-tooltip="tooltip"
+                    <div>
+                        <button type="button" class="btn btn-sm btn-outline-secondary" data-play-id="@(song.Id)" data-bs-tooltip="tooltip" title="Play">
+                            <i class="fa fa-play"></i>
+                        </button>
+                        <button type="button" class="btn btn-sm btn-outline-secondary d-none d-lg-inline-block" data-bs-toggle="modal" data-bs-target="#@(HtmlControlsRepository.EditSongModalId)" data-item-id="@(song.Id)" data-bs-tooltip="tooltip"
                             title="Edit">
-                        <i class="fa fa-edit"></i>
-                    </button>
-                    @if (Model.HasPlaylists)
-                    {
-                    <button type="button" class="btn btn-sm btn-outline-secondary" data-playlist-url="@(Url.Action("AddTrackToPlaylist", "Music"))" data-item-id="@(song.Id)"
+                            <i class="fa fa-edit"></i>
+                        </button>
+                        @if (Model.HasPlaylists)
+                        {
+                            <button type="button" class="btn btn-sm btn-outline-secondary" data-playlist-url="@(Url.Action("AddTrackToPlaylist", "Music"))" data-item-id="@(song.Id)"
                             data-bs-toggle="modal" data-bs-target="#@(HtmlControlsRepository.AddToPlaylistModalId)" data-bs-tooltip="tooltip" title="Add to playlist"
                             data-playlist-type="@(nameof(Enums.PlaylistTypes.Music))">
-                        <i class="fa fa-plus"></i>
-                    </button>
-                    }
+                                <i class="fa fa-plus"></i>
+                            </button>
+                        }
+                    </div>
                 </div>
-            </div>
-        </li>
-    }
-</ul>
+            </li>
+        }
+    </ul>
+</div>
