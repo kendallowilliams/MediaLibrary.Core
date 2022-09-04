@@ -4,7 +4,7 @@
     <div>
         <h4 class="text-truncate">@(Model.SelectedArtist.Name)</h4>
         <div class="p-1">
-            <button class="btn btn-sm btn-outline-secondary" data-back-button="artist" data-tooltip="tooltip" title="Go back"><i class="fa fa-arrow-circle-left"></i></button>
+            <button class="btn btn-sm btn-outline-secondary" data-back-button="artist" data-bs-tooltip="tooltip" title="Go back"><i class="fa fa-arrow-circle-left"></i></button>
         </div>
         <hr />
     </div>
@@ -34,13 +34,13 @@
                                     </div>
                                 </div>
                                 <div>
-                                    <button class="btn btn-sm btn-outline-secondary" data-album-id="@(item.Id)" data-tooltip="tooltip" title="View album">
+                                    <button class="btn btn-sm btn-outline-secondary" data-album-id="@(item.Id)" data-bs-tooltip="tooltip" title="View album">
                                         <i class="fa fa-list"></i>
                                     </button>
                                     @if (Model.Playlists.Any())
                                     {
                                     <button type="button" class="btn btn-sm btn-outline-secondary" data-playlist-url="@(Url.Action("AddAlbumToPlaylist", "Music"))" data-item-id="@(item.Id)"
-                                            data-toggle="modal" data-target="#@(HtmlControlsRepository.AddToPlaylistModalId)" data-tooltip="tooltip" title="Add to playlist"
+                                            data-bs-toggle="modal" data-bs-target="#@(HtmlControlsRepository.AddToPlaylistModalId)" data-bs-tooltip="tooltip" title="Add to playlist"
                                             data-playlist-type="@(nameof(Enums.PlaylistTypes.Music))">
                                         <i class="fa fa-plus"></i>
                                     </button>

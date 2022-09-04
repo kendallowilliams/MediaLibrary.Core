@@ -74,7 +74,7 @@ export default class Music extends BaseClass implements IView {
         $('[data-play-id]').on('click', e => this.playFunc(e.currentTarget as HTMLButtonElement, playSingle));
         this.initializeAlbumAndArtistControls(this.mediaView);
 
-        $(HtmlControls.UIControls().MusicTabList).find('*[data-toggle="tab"]').on('shown.bs.tab', e => {
+        $(HtmlControls.UIControls().MusicTabList).find('*[data-bs-toggle="tab"]').on('shown.bs.tab', e => {
             const $newTab = $(e.target),
                 $oldTab = $(e["relatedTarget"]),
                 $newView = $($newTab.attr('href')),
@@ -87,7 +87,7 @@ export default class Music extends BaseClass implements IView {
                     $('[data-group-url]').on('click', _e => {
                         const $btn = $(_e.currentTarget),
                             url = $btn.attr('data-group-url'),
-                            $container = $($btn.attr('data-target'));
+                            $container = $($btn.attr('data-bs-target'));
                         if (url) {
                             LoadingModal.showLoading();
                             disposeTooltips($container[0]);
@@ -105,7 +105,7 @@ export default class Music extends BaseClass implements IView {
                         }
                     });
                     this.initializeAlbumAndArtistControls($newView[0]);
-                    $('[data-group-url][data-target="#collapse-songs-0"]').trigger('click');
+                    $('[data-group-url][data-bs-target="#collapse-songs-0"]').trigger('click');
                     this.updateActiveMediaFunc();
                     this.toggleDarkMode(this.mediaView);
                 };

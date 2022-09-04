@@ -16,7 +16,7 @@
             <div class="input-group input-group-sm">
                 <div class="input-group-prepend">
                     <button class="btn btn-sm btn-outline-secondary" data-directory-action="get" data-directory-path="@(directory.Path)"
-                            data-tooltip="tooltip" title="Go back">
+                            data-bs-tooltip="tooltip" title="Go back">
                         <i class="fa fa-arrow-left fa-1x"></i>
                     </button>
                 </div>
@@ -48,7 +48,7 @@
                             {
                                 <button class="btn btn-outline-danger" data-path-id="@(item.Id)" data-directory-action-type="remove"
                                         data-directory-action="@(Url.Action(nameof(MusicController.RemoveMusicDirectory), "Music"))"
-                                        data-tooltip="tooltip" title="Remove directory">
+                                        data-bs-tooltip="tooltip" title="Remove directory">
                                     <i class="fa fa-folder-minus"></i>
                                 </button>
                             }
@@ -56,7 +56,7 @@
                             {
                                 <button class="btn btn-outline-success" data-directory-action="@(Url.Action(nameof(MusicController.AddMusicDirectory), "Music"))"
                                         data-directory-path="@(item.Path)" data-directory-action-type="add"
-                                        data-tooltip="tooltip" title="Add directory">
+                                        data-bs-tooltip="tooltip" title="Add directory">
                                     <i class="fa fa-folder-plus"></i>
                                 </button>
                             }
@@ -67,7 +67,7 @@
                     {
                         <div class="input-group-append">
                             <button class="btn btn-outline-secondary" data-directory-action="get" data-directory-path="@(item.Path)"
-                                    data-tooltip="tooltip" title="Browse">
+                                    data-bs-tooltip="tooltip" title="Browse">
                                 <i class="fa fa-arrow-right"></i>
                             </button>
                         </div>

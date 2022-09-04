@@ -14,13 +14,13 @@
                     </div>
                     <div>
                         <button class="btn btn-sm btn-outline-secondary" data-play-id="@(item.Id)" data-media-type="@(Enums.MediaTypes.Television)"
-                                data-tooltip="tooltip" title="Play">
+                                data-bs-tooltip="tooltip" title="Play">
                             <i class="fa fa-play"></i>
                         </button>
                         @if (Model.HasPlaylists)
                         {
                             <button type="button" class="btn btn-sm btn-outline-secondary" data-playlist-url="@(Url.Action("AddEpisodeToPlaylist", "Television"))" data-item-id="@(item.Id)"
-                                    data-toggle="modal" data-target="#@(HtmlControlsRepository.AddToPlaylistModalId)" data-tooltip="tooltip" title="Add to playlist"
+                                    data-bs-toggle="modal" data-bs-target="#@(HtmlControlsRepository.AddToPlaylistModalId)" data-bs-tooltip="tooltip" title="Add to playlist"
                                     data-playlist-type="@(nameof(Enums.PlaylistTabs.Television))">
                                 <i class="fa fa-plus"></i>
                             </button>

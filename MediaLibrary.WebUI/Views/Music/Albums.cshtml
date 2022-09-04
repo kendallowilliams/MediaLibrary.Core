@@ -14,14 +14,14 @@
                         }
                         else
                         {
-                            <button class="btn btn-sm btn-link w-100 text-left" data-toggle="collapse" data-target="#collapse-albums-@(item.Index)" aria-expanded="@(item.Index == 0 ? "true" : "false")" aria-controls="collapse-albums-@(item.Index)">
+                            <button class="btn btn-sm btn-link w-100 text-left" data-bs-toggle="collapse" data-bs-target="#collapse-albums-@(item.Index)" aria-expanded="@(item.Index == 0 ? "true" : "false")" aria-controls="collapse-albums-@(item.Index)">
                                 @(item.Group.Key)
                             </button>
                         }
                     </h5>
                 </div>
 
-                <div id="collapse-albums-@(item.Index)" class="collapse @(item.Index == 0 ? "show" : "")" aria-labelledby="heading-albums-@(item.Index)" data-parent="#accordion-albums">
+                <div id="collapse-albums-@(item.Index)" class="collapse @(item.Index == 0 ? "show" : "")" aria-labelledby="heading-albums-@(item.Index)" data-bs-parent="#accordion-albums">
                     <ul class="list-group list-group-flush">
                         @foreach (var album in item.Group.OrderBy(a => a.Title))
                         {
@@ -36,13 +36,13 @@
                                         </div>
                                     </div>
                                     <div>
-                                        <button class="btn btn-sm btn-outline-secondary" data-tooltip="tooltip" title="View album" data-album-id="@(album.Id)">
+                                        <button class="btn btn-sm btn-outline-secondary" data-bs-tooltip="tooltip" title="View album" data-album-id="@(album.Id)">
                                             <i class="fa fa-list"></i>
                                         </button>
                                         @if (Model.Playlists.Any())
                                         {
                                         <button type="button" class="btn btn-sm btn-outline-secondary" data-playlist-url="@(Url.Action("AddAlbumToPlaylist", "Music"))"
-                                                data-item-id="@(album.Id)" data-toggle="modal" data-target="#@(HtmlControlsRepository.AddToPlaylistModalId)" data-tooltip="tooltip" title="Add to playlist"
+                                                data-item-id="@(album.Id)" data-bs-toggle="modal" data-bs-target="#@(HtmlControlsRepository.AddToPlaylistModalId)" data-bs-tooltip="tooltip" title="Add to playlist"
                                                 data-playlist-type="@(nameof(Enums.PlaylistTabs.Music))">
                                             <i class="fa fa-plus"></i>
                                         </button>

@@ -8,7 +8,7 @@
     <div class="d-flex flex-row pt-1">
         <h4 class="flex-fill text-truncate">Now Playing<span id="@(HtmlControlsRepository.NowPlayingTitleId)"></span></h4>
         <div class="pr-1 text-nowrap">
-            <button class="btn btn-sm btn-outline-secondary" data-toggle="modal" data-target="#@(HtmlControlsRepository.SettingsModalId)" data-tooltip="tooltip" title="Settings">
+            <button class="btn btn-sm btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#@(HtmlControlsRepository.SettingsModalId)" data-bs-tooltip="tooltip" title="Settings">
                 <i class="fa fa-cog"></i>
             </button>
         </div>
@@ -68,12 +68,12 @@
                     <i class="fa fa-expand"></i>
                 </button>
                 <button class="btn btn-sm btn-outline-secondary @(HtmlControlsRepository.PlayerAudioVisualizerButtonsClass)"
-                        data-tooltip="tooltip" title="Toggle audio visualizer">
+                        data-bs-tooltip="tooltip" title="Toggle audio visualizer">
                     <i class="fa fa-eye"></i>
                 </button>
             </div>
             <div class="d-block d-lg-none">
-                <button class="btn btn-outline-secondary" data-toggle="modal" data-target="#@(HtmlControlsRepository.PlayerControlsModalId)" data-tooltip="tooltip" title="Player Controls">
+                <button class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#@(HtmlControlsRepository.PlayerControlsModalId)" data-bs-tooltip="tooltip" title="Player Controls">
                     <i class="fa fa-ellipsis-v"></i>
                 </button>
             </div>

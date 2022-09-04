@@ -9,13 +9,13 @@
         <h4 class="text-truncate">@(Model.SelectedPodcast.Title) @(!Model.SelectedPodcast.Title.ToLower().Contains("podcast") ? "podcast" : string.Empty)</h4>
         <div class="d-flex flex-row p-1">
             <div class="flex-fill">
-                <button class="btn btn-sm btn-outline-secondary" data-back-button="podcast" data-tooltip="tooltip" title="Go back"><i class="fa fa-arrow-circle-left"></i></button>
-                <button class="btn btn-sm btn-outline-danger" data-podcast-action="delete" data-tooltip="tooltip" title="Delete podcast" data-item-id="@(Model.SelectedPodcast.Id)">
+                <button class="btn btn-sm btn-outline-secondary" data-back-button="podcast" data-bs-tooltip="tooltip" title="Go back"><i class="fa fa-arrow-circle-left"></i></button>
+                <button class="btn btn-sm btn-outline-danger" data-podcast-action="delete" data-bs-tooltip="tooltip" title="Delete podcast" data-item-id="@(Model.SelectedPodcast.Id)">
                     <i class="fa fa-trash"></i>
                 </button>
             </div>
             <div>
-                <button class="btn btn-sm btn-outline-secondary" data-toggle="modal" data-target="#@(HtmlControlsRepository.SettingsModalId)" data-tooltip="tooltip" title="Settings">
+                <button class="btn btn-sm btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#@(HtmlControlsRepository.SettingsModalId)" data-bs-tooltip="tooltip" title="Settings">
                     <i class="fa fa-cog"></i>
                 </button>
             </div>

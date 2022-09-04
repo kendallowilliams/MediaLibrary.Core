@@ -13,25 +13,25 @@
         <h4>Playlists</h4>
         <div class="d-flex p-1" id="@(HtmlControlsRepository.PlaylistTabListId)">
             <div class="nav d-block flex-fill" role="tablist">
-                <a class="btn btn-sm btn-outline-secondary" id="@(HtmlControlsRepository.MusicPlaylistContainerId)-tab" data-toggle="tab"
+                <a class="btn btn-sm btn-outline-secondary" id="@(HtmlControlsRepository.MusicPlaylistContainerId)-tab" data-bs-toggle="tab"
                    role="tab" title="@(nameof(Enums.PlaylistTabs.Music))" data-playlist-tab="@(nameof(Enums.PlaylistTabs.Music))"
-                   data-tooltip="tooltip" href="#@(HtmlControlsRepository.MusicPlaylistContainerId)">
+                   data-bs-tooltip="tooltip" href="#@(HtmlControlsRepository.MusicPlaylistContainerId)">
                     <i class="fa fa-music"></i>
                 </a>
-                <a class="btn btn-sm btn-outline-secondary" id="@(HtmlControlsRepository.PodcastPlaylistContainerId)-tab" data-toggle="tab"
+                <a class="btn btn-sm btn-outline-secondary" id="@(HtmlControlsRepository.PodcastPlaylistContainerId)-tab" data-bs-toggle="tab"
                    role="tab" title="@(nameof(Enums.PlaylistTabs.Podcast))" data-playlist-tab="@(nameof(Enums.PlaylistTabs.Podcast))"
-                   data-tooltip="tooltip" href="#@(HtmlControlsRepository.PodcastPlaylistContainerId)">
+                   data-bs-tooltip="tooltip" href="#@(HtmlControlsRepository.PodcastPlaylistContainerId)">
                     <i class="fa fa-podcast"></i>
                 </a>
-                <a class="btn btn-sm btn-outline-secondary" id="@(HtmlControlsRepository.EpisodePlaylistContainerId)-tab" data-toggle="tab"
+                <a class="btn btn-sm btn-outline-secondary" id="@(HtmlControlsRepository.EpisodePlaylistContainerId)-tab" data-bs-toggle="tab"
                    role="tab" title="@(nameof(Enums.PlaylistTabs.Television))" data-playlist-tab="@(nameof(Enums.PlaylistTabs.Television))"
-                   data-tooltip="tooltip" href="#@(HtmlControlsRepository.EpisodePlaylistContainerId)">
+                   data-bs-tooltip="tooltip" href="#@(HtmlControlsRepository.EpisodePlaylistContainerId)">
                     <i class="fa fa-tv"></i>
                 </a>
             </div>
             <div>
-                <button type="button" class="btn btn-sm btn-outline-secondary" data-toggle="modal" data-target="#@(HtmlControlsRepository.NewPlaylistModalId)" data-tooltip="tooltip" title="Add playlist"><i class="fa fa-plus"></i></button>
-                <button class="btn btn-sm btn-outline-secondary" data-toggle="modal" data-target="#@(HtmlControlsRepository.SettingsModalId)" data-tooltip="tooltip" title="Settings">
+                <button type="button" class="btn btn-sm btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#@(HtmlControlsRepository.NewPlaylistModalId)" data-bs-tooltip="tooltip" title="Add playlist"><i class="fa fa-plus"></i></button>
+                <button class="btn btn-sm btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#@(HtmlControlsRepository.SettingsModalId)" data-bs-tooltip="tooltip" title="Settings">
                     <i class="fa fa-cog"></i>
                 </button>
             </div>
@@ -48,13 +48,13 @@
                         <div class="card">
                             <div class="card-header p-0" id="heading-playlists-@(item.Index)">
                                 <h5 class="mb-0">
-                                    <button class="btn btn-sm btn-link w-100 text-left" data-toggle="collapse" data-target="#collapse-playlists-@(item.Index)">
+                                    <button class="btn btn-sm btn-link w-100 text-left" data-bs-toggle="collapse" data-bs-target="#collapse-playlists-@(item.Index)">
                                         @(item.Group.Key)
                                     </button>
                                 </h5>
                             </div>
 
-                            <div id="collapse-playlists-@(item.Index)" class="collapse @(item.Index == 0 ? "show" : "")" data-parent="#accordion-playlists-@(Enums.PlaylistTabs.Music)">
+                            <div id="collapse-playlists-@(item.Index)" class="collapse @(item.Index == 0 ? "show" : "")" data-bs-parent="#accordion-playlists-@(Enums.PlaylistTabs.Music)">
                                 <ul class="list-group list-group-flush">
                                     @foreach (var playlist in item.Group.Where(playlist => playlist.Type == Enums.PlaylistTypes.Music))
                                     {
@@ -66,10 +66,10 @@
                                                     <small>@(playlist.Description)</small>
                                                 </div>
                                                 <div>
-                                                    <button class="btn btn-sm btn-outline-secondary" data-playlist-id="@(playlist.Id)" data-tooltip="tooltip" title="View playlist">
+                                                    <button class="btn btn-sm btn-outline-secondary" data-playlist-id="@(playlist.Id)" data-bs-tooltip="tooltip" title="View playlist">
                                                         <i class="fa fa-list"></i>
                                                     </button>
-                                                    <button class="btn btn-sm btn-outline-danger @(playlist.Id < 0 ? "d-none" : string.Empty)" data-item-id="@(playlist.Id)" data-playlist-action="delete" data-tooltip="tooltip" title="Delete playlist">
+                                                    <button class="btn btn-sm btn-outline-danger @(playlist.Id < 0 ? "d-none" : string.Empty)" data-item-id="@(playlist.Id)" data-playlist-action="delete" data-bs-tooltip="tooltip" title="Delete playlist">
                                                         <i class="fa fa-trash"></i>
                                                     </button>
                                                 </div>
@@ -96,13 +96,13 @@
                         <div class="card">
                             <div class="card-header p-0" id="heading-playlists-@(item.Index)">
                                 <h5 class="mb-0">
-                                    <button class="btn btn-sm btn-link w-100 text-left" data-toggle="collapse" data-target="#collapse-playlists-@(item.Index)">
+                                    <button class="btn btn-sm btn-link w-100 text-left" data-bs-toggle="collapse" data-bs-target="#collapse-playlists-@(item.Index)">
                                         @(item.Group.Key)
                                     </button>
                                 </h5>
                             </div>
 
-                            <div id="collapse-playlists-@(item.Index)" class="collapse @(item.Index == musicPlaylistGroups.Count() ? "show" : "")" data-parent="#accordion-playlists-@(Enums.PlaylistTabs.Podcast)">
+                            <div id="collapse-playlists-@(item.Index)" class="collapse @(item.Index == musicPlaylistGroups.Count() ? "show" : "")" data-bs-parent="#accordion-playlists-@(Enums.PlaylistTabs.Podcast)">
                                 <ul class="list-group list-group-flush">
                                     @foreach (var playlist in item.Group.Where(playlist => playlist.Type == Enums.PlaylistTypes.Podcast))
                                     {
@@ -114,10 +114,10 @@
                                                     <small>@(playlist.Description)</small>
                                                 </div>
                                                 <div>
-                                                    <button class="btn btn-sm btn-outline-secondary" data-playlist-id="@(playlist.Id)" data-tooltip="tooltip" title="View playlist">
+                                                    <button class="btn btn-sm btn-outline-secondary" data-playlist-id="@(playlist.Id)" data-bs-tooltip="tooltip" title="View playlist">
                                                         <i class="fa fa-list"></i>
                                                     </button>
-                                                    <button class="btn btn-sm btn-outline-danger @(playlist.Id < 0 ? "d-none" : string.Empty)" data-item-id="@(playlist.Id)" data-playlist-action="delete" data-tooltip="tooltip" title="Delete playlist">
+                                                    <button class="btn btn-sm btn-outline-danger @(playlist.Id < 0 ? "d-none" : string.Empty)" data-item-id="@(playlist.Id)" data-playlist-action="delete" data-bs-tooltip="tooltip" title="Delete playlist">
                                                         <i class="fa fa-trash"></i>
                                                     </button>
                                                 </div>
@@ -144,14 +144,14 @@
                         <div class="card">
                             <div class="card-header p-0" id="heading-playlists-@(item.Index)">
                                 <h5 class="mb-0">
-                                    <button class="btn btn-sm btn-link w-100 text-left" data-toggle="collapse" data-target="#collapse-playlists-@(item.Index)">
+                                    <button class="btn btn-sm btn-link w-100 text-left" data-bs-toggle="collapse" data-bs-target="#collapse-playlists-@(item.Index)">
                                         @(item.Group.Key)
                                     </button>
                                 </h5>
                             </div>
 
                             <div id="collapse-playlists-@(item.Index)" class="collapse @(item.Index == musicPlaylistGroups.Count() + podcastPlaylistGroups.Count() ? "show" : "")" 
-                                 data-parent="#accordion-playlists-@(Enums.PlaylistTabs.Television)">
+                                 data-bs-parent="#accordion-playlists-@(Enums.PlaylistTabs.Television)">
                                 <ul class="list-group list-group-flush">
                                     @foreach (var playlist in item.Group.Where(playlist => playlist.Type == Enums.PlaylistTypes.Television))
                                     {
@@ -163,10 +163,10 @@
                                                     <small>@(playlist.Description)</small>
                                                 </div>
                                                 <div>
-                                                    <button class="btn btn-sm btn-outline-secondary" data-playlist-id="@(playlist.Id)" data-tooltip="tooltip" title="View playlist">
+                                                    <button class="btn btn-sm btn-outline-secondary" data-playlist-id="@(playlist.Id)" data-bs-tooltip="tooltip" title="View playlist">
                                                         <i class="fa fa-list"></i>
                                                     </button>
-                                                    <button class="btn btn-sm btn-outline-danger @(playlist.Id < 0 ? "d-none" : string.Empty)" data-item-id="@(playlist.Id)" data-playlist-action="delete" data-tooltip="tooltip" title="Delete playlist">
+                                                    <button class="btn btn-sm btn-outline-danger @(playlist.Id < 0 ? "d-none" : string.Empty)" data-item-id="@(playlist.Id)" data-playlist-action="delete" data-bs-tooltip="tooltip" title="Delete playlist">
                                                         <i class="fa fa-trash"></i>
                                                     </button>
                                                 </div>
