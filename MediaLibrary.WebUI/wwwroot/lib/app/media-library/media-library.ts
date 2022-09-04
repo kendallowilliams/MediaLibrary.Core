@@ -209,7 +209,7 @@ export default class MediaLibrary extends BaseClass {
         let showHideMainControls: boolean = true;
 
         LoadingModal.showLoading();
-        Collapse.getOrCreateInstance(HtmlControls.Containers().NavBarContainer).hide();
+        Collapse.getOrCreateInstance(HtmlControls.Containers().NavBarContainer, { toggle: false }).hide();
         this.mediaLibraryConfiguration.properties.SelectedMediaPage = mediaPage;
         this.disableNavItem(getMediaPagesEnumString(mediaPage));
         this.mediaLibraryConfiguration.updateConfiguration()
@@ -282,7 +282,7 @@ export default class MediaLibrary extends BaseClass {
 
     private autoCloseNavBar(): void {
         const $navBar = $(HtmlControls.Containers().NavBarContainer),
-            bsNavBar = Collapse.getOrCreateInstance(HtmlControls.Containers().NavBarContainer);
+            bsNavBar = Collapse.getOrCreateInstance(HtmlControls.Containers().NavBarContainer, { toggle: false });
 
         window.clearTimeout(this.navBarTimeOut);
 
