@@ -29,10 +29,8 @@
             string directoryName = item.Path.Split(new char[] { System.IO.Path.DirectorySeparatorChar }, StringSplitOptions.RemoveEmptyEntries).LastOrDefault();
 
             <div class="input-group input-group-sm mb-1">
-                <div class="input-group-prepend">
-                    <div class="input-group-text">
-                        @Html.TextBox(nameof(MusicDirectory.SubDirectories), item.Path, new { type = "radio", id = $"rad{Guid.NewGuid().ToString("N")}" })
-                    </div>
+                <div class="input-group-text">
+                    @Html.TextBox(nameof(MusicDirectory.SubDirectories), item.Path, new { type = "radio", id = $"rad{Guid.NewGuid().ToString("N")}" })
                 </div>
                 <input class="form-control font-weight-bold text-truncate" readonly="readonly" value="@(directoryName)" />
                 @if (item.HasDirectories)
