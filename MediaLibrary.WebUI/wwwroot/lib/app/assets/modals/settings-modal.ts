@@ -390,10 +390,13 @@ export default class SettingsModal {
             enabled = this.configurations.MediaLibrary.properties.DarkMode,
             controls = HtmlControls.UIControls(),
             playerTimes = Array.from(controls.PlayerTimes),
-            playerShortTimes = Array.from(controls.PlayerShortTimes);
+            playerShortTimes = Array.from(controls.PlayerShortTimes),
+            views = HtmlControls.Views();
 
         $(body).toggleClass('bg-black text-white', enabled);
-        $(body).find('.jumbotron').toggleClass('bg-dark text-light', enabled);
+        $(views.HomeView).find('[data-container="HomeContent"]')
+            .toggleClass('bg-dark text-light', enabled)
+            .toggleClass('bg-light', !enabled);
         $(body).find('.navbar')
             .toggleClass('border rounded navbar-dark', enabled)
             .toggleClass('navbar-light bg-light', !enabled)
