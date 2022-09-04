@@ -12,7 +12,8 @@ import AddNewSongModal from "../../assets/modals/add-song-modal";
 import { getMusicTabEnumString, getMusicTabEnum } from "../../assets/enums/enum-functions";
 import Search from "./search";
 import * as MessageBox from "../../assets/utilities/message-box";
-import { fetch_post, loadHTML } from "../../assets/utilities/fetch_service";
+import { loadHTML } from "../../assets/utilities/fetch_service";
+import { Tab } from "bootstrap";
 
 export default class Music extends BaseClass implements IView {
     private readonly mediaView: HTMLElement;
@@ -43,7 +44,8 @@ export default class Music extends BaseClass implements IView {
         const success: () => void = () => {
             this.initializeControls();
             if (this.tooltipsEnabled()) /*then*/ loadTooltips(this.mediaView);
-            $('[data-music-tab="' + getMusicTabEnumString(this.musicConfiguration.properties.SelectedMusicTab) + '"]').tab('show');
+            $('[data-music-tab="' + getMusicTabEnumString(this.musicConfiguration.properties.SelectedMusicTab) + '"]')
+                .each((index, tab) => Tab.getOrCreateInstance(tab).show());
             if (this.musicConfiguration.properties.SelectedMusicPage === MusicPages.Search) /*then*/ this.search.search();
             this.initContinuePlaybackBtns();
             this.toggleDarkMode(this.mediaView);
