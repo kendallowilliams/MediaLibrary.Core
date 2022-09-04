@@ -11,17 +11,17 @@
         <div class="col">
             <div class="row">
                 <div class="col">
-                    <div class="form-group">
-                        <label>Database Name</label>
-                        @Html.TextBox("DatabaseName", DataService.GetDbName(), new { @class = "form-control", @readonly = "readonly" })
+                    <div class="mb-3">
+                        <label class="form-label">Database Name</label>
+                        @Html.TextBox("DatabaseName", DataService.GetDbName(), new { @class = "form-control form-control-sm", @readonly = "readonly" })
                     </div>
-                    <div class="form-group">
-                        <label>Database Server</label>
-                        @Html.TextBox("DatabaseServer", DataService.GetDbServer(), new { @class = "form-control", @readonly = "readonly" })
+                    <div class="mb-3">
+                        <label class="form-label">Database Server</label>
+                        @Html.TextBox("DatabaseServer", DataService.GetDbServer(), new { @class = "form-control form-control-sm", @readonly = "readonly" })
                     </div>
-                    <div class="form-group">
-                        <label>Console App Last Run</label>
-                        @Html.TextBoxFor(x => x.ConsoleAppLastRunTimeStamp, new { @class = "form-control", @readonly = "readonly" })
+                    <div class="mb-3">
+                        <label class="form-label">Console App Last Run</label>
+                        @Html.TextBoxFor(x => x.ConsoleAppLastRunTimeStamp, new { @class = "form-control form-control-sm", @readonly = "readonly" })
                     </div>
                 </div>
             </div>
@@ -34,21 +34,21 @@
         <div class="col">
             <div class="row">
                 <div class="col">
-                    <div class="form-group">
-                        <label>App Width</label>
-                        @Html.DropDownListFor(x => x.AppWidth, new SelectList(Enum.GetValues(typeof(Enums.AppWidth))), null, new { @class = "custom-select" })
+                    <div class="mb-3">
+                        <label class="form-label">App Width</label>
+                        @Html.DropDownListFor(x => x.AppWidth, new SelectList(Enum.GetValues(typeof(Enums.AppWidth))), null, new { @class = "form-select form-select-sm" })
                     </div>
-                    <div class="form-group">
-                        <label>NavBar Auto-Hide Delay (seconds)</label>
-                        @Html.TextBoxFor(x => x.NavBarDelay, new { @class = "form-control", type = "number" })
+                    <div class="mb-3">
+                        <label class="form-label">NavBar Auto-Hide Delay (seconds)</label>
+                        @Html.TextBoxFor(x => x.NavBarDelay, new { @class = "form-control form-control-sm", type = "number" })
                     </div>
-                    <div class="form-group">
-                        <label>Settings Auto-Hide Delay (seconds)</label>
-                        @Html.TextBoxFor(x => x.SettingsDelay, new { @class = "form-control", type = "number" })
+                    <div class="mb-3">
+                        <label class="form-label">Settings Auto-Hide Delay (seconds)</label>
+                        @Html.TextBoxFor(x => x.SettingsDelay, new { @class = "form-control form-control-sm", type = "number" })
                     </div>
-                    <div class="form-group">
-                        <label>Console App Interval (minutes)</label>
-                        @Html.TextBoxFor(x => x.ConsoleAppRunInterval, new { @class = "form-control", type = "number" })
+                    <div class="mb-3">
+                        <label class="form-label">Console App Interval (minutes)</label>
+                        @Html.TextBoxFor(x => x.ConsoleAppRunInterval, new { @class = "form-control form-control-sm", type = "number" })
                     </div>
                     <div class="form-check form-check-inline">
                         @Html.CheckBoxFor(x => x.TooltipsEnabled, new { @class = "form-check-input" })

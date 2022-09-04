@@ -13,13 +13,13 @@
         <div class="col">
             <div class="row">
                 <div class="col">
-                    <div class="form-group">
-                        @Html.LabelFor(x => x.SelectedPodcastSort, "Podcast Sort")
-                        @Html.DropDownListFor(x => x.SelectedPodcastSort, podcastSortList, null, new { @class = "custom-select custom-select-sm" })
+                    <div class="mb-3">
+                        @Html.LabelFor(x => x.SelectedPodcastSort, "Podcast Sort", new { @class = "form-label" })
+                        @Html.DropDownListFor(x => x.SelectedPodcastSort, podcastSortList, null, new { @class = "form-select form-select-sm" })
                     </div>
-                    <div class="form-group">
-                        @Html.LabelFor(x => x.SelectedPodcastFilter, "Episode Filter")
-                        @Html.DropDownListFor(x => x.SelectedPodcastFilter, podcastFilterList, null, new { @class = "custom-select custom-select-sm" })
+                    <div>
+                        @Html.LabelFor(x => x.SelectedPodcastFilter, "Episode Filter", new { @class = "form-label" })
+                        @Html.DropDownListFor(x => x.SelectedPodcastFilter, podcastFilterList, null, new { @class = "form-select form-select-sm" })
                     </div>
                 </div>
             </div>

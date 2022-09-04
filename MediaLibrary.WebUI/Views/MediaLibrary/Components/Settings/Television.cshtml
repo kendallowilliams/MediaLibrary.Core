@@ -12,9 +12,9 @@
         <div class="col">
             <div class="row">
                 <div class="col">
-                    <div class="form-group">
-                        @Html.LabelFor(x => x.SelectedSeriesSort, "Series Sort")
-                        @Html.DropDownListFor(x => x.SelectedSeriesSort, seriesSortList, null, new { @class = "custom-select custom-select-sm" })
+                    <div>
+                        @Html.LabelFor(x => x.SelectedSeriesSort, "Series Sort", new { @class = "form-label" })
+                        @Html.DropDownListFor(x => x.SelectedSeriesSort, seriesSortList, null, new { @class = "form-select form-select-sm" })
                     </div>
                 </div>
             </div>
@@ -27,7 +27,7 @@
         <div class="col">
             <div class="row">
                 <div class="col">
-                    <div class="form-group">
+                    <div>
                         @Html.TextBoxFor(x => x.FilePath, new { @class = "form-control form-control-sm" })
                     </div>
                 </div>
