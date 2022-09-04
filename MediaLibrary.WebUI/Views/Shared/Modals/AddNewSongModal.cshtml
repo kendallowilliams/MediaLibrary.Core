@@ -10,11 +10,8 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body d-flex flex-column">
-                    <div class="input-group">
-                        <div class="custom-file form-control-sm mb-3">
-                            @Html.TextBoxFor(x => x.MusicFile, null, new { @class = "custom-file-input", type = "file", accept = ".mp3" })
-                            @Html.LabelFor(x => x.MusicFile, "Choose file...", new { @class = "custom-file-label" })
-                        </div>
+                    <div class="mb-3">
+                        @Html.TextBoxFor(x => x.MusicFile, null, new { @class = "form-control form-control-sm", type = "file", accept = ".mp3" })
                     </div>
                     @Html.HiddenFor(x => x.MusicPath, new { data_field = "MusicPath" })
                     <div class="flex-fill overflow-auto" data-container="NewSongDirectorySelector"></div>
