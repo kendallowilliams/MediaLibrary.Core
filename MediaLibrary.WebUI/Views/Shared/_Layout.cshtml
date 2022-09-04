@@ -16,51 +16,53 @@
     <div class="container d-flex flex-column h-100">
         <header class="header-content">
             <nav class="navbar navbar-expand-lg">
-                <a class="navbar-brand" href="javascript: void(0)" data-media-page="@(nameof(Enums.MediaPages.Home))" )">
-                    <img src="@(Url.Content("~/images/logo.png"))" title="KOW Moosic" />
-                </a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#@(HtmlControlsRepository.NavBarContainerId)">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="@(HtmlControlsRepository.NavBarContainerId)">
-                    <ul class="navbar-nav me-auto">
-                        <li class="nav-item">
-                            <a class="nav-link" data-media-page="@(nameof(Enums.MediaPages.Music))" href="javascript: void(0)">@(nameof(Enums.MediaPages.Music))</a>
-                            <a class="nav-link d-none disabled font-italic font-weight-bold text-dark" data-media-page="@(nameof(Enums.MediaPages.Music))">
-                                <span class="border-right border-left">&nbsp;@(nameof(Enums.MediaPages.Music))&nbsp;</span>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" data-media-page="@(nameof(Enums.MediaPages.Podcast))" href="javascript: void(0)">@(nameof(Enums.MediaPages.Podcast))s</a>
-                            <a class="nav-link d-none disabled font-italic font-weight-bold text-dark" data-media-page="@(nameof(Enums.MediaPages.Podcast))">
-                                <span class="border-right border-left">&nbsp;@(nameof(Enums.MediaPages.Podcast))s&nbsp;</span>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" data-media-page="@(nameof(Enums.MediaPages.Television))" href="javascript: void(0)">@(nameof(Enums.MediaPages.Television))</a>
-                            <a class="nav-link d-none disabled font-italic font-weight-bold text-dark" data-media-page="@(nameof(Enums.MediaPages.Television))">
-                                <span class="border-right border-left">&nbsp;@(nameof(Enums.MediaPages.Television))&nbsp;</span>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" data-media-page="@(nameof(Enums.MediaPages.Playlist))" href="javascript: void(0)">@(nameof(Enums.MediaPages.Playlist))s</a>
-                            <a class="nav-link d-none disabled font-italic font-weight-bold text-dark" data-media-page="@(nameof(Enums.MediaPages.Playlist))">
-                                <span class="border-right border-left">&nbsp;@(nameof(Enums.MediaPages.Playlist))s&nbsp;</span>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" data-media-page="@(nameof(Enums.MediaPages.Player))" href="javascript: void(0)">Now Playing</a>
-                            <a class="nav-link d-none disabled font-italic font-weight-bold text-dark" data-media-page="@(nameof(Enums.MediaPages.Player))">
-                                <span class="border-right border-left">&nbsp;Now Playing&nbsp;</span>
-                            </a>
-                        </li>
-                        @if (User.Identity.IsAuthenticated)
-                        {
+                <div class="container-fluid">
+                    <a class="navbar-brand" href="javascript: void(0)" data-media-page="@(nameof(Enums.MediaPages.Home))" )">
+                        <img src="@(Url.Content("~/images/logo.png"))" title="KOW Moosic" />
+                    </a>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#@(HtmlControlsRepository.NavBarContainerId)">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="@(HtmlControlsRepository.NavBarContainerId)">
+                        <ul class="navbar-nav me-auto">
                             <li class="nav-item">
-                                <a class="nav-link" href="@Url.Action("Logout", "Account")">Logout</a>
+                                <a class="nav-link" data-media-page="@(nameof(Enums.MediaPages.Music))" href="javascript: void(0)">@(nameof(Enums.MediaPages.Music))</a>
+                                <a class="nav-link d-none disabled font-italic font-weight-bold text-dark" data-media-page="@(nameof(Enums.MediaPages.Music))">
+                                    <span class="border-right border-left">&nbsp;@(nameof(Enums.MediaPages.Music))&nbsp;</span>
+                                </a>
                             </li>
-                        }
-                    </ul>
+                            <li class="nav-item">
+                                <a class="nav-link" data-media-page="@(nameof(Enums.MediaPages.Podcast))" href="javascript: void(0)">@(nameof(Enums.MediaPages.Podcast))s</a>
+                                <a class="nav-link d-none disabled font-italic font-weight-bold text-dark" data-media-page="@(nameof(Enums.MediaPages.Podcast))">
+                                    <span class="border-right border-left">&nbsp;@(nameof(Enums.MediaPages.Podcast))s&nbsp;</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" data-media-page="@(nameof(Enums.MediaPages.Television))" href="javascript: void(0)">@(nameof(Enums.MediaPages.Television))</a>
+                                <a class="nav-link d-none disabled font-italic font-weight-bold text-dark" data-media-page="@(nameof(Enums.MediaPages.Television))">
+                                    <span class="border-right border-left">&nbsp;@(nameof(Enums.MediaPages.Television))&nbsp;</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" data-media-page="@(nameof(Enums.MediaPages.Playlist))" href="javascript: void(0)">@(nameof(Enums.MediaPages.Playlist))s</a>
+                                <a class="nav-link d-none disabled font-italic font-weight-bold text-dark" data-media-page="@(nameof(Enums.MediaPages.Playlist))">
+                                    <span class="border-right border-left">&nbsp;@(nameof(Enums.MediaPages.Playlist))s&nbsp;</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" data-media-page="@(nameof(Enums.MediaPages.Player))" href="javascript: void(0)">Now Playing</a>
+                                <a class="nav-link d-none disabled font-italic font-weight-bold text-dark" data-media-page="@(nameof(Enums.MediaPages.Player))">
+                                    <span class="border-right border-left">&nbsp;Now Playing&nbsp;</span>
+                                </a>
+                            </li>
+                            @if (User.Identity.IsAuthenticated)
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link" href="@Url.Action("Logout", "Account")">Logout</a>
+                                </li>
+                            }
+                        </ul>
+                    </div>
                 </div>
             </nav>
         </header>
