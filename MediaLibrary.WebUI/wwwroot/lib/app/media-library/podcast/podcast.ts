@@ -9,6 +9,7 @@ import { disposeTooltips, loadTooltips, disposePopovers } from "../../assets/uti
 import { getPodcastSortEnum, getPodcastFilterEnum } from "../../assets/enums/enum-functions";
 import * as MessageBox from '../../assets/utilities/message-box'
 import { fetch_get, fetch_post, loadHTML } from "../../assets/utilities/fetch_service";
+import { Popover } from "bootstrap";
 
 export default class Podcast extends BaseClass implements IView {
     private readonly mediaView: HTMLElement;
@@ -107,7 +108,7 @@ export default class Podcast extends BaseClass implements IView {
                     id = $element.attr('data-podcast-item-options-popover'),
                     $options = $('[data-podcast-item-options=' + id + ']');
 
-                $element.popover({
+                new Popover(element, {
                     trigger: 'hover',
                     content: $options.get(0),
                     sanitize: false,
