@@ -11,6 +11,7 @@ import { getPlaylistSortEnum, getPlaylistTabEnumString, getPlaylistTabEnum, getP
 import IPlayerLoadFunctions from "../../assets/interfaces/player-load-functions-interface";
 import * as MessageBox from '../../assets/utilities/message-box';
 import { fetch_get, fetch_post, loadHTML } from "../../assets/utilities/fetch_service";
+import { Tab } from "bootstrap";
 
 export default class Playlist extends BaseClass implements IView {
     private readonly mediaView: HTMLElement;
@@ -36,7 +37,8 @@ export default class Playlist extends BaseClass implements IView {
             this.initializeControls();
             this.updateActiveMediaFunc();
             this.applyLoadFunctions();
-            $('[data-playlist-tab="' + getPlaylistTabEnumString(this.playlistConfiguration.properties.SelectedPlaylistTab) + '"]').tab('show');
+            $('[data-playlist-tab="' + getPlaylistTabEnumString(this.playlistConfiguration.properties.SelectedPlaylistTab) + '"]')
+                .each((index, tab) => Tab.getOrCreateInstance(tab).show());
             this.toggleDarkMode(this.mediaView);
             callback();
             if (this.tooltipsEnabled()) /*then*/ loadTooltips(this.mediaView);
