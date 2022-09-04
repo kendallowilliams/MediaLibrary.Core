@@ -31,9 +31,16 @@ export function disposeAllTooltips(): void {
 }
 
 export function loadPopovers(parent: HTMLElement): void {
-    if (parent) /*then*/ $(parent).find('*[data-bs-toggle="popover"]').popover({ trigger: 'hover' });
+    if (parent) /*then*/ $(parent).find('*[data-bs-toggle="popover"]')
+        .each((index, element) => {
+            new bootstrap.Popover(element, { trigger: 'hover' });
+        });
+
 }
 
-export function disposePopovers(element: HTMLElement): void {
-    if (element) /*then*/ $(element).find('*[data-bs-toggle="popover"]').popover('dispose');
+export function disposePopovers(parent: HTMLElement): void {
+    if (parent) /*then*/ $(parent).find('*[data-bs-toggle="popover"]')
+        .each((index, element) => {
+            bootstrap.Popover.getInstance(element)?.dispose();
+        });
 }
