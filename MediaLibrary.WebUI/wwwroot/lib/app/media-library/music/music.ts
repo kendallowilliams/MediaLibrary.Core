@@ -36,7 +36,8 @@ export default class Music extends BaseClass implements IView {
             this.playFunc.bind(this),
             this.loadAlbum.bind(this),
             this.loadArtist.bind(this),
-            this.updateActiveMediaFunc.bind(this)
+            this.updateActiveMediaFunc.bind(this),
+            this.toggleDarkMode.bind(this, this.mediaView)
         );
     }
 
