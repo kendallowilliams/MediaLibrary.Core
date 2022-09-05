@@ -10,6 +10,7 @@ import { getPodcastSortEnum, getPodcastFilterEnum } from "../../assets/enums/enu
 import * as MessageBox from '../../assets/utilities/message-box'
 import { fetch_get, fetch_post, loadHTML } from "../../assets/utilities/fetch_service";
 import { Popover } from "bootstrap";
+import BlankDismissableModal from "../../assets/modals/blank-dismissable-modal";
 
 export default class Podcast extends BaseClass implements IView {
     private readonly mediaView: HTMLElement;
@@ -103,18 +104,13 @@ export default class Podcast extends BaseClass implements IView {
             $(item).parent('li.page-item:first').addClass('active');
             this.updateMobileYears(parseInt($(item).attr('data-item-index')));
             if (this.tooltipsEnabled()) /*then*/ loadTooltips(this.podcastView);
-            $(this.podcastView).find('[data-podcast-item-options-popover]').each((index, element) => {
-                const $element = $(element),
-                    id = $element.attr('data-podcast-item-options-popover'),
-                    $options = $('[data-podcast-item-options=' + id + ']');
+            $(this.podcastView).find('button[data-podcast-item-id]').on('click', e => {
+                const $btn = $(e.currentTarget),
+                    id = $btn.attr('data-podcast-item-id'),
+                    modal = new BlankDismissableModal();
 
-                new Popover(element, {
-                    trigger: 'hover',
-                    content: $options.get(0),
-                    sanitize: false,
-                    html: true,
-                    placement: 'left'
-                });
+                modal.loadBodyHTML('Podcast/GetPodcastItemOptions/'.concat(id));
+                modal.show();
             });
             $(this.mediaView).find('*[data-play-id]').on('click', e => this.playFunc(e.currentTarget as HTMLButtonElement, true));
             $(this.mediaView).find('*[data-podcast-action="download"]').on('click', e => {

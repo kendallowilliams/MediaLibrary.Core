@@ -146,6 +146,13 @@ namespace MediaLibrary.WebUI.Controllers
             return PartialView("PodcastItems", (hasPlaylists, podcastItems.OrderByDescending(item => item.PublishDate), downloadIds));
         }
 
+        public async Task<IActionResult> GetPodcastItemOptions(int id)
+        {
+            var podcastItem = await dataService.Get<PodcastItem>(item => item.Id == id);
+
+            return PartialView("Controls/PodcastItemOptions", podcastItem);
+        }
+
         private async Task<IEnumerable<int>> GetActiveDownloadIds()
         {
             IEnumerable<Transaction> inProcessDownloads = await dataService.GetList<Transaction>(item => item.Status == TransactionStatus.InProcess &&

@@ -102,6 +102,7 @@ namespace MediaLibrary.WebUI.Repositories
         public static string SettingsModalId { get => "settings-modal"; }
         public static string QuestionModalId { get => "question-modal"; }
         public static string PlayerControlsModalId { get => "player-controls-modal"; }
+        public static string BlankDismissableModalId { get => "blank-dismissable-modal"; }
         #endregion Modal Ids
     }
 }

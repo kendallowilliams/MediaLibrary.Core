@@ -1,41 +1,22 @@
-﻿@model (PodcastItem PodcastItem, bool IsDownloading)
+﻿@model PodcastItem
 
-<div class="d-flex flex-column" data-podcast-item-options="@(Model.PodcastItem.Id)">
-    @if (!Model.PodcastItem.LastPlayedDate.HasValue)
-    {
-        <button class="btn btn-sm btn-outline-secondary mb-1" data-mark-played-action="@(Url.Action(nameof(PodcastController.MarkPodcastItemPlayed), "Podcast"))"
-                data-podcast-action="mark-played" data-item-id="@(Model.PodcastItem.Id)">
-            Mark as played
-        </button>
-    }
-    else
-    {
-        <button class="btn btn-sm btn-outline-secondary mb-1" data-mark-played-action="@(Url.Action(nameof(PodcastController.MarkPodcastItemUnplayed), "Podcast"))"
-                data-podcast-action="mark-played" data-item-id="@(Model.PodcastItem.Id)">
-            Mark as unplayed
-        </button>
-    }
-
-    @if (string.IsNullOrWhiteSpace(Model.PodcastItem.File) && !Model.IsDownloading)
-    {
-        <button class="btn btn-sm btn-outline-secondary mb-1" data-download-action="@(Url.Action(nameof(PodcastController.DownloadPodcastItem), "Podcast"))"
-                data-podcast-action="download" data-item-id="@(Model.PodcastItem.Id)">
-            Download
-        </button>
-    }
-    else
-    {
-        <button class="btn btn-sm btn-outline-secondary mb-1 @(Model.IsDownloading ? string.Empty : "d-none")" disabled="disabled"
-                data-item-id="@(Model.PodcastItem.Id)" data-podcast-action="downloading">
-            Downloading <i class="fa fa-spinner fa-pulse"></i>
-        </button>
-        <button class="btn btn-sm btn-outline-secondary mb-1 @(Model.IsDownloading ? "d-none" : string.Empty)"
-                data-download-action="@(Url.Action(nameof(PodcastController.RemovePodcastItemDownload), "Podcast"))"
-                data-podcast-action="download" data-item-id="@(Model.PodcastItem.Id)">
-            Remove Download
-        </button>
-    }
-
-    <button class="btn btn-sm btn-outline-secondary mb-1" data-podcast-action="show-description" data-title="@(Model.PodcastItem.Title)" 
-            data-message="@(Model.PodcastItem.Description)">Description</button>
+<div class="d-flex flex-column" data-podcast-item-id="@(Model.Id)">
+    <div class="row">
+        <div class="col-auto border-end">
+            <h6 style="width: 100px">Actions</h6>
+        </div>
+        <div class="col">
+            <div class="mb-3">
+                <button class="btn btn-sm btn-outline-secondary"><i class="fa fa-download"></i></button>
+                <button class="btn btn-sm btn-outline-secondary" data-podcast-action="show-description" data-title="@(Model.Title)"
+                        data-message="@(Model.Description)">
+                    <i class="fa fa-info"></i>
+                </button>
+            </div>
+            <div class="form-check form-switch">
+                @Html.CheckBoxFor(x => x.IsPlayed, new { @class = "form-check-input", role = "switch" })
+                @Html.LabelFor(x => x.IsPlayed, "Mark as played", new { @class = "form-check-label" })
+            </div>
+        </div>
+    </div>
 </div>

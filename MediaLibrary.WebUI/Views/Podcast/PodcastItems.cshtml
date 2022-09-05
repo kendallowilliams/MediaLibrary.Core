@@ -42,10 +42,7 @@
                                 <i class="fa fa-plus"></i>
                             </button>
                         }
-                        <button class="btn btn-sm btn-outline-secondary" data-podcast-item-options-popover="@(item.Id)">
-                            <i class="fa fa-ellipsis-v"></i>
-                        </button>
-                        <div class="d-none"><partial name="~/Views/Podcast/Controls/PodcastItemOptions.cshtml" model="(item, Model.DownloadIds.Contains(item.Id))" /></div>
+                        <button class="btn btn-sm btn-outline-secondary" data-podcast-item-id="@(item.Id)"><i class="fa fa-ellipsis-v"></i></button>
                     </div>
                 </div>
             </li>
@@ -56,3 +53,5 @@ else
 {
     <span>No episodes added.</span>
 }
+
+<partial name="~/Views/Shared/Modals/BlankDismissableModal.cshtml" />
