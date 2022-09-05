@@ -21,8 +21,10 @@
                 <audio id="@(HtmlControlsRepository.MusicPlayerId)" class="d-none" @(Model.Configuration.Muted ? "muted=\"muted\"" : string.Empty) preload="metadata" data-player-page="@(Enums.PlayerPages.Audio)"></audio>
                 <canvas id="@(HtmlControlsRepository.AudioVisualizerId)"></canvas>
             </div>
-            <div id="@(HtmlControlsRepository.PlayerVideoContainerId)" style="background-color: black" class="embed-responsive @(Model.Configuration.SelectedPlayerPage == Enums.PlayerPages.Video ? string.Empty : "d-none") flex-fill">
-                <video id="@(HtmlControlsRepository.VideoPlayerId)" @(Model.Configuration.Muted ? "muted=\"muted\"" : string.Empty) preload="metadata" data-player-page="@(Enums.PlayerPages.Video)" class="embed-responsive-item"></video>
+            <div id="@(HtmlControlsRepository.PlayerVideoContainerId)" style="background-color: black" 
+                 class="@(Model.Configuration.SelectedPlayerPage == Enums.PlayerPages.Video ? string.Empty : "d-none") flex-fill d-flex">
+                <video id="@(HtmlControlsRepository.VideoPlayerId)" @(Model.Configuration.Muted ? "muted=\"muted\"" : string.Empty) preload="metadata" data-player-page="@(Enums.PlayerPages.Video)" 
+                       class="w-100"></video>
             </div>
         </div>
         <div class="card-footer d-flex align-items-center">
