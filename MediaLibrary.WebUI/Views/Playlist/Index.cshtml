@@ -45,38 +45,40 @@
                 <div id="accordion-playlists-@(Enums.PlaylistTabs.Music)" style="overflow-y: auto" class="accordion flex-fill">
                     @foreach (var item in musicPlaylistGroups.Select((group, index) => new { Index = index, Group = group }))
                     {
-                        <div class="card">
-                            <div class="card-header p-0" id="heading-playlists-@(item.Index)">
-                                <h5 class="mb-0">
-                                    <button class="btn btn-sm btn-link w-100 text-left" data-bs-toggle="collapse" data-bs-target="#collapse-playlists-@(item.Index)">
+                        <div class="accordion-item">
+                            <div class="accordion-header p-0" id="heading-playlists-@(item.Index)">
+                                <h5 class="m-0">
+                                    <button class="accordion-button w-100 text-left p-1 @(item.Index == 0 ? string.Empty : "collapsed")" data-bs-toggle="collapse" data-bs-target="#collapse-playlists-@(item.Index)">
                                         @(item.Group.Key)
                                     </button>
                                 </h5>
                             </div>
 
-                            <div id="collapse-playlists-@(item.Index)" class="collapse @(item.Index == 0 ? "show" : "")" data-bs-parent="#accordion-playlists-@(Enums.PlaylistTabs.Music)">
-                                <ul class="list-group list-group-flush">
-                                    @foreach (var playlist in item.Group.Where(playlist => playlist.Type == Enums.PlaylistTypes.Music))
-                                    {
-                                        <li class="list-group-item">
-                                            <div class="media">
-                                                <img class="me-3 track-img" src="@(Url.Content("~/images/audio.png"))" title="@(playlist.Name)">
-                                                <div class="media-body d-flex flex-column" style="overflow-x: auto">
-                                                    <span class="mt-0 text-truncate font-weight-bold">@(playlist.Name)</span>
-                                                    <small>@(playlist.Description)</small>
+                            <div id="collapse-playlists-@(item.Index)" class="accordion-collapse collapse @(item.Index == 0 ? "show" : "")" data-bs-parent="#accordion-playlists-@(Enums.PlaylistTabs.Music)">
+                                <div class="accordion-body p-0 pb-1">
+                                    <ul class="list-group list-group-flush">
+                                        @foreach (var playlist in item.Group.Where(playlist => playlist.Type == Enums.PlaylistTypes.Music))
+                                        {
+                                            <li class="list-group-item">
+                                                <div class="media">
+                                                    <img class="me-3 track-img" src="@(Url.Content("~/images/audio.png"))" title="@(playlist.Name)">
+                                                    <div class="media-body d-flex flex-column" style="overflow-x: auto">
+                                                        <span class="mt-0 text-truncate font-weight-bold">@(playlist.Name)</span>
+                                                        <small>@(playlist.Description)</small>
+                                                    </div>
+                                                    <div>
+                                                        <button class="btn btn-sm btn-outline-secondary" data-playlist-id="@(playlist.Id)" data-bs-tooltip="tooltip" title="View playlist">
+                                                            <i class="fa fa-list"></i>
+                                                        </button>
+                                                        <button class="btn btn-sm btn-outline-danger @(playlist.Id < 0 ? "d-none" : string.Empty)" data-item-id="@(playlist.Id)" data-playlist-action="delete" data-bs-tooltip="tooltip" title="Delete playlist">
+                                                            <i class="fa fa-trash"></i>
+                                                        </button>
+                                                    </div>
                                                 </div>
-                                                <div>
-                                                    <button class="btn btn-sm btn-outline-secondary" data-playlist-id="@(playlist.Id)" data-bs-tooltip="tooltip" title="View playlist">
-                                                        <i class="fa fa-list"></i>
-                                                    </button>
-                                                    <button class="btn btn-sm btn-outline-danger @(playlist.Id < 0 ? "d-none" : string.Empty)" data-item-id="@(playlist.Id)" data-playlist-action="delete" data-bs-tooltip="tooltip" title="Delete playlist">
-                                                        <i class="fa fa-trash"></i>
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        </li>
-                                    }
-                                </ul>
+                                            </li>
+                                        }
+                                    </ul>
+                                </div>
                             </div>
                         </div>
                     }
@@ -93,38 +95,42 @@
                 <div id="accordion-playlists-@(Enums.PlaylistTabs.Podcast)" style="overflow-y: auto" class="accordion flex-fill">
                     @foreach (var item in podcastPlaylistGroups.Select((group, index) => new { Index = index + musicPlaylistGroups.Count(), Group = group }))
                     {
-                        <div class="card">
-                            <div class="card-header p-0" id="heading-playlists-@(item.Index)">
-                                <h5 class="mb-0">
-                                    <button class="btn btn-sm btn-link w-100 text-left" data-bs-toggle="collapse" data-bs-target="#collapse-playlists-@(item.Index)">
+                        bool isFirstIndex = item.Index == musicPlaylistGroups.Count();
+
+                        <div class="accordion-item">
+                            <div class="accordion-header p-0" id="heading-playlists-@(item.Index)">
+                                <h5 class="m-0">
+                                    <button class="accordion-button w-100 text-left p-1 @(isFirstIndex ? string.Empty : "collapsed")" data-bs-toggle="collapse" data-bs-target="#collapse-playlists-@(item.Index)">
                                         @(item.Group.Key)
                                     </button>
                                 </h5>
                             </div>
 
-                            <div id="collapse-playlists-@(item.Index)" class="collapse @(item.Index == musicPlaylistGroups.Count() ? "show" : "")" data-bs-parent="#accordion-playlists-@(Enums.PlaylistTabs.Podcast)">
-                                <ul class="list-group list-group-flush">
-                                    @foreach (var playlist in item.Group.Where(playlist => playlist.Type == Enums.PlaylistTypes.Podcast))
-                                    {
-                                        <li class="list-group-item">
-                                            <div class="media">
-                                                <img class="me-3 track-img" src="@(Url.Content("~/images/audio.png"))" title="@(playlist.Name)">
-                                                <div class="media-body d-flex flex-column" style="overflow-x: auto">
-                                                    <span class="mt-0 text-truncate font-weight-bold">@(playlist.Name)</span>
-                                                    <small>@(playlist.Description)</small>
+                            <div id="collapse-playlists-@(item.Index)" class="accordion-collapse collapse @(isFirstIndex ? "show" : "")" data-bs-parent="#accordion-playlists-@(Enums.PlaylistTabs.Podcast)">
+                                <div class="accordion-body p-0 pb-1">
+                                    <ul class="list-group list-group-flush">
+                                        @foreach (var playlist in item.Group.Where(playlist => playlist.Type == Enums.PlaylistTypes.Podcast))
+                                        {
+                                            <li class="list-group-item">
+                                                <div class="media">
+                                                    <img class="me-3 track-img" src="@(Url.Content("~/images/audio.png"))" title="@(playlist.Name)">
+                                                    <div class="media-body d-flex flex-column" style="overflow-x: auto">
+                                                        <span class="mt-0 text-truncate font-weight-bold">@(playlist.Name)</span>
+                                                        <small>@(playlist.Description)</small>
+                                                    </div>
+                                                    <div>
+                                                        <button class="btn btn-sm btn-outline-secondary" data-playlist-id="@(playlist.Id)" data-bs-tooltip="tooltip" title="View playlist">
+                                                            <i class="fa fa-list"></i>
+                                                        </button>
+                                                        <button class="btn btn-sm btn-outline-danger @(playlist.Id < 0 ? "d-none" : string.Empty)" data-item-id="@(playlist.Id)" data-playlist-action="delete" data-bs-tooltip="tooltip" title="Delete playlist">
+                                                            <i class="fa fa-trash"></i>
+                                                        </button>
+                                                    </div>
                                                 </div>
-                                                <div>
-                                                    <button class="btn btn-sm btn-outline-secondary" data-playlist-id="@(playlist.Id)" data-bs-tooltip="tooltip" title="View playlist">
-                                                        <i class="fa fa-list"></i>
-                                                    </button>
-                                                    <button class="btn btn-sm btn-outline-danger @(playlist.Id < 0 ? "d-none" : string.Empty)" data-item-id="@(playlist.Id)" data-playlist-action="delete" data-bs-tooltip="tooltip" title="Delete playlist">
-                                                        <i class="fa fa-trash"></i>
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        </li>
-                                    }
-                                </ul>
+                                            </li>
+                                        }
+                                    </ul>
+                                </div>
                             </div>
                         </div>
                     }
@@ -141,39 +147,43 @@
                 <div id="accordion-playlists-@(Enums.PlaylistTabs.Television)" style="overflow-y: auto" class="accordion flex-fill">
                     @foreach (var item in episodePlaylistGroups.Select((group, index) => new { Index = index + musicPlaylistGroups.Count() + podcastPlaylistGroups.Count(), Group = group }))
                     {
-                        <div class="card">
-                            <div class="card-header p-0" id="heading-playlists-@(item.Index)">
+                        bool isFirstIndex = item.Index == musicPlaylistGroups.Count() + podcastPlaylistGroups.Count();
+
+                        <div class="accordion-item">
+                            <div class="accordion-header p-0" id="heading-playlists-@(item.Index)">
                                 <h5 class="mb-0">
-                                    <button class="btn btn-sm btn-link w-100 text-left" data-bs-toggle="collapse" data-bs-target="#collapse-playlists-@(item.Index)">
+                                    <button class="accordion-button w-100 text-left p-1 @(isFirstIndex ? string.Empty : "collapsed")" data-bs-toggle="collapse" data-bs-target="#collapse-playlists-@(item.Index)">
                                         @(item.Group.Key)
                                     </button>
                                 </h5>
                             </div>
 
-                            <div id="collapse-playlists-@(item.Index)" class="collapse @(item.Index == musicPlaylistGroups.Count() + podcastPlaylistGroups.Count() ? "show" : "")" 
-                                 data-bs-parent="#accordion-playlists-@(Enums.PlaylistTabs.Television)">
-                                <ul class="list-group list-group-flush">
-                                    @foreach (var playlist in item.Group.Where(playlist => playlist.Type == Enums.PlaylistTypes.Television))
-                                    {
-                                        <li class="list-group-item">
-                                            <div class="media">
-                                                <img class="me-3 track-img" src="@(Url.Content("~/images/audio.png"))" title="@(playlist.Name)">
-                                                <div class="media-body d-flex flex-column" style="overflow-x: auto">
-                                                    <span class="mt-0 text-truncate font-weight-bold">@(playlist.Name)</span>
-                                                    <small>@(playlist.Description)</small>
+                            <div id="collapse-playlists-@(item.Index)" class="accordion-collapse collapse @(isFirstIndex  ? "show" : "")"
+                         data-bs-parent="#accordion-playlists-@(Enums.PlaylistTabs.Television)">
+                                <div class="accordion-body p-0 pb-1">
+                                    <ul class="list-group list-group-flush">
+                                        @foreach (var playlist in item.Group.Where(playlist => playlist.Type == Enums.PlaylistTypes.Television))
+                                        {
+                                            <li class="list-group-item">
+                                                <div class="media">
+                                                    <img class="me-3 track-img" src="@(Url.Content("~/images/audio.png"))" title="@(playlist.Name)">
+                                                    <div class="media-body d-flex flex-column" style="overflow-x: auto">
+                                                        <span class="mt-0 text-truncate font-weight-bold">@(playlist.Name)</span>
+                                                        <small>@(playlist.Description)</small>
+                                                    </div>
+                                                    <div>
+                                                        <button class="btn btn-sm btn-outline-secondary" data-playlist-id="@(playlist.Id)" data-bs-tooltip="tooltip" title="View playlist">
+                                                            <i class="fa fa-list"></i>
+                                                        </button>
+                                                        <button class="btn btn-sm btn-outline-danger @(playlist.Id < 0 ? "d-none" : string.Empty)" data-item-id="@(playlist.Id)" data-playlist-action="delete" data-bs-tooltip="tooltip" title="Delete playlist">
+                                                            <i class="fa fa-trash"></i>
+                                                        </button>
+                                                    </div>
                                                 </div>
-                                                <div>
-                                                    <button class="btn btn-sm btn-outline-secondary" data-playlist-id="@(playlist.Id)" data-bs-tooltip="tooltip" title="View playlist">
-                                                        <i class="fa fa-list"></i>
-                                                    </button>
-                                                    <button class="btn btn-sm btn-outline-danger @(playlist.Id < 0 ? "d-none" : string.Empty)" data-item-id="@(playlist.Id)" data-playlist-action="delete" data-bs-tooltip="tooltip" title="Delete playlist">
-                                                        <i class="fa fa-trash"></i>
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        </li>
-                                    }
-                                </ul>
+                                            </li>
+                                        }
+                                    </ul>
+                                </div>
                             </div>
                         </div>
                     }
