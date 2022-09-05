@@ -6,23 +6,23 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body">
-                <div class="input-group mb-3">
+                <div class="input-group input-group-sm mb-3">
                     <span class="input-group-text" id="" style="width: 75px">@(nameof(Song.Title))</span>
                     @Html.TextBox(nameof(Song.Title), string.Empty, new { @class = "form-control", id = $"txtEdit{nameof(Song.Title)}" })
                 </div>
-                <div class="input-group mb-3">
+                <div class="input-group input-group-sm mb-3">
                     <span class="input-group-text" id="" style="width: 75px">@(nameof(Song.Album))</span>
                     @Html.TextBox(nameof(Song.Album), string.Empty, new { @class = "form-control", id = $"txtEdit{nameof(Song.Album)}" })
                 </div>
-                <div class="input-group mb-3">
+                <div class="input-group input-group-sm mb-3">
                     <span class="input-group-text" id="" style="width: 75px">@(nameof(Song.Artist))</span>
                     @Html.TextBox(nameof(Song.Artist), string.Empty, new { @class = "form-control", id = $"txtEdit{nameof(Song.Artist)}" })
                 </div>
-                <div class="input-group mb-3">
+                <div class="input-group input-group-sm mb-3">
                     <span class="input-group-text" id="" style="width: 75px">@(nameof(Song.Genre))</span>
                     @Html.TextBox(nameof(Song.Genre), string.Empty, new { @class = "form-control", id = $"txtEdit{nameof(Song.Genre)}" })
                 </div>
-                <div class="input-group mb-3">
+                <div class="input-group input-group-sm mb-3">
                     <span class="input-group-text" id="" style="width: 75px">@(nameof(Song.Position))</span>
                     @Html.TextBox(nameof(Song.Position), string.Empty, new { @class = "form-control", id = $"txtEdit{nameof(Song.Position)}", type = "number", pattern = "[0-9]*", min = "0" })
                 </div>
