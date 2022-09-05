@@ -113,8 +113,7 @@ export default class Podcast extends BaseClass implements IView {
                     content: $options.get(0),
                     sanitize: false,
                     html: true,
-                    placement: 'auto',
-                    container: $element.get(0)
+                    placement: 'left'
                 });
             });
             $(this.mediaView).find('*[data-play-id]').on('click', e => this.playFunc(e.currentTarget as HTMLButtonElement, true));
