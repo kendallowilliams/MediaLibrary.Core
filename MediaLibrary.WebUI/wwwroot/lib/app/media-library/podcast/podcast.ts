@@ -118,30 +118,34 @@ export default class Podcast extends BaseClass implements IView {
                     .then(_ => {
                         const htmlElement = modal.getHTMLElement();
 
-                        $(htmlElement).find('*[data-podcast-action="download"]').on('click', e => {
+                        $(htmlElement).find('[data-podcast-action="download"], [data-podcast-action="remove-download"]').on('click', e => {
                             const $btn = $(e.currentTarget),
                                 id = $btn.attr('data-item-id'),
-                                formData = new FormData();
+                                formData = new FormData(),
+                                isDownload = $btn.attr('data-podcast-action') === 'download',
+                                url = isDownload ? 'Podcast/DownloadPodcastItem' : 'Podcast/RemovePodcastItemDownload';
 
                             formData.set('id', id);
                             LoadingModal.showLoading();
-                            $btn.tooltip('dispose');
-                            fetch_post($btn.attr('data-download-action'), formData)
+                            fetch_post(url, formData)
                                 .then(_ => {
+                                    modal.hide();
                                     LoadingModal.hideLoading();
                                     $('[data-podcast-year="' + this.getSelectedYear() + '"]').click();
                                 });
                         });
-                        $(htmlElement).find('*[data-podcast-action="mark-played"]').on('click', e => {
-                            const $btn = $(e.currentTarget),
-                                id = $btn.attr('data-item-id'),
+                        $(htmlElement).find('*[data-podcast-action="mark-played"]').on('input', e => {
+                            const $switch = $(e.currentTarget),
+                                id = $switch.attr('data-item-id'),
+                                isChecked = $switch.is(':checked'),
+                                url = isChecked ? 'Podcast/MarkPodcastItemPlayed' : 'Podcast/MarkPodcastItemUnplayed',
                                 formData = new FormData();
 
                             formData.set('id', id);
                             LoadingModal.showLoading();
-                            $btn.tooltip('dispose');
-                            fetch_post($btn.attr('data-mark-played-action'), formData)
+                            fetch_post(url, formData)
                                 .then(_ => {
+                                    modal.hide();
                                     LoadingModal.hideLoading();
                                     $('[data-podcast-year="' + this.getSelectedYear() + '"]').click();
                                 });

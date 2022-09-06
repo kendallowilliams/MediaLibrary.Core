@@ -9,11 +9,15 @@
             <div class="mb-3">
                 @if (Model.IsDownloaded)
                 {
-                    <button class="btn btn-sm btn-outline-secondary"><i class="fa fa-file-circle-minus"></i></button>
+                    <button class="btn btn-sm btn-outline-secondary" data-podcast-action="remove-download" data-item-id="@Model.Id">
+                        <i class="fa fa-file-circle-minus"></i>
+                    </button>
                 }
                 else
                 {
-                    <button class="btn btn-sm btn-outline-secondary"><i class="fa fa-download"></i></button>
+                    <button class="btn btn-sm btn-outline-secondary" data-podcast-action="download" data-item-id="@Model.Id">
+                        <i class="fa fa-download"></i>
+                    </button>
                 }
                 <button class="btn btn-sm btn-outline-secondary" data-podcast-action="show-description" data-title="@(Model.Title)"
                         data-message="@(Model.Description)">
@@ -21,7 +25,7 @@
                 </button>
             </div>
             <div class="form-check form-switch">
-                @Html.CheckBoxFor(x => x.IsPlayed, new { @class = "form-check-input", role = "switch" })
+                @Html.CheckBoxFor(x => x.IsPlayed, new { @class = "form-check-input", role = "switch", data_podcast_action = "mark-played", data_item_id = Model.Id })
                 @Html.LabelFor(x => x.IsPlayed, "Mark as played", new { @class = "form-check-label" })
             </div>
         </div>
