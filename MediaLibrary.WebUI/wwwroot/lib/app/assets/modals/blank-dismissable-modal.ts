@@ -21,6 +21,10 @@ export default class BlankDismissableModal {
         return loadHTML(this.modalBody, url);
     }
 
+    public getHTMLElement(): HTMLElement {
+        return this.modal;
+    }
+
     public show(): void {
         this.bsModal.show();
     }

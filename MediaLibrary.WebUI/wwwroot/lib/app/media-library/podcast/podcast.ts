@@ -107,48 +107,59 @@ export default class Podcast extends BaseClass implements IView {
             $(this.podcastView).find('button[data-podcast-item-id]').on('click', e => {
                 const $btn = $(e.currentTarget),
                     id = $btn.attr('data-podcast-item-id'),
-                    modal = new BlankDismissableModal();
+                    modal = new BlankDismissableModal(),
+                    error = (status) => {
+                        LoadingModal.hideLoading();
+                        MessageBox.showError('Error', status);
+                    };
 
-                modal.loadBodyHTML('Podcast/GetPodcastItemOptions/'.concat(id));
-                modal.show();
+                LoadingModal.showLoading();
+                modal.loadBodyHTML('Podcast/GetPodcastItemOptions/'.concat(id))
+                    .then(_ => {
+                        const htmlElement = modal.getHTMLElement();
+
+                        $(htmlElement).find('*[data-podcast-action="download"]').on('click', e => {
+                            const $btn = $(e.currentTarget),
+                                id = $btn.attr('data-item-id'),
+                                formData = new FormData();
+
+                            formData.set('id', id);
+                            LoadingModal.showLoading();
+                            $btn.tooltip('dispose');
+                            fetch_post($btn.attr('data-download-action'), formData)
+                                .then(_ => {
+                                    LoadingModal.hideLoading();
+                                    $('[data-podcast-year="' + this.getSelectedYear() + '"]').click();
+                                });
+                        });
+                        $(htmlElement).find('*[data-podcast-action="mark-played"]').on('click', e => {
+                            const $btn = $(e.currentTarget),
+                                id = $btn.attr('data-item-id'),
+                                formData = new FormData();
+
+                            formData.set('id', id);
+                            LoadingModal.showLoading();
+                            $btn.tooltip('dispose');
+                            fetch_post($btn.attr('data-mark-played-action'), formData)
+                                .then(_ => {
+                                    LoadingModal.hideLoading();
+                                    $('[data-podcast-year="' + this.getSelectedYear() + '"]').click();
+                                });
+                        });
+                        $(htmlElement).find('*[data-podcast-action="show-description"]').on('click', e => {
+                            const $btn = $(e.currentTarget),
+                                title = $btn.attr('data-title'),
+                                message = $btn.attr('data-message');
+
+                            modal.hide();
+                            MessageBox.alert(title, message, true);
+                        });
+
+                        LoadingModal.hideLoading();
+                        modal.show();
+                    }).catch((response: Response) => response.text().then(message => error(message)));
             });
             $(this.mediaView).find('*[data-play-id]').on('click', e => this.playFunc(e.currentTarget as HTMLButtonElement, true));
-            $(this.mediaView).find('*[data-podcast-action="download"]').on('click', e => {
-                const $btn = $(e.currentTarget),
-                    id = $btn.attr('data-item-id'),
-                    formData = new FormData();
-
-                formData.set('id', id);
-                LoadingModal.showLoading();
-                $btn.tooltip('dispose');
-                fetch_post($btn.attr('data-download-action'), formData)
-                    .then(_ => {
-                        LoadingModal.hideLoading();
-                        $('[data-podcast-year="' + this.getSelectedYear() + '"]').click();
-                    });
-            });
-            $(this.mediaView).find('*[data-podcast-action="mark-played"]').on('click', e => {
-                const $btn = $(e.currentTarget),
-                    id = $btn.attr('data-item-id'),
-                    formData = new FormData();
-
-                formData.set('id', id);
-                LoadingModal.showLoading();
-                $btn.tooltip('dispose');
-                fetch_post($btn.attr('data-mark-played-action'), formData)
-                    .then(_ => {
-                        LoadingModal.hideLoading();
-                        $('[data-podcast-year="' + this.getSelectedYear() + '"]').click();
-                    });
-            });
-            $(this.mediaView).find('*[data-podcast-action="show-description"]').on('click', e => {
-                const $btn = $(e.currentTarget),
-                    title = $btn.attr('data-title'),
-                    message = $btn.attr('data-message');
-
-                MessageBox.alert(title, message, true);
-                $(this.podcastView).find('[data-podcast-item-options-popover]').popover('hide');
-            });
             this.updateActiveMediaFunc();
             this.toggleDarkMode(this.mediaView);
             LoadingModal.hideLoading();
