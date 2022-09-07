@@ -420,7 +420,11 @@ export default class SettingsModal {
             darkModeEnabled = this.configurations.MediaLibrary.properties.DarkMode;
 
         $container.find('.card').toggleClass('bg-transparent border', darkModeEnabled);
-        $container.find('.accordion-item, .accordion-button').toggleClass('bg-transparent', darkModeEnabled);
+        $container.find('.accordion-item, .accordion-button')
+            .toggleClass('bg-transparent', darkModeEnabled)
+            .find('.accordion-button')
+            .toggleClass('text-dark', !darkModeEnabled)
+            .toggleClass('text-light', darkModeEnabled);
         $container.find('.list-group-item')
             .toggleClass('bg-transparent border-top text-white', darkModeEnabled);
         $container.find('.modal-content').toggleClass('bg-dark text-white', darkModeEnabled);
