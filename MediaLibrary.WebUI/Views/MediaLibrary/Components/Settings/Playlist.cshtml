@@ -7,27 +7,27 @@
 
 <div class="d-flex flex-column flex-fill overflow-auto">
     <div class="row m-0 p-0">
-        <div class="col-auto border-right">
+        <div class="col-auto border-end">
             <h6>Interface</h6>
         </div>
         <div class="col">
             <div class="row">
                 <div class="col">
-                    <div class="form-group">
-                        @Html.LabelFor(x => x.MaxSystemPlaylistItems, "Max Playlist Items")
-                        @Html.TextBoxFor(x => x.MaxSystemPlaylistItems, new { @class = "form-control", type = "number", step = "1", min = "1" })
+                    <div class="mb-3">
+                        @Html.LabelFor(x => x.MaxSystemPlaylistItems, "Max Playlist Items", new { @class = "form-label" })
+                        @Html.TextBoxFor(x => x.MaxSystemPlaylistItems, new { @class = "form-control form-control-sm", type = "number", step = "1", min = "1" })
                     </div>
-                    <div class="form-group">
-                        @Html.LabelFor(x => x.SelectedMusicPlaylistSort, "Music Sort")
-                        @Html.DropDownListFor(x => x.SelectedMusicPlaylistSort, playlistSortItems, null, new { @class = "custom-select" })
+                    <div class="mb-3">
+                        @Html.LabelFor(x => x.SelectedMusicPlaylistSort, "Music Sort", new { @class = "form-label" })
+                        @Html.DropDownListFor(x => x.SelectedMusicPlaylistSort, playlistSortItems, null, new { @class = "form-select form-select-sm" })
                     </div>
-                    <div class="form-group">
-                        @Html.LabelFor(x => x.SelectedPodcastPlaylistSort, "Podcast Sort")
-                        @Html.DropDownListFor(x => x.SelectedPodcastPlaylistSort, playlistSortItems, null, new { @class = "custom-select" })
+                    <div class="mb-3">
+                        @Html.LabelFor(x => x.SelectedPodcastPlaylistSort, "Podcast Sort", new { @class = "form-label" })
+                        @Html.DropDownListFor(x => x.SelectedPodcastPlaylistSort, playlistSortItems, null, new { @class = "form-select form-select-sm" })
                     </div>
-                    <div class="form-group">
-                        @Html.LabelFor(x => x.SelectedTelevisionPlaylistSort, "Television Sort")
-                        @Html.DropDownListFor(x => x.SelectedTelevisionPlaylistSort, playlistSortItems, null, new { @class = "custom-select" })
+                    <div>
+                        @Html.LabelFor(x => x.SelectedTelevisionPlaylistSort, "Television Sort", new { @class = "form-label" })
+                        @Html.DropDownListFor(x => x.SelectedTelevisionPlaylistSort, playlistSortItems, null, new { @class = "form-select form-select-sm" })
                     </div>
                 </div>
             </div>

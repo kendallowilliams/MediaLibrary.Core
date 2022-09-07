@@ -10,6 +10,7 @@ import AddNewSongModal from "./add-song-modal";
 import ManageDirectoriesModal from "./manage-directories-modal";
 import StringList from "../controls/string-list";
 import AddNewPodcastModal from "./add-podcast-modal";
+import { Modal } from "bootstrap";
 
 export default class SettingsModal {
     private modal: HTMLElement;
@@ -332,7 +333,7 @@ export default class SettingsModal {
     }
 
     public hide(): void {
-        $(this.modal).modal('hide');
+        Modal.getOrCreateInstance(this.modal).hide();
     }
 
     private updateMusicPaths(list: string[] = [], hasChanged: boolean = false): void {
@@ -389,10 +390,13 @@ export default class SettingsModal {
             enabled = this.configurations.MediaLibrary.properties.DarkMode,
             controls = HtmlControls.UIControls(),
             playerTimes = Array.from(controls.PlayerTimes),
-            playerShortTimes = Array.from(controls.PlayerShortTimes);
+            playerShortTimes = Array.from(controls.PlayerShortTimes),
+            views = HtmlControls.Views();
 
         $(body).toggleClass('bg-black text-white', enabled);
-        $(body).find('.jumbotron').toggleClass('bg-dark text-light', enabled);
+        $(views.HomeView).find('[data-container="HomeContent"]')
+            .toggleClass('bg-dark text-light', enabled)
+            .toggleClass('bg-light', !enabled);
         $(body).find('.navbar')
             .toggleClass('border rounded navbar-dark', enabled)
             .toggleClass('navbar-light bg-light', !enabled)
@@ -416,6 +420,11 @@ export default class SettingsModal {
             darkModeEnabled = this.configurations.MediaLibrary.properties.DarkMode;
 
         $container.find('.card').toggleClass('bg-transparent border', darkModeEnabled);
+        $container.find('.accordion-item, .accordion-button')
+            .toggleClass('bg-transparent', darkModeEnabled)
+            .find('.accordion-button')
+            .toggleClass('text-dark', !darkModeEnabled)
+            .toggleClass('text-light', darkModeEnabled);
         $container.find('.list-group-item')
             .toggleClass('bg-transparent border-top text-white', darkModeEnabled);
         $container.find('.modal-content').toggleClass('bg-dark text-white', darkModeEnabled);

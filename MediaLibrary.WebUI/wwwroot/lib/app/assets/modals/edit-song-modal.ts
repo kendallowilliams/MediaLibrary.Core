@@ -3,6 +3,7 @@ import LoadingModal from '../modals/loading-modal';
 import MediaLibraryConfiguration from '../models/configurations/media-library-configuration';
 import { MediaPages } from '../enums/enums';
 import { fetch_get, fetch_post } from '../utilities/fetch_service';
+import { Modal } from 'bootstrap';
 
 export default class EditSongModal {
     private modal: HTMLElement;
@@ -14,7 +15,7 @@ export default class EditSongModal {
 
     private initializeControls(): void {
         $(this.modal).on('show.bs.modal', e => {
-            const id = $(e.relatedTarget).attr('data-item-id'),
+            const id = $(e["relatedTarget"]).attr('data-item-id'),
                 success = data => {
                     this.clearEditSongModal();
                     $('#txtEditSongTitle').text(data.Title || 'Song')
@@ -32,7 +33,8 @@ export default class EditSongModal {
         });
 
         $('[data-song-action="save"]').on('click', e => {
-            const formData = new FormData();
+            const formData = new FormData(),
+                bsModal = Modal.getOrCreateInstance(this.modal);
 
             formData.set('Id', $('#txtEditId').val() as string);
             formData.set('Title', $('#txtEditTitle').val() as string);
@@ -41,11 +43,12 @@ export default class EditSongModal {
             formData.set('Genre', $('#txtEditGenre').val() as string);
             formData.set('Position', $('#txtEditPosition').val() as string);
 
-            $(this.modal).modal('hide').on('hidden.bs.modal', () => {
+            $(this.modal).on('hidden.bs.modal', () => {
                 LoadingModal.showLoading();
                 fetch_post('Music/UpdateSong', formData)
                     .then(_ => this.loadFunc(this.mediaLibraryConfiguration.properties.SelectedMediaPage));
             });
+            bsModal.hide();
         });
     }
 

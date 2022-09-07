@@ -3,6 +3,7 @@ import LoadingModal from "./loading-modal";
 import * as MessageBox from '../utilities/message-box';
 import DirectorySelector from "../controls/directory-selector";
 import { fetch_post } from "../utilities/fetch_service";
+import { Modal } from "bootstrap";
 
 export default class AddNewSongModal {
     private modal: HTMLElement;
@@ -48,7 +49,7 @@ export default class AddNewSongModal {
                     MessageBox.showError('Error', status);
                 };
 
-            $(this.modal).modal('hide');
+            this.hide();
             if ($form.get(0).checkValidity()) {
                 LoadingModal.showLoading();
                 fetch_post('Music/Upload', formData)
@@ -59,6 +60,6 @@ export default class AddNewSongModal {
     }
 
     public hide(): void {
-        $(this.modal).modal('hide');
+        Modal.getOrCreateInstance(this.modal).hide();
     }
 }

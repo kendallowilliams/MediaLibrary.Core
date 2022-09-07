@@ -12,7 +12,8 @@ import AddNewSongModal from "../../assets/modals/add-song-modal";
 import { getMusicTabEnumString, getMusicTabEnum } from "../../assets/enums/enum-functions";
 import Search from "./search";
 import * as MessageBox from "../../assets/utilities/message-box";
-import { fetch_post, loadHTML } from "../../assets/utilities/fetch_service";
+import { loadHTML } from "../../assets/utilities/fetch_service";
+import { Tab } from "bootstrap";
 
 export default class Music extends BaseClass implements IView {
     private readonly mediaView: HTMLElement;
@@ -35,7 +36,8 @@ export default class Music extends BaseClass implements IView {
             this.playFunc.bind(this),
             this.loadAlbum.bind(this),
             this.loadArtist.bind(this),
-            this.updateActiveMediaFunc.bind(this)
+            this.updateActiveMediaFunc.bind(this),
+            this.toggleDarkMode.bind(this, this.mediaView)
         );
     }
 
@@ -43,7 +45,8 @@ export default class Music extends BaseClass implements IView {
         const success: () => void = () => {
             this.initializeControls();
             if (this.tooltipsEnabled()) /*then*/ loadTooltips(this.mediaView);
-            $('[data-music-tab="' + getMusicTabEnumString(this.musicConfiguration.properties.SelectedMusicTab) + '"]').tab('show');
+            $('[data-music-tab="' + getMusicTabEnumString(this.musicConfiguration.properties.SelectedMusicTab) + '"]')
+                .each((index, tab) => Tab.getOrCreateInstance(tab).show());
             if (this.musicConfiguration.properties.SelectedMusicPage === MusicPages.Search) /*then*/ this.search.search();
             this.initContinuePlaybackBtns();
             this.toggleDarkMode(this.mediaView);
@@ -74,9 +77,9 @@ export default class Music extends BaseClass implements IView {
         $('[data-play-id]').on('click', e => this.playFunc(e.currentTarget as HTMLButtonElement, playSingle));
         this.initializeAlbumAndArtistControls(this.mediaView);
 
-        $(HtmlControls.UIControls().MusicTabList).find('*[data-toggle="tab"]').on('shown.bs.tab', e => {
+        $(HtmlControls.UIControls().MusicTabList).find('*[data-bs-toggle="tab"]').on('shown.bs.tab', e => {
             const $newTab = $(e.target),
-                $oldTab = $(e.relatedTarget),
+                $oldTab = $(e["relatedTarget"]),
                 $newView = $($newTab.attr('href')),
                 $oldView = $($oldTab.attr('href')),
                 url = $newView.attr('data-load-url'),
@@ -87,7 +90,7 @@ export default class Music extends BaseClass implements IView {
                     $('[data-group-url]').on('click', _e => {
                         const $btn = $(_e.currentTarget),
                             url = $btn.attr('data-group-url'),
-                            $container = $($btn.attr('data-target'));
+                            $container = $($btn.attr('data-bs-target'));
                         if (url) {
                             LoadingModal.showLoading();
                             disposeTooltips($container[0]);
@@ -105,7 +108,7 @@ export default class Music extends BaseClass implements IView {
                         }
                     });
                     this.initializeAlbumAndArtistControls($newView[0]);
-                    $('[data-group-url][data-target="#collapse-songs-0"]').trigger('click');
+                    $('[data-group-url][data-bs-target="#collapse-songs-0"]').trigger('click');
                     this.updateActiveMediaFunc();
                     this.toggleDarkMode(this.mediaView);
                 };

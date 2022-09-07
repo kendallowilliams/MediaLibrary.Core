@@ -8,6 +8,7 @@ import { fetch_get } from '../utilities/fetch_service';
 import PlayerControlsModal from '../modals/player-controls-modal';
 import MediaLibraryConfiguration from '../models/configurations/media-library-configuration';
 import { openFullscreen } from '../utilities/element';
+import { Popover } from 'bootstrap';
 
 export default class PlayerControls {
     private volumeSliders: HTMLElement[];
@@ -44,17 +45,16 @@ export default class PlayerControls {
             this.controlsFunctions.toggleAudioVisualizer();
         });
         $(controls.PlayerSliders).slider({ min: 0, max: 100 });
-        $(containers.PlayerVolumeContainers).each((index: number, element: HTMLElement) => {
-            const $container = $(element),
+        $(containers.PlayerVolumeContainers).each((index: number, container: HTMLElement) => {
+            const $container = $(container),
                 $volumeSlider = $('<div class="m-1 volume-slider" data-orientation="vertical"></div>');
 
             this.volumeSliders.push($volumeSlider.get(0));
-            $container.popover({
+            new Popover(container, {
                 trigger: 'hover',
                 content: $volumeSlider.get(0),
                 placement: 'top',
-                html: true,
-                container: element
+                html: true
             });
         });
         $(controls.VolumeSliders).add(this.volumeSliders).each((index: number, element: HTMLElement) => {

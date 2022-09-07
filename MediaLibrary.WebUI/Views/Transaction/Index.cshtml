@@ -12,31 +12,23 @@
     <h4>Transactions</h4>
     <div><hr /></div>
     <div class="row m-0 p-0 overflow-auto flex-fill">
-        <div class="col-auto border-right">
+        <div class="col-auto border-end">
             @using (Html.BeginForm(FormMethod.Post))
             {
                 <div class="input-group input-group-sm mb-3">
-                    <div class="input-group-prepend">
-                        <div class="input-group-text" style="width: 100px">From</div>
-                    </div>
+                    <div class="input-group-text" style="width: 100px">From</div>
                     @Html.TextBoxFor(x => x.FromDate, new { type = "date", @class = "form-control", max = DateTime.Now.ToString("yyyy-MM-dd") })
                 </div>
                 <div class="input-group input-group-sm mb-3">
-                    <div class="input-group-prepend">
-                        <div class="input-group-text" style="width: 100px">To</div>
-                    </div>
+                    <div class="input-group-text" style="width: 100px">To</div>
                     @Html.TextBoxFor(x => x.ToDate, new { type = "date", @class = "form-control", max = DateTime.Now.ToString("yyyy-MM-dd") })
                 </div>
                 <div class="input-group input-group-sm mb-3">
-                    <div class="input-group-prepend">
-                        <div class="input-group-text" style="width: 100px">Type</div>
-                    </div>
+                    <div class="input-group-text" style="width: 100px">Type</div>
                     @Html.ListBoxFor(x => x.SelectedTransactionTypes, new MultiSelectList(Model.TransactionTypes), new { @class = "custom-select" })
                 </div>
                 <div class="input-group input-group-sm mb-3">
-                    <div class="input-group-prepend">
-                        <div class="input-group-text" style="width: 100px">Status</div>
-                    </div>
+                    <div class="input-group-text" style="width: 100px">Status</div>
                     @Html.ListBoxFor(x => x.SelectedTransactionStatuses, new MultiSelectList(Model.TransactionStatuses), new { @class = "custom-select" })
                 </div>
                 <div class="text-right">

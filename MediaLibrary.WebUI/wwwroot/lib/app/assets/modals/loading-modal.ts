@@ -1,9 +1,11 @@
-﻿import HtmlControls from '../controls/html-controls';
+﻿import { Modal } from 'bootstrap';
+import HtmlControls from '../controls/html-controls';
 
 export default {
     showLoading: function (): void {
-        var $modal = $(HtmlControls.Modals().LoadingModal),
-            processCount = parseInt($modal.attr('data-process-count'));
+        const bsModal = Modal.getOrCreateInstance(HtmlControls.Modals().LoadingModal),
+            $modal = $(HtmlControls.Modals().LoadingModal);
+        let processCount = parseInt($modal.attr('data-process-count'));
 
         if (!isNaN(processCount)) {
             $modal.attr('data-process-count', processCount++);
@@ -11,16 +13,17 @@ export default {
             $modal.attr('data-process-count', 1);
         }
 
-        $modal.modal('show');
+        bsModal.show();
     },
     hideLoading: function (): void {
-        var $modal = $(HtmlControls.Modals().LoadingModal),
-            processCount = parseInt($modal.attr('data-process-count'));
+        const bsModal = Modal.getOrCreateInstance(HtmlControls.Modals().LoadingModal),
+            $modal = $(HtmlControls.Modals().LoadingModal);
+        let processCount = parseInt($modal.attr('data-process-count'));
 
         if (!isNaN(processCount)) {
             $modal.attr('data-process-count', processCount--);
 
-            if (processCount == 0) /*then*/ $modal.modal('hide');
+            if (processCount == 0) /*then*/ bsModal.hide();
         } else {
             $modal.attr('data-process-count', 0);
         }
