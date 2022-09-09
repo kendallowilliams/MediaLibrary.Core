@@ -46,8 +46,7 @@ export default class PlayerControls {
         });
         $(controls.PlayerSliders).slider({ min: 0, max: 100 });
         $(containers.PlayerVolumeContainers).each((index: number, container: HTMLElement) => {
-            const $container = $(container),
-                $volumeSlider = $('<div class="m-1 volume-slider" data-orientation="vertical"></div>');
+            const $volumeSlider = $('<div class="m-1 volume-slider" data-orientation="vertical"></div>');
 
             this.volumeSliders.push($volumeSlider.get(0));
             new Popover(container, {

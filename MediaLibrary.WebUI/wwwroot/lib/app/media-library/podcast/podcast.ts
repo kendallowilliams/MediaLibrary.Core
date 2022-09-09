@@ -9,7 +9,6 @@ import { disposeTooltips, loadTooltips, disposePopovers } from "../../assets/uti
 import { getPodcastSortEnum, getPodcastFilterEnum } from "../../assets/enums/enum-functions";
 import * as MessageBox from '../../assets/utilities/message-box'
 import { fetch_get, fetch_post, loadHTML } from "../../assets/utilities/fetch_service";
-import { Popover } from "bootstrap";
 import BlankDismissableModal from "../../assets/modals/blank-dismissable-modal";
 
 export default class Podcast extends BaseClass implements IView {
