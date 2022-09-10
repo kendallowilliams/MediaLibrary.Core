@@ -150,6 +150,8 @@ namespace MediaLibrary.WebUI.Controllers
         {
             var podcastItem = await dataService.Get<PodcastItem>(item => item.Id == id);
 
+            podcastItem.IsDownloading = await GetActiveDownloadIds().ContinueWith(task => task.Result.Contains(podcastItem.Id));
+
             return PartialView("Controls/PodcastItemOptions", podcastItem);
         }
 
