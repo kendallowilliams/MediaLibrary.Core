@@ -122,16 +122,20 @@ export default class Podcast extends BaseClass implements IView {
                                 id = $btn.attr('data-item-id'),
                                 formData = new FormData(),
                                 isDownload = $btn.attr('data-podcast-action') === 'download',
-                                url = isDownload ? 'Podcast/DownloadPodcastItem' : 'Podcast/RemovePodcastItemDownload';
+                                url = isDownload ? 'Podcast/DownloadPodcastItem' : 'Podcast/RemovePodcastItemDownload',
+                                $badge = $(this.podcastView).find('.badge[data-podcast-download-id="' + id + '"]'),
+                                $spinner = $('<i class="fas fa-spinner fa-spin"></i>');
 
                             formData.set('id', id);
-                            LoadingModal.showLoading();
+                            $badge.toggleClass('d-none', !isDownload)
+                                .text('DOWNLOADING ')
+                                .append($spinner);
                             fetch_post(url, formData)
                                 .then(_ => {
-                                    modal.hide();
-                                    LoadingModal.hideLoading();
-                                    $('[data-podcast-year="' + this.getSelectedYear() + '"]').click();
-                                });
+                                    $badge.toggleClass('d-none', !isDownload).text('DOWNLOADED');
+                                })
+                                .catch(response => $badge.addClass('d-none'));
+                            modal.hide();
                         });
                         $(htmlElement).find('*[data-podcast-action="mark-played"]').on('input', e => {
                             const $switch = $(e.currentTarget),

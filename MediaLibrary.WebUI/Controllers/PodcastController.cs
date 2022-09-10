@@ -183,7 +183,7 @@ namespace MediaLibrary.WebUI.Controllers
                 if (!existingTransaction)
                 {
                     await transactionService.UpdateTransactionInProcess(transaction);
-                    backgroundTaskQueue.QueueBackgroundWorkItem(async task => await podcastService.AddPodcastFile(transaction, id).ContinueWith(_ => podcastUIService.ClearPodcasts()));
+                    await podcastService.AddPodcastFile(transaction, id).ContinueWith(_ => podcastUIService.ClearPodcasts());
                 }
                 else
                 {
