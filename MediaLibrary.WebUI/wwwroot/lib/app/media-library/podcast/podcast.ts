@@ -167,7 +167,6 @@ export default class Podcast extends BaseClass implements IView {
             this.updateActiveMediaFunc();
             this.toggleDarkMode(this.mediaView);
             LoadingModal.hideLoading();
-            this.refreshPodcastDownloads();
         },
             id = this.podcastConfiguration.properties.SelectedPodcastId.toString(),
             year = $(item).attr('data-podcast-year'),
@@ -179,28 +178,6 @@ export default class Podcast extends BaseClass implements IView {
             loadHTML(this.podcastView, 'Podcast/GetPodcastItems', { id: id, year: year, filter: filter })
                 .then(_ => success());
         }
-    }
-
-    private refreshPodcastDownloads(): void {
-        const $items = $(this.podcastView).find('[data-active-download="true"]');
-
-        if ($items.length > 0) /*then*/ window.setTimeout(() => {
-            $items.each((index, element) => {
-                const id = $(element).attr('data-episode-id');
-
-                fetch_get('Podcast/IsDownloading', { id: id })
-                    .then(response => response.text().then(isDownloading => isDownloading === 'true'))
-                    .then(isDownloading => {
-                        if (isDownloading) {
-                            this.refreshPodcastDownloads();
-                        } else {
-                            $(element).removeAttr('data-active-download');
-                            $('[data-podcast-action="downloading"][data-item-id="' + id + '"]').addClass('d-none');
-                            $('[data-podcast-action="download"][data-item-id="' + id + '"]').removeClass('d-none');
-                        }
-                    });
-            });
-        }, 5000);
     }
 
     private updateMobileYears(position: number): void {
