@@ -159,6 +159,7 @@ export default class Podcast extends BaseClass implements IView {
                         });
 
                         LoadingModal.hideLoading();
+                        this.toggleDarkMode(htmlElement)
                         modal.show();
                     }).catch((response: Response) => response.text().then(message => error(message)));
             });
