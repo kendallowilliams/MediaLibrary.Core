@@ -12,11 +12,7 @@
                         <div class="mt-0 font-weight-bold text-truncate">@(item.Title)</div>
                         <div class="d-flex">
                             <small class="badge text-bg-info text-truncate">@(item.PublishDate.ToShortDateString())</small>
-
-                            @if (item.IsDownloaded)
-                            {
-                                <small class="badge text-bg-info ms-2">DOWNLOADED</small>
-                            }
+                            <small class="badge text-bg-info ms-2 @(item.IsDownloaded ? string.Empty : "d-none")" data-podcast-download-id="@item.Id">DOWNLOADED</small>
 
                             @if (item.IsPlayed)
                             {
