@@ -53,7 +53,8 @@ export default class PlayerControls {
                 trigger: 'hover',
                 content: $volumeSlider.get(0),
                 placement: 'top',
-                html: true
+                html: true,
+                container: container
             });
         });
         $(controls.VolumeSliders).add(this.volumeSliders).each((index: number, element: HTMLElement) => {
