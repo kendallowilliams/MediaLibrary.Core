@@ -176,7 +176,6 @@ export default class Podcast extends BaseClass implements IView {
         if (item) {
             LoadingModal.showLoading();
             disposeTooltips(this.podcastView);
-            disposePopovers(this.podcastView);
             loadHTML(this.podcastView, 'Podcast/GetPodcastItems', { id: id, year: year, filter: filter })
                 .then(_ => success());
         }
