@@ -85,6 +85,7 @@
         WarningModal: document.getElementById('warning-modal'),
         SettingsModal: document.getElementById('settings-modal'),
         QuestionModal: document.getElementById('question-modal'),
-        PlayerControlsModal: document.getElementById('player-controls-modal')
+        PlayerControlsModal: document.getElementById('player-controls-modal'),
+        BlankDismissableModal: document.getElementById('blank-dismissable-modal')
     })
 }

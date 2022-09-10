@@ -1,4 +1,5 @@
-﻿import HtmlControls from '../controls/html-controls';
+﻿import { Modal } from 'bootstrap';
+import HtmlControls from '../controls/html-controls';
 import { getMessageBoxConfirmTypeEnumString } from '../enums/enum-functions';
 import { MessageBoxConfirmType } from '../enums/enums';
 
@@ -36,6 +37,7 @@ function initialize(): void {
 
 export function alert(title: string, message: string, isHtml = false): void {
     const $modal = $(HtmlControls.Modals().AlertModal),
+        bsModal = Modal.getOrCreateInstance(HtmlControls.Modals().AlertModal),
         $title = $modal.find('.modal-title'),
         $body = $modal.find('.modal-body');
 
@@ -49,29 +51,31 @@ export function alert(title: string, message: string, isHtml = false): void {
         $body.text(message);
     }
 
-    $modal.modal('show');
+    bsModal.show();
 }
 
 export function showError(title: string, message: string): void {
     const $modal = $(HtmlControls.Modals().ErrorModal),
+        bsModal = Modal.getOrCreateInstance(HtmlControls.Modals().ErrorModal),
         $title = $modal.find('.modal-title'),
         $body = $modal.find('.modal-body');
 
     if ($modal.attr('data-initialized') !== 'true') /*then*/ initialize();
     $title.text(title);
     $body.text(message);
-    $modal.modal('show');
+    bsModal.show();
 }
 
 export function showWarning(title: string, message: string): void {
     const $modal = $(HtmlControls.Modals().WarningModal),
+        bsModal = Modal.getOrCreateInstance(HtmlControls.Modals().WarningModal),
         $title = $modal.find('.modal-title'),
         $body = $modal.find('.modal-body');
 
     if ($modal.attr('data-initialized') !== 'true') /*then*/ initialize();
     $title.text(title);
     $body.text(message);
-    $modal.modal('show');
+    bsModal.show();
 }
 
 export function confirm(title: string, message: string,
@@ -79,6 +83,7 @@ export function confirm(title: string, message: string,
     positiveCallback: () => void,
     negativeCallback: () => void = () => null): void {
     const $modal = $(HtmlControls.Modals().ConfirmModal),
+        bsModal = Modal.getOrCreateInstance(HtmlControls.Modals().ConfirmModal),
         $title = $modal.find('.modal-title'),
         $body = $modal.find('.modal-body'),
         $btnContainers = $modal.find('[data-buttons]'),
@@ -92,22 +97,23 @@ export function confirm(title: string, message: string,
             positiveCallback();
             $modal.off('hide.bs.modal');
         });
-        $modal.modal('hide');
+        bsModal.hide();
     });
     $btnContainer.find('[data-button="no-callback"]').off('click').on('click', () => {
         $modal.on('hide.bs.modal', () => {
             negativeCallback();
             $modal.off('hide.bs.modal');
         });
-        $modal.modal('hide');
+        bsModal.hide();
     });
     $btnContainers.addClass('d-none');
     $btnContainer.removeClass('d-none');
-    $modal.modal('show');
+    bsModal.show();
 }
 
 export function askQuestion(title: string, question: string, callback: (answer: string) => void = _ => null): void {
     const $modal = $(HtmlControls.Modals().QuestionModal),
+        bsModal = Modal.getOrCreateInstance(HtmlControls.Modals().QuestionModal),
         $title = $modal.find('.modal-title'),
         $body = $modal.find('.modal-body'),
         $footer = $modal.find('.modal-footer'),
@@ -120,7 +126,7 @@ export function askQuestion(title: string, question: string, callback: (answer: 
     $label.text(question);
     $btn.on('click', () => {
         callback($input.val() as string);
-        $modal.modal('hide');
+        bsModal.hide();
     });
-    $modal.modal('show');
+    bsModal.show();
 }

@@ -3,13 +3,11 @@
         <div class="modal-content">
             <div class="modal-header d-none">
                 <h5 class="modal-title">Player Controls</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body">
                 <div class="row mb-3">
-                    <div class="col-auto border-right">
+                    <div class="col-auto border-end">
                         <h6 style="width: 100px">Options</h6>
                     </div>
                     <div class="col">
@@ -30,14 +28,14 @@
                             <i class="fa fa-expand"></i>
                         </button>
                         <button class="btn btn-sm btn-outline-secondary @(HtmlControlsRepository.PlayerAudioVisualizerButtonsClass)"
-                                data-tooltip="tooltip" title="Toggle audio visualizer">
+                                data-bs-tooltip="tooltip" title="Toggle audio visualizer">
                             <i class="fa fa-eye"></i>
                         </button>
                     </div>
                 </div>
                 <div class="row align-items-center">
-                    <div class="col-auto border-right">
-                        <h6 style="width: 100px">Volume <span class="badge badge-info @HtmlControlsRepository.VolumeTextsClass"></span></h6>
+                    <div class="col-auto border-end">
+                        <h6 style="width: 100px">Volume <span class="badge text-bg-info @HtmlControlsRepository.VolumeTextsClass"></span></h6>
                     </div>
                     <div class="col d-flex">
                         <div class="flex-fill volume-slider"></div>
@@ -45,7 +43,7 @@
                 </div>
             </div>
             <div class="modal-footer d-none">
-                <button type="button" class="btn btn-outline-secondary" data-dismiss="modal" data-tooltip="tooltip" title="Close">Close</button>
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal" data-bs-tooltip="tooltip" title="Close">Close</button>
             </div>
         </div>
     </div>

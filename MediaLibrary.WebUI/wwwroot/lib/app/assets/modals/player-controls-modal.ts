@@ -1,4 +1,5 @@
-﻿import HtmlControls from '../controls/html-controls';
+﻿import { Modal } from 'bootstrap';
+import HtmlControls from '../controls/html-controls';
 import PlayerControls from '../controls/player-controls';
 import { MediaPages, MediaTypes } from '../enums/enums';
 import MediaLibraryConfiguration from '../models/configurations/media-library-configuration';
@@ -41,7 +42,7 @@ export default class PlayerControlsModal {
     }
 
     public hide(): void {
-        $(this.modal).modal('hide');
+        Modal.getOrCreateInstance(this.modal).hide();
     }
 
     public playerControlsModalChanged(): void {

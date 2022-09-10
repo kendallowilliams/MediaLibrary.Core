@@ -1,7 +1,7 @@
 ﻿@model IEnumerable<Playlist>
 
 <div class="row">
-    <div class="col-auto border-right">
+    <div class="col-auto border-end">
         <h6>Playlists</h6>
     </div>
     <div class="col d-flex flex-row flex-wrap">
@@ -9,15 +9,11 @@
                                        .OrderBy(playlist => playlist.Name, StringComparer.OrdinalIgnoreCase))
         {
             <div class="input-group input-group-sm w-auto m-1">
-                <div class="input-group-prepend">
-                    <span class="input-group-text">@(playlist.Name)</span>
-                </div>
-                <div class="input-group-append">
-                    <button class="btn btn-sm btn-outline-primary" data-tooltip="tooltip" title="@(playlist.Name)" data-playlist-action="add"
-                        data-playlist-type="@((Enums.PlaylistTabs)playlist.Type)" data-playlist-item="enabled" data-playlist-id="@(playlist.Id)">
-                        <i class="fa fa-plus"></i>
-                    </button>
-                </div>
+                <span class="input-group-text">@(playlist.Name)</span>
+                <button class="btn btn-sm btn-outline-primary" data-bs-tooltip="tooltip" title="@(playlist.Name)" data-playlist-action="add"
+                    data-playlist-type="@((Enums.PlaylistTabs)playlist.Type)" data-playlist-item="enabled" data-playlist-id="@(playlist.Id)">
+                    <i class="fa fa-plus"></i>
+                </button>
             </div>
         }
     </div>

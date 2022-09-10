@@ -14,7 +14,8 @@ export default class Search extends BaseClass {
         private playFunc: (btn: HTMLButtonElement, single: boolean) => void,
         private loadAlbum: (id: number, callback: () => void) => void,
         private loadArtist: (id: number, callback: () => void) => void,
-        private updateActiveMediaFunc: () => void = () => null) {
+        private updateActiveMediaFunc: () => void = () => null,
+        private toggleDarkMode: () => void = () => null) {
         super();
         this.searchDelay = 1; 
     }
@@ -69,7 +70,7 @@ export default class Search extends BaseClass {
         });
     }
 
-    search() {
+    public search() : void {
         const input = HtmlControls.UIControls().SearchQuery,
             query = $(input).val() as string,
             $btn = $('[data-music-action="search-music"]'),
@@ -104,6 +105,7 @@ export default class Search extends BaseClass {
                         $('[data-artist-id]').on('click', _e => this._loadArtist(parseInt($(_e.currentTarget).attr('data-artist-id'))));
                         $('[data-album-id]').on('click', _e => this._loadAlbum(parseInt($(_e.currentTarget).attr('data-album-id'))));
                         this.updateActiveMediaFunc();
+                        this.toggleDarkMode();
                         showHideLoading(false);
                         LoadingModal.hideLoading();
                         $(HtmlControls.UIControls().SearchQuery).focus();

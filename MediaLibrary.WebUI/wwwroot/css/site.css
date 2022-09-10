@@ -33,3 +33,20 @@ textarea {
 .bg-black {
     background-color: black;
 }
+
+.media {
+    display: flex;
+    align-items: flex-start;
+}
+
+.media:first-child {
+    flex: 0 0 auto;
+}
+
+.media .media-body {
+    flex: 1 1 auto;
+}
+
+.media:last-child {
+    flex: 0 0 auto;
+}

@@ -1,27 +1,46 @@
-﻿export function loadTooltips(parent: HTMLElement): void {
-    if (parent) /*then*/ $(parent).find('*[data-tooltip="tooltip"]')
+﻿import bootstrap = require("bootstrap");
+
+export function loadTooltips(parent: HTMLElement): void {
+    if (parent) /*then*/ $(parent).find('*[data-bs-tooltip="tooltip"]')
         .not('[data-disabled]')
-        .tooltip({ trigger: 'hover', placement: 'auto' });
+        .each((index, element) => {
+            new bootstrap.Tooltip(element, { trigger: 'hover', placement: 'auto' });
+        });
 }
 
 export function disposeTooltips(parent: HTMLElement): void {
-    if (parent) /*then*/ $(parent).find('*[data-tooltip="tooltip"]').tooltip('dispose');
+    if (parent) /*then*/ $(parent).find('*[data-bs-tooltip="tooltip"]')
+        .each((index, element) => {
+            bootstrap.Tooltip.getInstance(element)?.dispose();
+        });
 }
 
 export function loadAllTooltips(): void {
-    if (parent) /*then*/ $('*[data-tooltip="tooltip"]')
+    $('*[data-bs-tooltip="tooltip"]')
         .not('[data-disabled]')
-        .tooltip({ trigger: 'hover', placement: 'auto' });
+        .each((index, element) => {
+            new bootstrap.Tooltip(element, { trigger: 'hover', placement: 'auto' });
+        });
 }
 
 export function disposeAllTooltips(): void {
-    if (parent) /*then*/ $('*[data-tooltip="tooltip"]').tooltip('dispose');
+    $('*[data-bs-tooltip="tooltip"]')
+        .each((index, element) => {
+            bootstrap.Tooltip.getInstance(element)?.dispose();
+        });
 }
 
 export function loadPopovers(parent: HTMLElement): void {
-    if (parent) /*then*/ $(parent).find('*[data-toggle="popover"]').popover({ trigger: 'hover' });
+    if (parent) /*then*/ $(parent).find('*[data-bs-toggle="popover"]')
+        .each((index, element) => {
+            new bootstrap.Popover(element, { trigger: 'hover' });
+        });
+
 }
 
-export function disposePopovers(element: HTMLElement): void {
-    if (element) /*then*/ $(element).find('*[data-toggle="popover"]').popover('dispose');
+export function disposePopovers(parent: HTMLElement): void {
+    if (parent) /*then*/ $(parent).find('*[data-bs-toggle="popover"]')
+        .each((index, element) => {
+            bootstrap.Popover.getInstance(element)?.dispose();
+        });
 }

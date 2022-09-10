@@ -7,35 +7,35 @@
 
 <div class="d-flex flex-column flex-fill overflow-auto">
     <div class="row m-0 p-0 mb-3">
-        <div class="col-auto border-right">
+        <div class="col-auto border-end">
             <h6 style="width: 100px">Interface</h6>
         </div>
         <div class="col">
             <div class="row">
                 <div class="col">
-                    <div class="form-group">
-                        @Html.LabelFor(x => x.SelectedPodcastSort, "Podcast Sort")
-                        @Html.DropDownListFor(x => x.SelectedPodcastSort, podcastSortList, null, new { @class = "custom-select custom-select-sm" })
+                    <div class="mb-3">
+                        @Html.LabelFor(x => x.SelectedPodcastSort, "Podcast Sort", new { @class = "form-label" })
+                        @Html.DropDownListFor(x => x.SelectedPodcastSort, podcastSortList, null, new { @class = "form-select form-select-sm" })
                     </div>
-                    <div class="form-group">
-                        @Html.LabelFor(x => x.SelectedPodcastFilter, "Episode Filter")
-                        @Html.DropDownListFor(x => x.SelectedPodcastFilter, podcastFilterList, null, new { @class = "custom-select custom-select-sm" })
+                    <div>
+                        @Html.LabelFor(x => x.SelectedPodcastFilter, "Episode Filter", new { @class = "form-label" })
+                        @Html.DropDownListFor(x => x.SelectedPodcastFilter, podcastFilterList, null, new { @class = "form-select form-select-sm" })
                     </div>
                 </div>
             </div>
         </div>
     </div>
     <div class="row m-0 p-0">
-        <div class="col-auto border-right">
+        <div class="col-auto border-end">
             <h6 style="width: 100px">Actions</h6>
         </div>
         <div class="col">
             <div class="mb-3">
-                <button type="button" class="btn btn-sm btn-outline-secondary" data-tooltip="tooltip" title="Refresh"
+                <button type="button" class="btn btn-sm btn-outline-secondary" data-bs-tooltip="tooltip" title="Refresh"
                         data-podcast-settings-action="refresh">
                     <i class="fa fa-sync"></i>
                 </button>
-                <button type="button" class="btn btn-sm btn-outline-secondary" data-tooltip="tooltip" title="Add podcast"
+                <button type="button" class="btn btn-sm btn-outline-secondary" data-bs-tooltip="tooltip" title="Add podcast"
                         data-podcast-settings-action="add"><i class="fa fa-plus"></i></button>
             </div>
         </div>

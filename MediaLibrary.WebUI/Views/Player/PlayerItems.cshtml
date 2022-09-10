@@ -17,11 +17,11 @@
                             <div class="flex-fill"></div>
                         </div>
                     </div>
-                    <div>
-                        <button type="button" class="btn btn-sm btn-outline-secondary" data-item-index="@(item.Index)" data-tooltip="tooltip" title="Play">
+                    <div class="text-nowrap">
+                        <button type="button" class="btn btn-sm btn-outline-secondary" data-item-index="@(item.Index)" data-bs-tooltip="tooltip" title="Play">
                             <i class="fa fa-play"></i>
                         </button>
-                        <button type="button" class="btn btn-sm btn-outline-secondary d-none d-lg-inline-block" data-toggle="modal" data-target="#@(HtmlControlsRepository.EditSongModalId)" data-item-id="@(item.Song.Id)" data-tooltip="tooltip"
+                        <button type="button" class="btn btn-sm btn-outline-secondary d-none d-lg-inline-block" data-bs-toggle="modal" data-bs-target="#@(HtmlControlsRepository.EditSongModalId)" data-item-id="@(item.Song.Id)" data-bs-tooltip="tooltip"
                                 title="Edit">
                             <i class="fa fa-edit"></i>
                         </button>
@@ -48,8 +48,8 @@ else if (Model.Configuration.SelectedMediaType == Enums.MediaTypes.Podcast && Mo
                             <div class="flex-fill"></div>
                         </div>
                     </div>
-                    <div>
-                        <button type="button" class="btn btn-sm btn-outline-secondary" data-item-index="@(item.Index)" data-tooltip="tooltip" title="Play">
+                    <div class="text-nowrap">
+                        <button type="button" class="btn btn-sm btn-outline-secondary" data-item-index="@(item.Index)" data-bs-tooltip="tooltip" title="Play">
                             <i class="fa fa-play"></i>
                         </button>
                     </div>
@@ -75,8 +75,8 @@ else if (Model.Configuration.SelectedMediaType == Enums.MediaTypes.Television &&
                             <div class="flex-fill"></div>
                         </div>
                     </div>
-                    <div>
-                        <button type="button" class="btn btn-sm btn-outline-secondary" data-item-index="@(item.Index)" data-tooltip="tooltip" title="Play">
+                    <div class="text-nowrap">
+                        <button type="button" class="btn btn-sm btn-outline-secondary" data-item-index="@(item.Index)" data-bs-tooltip="tooltip" title="Play">
                             <i class="fa fa-play"></i>
                         </button>
                     </div>

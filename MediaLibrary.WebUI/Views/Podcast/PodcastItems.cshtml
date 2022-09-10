@@ -7,45 +7,42 @@
         {
             <li class="list-group-item" data-episode-id="@(item.Id)" data-active-download="@(Model.DownloadIds.Contains(item.Id) ? "true" : "false")">
                 <div class="media">
-                    <img class="mr-3 track-img" src="@(Url.Content("~/images/audio.png"))" title="@(item.Title)">
+                    <img class="me-3 track-img" src="@(Url.Content("~/images/audio.png"))" title="@(item.Title)">
                     <div class="media-body d-flex flex-column text-truncate">
                         <div class="mt-0 font-weight-bold text-truncate">@(item.Title)</div>
                         <div class="d-flex">
-                            <small class="badge badge-info text-truncate">@(item.PublishDate.ToShortDateString())</small>
+                            <small class="badge text-bg-info text-truncate">@(item.PublishDate.ToShortDateString())</small>
 
                             @if (item.IsDownloaded)
                             {
-                                <small class="badge badge-info ml-2">DOWNLOADED</small>
+                                <small class="badge text-bg-info ms-2">DOWNLOADED</small>
                             }
 
                             @if (item.IsPlayed)
                             {
-                                <small class="badge badge-info ml-2">PLAYED</small>
+                                <small class="badge text-bg-info ms-2">PLAYED</small>
                             }
                             else if (item.IsStarted)
                             {
-                                <small class="badge badge-info ml-2">STARTED</small>
+                                <small class="badge text-bg-info ms-2">STARTED</small>
                             }
                             <div class="flex-fill"></div>
                         </div>
                     </div>
-                    <div>
+                    <div class="text-nowrap">
                         <button class="btn btn-sm btn-outline-secondary" data-play-id="@(item.Id)" data-media-type="@(Enums.MediaTypes.Podcast)"
-                                data-tooltip="tooltip" title="Play">
+                                data-bs-tooltip="tooltip" title="Play">
                             <i class="fa fa-play"></i>
                         </button>
                         @if (Model.HasPlaylists)
                         {
                             <button type="button" class="btn btn-sm btn-outline-secondary" data-playlist-url="@(Url.Action("AddPodcastItemToPlaylist", "Podcast"))" data-item-id="@(item.Id)"
-                                    data-toggle="modal" data-target="#@(HtmlControlsRepository.AddToPlaylistModalId)" data-tooltip="tooltip" title="Add to playlist"
+                                    data-bs-toggle="modal" data-bs-target="#@(HtmlControlsRepository.AddToPlaylistModalId)" data-bs-tooltip="tooltip" title="Add to playlist"
                                     data-playlist-type="@(nameof(Enums.PlaylistTabs.Podcast))">
                                 <i class="fa fa-plus"></i>
                             </button>
                         }
-                        <button class="btn btn-sm btn-outline-secondary" data-podcast-item-options-popover="@(item.Id)">
-                            <i class="fa fa-ellipsis-v"></i>
-                        </button>
-                        <div class="d-none"><partial name="~/Views/Podcast/Controls/PodcastItemOptions.cshtml" model="(item, Model.DownloadIds.Contains(item.Id))" /></div>
+                        <button class="btn btn-sm btn-outline-secondary" data-podcast-item-id="@(item.Id)"><i class="fa fa-ellipsis-v"></i></button>
                     </div>
                 </div>
             </li>
@@ -56,3 +53,5 @@ else
 {
     <span>No episodes added.</span>
 }
+
+<partial name="~/Views/Shared/Modals/BlankDismissableModal.cshtml" />
