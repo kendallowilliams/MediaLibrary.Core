@@ -13,7 +13,7 @@
                         <i class="fa fa-file-circle-minus"></i>
                     </button>
                 }
-                else
+                else if (!Model.IsDownloading)
                 {
                     <button class="btn btn-sm btn-outline-secondary" data-podcast-action="download" data-item-id="@Model.Id">
                         <i class="fa fa-download"></i>

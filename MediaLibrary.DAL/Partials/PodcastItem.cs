@@ -2,11 +2,8 @@
 using MediaLibrary.DAL.Models.Interfaces;
 using MediaLibrary.DAL.Partials.Interfaces;
 using System;
-using System.Collections.Generic;
 using IO_File = System.IO.File;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace MediaLibrary.DAL.Models
 {
@@ -23,6 +20,9 @@ namespace MediaLibrary.DAL.Models
         }
 
         public bool IsDownloaded { get => !string.IsNullOrWhiteSpace(this.File) && IO_File.Exists(this.File); }
+
+        [NotMapped]
+        public bool IsDownloading { get; set; }
 
         public bool IsPlayed { get => LastPlayedDate.HasValue; }
 
