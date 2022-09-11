@@ -30,14 +30,6 @@
                                 data-bs-tooltip="tooltip" title="Play">
                             <i class="fa fa-play"></i>
                         </button>
-                        @if (Model.HasPlaylists)
-                        {
-                            <button type="button" class="btn btn-sm btn-outline-secondary" data-playlist-url="@(Url.Action("AddPodcastItemToPlaylist", "Podcast"))" data-item-id="@(item.Id)"
-                                    data-bs-toggle="modal" data-bs-target="#@(HtmlControlsRepository.AddToPlaylistModalId)" data-bs-tooltip="tooltip" title="Add to playlist"
-                                    data-playlist-type="@(nameof(Enums.PlaylistTabs.Podcast))">
-                                <i class="fa fa-plus"></i>
-                            </button>
-                        }
                         <button class="btn btn-sm btn-outline-secondary" data-podcast-item-id="@(item.Id)"><i class="fa fa-ellipsis-v"></i></button>
                     </div>
                 </div>

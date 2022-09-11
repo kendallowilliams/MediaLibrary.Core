@@ -1,4 +1,11 @@
-﻿@model PodcastItem
+﻿@using MediaLibrary.DAL.Services.Interfaces
+@using static MediaLibrary.Shared.Enums
+@model PodcastItem
+@inject IDataService dataService
+
+@{
+    bool hasPlaylists = await dataService.Exists<Playlist>(item => item.Type == PlaylistTypes.Podcast);
+}
 
 <div class="d-flex flex-column" data-podcast-item-id="@(Model.Id)">
     <div class="row">
@@ -17,6 +24,14 @@
                 {
                     <button class="btn btn-sm btn-outline-secondary" data-podcast-action="download" data-item-id="@Model.Id">
                         <i class="fa fa-download"></i>
+                    </button>
+                }
+                @if (hasPlaylists)
+                {
+                    <button type="button" class="btn btn-sm btn-outline-secondary" data-playlist-url="@(Url.Action("AddPodcastItemToPlaylist", "Podcast"))" data-item-id="@(Model.Id)"
+                        data-bs-toggle="modal" data-bs-target="#@(HtmlControlsRepository.AddToPlaylistModalId)" data-bs-tooltip="tooltip" title="Add to playlist"
+                        data-playlist-type="@(nameof(Enums.PlaylistTabs.Podcast))">
+                        <i class="fa fa-plus"></i>
                     </button>
                 }
                 <button class="btn btn-sm btn-outline-secondary" data-podcast-action="show-description" data-title="@(Model.Title)"
