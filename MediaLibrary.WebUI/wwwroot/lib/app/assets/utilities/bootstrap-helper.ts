@@ -4,7 +4,7 @@ export function loadTooltips(parent: HTMLElement): void {
     if (parent) /*then*/ $(parent).find('*[data-bs-tooltip="tooltip"]')
         .not('[data-disabled]')
         .each((index, element) => {
-            new bootstrap.Tooltip(element, { trigger: 'hover', placement: 'auto' });
+            bootstrap.Tooltip.getOrCreateInstance(element, { trigger: 'hover', placement: 'auto' });
         });
 }
 
@@ -19,7 +19,7 @@ export function loadAllTooltips(): void {
     $('*[data-bs-tooltip="tooltip"]')
         .not('[data-disabled]')
         .each((index, element) => {
-            new bootstrap.Tooltip(element, { trigger: 'hover', placement: 'auto' });
+            bootstrap.Tooltip.getOrCreateInstance(element, { trigger: 'hover', placement: 'auto' });
         });
 }
 
