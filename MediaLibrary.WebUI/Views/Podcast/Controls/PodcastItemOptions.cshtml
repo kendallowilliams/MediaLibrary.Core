@@ -16,30 +16,32 @@
             <div class="mb-3">
                 @if (Model.IsDownloaded)
                 {
-                    <button class="btn btn-sm btn-outline-secondary" data-podcast-action="remove-download" data-item-id="@Model.Id">
+                    <button class="btn btn-sm btn-outline-secondary" data-podcast-action="remove-download" data-item-id="@Model.Id"
+                            data-bs-tooltip="tooltip" data-bs-title="Remove download">
                         <i class="fa fa-file-circle-minus"></i>
                     </button>
                 }
                 else if (!Model.IsDownloading)
                 {
-                    <button class="btn btn-sm btn-outline-secondary" data-podcast-action="download" data-item-id="@Model.Id">
+                    <button class="btn btn-sm btn-outline-secondary" data-podcast-action="download" data-item-id="@Model.Id"
+                            data-bs-tooltip="tooltip" data-bs-title="Download">
                         <i class="fa fa-download"></i>
                     </button>
                 }
                 @if (hasPlaylists)
                 {
                     <button type="button" class="btn btn-sm btn-outline-secondary" data-playlist-url="@(Url.Action("AddPodcastItemToPlaylist", "Podcast"))" data-item-id="@(Model.Id)"
-                        data-bs-toggle="modal" data-bs-target="#@(HtmlControlsRepository.AddToPlaylistModalId)" data-bs-tooltip="tooltip" title="Add to playlist"
+                        data-bs-toggle="modal" data-bs-target="#@(HtmlControlsRepository.AddToPlaylistModalId)" data-bs-tooltip="tooltip" data-bs-title="Add to playlist"
                         data-playlist-type="@(nameof(Enums.PlaylistTabs.Podcast))">
                         <i class="fa fa-plus"></i>
                     </button>
                 }
-                <button class="btn btn-sm btn-outline-secondary" data-podcast-action="show-description" data-title="@(Model.Title)"
-                        data-message="@(Model.Description)">
+                <button class="btn btn-sm btn-outline-secondary" data-podcast-action="show-description" data-data-bs-title="@(Model.Title)"
+                        data-message="@(Model.Description)" data-bs-tooltip="tooltip" data-bs-title="Show description">
                     <i class="fa fa-info"></i>
                 </button>
             </div>
-            <div class="form-check form-switch">
+            <div class="form-check form-switch" data-bs-tooltip="tooltip" data-bs-title="Mark as played">
                 @Html.CheckBoxFor(x => x.IsPlayed, new { @class = "form-check-input", role = "switch", data_podcast_action = "mark-played", data_item_id = Model.Id })
                 @Html.LabelFor(x => x.IsPlayed, "Mark as played", new { @class = "form-check-label" })
             </div>

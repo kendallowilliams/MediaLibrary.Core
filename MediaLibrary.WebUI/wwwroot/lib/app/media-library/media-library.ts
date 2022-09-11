@@ -21,7 +21,7 @@ import { getMediaPagesEnum, getMediaPagesEnumString, getMediaTypesEnum } from '.
 import AddToPlaylistModal from '../assets/modals/add-to-playlist-modal';
 import IPlayerLoadFunctions from '../assets/interfaces/player-load-functions-interface';
 import IConfigurations from '../assets/interfaces/configurations-interface';
-import { disposeAllTooltips, loadAllTooltips } from '../assets/utilities/bootstrap-helper';
+import { hideAllTooltips, loadAllTooltips } from '../assets/utilities/bootstrap-helper';
 import { fetch_get, loadHTML } from '../assets/utilities/fetch_service';
 import SettingsModal from '../assets/modals/settings-modal';
 import ISettingsReloadFunctions from '../assets/interfaces/settings-reload-functions';
@@ -194,7 +194,7 @@ export default class MediaLibrary extends BaseClass {
             const $tooltips = $('*[data-bs-tooltip="tooltip"]');
 
             $tooltips.attr('data-disabled', 'true');
-            disposeAllTooltips();
+            hideAllTooltips();
 
             if(this.mediaLibraryConfiguration.properties.TooltipsEnabled) {
                 $tooltips.removeAttr('data-disabled');

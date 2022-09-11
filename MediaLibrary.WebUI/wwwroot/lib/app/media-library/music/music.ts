@@ -7,7 +7,7 @@ import Artist from "./artist";
 import Album from "./album";
 import LoadingModal from "../../assets/modals/loading-modal";
 import IMusicConfiguration from "../../assets/interfaces/music-configuration-interface";
-import { loadTooltips, disposeTooltips } from '../../assets/utilities/bootstrap-helper';
+import { loadTooltips, hideTooltips } from '../../assets/utilities/bootstrap-helper';
 import AddNewSongModal from "../../assets/modals/add-song-modal";
 import { getMusicTabEnumString, getMusicTabEnum } from "../../assets/enums/enum-functions";
 import Search from "./search";
@@ -54,7 +54,7 @@ export default class Music extends BaseClass implements IView {
             callback();
         }; 
 
-        disposeTooltips(this.mediaView);
+        hideTooltips(this.mediaView);
         loadHTML(this.mediaView, 'Music/Index', null).then(_ => success());
     }
 
@@ -93,7 +93,7 @@ export default class Music extends BaseClass implements IView {
                             $container = $($btn.attr('data-bs-target'));
                         if (url) {
                             LoadingModal.showLoading();
-                            disposeTooltips($container[0]);
+                            hideTooltips($container[0]);
                             loadHTML($container[0], url, null)
                                 .then(_ => {
                                     if (this.tooltipsEnabled()) /*then*/ loadTooltips($container[0]);
@@ -114,7 +114,7 @@ export default class Music extends BaseClass implements IView {
                 };
             LoadingModal.showLoading();
             this.musicConfiguration.properties.SelectedMusicTab = getMusicTabEnum($newTab.attr('data-music-tab'));
-            disposeTooltips($newView[0]);
+            hideTooltips($newView[0]);
             this.musicConfiguration.updateConfiguration()
                 .then(() => loadHTML($newView[0], url, null)
                     .then(_ => success()));

@@ -28,7 +28,7 @@
                             {
                                 <li class="list-group-item">
                                     <div class="media">
-                                        <img class="me-3 track-img" src="@(Url.Content("~/images/audio.png"))" title="@(album.Title)">
+                                        <img class="me-3 track-img" src="@(Url.Content("~/images/audio.png"))" data-bs-title="@(album.Title)">
                                         <div class="media-body d-flex flex-column" style="overflow-x: auto">
                                             <span class="mt-0 text-truncate font-weight-bold">@(album.Title)</span>
                                             <div class="d-flex">
@@ -37,13 +37,13 @@
                                             </div>
                                         </div>
                                         <div class="text-nowrap">
-                                            <button class="btn btn-sm btn-outline-secondary" data-bs-tooltip="tooltip" title="View album" data-album-id="@(album.Id)">
+                                            <button class="btn btn-sm btn-outline-secondary" data-bs-tooltip="tooltip" data-bs-title="View album" data-album-id="@(album.Id)">
                                                 <i class="fa fa-list"></i>
                                             </button>
                                             @if (Model.Playlists.Any())
                                             {
                                                 <button type="button" class="btn btn-sm btn-outline-secondary" data-playlist-url="@(Url.Action("AddAlbumToPlaylist", "Music"))"
-                                        data-item-id="@(album.Id)" data-bs-toggle="modal" data-bs-target="#@(HtmlControlsRepository.AddToPlaylistModalId)" data-bs-tooltip="tooltip" title="Add to playlist"
+                                        data-item-id="@(album.Id)" data-bs-toggle="modal" data-bs-target="#@(HtmlControlsRepository.AddToPlaylistModalId)" data-bs-tooltip="tooltip" data-bs-title="Add to playlist"
                                         data-playlist-type="@(nameof(Enums.PlaylistTabs.Music))">
                                                     <i class="fa fa-plus"></i>
                                                 </button>

@@ -15,23 +15,23 @@
             <div class="nav d-block flex-fill" role="tablist">
                 <a class="btn btn-sm btn-outline-secondary" id="@(HtmlControlsRepository.MusicPlaylistContainerId)-tab" data-bs-toggle="tab"
                    role="tab" title="@(nameof(Enums.PlaylistTabs.Music))" data-playlist-tab="@(nameof(Enums.PlaylistTabs.Music))"
-                   data-bs-tooltip="tooltip" href="#@(HtmlControlsRepository.MusicPlaylistContainerId)">
+                   href="#@(HtmlControlsRepository.MusicPlaylistContainerId)">
                     <i class="fa fa-music"></i>
                 </a>
                 <a class="btn btn-sm btn-outline-secondary" id="@(HtmlControlsRepository.PodcastPlaylistContainerId)-tab" data-bs-toggle="tab"
                    role="tab" title="@(nameof(Enums.PlaylistTabs.Podcast))" data-playlist-tab="@(nameof(Enums.PlaylistTabs.Podcast))"
-                   data-bs-tooltip="tooltip" href="#@(HtmlControlsRepository.PodcastPlaylistContainerId)">
+                   href="#@(HtmlControlsRepository.PodcastPlaylistContainerId)">
                     <i class="fa fa-podcast"></i>
                 </a>
                 <a class="btn btn-sm btn-outline-secondary" id="@(HtmlControlsRepository.EpisodePlaylistContainerId)-tab" data-bs-toggle="tab"
                    role="tab" title="@(nameof(Enums.PlaylistTabs.Television))" data-playlist-tab="@(nameof(Enums.PlaylistTabs.Television))"
-                   data-bs-tooltip="tooltip" href="#@(HtmlControlsRepository.EpisodePlaylistContainerId)">
+                   href="#@(HtmlControlsRepository.EpisodePlaylistContainerId)">
                     <i class="fa fa-tv"></i>
                 </a>
             </div>
             <div>
-                <button type="button" class="btn btn-sm btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#@(HtmlControlsRepository.NewPlaylistModalId)" data-bs-tooltip="tooltip" title="Add playlist"><i class="fa fa-plus"></i></button>
-                <button class="btn btn-sm btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#@(HtmlControlsRepository.SettingsModalId)" data-bs-tooltip="tooltip" title="Settings">
+                <button type="button" class="btn btn-sm btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#@(HtmlControlsRepository.NewPlaylistModalId)" data-bs-tooltip="tooltip" data-bs-title="Add playlist"><i class="fa fa-plus"></i></button>
+                <button class="btn btn-sm btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#@(HtmlControlsRepository.SettingsModalId)" data-bs-tooltip="tooltip" data-bs-title="Settings">
                     <i class="fa fa-cog"></i>
                 </button>
             </div>
@@ -61,16 +61,16 @@
                                         {
                                             <li class="list-group-item">
                                                 <div class="media">
-                                                    <img class="me-3 track-img" src="@(Url.Content("~/images/audio.png"))" title="@(playlist.Name)">
+                                                    <img class="me-3 track-img" src="@(Url.Content("~/images/audio.png"))" data-bs-title="@(playlist.Name)">
                                                     <div class="media-body d-flex flex-column" style="overflow-x: auto">
                                                         <span class="mt-0 text-truncate font-weight-bold">@(playlist.Name)</span>
                                                         <small>@(playlist.Description)</small>
                                                     </div>
                                                     <div class="text-nowrap">
-                                                        <button class="btn btn-sm btn-outline-secondary" data-playlist-id="@(playlist.Id)" data-bs-tooltip="tooltip" title="View playlist">
+                                                        <button class="btn btn-sm btn-outline-secondary" data-playlist-id="@(playlist.Id)" data-bs-tooltip="tooltip" data-bs-title="View playlist">
                                                             <i class="fa fa-list"></i>
                                                         </button>
-                                                        <button class="btn btn-sm btn-outline-danger @(playlist.Id < 0 ? "d-none" : string.Empty)" data-item-id="@(playlist.Id)" data-playlist-action="delete" data-bs-tooltip="tooltip" title="Delete playlist">
+                                                        <button class="btn btn-sm btn-outline-danger @(playlist.Id < 0 ? "d-none" : string.Empty)" data-item-id="@(playlist.Id)" data-playlist-action="delete" data-bs-tooltip="tooltip" data-bs-title="Delete playlist">
                                                             <i class="fa fa-trash"></i>
                                                         </button>
                                                     </div>
@@ -113,16 +113,16 @@
                                         {
                                             <li class="list-group-item">
                                                 <div class="media">
-                                                    <img class="me-3 track-img" src="@(Url.Content("~/images/audio.png"))" title="@(playlist.Name)">
+                                                    <img class="me-3 track-img" src="@(Url.Content("~/images/audio.png"))" data-bs-title="@(playlist.Name)">
                                                     <div class="media-body d-flex flex-column" style="overflow-x: auto">
                                                         <span class="mt-0 text-truncate font-weight-bold">@(playlist.Name)</span>
                                                         <small>@(playlist.Description)</small>
                                                     </div>
                                                     <div class="text-nowrap">
-                                                        <button class="btn btn-sm btn-outline-secondary" data-playlist-id="@(playlist.Id)" data-bs-tooltip="tooltip" title="View playlist">
+                                                        <button class="btn btn-sm btn-outline-secondary" data-playlist-id="@(playlist.Id)" data-bs-tooltip="tooltip" data-bs-title="View playlist">
                                                             <i class="fa fa-list"></i>
                                                         </button>
-                                                        <button class="btn btn-sm btn-outline-danger @(playlist.Id < 0 ? "d-none" : string.Empty)" data-item-id="@(playlist.Id)" data-playlist-action="delete" data-bs-tooltip="tooltip" title="Delete playlist">
+                                                        <button class="btn btn-sm btn-outline-danger @(playlist.Id < 0 ? "d-none" : string.Empty)" data-item-id="@(playlist.Id)" data-playlist-action="delete" data-bs-tooltip="tooltip" data-bs-title="Delete playlist">
                                                             <i class="fa fa-trash"></i>
                                                         </button>
                                                     </div>
@@ -166,16 +166,16 @@
                                         {
                                             <li class="list-group-item">
                                                 <div class="media">
-                                                    <img class="me-3 track-img" src="@(Url.Content("~/images/audio.png"))" title="@(playlist.Name)">
+                                                    <img class="me-3 track-img" src="@(Url.Content("~/images/audio.png"))" data-bs-title="@(playlist.Name)">
                                                     <div class="media-body d-flex flex-column" style="overflow-x: auto">
                                                         <span class="mt-0 text-truncate font-weight-bold">@(playlist.Name)</span>
                                                         <small>@(playlist.Description)</small>
                                                     </div>
                                                     <div class="text-nowrap">
-                                                        <button class="btn btn-sm btn-outline-secondary" data-playlist-id="@(playlist.Id)" data-bs-tooltip="tooltip" title="View playlist">
+                                                        <button class="btn btn-sm btn-outline-secondary" data-playlist-id="@(playlist.Id)" data-bs-tooltip="tooltip" data-bs-title="View playlist">
                                                             <i class="fa fa-list"></i>
                                                         </button>
-                                                        <button class="btn btn-sm btn-outline-danger @(playlist.Id < 0 ? "d-none" : string.Empty)" data-item-id="@(playlist.Id)" data-playlist-action="delete" data-bs-tooltip="tooltip" title="Delete playlist">
+                                                        <button class="btn btn-sm btn-outline-danger @(playlist.Id < 0 ? "d-none" : string.Empty)" data-item-id="@(playlist.Id)" data-playlist-action="delete" data-bs-tooltip="tooltip" data-bs-title="Delete playlist">
                                                             <i class="fa fa-trash"></i>
                                                         </button>
                                                     </div>
