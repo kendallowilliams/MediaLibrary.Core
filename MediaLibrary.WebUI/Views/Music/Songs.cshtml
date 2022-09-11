@@ -14,7 +14,7 @@
                         }
                         else
                         {
-                            <button class="accordion-button w-100 text-left p-1 @(item.Index == 0 ? string.Empty : "collapsed")" data-bs-toggle="collapse" data-bs-target="#collapse-songs-@(item.Index)"
+                            <button class="accordion-button w-100 text-start p-1 @(item.Index == 0 ? string.Empty : "collapsed")" data-bs-toggle="collapse" data-bs-target="#collapse-songs-@(item.Index)"
                                     data-group-url="@(Url.Action("GetSongGroup", "Music", new { item.Group.Key, Sort = Model.Configuration.SelectedSongSort }))">
                                 @(item.Group.Key)
                             </button>
