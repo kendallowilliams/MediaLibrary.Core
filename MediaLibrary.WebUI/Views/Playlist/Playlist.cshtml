@@ -62,7 +62,8 @@
                                     </div>
                                 </div>
                                 <div class="text-nowrap">
-                                    <button class="btn btn-sm btn-outline-secondary" data-play-id="@(list.Track.Id)" data-bs-tooltip="tooltip" title="Play">
+                                    <button class="btn btn-sm btn-outline-secondary" data-play-id="@(list.Track.Id)" data-bs-tooltip="tooltip" title="Play"
+                                            data-media-type="@(Enums.MediaTypes.Song)">
                                         <i class="fa fa-play"></i>
                                     </button>
                                     @if (Model.SelectedPlaylist.Id > 0)
@@ -93,7 +94,8 @@
                                     </div>
                                 </div>
                                 <div class="text-nowrap">
-                                    <button class="btn btn-sm btn-outline-secondary" data-play-id="@(list.PodcastItem.Id)" data-bs-tooltip="tooltip" title="Play">
+                                    <button class="btn btn-sm btn-outline-secondary" data-play-id="@(list.PodcastItem.Id)" data-bs-tooltip="tooltip" title="Play"
+                                            data-media-type="@(Enums.MediaTypes.Podcast)">
                                         <i class="fa fa-play"></i>
                                     </button>
                                     @if (Model.SelectedPlaylist.Id > 0)
@@ -124,7 +126,8 @@
                                     </div>
                                 </div>
                                 <div class="text-nowrap">
-                                    <button class="btn btn-sm btn-outline-secondary" data-play-id="@(list.Episode.Id)" data-bs-tooltip="tooltip" title="Play">
+                                    <button class="btn btn-sm btn-outline-secondary" data-play-id="@(list.Episode.Id)" data-bs-tooltip="tooltip" title="Play"
+                                            data-media-type="@(Enums.MediaTypes.Television)">
                                         <i class="fa fa-play"></i>
                                     </button>
                                     @if (Model.SelectedPlaylist.Id > 0)
