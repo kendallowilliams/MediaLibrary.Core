@@ -7,10 +7,10 @@
             <div class="flex-fill"></div>
             <div>
                 <button type="button" class="btn btn-sm btn-outline-secondary @(HtmlControlsRepository.PlaybackContinueButtonsClass)"
-                        data-bs-tooltip="tooltip" title="Continue playing" data-page="@Enums.MediaTypes.Television">
+                        data-bs-tooltip="tooltip" data-bs-title="Continue playing" data-page="@Enums.MediaTypes.Television">
                     <i class="fa fa-play-circle"></i>
                 </button>
-                <button class="btn btn-sm btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#@(HtmlControlsRepository.SettingsModalId)" data-bs-tooltip="tooltip" title="Settings">
+                <button class="btn btn-sm btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#@(HtmlControlsRepository.SettingsModalId)" data-bs-tooltip="tooltip" data-bs-title="Settings">
                     <i class="fa fa-cog"></i>
                 </button>
             </div>
@@ -39,13 +39,13 @@
                                 {
                                     <li class="list-group-item">
                                         <div class="media">
-                                            <img class="me-3 track-img" src="@(Url.Content("~/images/audio.png"))" title="@(series.Title)">
+                                            <img class="me-3 track-img" src="@(Url.Content("~/images/audio.png"))" data-bs-title="@(series.Title)">
                                             <div class="media-body d-flex flex-column" style="overflow-x: auto">
                                                 <span class="mt-0 text-truncate font-weight-bold">@(series.Title)</span>
                                                 <small>@(series.Episodes.GroupBy(e => e.Season).Count()) season@(series.Episodes.GroupBy(e => e.Season).Count() == 1 ? string.Empty : "s")</small>
                                             </div>
                                             <div class="text-nowrap">
-                                                <buton class="btn btn-sm btn-outline-secondary" data-series-id="@(series.Id)" data-bs-tooltip="tooltip" title="View series">
+                                                <buton class="btn btn-sm btn-outline-secondary" data-series-id="@(series.Id)" data-bs-tooltip="tooltip" data-bs-title="View series">
                                                     <i class="fa fa-list"></i>
                                                 </buton>
                                             </div>
