@@ -117,6 +117,7 @@ export default class Podcast extends BaseClass implements IView {
                     .then(_ => {
                         const htmlElement = modal.getHTMLElement();
 
+                        loadTooltips(htmlElement);
                         $(htmlElement).find('[data-podcast-action="download"], [data-podcast-action="remove-download"]').on('click', e => {
                             const $btn = $(e.currentTarget),
                                 id = $btn.attr('data-item-id'),
