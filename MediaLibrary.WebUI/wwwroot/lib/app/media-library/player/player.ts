@@ -5,7 +5,7 @@ import HtmlControls from '../../assets/controls/html-controls'
 import { MediaTypes, RepeatTypes, PlayerPages, MessageBoxConfirmType } from "../../assets/enums/enums";
 import { getRandomInteger } from "../../assets/utilities/math";
 import AudioVisualizer from "../audio-visualizer/audio-visualizer";
-import { loadTooltips, disposeTooltips } from "../../assets/utilities/bootstrap-helper";
+import { loadTooltips, hideTooltips } from "../../assets/utilities/bootstrap-helper";
 import LoadingModal from '../../assets/modals/loading-modal';
 import IPlayerLoadFunctions from "../../assets/interfaces/player-load-functions-interface";
 import { getPlayerPageEnum, getMediaTypesEnum } from "../../assets/enums/enum-functions";
@@ -377,7 +377,7 @@ export default class Player extends BaseClass implements IView {
                 if (typeof callback === 'function') /*then*/ callback();
             };
 
-        disposeTooltips(containers.PlayerItemsContainer);
+        hideTooltips(containers.PlayerItemsContainer);
         $(HtmlControls.UIFields().NowPlayingTitle).text('');
         $(containers.PlayerItemsContainer).html('');
         loadHTML(containers.PlayerItemsContainer, 'Player/GetPlayerItems', null)

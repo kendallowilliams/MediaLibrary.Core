@@ -1,7 +1,7 @@
 ﻿import BaseConfiguration from './base-configuration';
 import IMediaLibraryConfiguration from '../../interfaces/media-library-configuration-interface';
 import { AppWidth } from '../../enums/enums';
-import { loadAllTooltips, disposeAllTooltips } from '../../utilities/bootstrap-helper';
+import { loadAllTooltips, hideAllTooltips } from '../../utilities/bootstrap-helper';
 
 export default class MediaLibraryConfiguration extends BaseConfiguration<IMediaLibraryConfiguration> {
     constructor(public properties: IMediaLibraryConfiguration) {
@@ -24,7 +24,7 @@ export default class MediaLibraryConfiguration extends BaseConfiguration<IMediaL
         $container.removeClass('container-fluid container');
         $container.addClass(this.properties.AppWidth === AppWidth.Normal ? 'container' : 'container-fluid');
         $tooltips.attr('data-disabled', 'true');
-        disposeAllTooltips();
+        hideAllTooltips();
 
         if (this.properties.TooltipsEnabled) {
             $tooltips.removeAttr('data-disabled');

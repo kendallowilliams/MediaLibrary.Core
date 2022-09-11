@@ -1,7 +1,7 @@
 ﻿import HtmlControls from '../controls/html-controls';
 import MediaLibraryConfiguration from '../models/configurations/media-library-configuration';
 import LoadingModal from './loading-modal';
-import { loadTooltips, disposeTooltips } from "../../assets/utilities/bootstrap-helper";
+import { loadTooltips, hideTooltips } from "../../assets/utilities/bootstrap-helper";
 import * as MessageBox from '../../assets/utilities/message-box';
 import { MessageBoxConfirmType } from '../enums/enums';
 import { fetch_get, fetch_post, loadHTML } from '../utilities/fetch_service';
@@ -23,7 +23,7 @@ export default class ManageDirectoriesModal {
         });
 
         $(this.modal).on('hide.bs.modal', e => {
-            disposeTooltips(this.modal);
+            hideTooltips(this.modal);
             $(this.modal).find('.modal-body').html('');
         });
         
@@ -38,7 +38,7 @@ export default class ManageDirectoriesModal {
         const $modal = $(this.modal);
 
         LoadingModal.showLoading();
-        disposeTooltips(this.modal);
+        hideTooltips(this.modal);
         loadHTML($modal.find('.modal-body').get(0), 'Music/GetMusicDirectory', { path: (_path || '') })
             .then(_ => {
                 const $modal = $(this.modal);

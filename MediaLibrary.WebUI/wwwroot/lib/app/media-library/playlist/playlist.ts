@@ -6,11 +6,11 @@ import { MessageBoxConfirmType, PlaylistPages } from "../../assets/enums/enums";
 import AddNewPlaylistModal from "../../assets/modals/add-playlist-modal";
 import LoadingModal from "../../assets/modals/loading-modal";
 import EditPlaylistModal from "../../assets/modals/edit-playlist-modal";
-import { loadTooltips, disposeTooltips } from "../../assets/utilities/bootstrap-helper";
+import { loadTooltips, hideTooltips } from "../../assets/utilities/bootstrap-helper";
 import { getPlaylistSortEnum, getPlaylistTabEnumString, getPlaylistTabEnum, getPlaylistSortEnumString } from "../../assets/enums/enum-functions";
 import IPlayerLoadFunctions from "../../assets/interfaces/player-load-functions-interface";
 import * as MessageBox from '../../assets/utilities/message-box';
-import { fetch_get, fetch_post, loadHTML } from "../../assets/utilities/fetch_service";
+import { fetch_post, loadHTML } from "../../assets/utilities/fetch_service";
 import { Tab } from "bootstrap";
 
 export default class Playlist extends BaseClass implements IView {
@@ -44,7 +44,7 @@ export default class Playlist extends BaseClass implements IView {
             if (this.tooltipsEnabled()) /*then*/ loadTooltips(this.mediaView);
         };
 
-        disposeTooltips(this.mediaView);
+        hideTooltips(this.mediaView);
         loadHTML(this.mediaView, 'Playlist/Index', null)
             .then(_ => success());
     }

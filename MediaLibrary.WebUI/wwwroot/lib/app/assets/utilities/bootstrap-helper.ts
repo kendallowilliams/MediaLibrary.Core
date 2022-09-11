@@ -15,6 +15,13 @@ export function disposeTooltips(parent: HTMLElement): void {
         });
 }
 
+export function hideTooltips(parent: HTMLElement): void {
+    if (parent) /*then*/ $(parent).find('*[data-bs-tooltip="tooltip"]')
+        .each((index, element) => {
+            bootstrap.Tooltip.getInstance(element)?.hide();
+        });
+}
+
 export function loadAllTooltips(): void {
     $('*[data-bs-tooltip="tooltip"]')
         .not('[data-disabled]')
@@ -27,6 +34,13 @@ export function disposeAllTooltips(): void {
     $('*[data-bs-tooltip="tooltip"]')
         .each((index, element) => {
             bootstrap.Tooltip.getInstance(element)?.dispose();
+        });
+}
+
+export function hideAllTooltips(): void {
+    $('*[data-bs-tooltip="tooltip"]')
+        .each((index, element) => {
+            bootstrap.Tooltip.getInstance(element)?.hide();
         });
 }
 

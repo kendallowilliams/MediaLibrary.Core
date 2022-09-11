@@ -1,4 +1,4 @@
-﻿import { disposeTooltips, loadTooltips } from "../utilities/bootstrap-helper";
+﻿import { hideTooltips, loadTooltips } from "../utilities/bootstrap-helper";
 import LoadingModal from "../modals/loading-modal";
 import { loadHTML } from "../utilities/fetch_service";
 
@@ -8,7 +8,7 @@ export default class DirectorySelector {
 
     public loadMusicDirectory(_path: string = null): void {
         LoadingModal.showLoading();
-        disposeTooltips(this.container);
+        hideTooltips(this.container);
         loadHTML(this.container, 'Music/GetDirectorySelector', { path: _path })
             .then(_ => {
                 const $container = $(this.container);

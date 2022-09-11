@@ -5,7 +5,7 @@ import HtmlControls from '../../assets/controls/html-controls';
 import { MessageBoxConfirmType, PodcastPages } from "../../assets/enums/enums";
 import IPodcastConfiguration from "../../assets/interfaces/podcast-configuration-interface";
 import LoadingModal from "../../assets/modals/loading-modal";
-import { disposeTooltips, loadTooltips, disposePopovers } from "../../assets/utilities/bootstrap-helper";
+import { hideTooltips, loadTooltips, disposePopovers } from "../../assets/utilities/bootstrap-helper";
 import { getPodcastSortEnum, getPodcastFilterEnum } from "../../assets/enums/enum-functions";
 import * as MessageBox from '../../assets/utilities/message-box'
 import { fetch_get, fetch_post, loadHTML } from "../../assets/utilities/fetch_service";
@@ -37,7 +37,7 @@ export default class Podcast extends BaseClass implements IView {
                 callback();
             };
         
-        disposeTooltips(this.mediaView);
+        hideTooltips(this.mediaView);
         this.podcastConfiguration.refresh()
             .then(() => loadHTML(this.mediaView, 'Podcast/Index', null).then(_ => success()));
     }
@@ -178,7 +178,7 @@ export default class Podcast extends BaseClass implements IView {
 
         if (item) {
             LoadingModal.showLoading();
-            disposeTooltips(this.podcastView);
+            hideTooltips(this.podcastView);
             loadHTML(this.podcastView, 'Podcast/GetPodcastItems', { id: id, year: year, filter: filter })
                 .then(_ => success());
         }
