@@ -1,5 +1,9 @@
 ﻿@model MediaLibrary.WebUI.Models.PlaylistViewModel
 
+@{
+    bool hasItems = Model.SelectedPlaylist.PlaylistTracks.Any() || Model.SelectedPlaylist.PlaylistEpisodes.Any() || Model.SelectedPlaylist.PlaylistPodcastItems.Any();
+}
+
 <div class="d-flex flex-column flex-fill" style="overflow-y: auto">
     <div>
         <div class="d-flex flex-row">
@@ -12,14 +16,14 @@
             @if (Model.SelectedPlaylist.Id > 0)
             {
                 <button class="btn btn-sm btn-outline-secondary" data-bs-title="Edit playlist" data-bs-toggle="modal" data-bs-target="#@(HtmlControlsRepository.EdiPlaylistModalId)" data-item-id="@(Model.SelectedPlaylist.Id)"
-                        data-item-name="@(Model.SelectedPlaylist.Name)" data-bs-tooltip="tooltip">
+                    data-item-name="@(Model.SelectedPlaylist.Name)" data-bs-tooltip="tooltip">
                     <i class="fa fa-edit"></i>
                 </button>
             }
-            @if (Model.SelectedPlaylist.PlaylistTracks.Any() || Model.SelectedPlaylist.PlaylistEpisodes.Any() || Model.SelectedPlaylist.PlaylistPodcastItems.Any())
+            @if (hasItems)
             {
                 <button class="btn btn-sm btn-outline-secondary" data-playlist-id="@Model.SelectedPlaylist.Id" data-playlist-action="download"
-                        data-bs-tooltip="tooltip" data-bs-title="Download M3U playlist" data-playlist-name="@(Model.SelectedPlaylist.Name)">
+                    data-bs-tooltip="tooltip" data-bs-title="Download M3U playlist" data-playlist-name="@(Model.SelectedPlaylist.Name)">
                     <i class="fa fa-download"></i>
                 </button>
             }
@@ -32,128 +36,143 @@
         </div>
         <hr />
     </div>
-    <div class="card flex-fill" style="overflow-y: auto">
-        <div class="card-header p-0" id="heading-playlist-@(Model.SelectedPlaylist.Id)">
-            <h5 class="mb-0">
-                @if (Model.SelectedPlaylist.Type == Enums.PlaylistTypes.Music)
-                { <button class="btn btn-sm btn-link">Songs</button> }
-                else if (Model.SelectedPlaylist.Type == Enums.PlaylistTypes.Podcast)
-                { <button class="btn btn-sm btn-link">Episodes</button> }
-                else if (Model.SelectedPlaylist.Type == Enums.PlaylistTypes.Television)
-                { <button class="btn btn-sm btn-link">Episodes</button> }
-            </h5>
+    @if (hasItems)
+    {
+        <div class="card flex-fill" style="overflow-y: auto">
+            <div class="card-header p-0" id="heading-playlist-@(Model.SelectedPlaylist.Id)">
+                <h5 class="mb-0">
+                    @if (Model.SelectedPlaylist.Type == Enums.PlaylistTypes.Music)
+                    {
+                        <button class="btn btn-sm btn-link">Songs</button>
+                    }
+                    else if (Model.SelectedPlaylist.Type == Enums.PlaylistTypes.Podcast)
+                    {
+                        <button class="btn btn-sm btn-link">Episodes</button>
+                    }
+                    else if (Model.SelectedPlaylist.Type == Enums.PlaylistTypes.Television)
+                    {
+                        <button class="btn btn-sm btn-link">Episodes</button>
+                    }
+                </h5>
+            </div>
+            <div class="card-body m-0 p-0 flex-fill" style="overflow-y: auto">
+                @if (Model.SelectedPlaylist.PlaylistTracks.Any())
+                {
+                    <ul class="list-group list-group-flush">
+                        @foreach (var list in Model.SelectedPlaylist.PlaylistTracks.OrderBy(item => item.CreateDate))
+                        {
+                            <li class="list-group-item" data-song-id="@(list.Track.Id)">
+                                <div class="media">
+                                    <img class="me-3 track-img" src="@(Url.Content("~/images/audio.png"))" data-bs-title="@(list.Track.Title)">
+                                    <div class="media-body d-flex flex-column" style="overflow-x: auto">
+                                        <span class="mt-0 text-truncate font-weight-bold">@(list.Track.Title)</span>
+                                        <div class="d-flex flex-row">
+                                            <small data-album-id="@(list.Track.Album?.Id)" class="text-truncate" style="cursor: pointer">@(list.Track.Album?.Title ?? "Unknown Album")</small>
+                                            <small>&nbsp;-&nbsp;</small>
+                                            <small data-artist-id="@(list.Track.Artist?.Id)" style="cursor: pointer" class="text-muted text-truncate">@(list.Track.Artist?.Name ?? "Unknown Artist")</small>
+                                            <div class="flex-fill"></div>
+                                        </div>
+                                    </div>
+                                    <div class="text-nowrap">
+                                        <button class="btn btn-sm btn-outline-secondary" data-play-id="@(list.Track.Id)" data-bs-tooltip="tooltip" data-bs-title="Play"
+                                    data-media-type="@(Enums.MediaTypes.Song)">
+                                            <i class="fa fa-play"></i>
+                                        </button>
+                                        @if (Model.SelectedPlaylist.Id > 0)
+                                        {
+                                            <button class="btn btn-sm btn-outline-danger" data-item-id="@(list.Id)" data-playlist-action="remove-item"
+                                    data-bs-tooltip="tooltip" data-playlist-type="@(Enums.PlaylistTabs.Music)" data-bs-title="Remove song">
+                                                <i class="fa fa-trash"></i>
+                                            </button>
+                                        }
+                                    </div>
+                                </div>
+                            </li>
+                        }
+                    </ul>
+                }
+                else if (Model.SelectedPlaylist.PlaylistPodcastItems.Any())
+                {
+                    <ul class="list-group list-group-flush">
+                        @foreach (var list in Model.SelectedPlaylist.PlaylistPodcastItems.OrderBy(item => item.CreateDate))
+                        {
+                            <li class="list-group-item" data-song-id="@(list.PodcastItem.Id)">
+                                <div class="media">
+                                    <img class="me-3 track-img" src="@(Url.Content("~/images/audio.png"))" data-bs-title="@(list.PodcastItem.Title)">
+                                    <div class="media-body d-flex flex-column" style="overflow-x: auto">
+                                        <span class="mt-0 text-truncate font-weight-bold">@(list.PodcastItem.Title)</span>
+                                        <div class="d-flex flex-row">
+                                            <small data-podcast-id="@(list.PodcastItem.PodcastId)" class="text-truncate" style="cursor: pointer">@(list.PodcastItem.Podcast?.Title ?? "Unknown Podcast")</small>
+                                        </div>
+                                    </div>
+                                    <div class="text-nowrap">
+                                        <button class="btn btn-sm btn-outline-secondary" data-play-id="@(list.PodcastItem.Id)" data-bs-tooltip="tooltip" data-bs-title="Play"
+                                    data-media-type="@(Enums.MediaTypes.Podcast)">
+                                            <i class="fa fa-play"></i>
+                                        </button>
+                                        @if (Model.SelectedPlaylist.Id > 0)
+                                        {
+                                            <button class="btn btn-sm btn-outline-danger" data-item-id="@(list.Id)" data-playlist-action="remove-item"
+                                    data-bs-tooltip="tooltip" data-playlist-type="@(Enums.PlaylistTabs.Podcast)" data-bs-title="Remove episode">
+                                                <i class="fa fa-trash"></i>
+                                            </button>
+                                        }
+                                    </div>
+                                </div>
+                            </li>
+                        }
+                    </ul>
+                }
+                else if (Model.SelectedPlaylist.PlaylistEpisodes.Any())
+                {
+                    <ul class="list-group list-group-flush">
+                        @foreach (var list in Model.SelectedPlaylist.PlaylistEpisodes.OrderBy(item => item.CreateDate))
+                        {
+                            <li class="list-group-item" data-song-id="@(list.Episode.Id)">
+                                <div class="media">
+                                    <img class="me-3 track-img" src="@(Url.Content("~/images/audio.png"))" data-bs-title="@(list.Episode.Title)">
+                                    <div class="media-body d-flex flex-column" style="overflow-x: auto">
+                                        <span class="mt-0 text-truncate font-weight-bold">@(list.Episode.Title)</span>
+                                        <div class="d-flex flex-row">
+                                            <small data-series-id="@(list.Episode.SeriesId)" class="text-truncate" style="cursor: pointer">@(list.Episode.Series?.Title ?? "Unknown Series")</small>
+                                        </div>
+                                    </div>
+                                    <div class="text-nowrap">
+                                        <button class="btn btn-sm btn-outline-secondary" data-play-id="@(list.Episode.Id)" data-bs-tooltip="tooltip" data-bs-title="Play"
+                                    data-media-type="@(Enums.MediaTypes.Television)">
+                                            <i class="fa fa-play"></i>
+                                        </button>
+                                        @if (Model.SelectedPlaylist.Id > 0)
+                                        {
+                                            <button class="btn btn-sm btn-outline-danger" data-item-id="@(list.Id)" data-playlist-action="remove-item"
+                                    data-bs-tooltip="tooltip" data-playlist-type="@(Enums.PlaylistTabs.Television)" data-bs-title="Remove episode">
+                                                <i class="fa fa-trash"></i>
+                                            </button>
+                                        }
+                                    </div>
+                                </div>
+                            </li>
+                        }
+                    </ul>
+                }
+            </div>
         </div>
-        <div class="card-body m-0 p-0 flex-fill" style="overflow-y: auto">
-            @if (Model.SelectedPlaylist.PlaylistTracks.Any())
-            {
-                <ul class="list-group list-group-flush">
-                    @foreach (var list in Model.SelectedPlaylist.PlaylistTracks.OrderBy(item => item.CreateDate))
-                    {
-                        <li class="list-group-item" data-song-id="@(list.Track.Id)">
-                            <div class="media">
-                                <img class="me-3 track-img" src="@(Url.Content("~/images/audio.png"))" data-bs-title="@(list.Track.Title)">
-                                <div class="media-body d-flex flex-column" style="overflow-x: auto">
-                                    <span class="mt-0 text-truncate font-weight-bold">@(list.Track.Title)</span>
-                                    <div class="d-flex flex-row">
-                                        <small data-album-id="@(list.Track.Album?.Id)" class="text-truncate" style="cursor: pointer">@(list.Track.Album?.Title ?? "Unknown Album")</small>
-                                        <small>&nbsp;-&nbsp;</small>
-                                        <small data-artist-id="@(list.Track.Artist?.Id)" style="cursor: pointer" class="text-muted text-truncate">@(list.Track.Artist?.Name ?? "Unknown Artist")</small>
-                                        <div class="flex-fill"></div>
-                                    </div>
-                                </div>
-                                <div class="text-nowrap">
-                                    <button class="btn btn-sm btn-outline-secondary" data-play-id="@(list.Track.Id)" data-bs-tooltip="tooltip" data-bs-title="Play"
-                                            data-media-type="@(Enums.MediaTypes.Song)">
-                                        <i class="fa fa-play"></i>
-                                    </button>
-                                    @if (Model.SelectedPlaylist.Id > 0)
-                                    {
-                                        <button class="btn btn-sm btn-outline-danger" data-item-id="@(list.Id)" data-playlist-action="remove-item"
-                                                data-bs-tooltip="tooltip" data-playlist-type="@(Enums.PlaylistTabs.Music)" data-bs-title="Remove song">
-                                            <i class="fa fa-trash"></i>
-                                        </button>
-                                    }
-                                </div>
-                            </div>
-                        </li>
-                    }
-                </ul>
-            }
-            else if (Model.SelectedPlaylist.PlaylistPodcastItems.Any())
-            {
-                <ul class="list-group list-group-flush">
-                    @foreach (var list in Model.SelectedPlaylist.PlaylistPodcastItems.OrderBy(item => item.CreateDate))
-                    {
-                        <li class="list-group-item" data-song-id="@(list.PodcastItem.Id)">
-                            <div class="media">
-                                <img class="me-3 track-img" src="@(Url.Content("~/images/audio.png"))" data-bs-title="@(list.PodcastItem.Title)">
-                                <div class="media-body d-flex flex-column" style="overflow-x: auto">
-                                    <span class="mt-0 text-truncate font-weight-bold">@(list.PodcastItem.Title)</span>
-                                    <div class="d-flex flex-row">
-                                        <small data-podcast-id="@(list.PodcastItem.PodcastId)" class="text-truncate" style="cursor: pointer">@(list.PodcastItem.Podcast?.Title ?? "Unknown Podcast")</small>
-                                    </div>
-                                </div>
-                                <div class="text-nowrap">
-                                    <button class="btn btn-sm btn-outline-secondary" data-play-id="@(list.PodcastItem.Id)" data-bs-tooltip="tooltip" data-bs-title="Play"
-                                            data-media-type="@(Enums.MediaTypes.Podcast)">
-                                        <i class="fa fa-play"></i>
-                                    </button>
-                                    @if (Model.SelectedPlaylist.Id > 0)
-                                    {
-                                        <button class="btn btn-sm btn-outline-danger" data-item-id="@(list.Id)" data-playlist-action="remove-item"
-                                                data-bs-tooltip="tooltip" data-playlist-type="@(Enums.PlaylistTabs.Podcast)" data-bs-title="Remove episode">
-                                            <i class="fa fa-trash"></i>
-                                        </button>
-                                    }
-                                </div>
-                            </div>
-                        </li>
-                    }
-                </ul>
-            }
-            else if (Model.SelectedPlaylist.PlaylistEpisodes.Any())
-            {
-                <ul class="list-group list-group-flush">
-                    @foreach (var list in Model.SelectedPlaylist.PlaylistEpisodes.OrderBy(item => item.CreateDate))
-                    {
-                        <li class="list-group-item" data-song-id="@(list.Episode.Id)">
-                            <div class="media">
-                                <img class="me-3 track-img" src="@(Url.Content("~/images/audio.png"))" data-bs-title="@(list.Episode.Title)">
-                                <div class="media-body d-flex flex-column" style="overflow-x: auto">
-                                    <span class="mt-0 text-truncate font-weight-bold">@(list.Episode.Title)</span>
-                                    <div class="d-flex flex-row">
-                                        <small data-series-id="@(list.Episode.SeriesId)" class="text-truncate" style="cursor: pointer">@(list.Episode.Series?.Title ?? "Unknown Series")</small>
-                                    </div>
-                                </div>
-                                <div class="text-nowrap">
-                                    <button class="btn btn-sm btn-outline-secondary" data-play-id="@(list.Episode.Id)" data-bs-tooltip="tooltip" data-bs-title="Play"
-                                            data-media-type="@(Enums.MediaTypes.Television)">
-                                        <i class="fa fa-play"></i>
-                                    </button>
-                                    @if (Model.SelectedPlaylist.Id > 0)
-                                    {
-                                        <button class="btn btn-sm btn-outline-danger" data-item-id="@(list.Id)" data-playlist-action="remove-item" 
-                                                data-bs-tooltip="tooltip" data-playlist-type="@(Enums.PlaylistTabs.Television)" data-bs-title="Remove episode">
-                                            <i class="fa fa-trash"></i>
-                                        </button>
-                                    }
-                                </div>
-                            </div>
-                        </li>
-                    }
-                </ul>
-            }
-            else
-            {
-                if (Model.SelectedPlaylist.Type == Enums.PlaylistTypes.Music)
-                {<span>No songs added.</span> }
-                else if (Model.SelectedPlaylist.Type == Enums.PlaylistTypes.Podcast)
-                { <span>No episodes added.</span> }
-                else if (Model.SelectedPlaylist.Type == Enums.PlaylistTypes.Television)
-                { <span>No episodes added.</span>}
-            }
-        </div>
-    </div>
+    }
+    else
+    {
+        if (Model.SelectedPlaylist.Type == Enums.PlaylistTypes.Music)
+        {
+            <span>No songs added.</span>
+        }
+        else if (Model.SelectedPlaylist.Type == Enums.PlaylistTypes.Podcast)
+        {
+            <span>No episodes added.</span>
+        }
+        else if (Model.SelectedPlaylist.Type == Enums.PlaylistTypes.Television)
+        {
+            <span>No episodes added.</span>
+        }
+    }
 </div>
 
 <partial name="~/Views/Shared/Modals/EditPlaylistModal.cshtml" />
