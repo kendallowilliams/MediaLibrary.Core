@@ -176,9 +176,6 @@ namespace MediaLibrary.WebUI.Controllers
                     memoryCache.Set(downloadKey, GetActiveDownloadIds().Append(id).Distinct());
                     downloadSemaphore.Release();
                     await podcastService.AddPodcastFile(id).ContinueWith(_ => podcastUIService.ClearPodcasts());
-                    await downloadSemaphore.WaitAsync();
-                    memoryCache.Set(downloadKey, GetActiveDownloadIds().Where(item => item != id).Distinct());
-                    downloadSemaphore.Release();
                 }
                 else
                 {
@@ -188,6 +185,12 @@ namespace MediaLibrary.WebUI.Controllers
             catch(Exception ex)
             {
                 await logService.Error(ex);
+            }
+            finally
+            {
+                await downloadSemaphore.WaitAsync();
+                memoryCache.Set(downloadKey, GetActiveDownloadIds().Where(item => item != id).Distinct());
+                downloadSemaphore.Release();
             }
         }
 
