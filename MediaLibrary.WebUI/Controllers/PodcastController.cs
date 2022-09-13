@@ -35,6 +35,8 @@ namespace MediaLibrary.WebUI.Controllers
         private readonly ITPLService tplService;
         private readonly IWebService webService;
         private readonly IMemoryCache memoryCache;
+        private readonly SemaphoreSlim downloadSemaphore;
+        private readonly string downloadKey = $"{nameof(PodcastController)}_{nameof(GetActiveDownloadIds)}";
 
         public PodcastController(IBackgroundTaskQueueService backgroundTaskQueue, IPodcastUIService podcastUIService, IDataService dataService,
                                  PodcastViewModel podcastViewModel, IPodcastService podcastService, ITransactionService transactionService,
@@ -52,6 +54,7 @@ namespace MediaLibrary.WebUI.Controllers
             this.tplService = tplService;
             this.webService = webService;
             this.memoryCache = memoryCache;
+            downloadSemaphore = new SemaphoreSlim(1);
         }
 
         public async Task<IActionResult> Index()
@@ -137,7 +140,7 @@ namespace MediaLibrary.WebUI.Controllers
             Func<PodcastItem, bool> expression = null;
             IEnumerable<PodcastItem> podcastItems = await dataService.GetList<PodcastItem>(item => item.PodcastId == id && item.PublishDate.Year == year);
             bool hasPlaylists = await dataService.Exists<Playlist>(item => item.Type == PlaylistTypes.Podcast);
-            IEnumerable<int> downloadIds = await GetActiveDownloadIds();
+            IEnumerable<int> downloadIds = GetActiveDownloadIds();
 
             if (filter == PodcastFilter.Downloaded) /*then*/ expression = item => !string.IsNullOrWhiteSpace(item.File);
             else if (filter == PodcastFilter.Unplayed) /*then*/ expression = item => !item.LastPlayedDate.HasValue;
@@ -150,51 +153,41 @@ namespace MediaLibrary.WebUI.Controllers
         {
             var podcastItem = await dataService.Get<PodcastItem>(item => item.Id == id);
 
-            podcastItem.IsDownloading = await GetActiveDownloadIds().ContinueWith(task => task.Result.Contains(podcastItem.Id));
+            podcastItem.IsDownloading = GetActiveDownloadIds().Contains(podcastItem.Id);
 
             return PartialView("Controls/PodcastItemOptions", podcastItem);
         }
 
-        private async Task<IEnumerable<int>> GetActiveDownloadIds()
+        private IEnumerable<int> GetActiveDownloadIds()
         {
-            IEnumerable<Transaction> inProcessDownloads = await dataService.GetList<Transaction>(item => item.Status == TransactionStatus.InProcess &&
-                                                                                                          item.Type == TransactionTypes.DownloadEpisode);
-            IEnumerable<int> downloadIds = inProcessDownloads.Select(item => item.Message)
-                                                             .Where(item => !string.IsNullOrWhiteSpace(item))
-                                                             .Select(item => new { Valid = int.TryParse(item, out int value), Id = value })
-                                                             .Select(item => item.Id);
-
-            return downloadIds;
-        }
-
-        public async Task<bool> IsDownloading(int id)
-        {
-            return await GetActiveDownloadIds().ContinueWith(task => task.Result.Contains(id));
+            return memoryCache.TryGetValue(downloadKey, out IEnumerable<int> ids) ? ids : Enumerable.Empty<int>();
         }
 
         public async Task DownloadPodcastItem(int id)
         {
-            Transaction transaction = new Transaction(TransactionTypes.DownloadEpisode);
-
             try
             {
-                bool existingTransaction = await GetActiveDownloadIds().ContinueWith(task => task.Result.Contains(id));
+                var activeDownloadIds = GetActiveDownloadIds();
+                bool isActiveDownload = activeDownloadIds.Contains(id);
 
-                transaction = await transactionService.GetNewTransaction(TransactionTypes.DownloadEpisode);
-
-                if (!existingTransaction)
+                if (!isActiveDownload)
                 {
-                    await transactionService.UpdateTransactionInProcess(transaction);
-                    await podcastService.AddPodcastFile(transaction, id).ContinueWith(_ => podcastUIService.ClearPodcasts());
+                    await downloadSemaphore.WaitAsync();
+                    memoryCache.Set(downloadKey, GetActiveDownloadIds().Append(id).Distinct());
+                    downloadSemaphore.Release();
+                    await podcastService.AddPodcastFile(id).ContinueWith(_ => podcastUIService.ClearPodcasts());
+                    await downloadSemaphore.WaitAsync();
+                    memoryCache.Set(downloadKey, GetActiveDownloadIds().Where(item => item != id).Distinct());
+                    downloadSemaphore.Release();
                 }
                 else
                 {
-                    await transactionService.UpdateTransactionCompleted(transaction, $"Podcast episode ({id}) download in progress.");
+                    await logService.Warn($"Podcast episode ({id}) download in progress.");
                 }
             }
             catch(Exception ex)
             {
-                await transactionService.UpdateTransactionErrored(transaction, ex);
+                await logService.Error(ex);
             }
         }
 
@@ -204,7 +197,7 @@ namespace MediaLibrary.WebUI.Controllers
 
             try
             {
-                bool existingTransaction = await GetActiveDownloadIds().ContinueWith(task => task.Result.Contains(id));
+                bool existingTransaction = GetActiveDownloadIds().Contains(id);
                 PodcastItem podcastItem = await dataService.Get<PodcastItem>(item => item.Id == id);
 
                 transaction = await transactionService.GetNewTransaction(TransactionTypes.RemoveEpisodeDownload);
