@@ -144,7 +144,7 @@ namespace MediaLibrary.BLL.Services
             return podcast;
         }
 
-        public async Task<string> AddPodcastFile(Transaction transaction, int podcastItemId)
+        public async Task<string> AddPodcastFile(int podcastItemId)
         {
             string fileName = string.Empty;
 
@@ -156,9 +156,6 @@ namespace MediaLibrary.BLL.Services
 
                 if (podcastItem != null)
                 {
-                    transaction.Message = podcastItem.Id.ToString();
-                    await dataService.Update(transaction);
-
                     if (string.IsNullOrWhiteSpace(podcastItem.File))
                     {
                         string title = podcastItem.Podcast.Title,
@@ -183,21 +180,20 @@ namespace MediaLibrary.BLL.Services
                         }
 
                         await dataService.Update(podcastItem);
-                        await transactionService.UpdateTransactionCompleted(transaction);
                     }
                     else
                     {
-                        await transactionService.UpdateTransactionCompleted(transaction, $"Podcast: {podcastItem.Podcast.Title}, Episode: {podcastItem.Title} already downloaded.");
+                        await logService.Warn($"Podcast: {podcastItem.Podcast.Title}, Episode: {podcastItem.Title} already downloaded.");
                     }
                 }
                 else
                 {
-                    await transactionService.UpdateTransactionCompleted(transaction, $"No podcast item found with id: {podcastItemId}.");
+                    await logService.Warn($"No podcast item found with id: {podcastItemId}.");
                 }
             }
             catch(Exception ex)
             {
-                await transactionService.UpdateTransactionErrored(transaction, ex);
+                await logService.Error(ex);
             }
 
             return fileName;
