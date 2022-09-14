@@ -1,10 +1,12 @@
 ﻿using MediaLibrary.DAL.Models;
 using MediaLibrary.DAL.Services.Interfaces;
+using MediaLibrary.WebUI.Controllers;
 using MediaLibrary.WebUI.Services.Interfaces;
 using Microsoft.Extensions.Caching.Memory;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Web;
 using static MediaLibrary.Shared.Enums;
@@ -15,11 +17,14 @@ namespace MediaLibrary.WebUI.Services
     {
         private readonly IDataService dataService;
         private readonly IMemoryCache memoryCache;
+        private readonly SemaphoreSlim downloadSemaphore;
+        private readonly string downloadKey = $"{nameof(PodcastController)}_{nameof(GetActiveDownloadIds)}";
 
         public PodcastUIService(IDataService dataService, IMemoryCache memoryCache) : base()
         {
             this.dataService = dataService;
             this.memoryCache = memoryCache;
+            downloadSemaphore = new SemaphoreSlim(1);
         }
 
         public async Task<IEnumerable<IGrouping<string, Podcast>>> GetPodcastGroups(PodcastSort sort)
@@ -57,6 +62,25 @@ namespace MediaLibrary.WebUI.Services
         public void ClearPodcasts()
         {
             memoryCache.Remove(nameof(CacheKeys.Podcasts));
+        }
+
+        public IEnumerable<int> GetActiveDownloadIds()
+        {
+            return memoryCache.TryGetValue(downloadKey, out IEnumerable<int> ids) ? ids : Enumerable.Empty<int>();
+        }
+
+        public async Task RemoveActiveDownloadId(int id)
+        {
+            await downloadSemaphore.WaitAsync();
+            memoryCache.Set(downloadKey, GetActiveDownloadIds().Where(item => item != id).Distinct());
+            downloadSemaphore.Release();
+        }
+
+        public async Task AddActiveDownloadId(int id)
+        {
+            await downloadSemaphore.WaitAsync();
+            memoryCache.Set(downloadKey, GetActiveDownloadIds().Append(id).Distinct());
+            downloadSemaphore.Release();
         }
     }
 }

@@ -35,8 +35,6 @@ namespace MediaLibrary.WebUI.Controllers
         private readonly ITPLService tplService;
         private readonly IWebService webService;
         private readonly IMemoryCache memoryCache;
-        private readonly SemaphoreSlim downloadSemaphore;
-        private readonly string downloadKey = $"{nameof(PodcastController)}_{nameof(GetActiveDownloadIds)}";
 
         public PodcastController(IBackgroundTaskQueueService backgroundTaskQueue, IPodcastUIService podcastUIService, IDataService dataService,
                                  PodcastViewModel podcastViewModel, IPodcastService podcastService, ITransactionService transactionService,
@@ -54,7 +52,6 @@ namespace MediaLibrary.WebUI.Controllers
             this.tplService = tplService;
             this.webService = webService;
             this.memoryCache = memoryCache;
-            downloadSemaphore = new SemaphoreSlim(1);
         }
 
         public async Task<IActionResult> Index()
@@ -140,7 +137,7 @@ namespace MediaLibrary.WebUI.Controllers
             Func<PodcastItem, bool> expression = null;
             IEnumerable<PodcastItem> podcastItems = await dataService.GetList<PodcastItem>(item => item.PodcastId == id && item.PublishDate.Year == year);
             bool hasPlaylists = await dataService.Exists<Playlist>(item => item.Type == PlaylistTypes.Podcast);
-            IEnumerable<int> downloadIds = GetActiveDownloadIds();
+            IEnumerable<int> downloadIds = podcastUIService.GetActiveDownloadIds();
 
             if (filter == PodcastFilter.Downloaded) /*then*/ expression = item => !string.IsNullOrWhiteSpace(item.File);
             else if (filter == PodcastFilter.Unplayed) /*then*/ expression = item => !item.LastPlayedDate.HasValue;
@@ -153,28 +150,21 @@ namespace MediaLibrary.WebUI.Controllers
         {
             var podcastItem = await dataService.Get<PodcastItem>(item => item.Id == id);
 
-            podcastItem.IsDownloading = GetActiveDownloadIds().Contains(podcastItem.Id);
+            podcastItem.IsDownloading = podcastUIService.GetActiveDownloadIds().Contains(podcastItem.Id);
 
             return PartialView("Controls/PodcastItemOptions", podcastItem);
-        }
-
-        private IEnumerable<int> GetActiveDownloadIds()
-        {
-            return memoryCache.TryGetValue(downloadKey, out IEnumerable<int> ids) ? ids : Enumerable.Empty<int>();
         }
 
         public async Task DownloadPodcastItem(int id)
         {
             try
             {
-                var activeDownloadIds = GetActiveDownloadIds();
+                var activeDownloadIds = podcastUIService.GetActiveDownloadIds();
                 bool isActiveDownload = activeDownloadIds.Contains(id);
 
                 if (!isActiveDownload)
                 {
-                    await downloadSemaphore.WaitAsync();
-                    memoryCache.Set(downloadKey, GetActiveDownloadIds().Append(id).Distinct());
-                    downloadSemaphore.Release();
+                    await podcastUIService.AddActiveDownloadId(id);
                     await podcastService.AddPodcastFile(id).ContinueWith(_ => podcastUIService.ClearPodcasts());
                 }
                 else
@@ -188,9 +178,7 @@ namespace MediaLibrary.WebUI.Controllers
             }
             finally
             {
-                await downloadSemaphore.WaitAsync();
-                memoryCache.Set(downloadKey, GetActiveDownloadIds().Where(item => item != id).Distinct());
-                downloadSemaphore.Release();
+                await podcastUIService.RemoveActiveDownloadId(id);
             }
         }
 
@@ -200,7 +188,7 @@ namespace MediaLibrary.WebUI.Controllers
 
             try
             {
-                bool existingTransaction = GetActiveDownloadIds().Contains(id);
+                bool existingTransaction = podcastUIService.GetActiveDownloadIds().Contains(id);
                 PodcastItem podcastItem = await dataService.Get<PodcastItem>(item => item.Id == id);
 
                 transaction = await transactionService.GetNewTransaction(TransactionTypes.RemoveEpisodeDownload);
