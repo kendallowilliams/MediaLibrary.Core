@@ -114,6 +114,19 @@ export default class Podcast extends BaseClass implements IView {
                             .then(_ => LoadingModal.hideLoading());
                     });
 
+                    $(htmlElement).find('*[data-podcast-action="refresh"]').on('click', e => {
+                        const $btn = $(e.currentTarget),
+                            id = $btn.attr('data-item-id'),
+                            formData = new FormData();
+
+                        formData.set('id', id);
+                        modal.hide();
+                        LoadingModal.showLoading();
+
+                        fetch_post('Podcast/Refresh', formData)
+                            .then(_ => LoadingModal.hideLoading());
+                    }); 
+
                     LoadingModal.hideLoading();
                     this.toggleDarkMode(htmlElement)
                     modal.show();
