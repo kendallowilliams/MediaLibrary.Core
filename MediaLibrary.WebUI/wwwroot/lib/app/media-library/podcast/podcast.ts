@@ -179,16 +179,18 @@ export default class Podcast extends BaseClass implements IView {
                                 id = $switch.attr('data-item-id'),
                                 isChecked = $switch.is(':checked'),
                                 url = isChecked ? 'Podcast/MarkPodcastItemPlayed' : 'Podcast/MarkPodcastItemUnplayed',
-                                formData = new FormData();
+                                formData = new FormData(),
+                                $badge = $(this.podcastView).find('.badge[data-podcast-playback-id=' + id + ']');
 
                             formData.set('id', id);
                             LoadingModal.showLoading();
                             fetch_post(url, formData)
                                 .then(_ => {
                                     modal.hide();
+                                    $badge.toggleClass('d-none', !isChecked).text('PLAYED');
                                     LoadingModal.hideLoading();
-                                    $('[data-podcast-year="' + this.getSelectedYear() + '"]').click();
-                                });
+                                })
+                                .catch(response => $badge.addClass('d-none'));
                         });
                         $(htmlElement).find('*[data-podcast-action="show-description"]').on('click', e => {
                             const $btn = $(e.currentTarget),
