@@ -26,5 +26,10 @@ namespace MediaLibrary.DAL.Models
 
             return hasInterface && !string.IsNullOrWhiteSpace(JsonData) ? JsonConvert.DeserializeObject(JsonData, type) : Activator.CreateInstance(type);
         }
+
+        public void SetConfigurationObject<T>(T entity) where T : IConfiguration, new()
+        {
+            JsonData = JsonConvert.SerializeObject(entity);
+        }
     }
 }

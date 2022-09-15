@@ -98,7 +98,7 @@ namespace MediaLibrary.WebUI.Controllers
                 podcastViewModel.Configuration = configuration.GetConfigurationObject<PodcastConfiguration>();
                 podcastViewModel.Configuration.SelectedPodcastId = podcast.Id;
                 podcastViewModel.Configuration.SelectedPodcastPage = PodcastPages.Podcast;
-                configuration.JsonData = JsonConvert.SerializeObject(podcastViewModel.Configuration);
+                configuration.SetConfigurationObject(podcastViewModel.Configuration);
                 await dataService.Update(configuration);
             }
         }
@@ -115,7 +115,7 @@ namespace MediaLibrary.WebUI.Controllers
                 PodcastConfiguration podcastConfiguration = configuration.GetConfigurationObject<PodcastConfiguration>();
 
                 podcastConfiguration.SelectedPodcastPage = PodcastPages.Index;
-                configuration.JsonData = JsonConvert.SerializeObject(podcastConfiguration);
+                configuration.SetConfigurationObject(podcastConfiguration);
                 await dataService.Update(configuration);
             }
         }
@@ -331,12 +331,13 @@ namespace MediaLibrary.WebUI.Controllers
 
                 if (configuration == null)
                 {
-                    configuration = new Configuration() { Type = ConfigurationTypes.Podcast, JsonData = JsonConvert.SerializeObject(podcastConfiguration) };
+                    configuration = new Configuration() { Type = ConfigurationTypes.Podcast };
+                    configuration.SetConfigurationObject(podcastConfiguration);
                     await dataService.Insert(configuration);
                 }
                 else
                 {
-                    configuration.JsonData = JsonConvert.SerializeObject(podcastConfiguration);
+                    configuration.SetConfigurationObject(podcastConfiguration);
                     await dataService.Update(configuration);
                 }
             }

@@ -77,7 +77,8 @@ namespace MediaLibrary.WebUI.Controllers
 
                 if (configuration == null)
                 {
-                    configuration = new Configuration() { Type = ConfigurationTypes.Television, JsonData = JsonConvert.SerializeObject(televisionConfiguration) };
+                    configuration = new Configuration() { Type = ConfigurationTypes.Television };
+                    configuration.SetConfigurationObject(televisionConfiguration);
                     await dataService.Insert(configuration);
                 }
                 else
@@ -86,7 +87,7 @@ namespace MediaLibrary.WebUI.Controllers
 
                     if (!fileService.CanUseDirectory(televisionConfiguration.FilePath)) /*then*/ televisionConfiguration.FilePath = existingTVConfiguration.FilePath;
                     else /*then*/ televisionConfiguration.FilePath = new System.IO.DirectoryInfo(televisionConfiguration.FilePath).FullName;
-                    configuration.JsonData = JsonConvert.SerializeObject(televisionConfiguration);
+                    configuration.SetConfigurationObject(televisionConfiguration);
                     await dataService.Update(configuration);
                 }
             }

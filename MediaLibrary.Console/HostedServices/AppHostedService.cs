@@ -59,7 +59,7 @@ namespace MediaLibrary.Console.HostedServices
             if (Math.Floor(nextRunTime.Subtract(dtNow).TotalSeconds) <= 0.0)
             {
                 mediaLibraryConfig.ConsoleAppLastRunTimeStamp = dtNow;
-                config.JsonData = JsonConvert.SerializeObject(mediaLibraryConfig);
+                config.SetConfigurationObject(mediaLibraryConfig);
                 ;
                 tasksToRun.Add(() => dataService.Update(config));
 

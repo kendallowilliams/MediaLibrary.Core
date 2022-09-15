@@ -86,7 +86,7 @@ namespace MediaLibrary.BLL.Services
                         }
                     }, podcasts, 4, default(CancellationToken));
                 podcastConfiguration.LastAutoDownloadDate = DateTime.Now;
-                configuration.JsonData = JsonConvert.SerializeObject(podcastConfiguration);
+                configuration.SetConfigurationObject(podcastConfiguration);
                 await dataService.Update(configuration);
                 await podcastService.CleanMissingPodcastFiles();
             }

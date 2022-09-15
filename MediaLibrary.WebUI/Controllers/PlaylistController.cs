@@ -84,7 +84,7 @@ namespace MediaLibrary.WebUI.Controllers
                     playlistViewModel.Configuration = configuration.GetConfigurationObject<PlaylistConfiguration>();
                     playlistViewModel.Configuration.SelectedPlaylistId = playlist.Id;
                     playlistViewModel.Configuration.SelectedPlaylistPage = PlaylistPages.Playlist;
-                    configuration.JsonData = JsonConvert.SerializeObject(playlistViewModel.Configuration);
+                    configuration.SetConfigurationObject(playlistViewModel.Configuration);
                     await dataService.Update(configuration);
                 }
             }
@@ -101,7 +101,7 @@ namespace MediaLibrary.WebUI.Controllers
                 PlaylistConfiguration playlistConfiguration = configuration.GetConfigurationObject<PlaylistConfiguration>();
 
                 playlistConfiguration.SelectedPlaylistPage = PlaylistPages.Index;
-                configuration.JsonData = JsonConvert.SerializeObject(playlistConfiguration);
+                configuration.SetConfigurationObject(playlistConfiguration);
                 await dataService.Update(configuration);
             }
         }
@@ -235,12 +235,13 @@ namespace MediaLibrary.WebUI.Controllers
 
                 if (configuration == null)
                 {
-                    configuration = new Configuration() { Type = ConfigurationTypes.Playlist, JsonData = JsonConvert.SerializeObject(playlistConfiguration) };
+                    configuration = new Configuration() { Type = ConfigurationTypes.Playlist };
+                    configuration.SetConfigurationObject(playlistConfiguration);
                     await dataService.Insert(configuration);
                 }
                 else
                 {
-                    configuration.JsonData = JsonConvert.SerializeObject(playlistConfiguration);
+                    configuration.SetConfigurationObject(playlistConfiguration);
                     await dataService.Update(configuration);
                 }
             }

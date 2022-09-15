@@ -14,7 +14,7 @@ namespace MediaLibrary.DAL.Models
         [Key]
         public int Id { get; set; }
         [Required]
-        public string JsonData { get; set; }
+        //public string JsonData { get; set; }
         public DateTime CreateDate { get; set; }
         public DateTime ModifyDate { get; set; }
     }
