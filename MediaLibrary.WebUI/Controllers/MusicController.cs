@@ -291,7 +291,7 @@ namespace MediaLibrary.WebUI.Controllers
                 if (configuration == null)
                 {
                     configuration = new Configuration() { Type = ConfigurationTypes.Music };
-                    configuration.SetConfigurationObject(musicConfiguration)
+                    configuration.SetConfigurationObject(musicConfiguration);
                     await dataService.Insert(configuration);
                 }
                 else
