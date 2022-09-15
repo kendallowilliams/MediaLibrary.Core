@@ -146,6 +146,13 @@ namespace MediaLibrary.WebUI.Controllers
             return PartialView("PodcastItems", (hasPlaylists, podcastItems.OrderByDescending(item => item.PublishDate), downloadIds));
         }
 
+        public async Task<IActionResult> GetPodcastOptions(int id)
+        {
+            var podcastItem = await dataService.Get<Podcast>(item => item.Id == id);
+
+            return PartialView("Controls/PodcastOptions", podcastItem);
+        }
+
         public async Task<IActionResult> GetPodcastItemOptions(int id)
         {
             var podcastItem = await dataService.Get<PodcastItem>(item => item.Id == id);
@@ -221,6 +228,14 @@ namespace MediaLibrary.WebUI.Controllers
             {
                 await transactionService.UpdateTransactionErrored(transaction, ex);
             }
+        }
+
+        public async Task AutoDownloadEpisodes(int id, bool enabled)
+        {
+            var idParameter = dataService.CreateParameter("id", id);
+            var enabledParameter = dataService.CreateParameter("enabled", enabled);
+
+            await dataService.Execute("UPDATE Podcast SET DownloadNewEpisodes = @enabled WHERE Id = @id", default, idParameter, enabledParameter);
         }
 
         public async Task Refresh(int id = 0)

@@ -6,4 +6,5 @@ export default interface IPodcastConfiguration extends IConfiguration {
     SelectedPodcastPage: PodcastPages;
     SelectedPodcastSort: PodcastSort;
     SelectedPodcastFilter: PodcastFilter;
+    LastAutoDownloadDate: Date;
 }

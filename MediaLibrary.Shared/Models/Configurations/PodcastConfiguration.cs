@@ -17,5 +17,6 @@ namespace MediaLibrary.Shared.Models.Configurations
         public PodcastPages SelectedPodcastPage { get; set; }
         public PodcastSort SelectedPodcastSort { get; set; }
         public PodcastFilter SelectedPodcastFilter { get; set; }
+        public DateTime LastAutoDownloadDate { get; set; }
     }
 }

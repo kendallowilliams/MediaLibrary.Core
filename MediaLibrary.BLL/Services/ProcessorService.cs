@@ -11,6 +11,8 @@ using System.Linq.Expressions;
 using static MediaLibrary.Shared.Enums;
 using System.Threading;
 using MediaLibrary.Shared.Services.Interfaces;
+using MediaLibrary.Shared.Models.Configurations;
+using Newtonsoft.Json;
 
 namespace MediaLibrary.BLL.Services
 {
@@ -37,6 +39,9 @@ namespace MediaLibrary.BLL.Services
         public async Task RefreshPodcasts()
         {
             IEnumerable<Podcast> podcasts = null;
+            var configuration = await dataService.Get<Configuration>(item => item.Type == ConfigurationTypes.Podcast);
+            var podcastConfiguration = configuration.GetConfigurationObject<PodcastConfiguration>();
+            DateTime lastAutoDownloadDate = podcastConfiguration.LastAutoDownloadDate;
 
             try
             {
@@ -47,9 +52,27 @@ namespace MediaLibrary.BLL.Services
 
                         try
                         {
-                            await logService.Info($"{message} [{podcast.Title}] started...");
+
+                            var newItems = Enumerable.Empty<PodcastItem>();
+
+                            await logService.Trace($"{message} [{podcast.Title}] started...");
                             await podcastService.RefreshPodcast(podcast);
-                            await logService.Info($"{message} [{podcast.Title}] completed.");
+                            newItems = podcast.PodcastItems.Where(item => item.PublishDate > lastAutoDownloadDate && !item.IsDownloaded);
+
+                            if (podcast.DownloadNewEpisodes && newItems.Any())
+                            {
+                                await logService.Trace($"Podcast [{podcast.Title}] auto-download started...");
+
+                                foreach (var item in newItems) 
+                                { 
+                                    await podcastService.AddPodcastFile(item.Id);
+                                    await logService.Info($"File [{item.Url}] downloaded.");
+                                }
+
+                                await logService.Trace($"Podcast [{podcast.Title}] auto-download completed.");
+                            }
+
+                            await logService.Trace($"{message} [{podcast.Title}] completed.");
                         }
                         catch(AggregateException ex)
                         {
@@ -62,6 +85,9 @@ namespace MediaLibrary.BLL.Services
                             await logService.Error(ex);
                         }
                     }, podcasts, 4, default(CancellationToken));
+                podcastConfiguration.LastAutoDownloadDate = DateTime.Now;
+                configuration.JsonData = JsonConvert.SerializeObject(podcastConfiguration);
+                await dataService.Update(configuration);
                 await podcastService.CleanMissingPodcastFiles();
             }
             catch (AggregateException ex)
