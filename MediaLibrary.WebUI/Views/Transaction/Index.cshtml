@@ -25,11 +25,11 @@
                 </div>
                 <div class="input-group input-group-sm mb-3">
                     <div class="input-group-text" style="width: 100px">Type</div>
-                    @Html.ListBoxFor(x => x.SelectedTransactionTypes, new MultiSelectList(Model.TransactionTypes), new { @class = "custom-select" })
+                    @Html.ListBoxFor(x => x.SelectedTransactionTypes, new MultiSelectList(Model.TransactionTypes), new { @class = "form-select form-select-sm" })
                 </div>
                 <div class="input-group input-group-sm mb-3">
                     <div class="input-group-text" style="width: 100px">Status</div>
-                    @Html.ListBoxFor(x => x.SelectedTransactionStatuses, new MultiSelectList(Model.TransactionStatuses), new { @class = "custom-select" })
+                    @Html.ListBoxFor(x => x.SelectedTransactionStatuses, new MultiSelectList(Model.TransactionStatuses), new { @class = "form-select form-select-sm" })
                 </div>
                 <div class="text-end">
                     <button class="btn btn-sm btn-outline-secondary"><i class="fa fa-search"></i></button>
