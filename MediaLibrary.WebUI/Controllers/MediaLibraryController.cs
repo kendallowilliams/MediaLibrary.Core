@@ -46,11 +46,8 @@ namespace MediaLibrary.WebUI.Controllers
 
                 if (configuration == null)
                 {
-                    configuration = new Configuration()
-                    {
-                        Type = ConfigurationTypes.MediaLibrary,
-                        JsonData = JsonConvert.SerializeObject(mediaLibraryConfiguration)
-                    };
+                    configuration = new Configuration() { Type = ConfigurationTypes.MediaLibrary };
+                    configuration.SetConfigurationObject(mediaLibraryConfiguration);
                     await dataService.Insert(configuration);
                 }
                 else
@@ -58,7 +55,7 @@ namespace MediaLibrary.WebUI.Controllers
                     var savedMediaLibraryConfiguration = configuration.GetConfigurationObject<MediaLibraryConfiguration>();
 
                     mediaLibraryConfiguration.ConsoleAppLastRunTimeStamp = savedMediaLibraryConfiguration.ConsoleAppLastRunTimeStamp;
-                    configuration.JsonData = JsonConvert.SerializeObject(mediaLibraryConfiguration);
+                    configuration.SetConfigurationObject(mediaLibraryConfiguration);
                     await dataService.Update(configuration);
                 }
             }

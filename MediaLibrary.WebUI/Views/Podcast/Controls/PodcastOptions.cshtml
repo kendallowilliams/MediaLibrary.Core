@@ -1,0 +1,28 @@
+﻿@model Podcast
+
+@{
+}
+
+<div class="d-flex flex-column" data-podcast-id="@(Model.Id)">
+    <div class="row mb-3">
+        <div class="col-auto border-end">
+            <h6 style="width: 100px">Actions</h6>
+        </div>
+        <div class="col">
+            <button class="btn btn-sm btn-outline-danger" data-podcast-action="delete" data-item-id="@(Model.Id)" data-bs-tooltip="tooltip" data-bs-title="Delete podcast">
+                <i class="fa fa-trash"></i>
+            </button>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-auto border-end">
+            <h6 style="width: 100px">Settings</h6>
+        </div>
+        <div class="col">
+            <div class="form-check form-switch" data-bs-tooltip="tooltip" data-bs-title="Auto Download">
+                @Html.CheckBoxFor(x => x.DownloadNewEpisodes, new { @class = "form-check-input", role = "switch", data_podcast_action = "auto-download", data_item_id = Model.Id })
+                @Html.LabelFor(x => x.DownloadNewEpisodes, "Auto Download", new { @class = "form-check-label" })
+            </div>
+        </div>
+    </div>
+</div>

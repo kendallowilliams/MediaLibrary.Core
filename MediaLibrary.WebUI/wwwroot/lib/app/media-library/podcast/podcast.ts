@@ -68,20 +68,56 @@ export default class Podcast extends BaseClass implements IView {
             }
         });
 
-        $(this.mediaView).find('*[data-podcast-action="delete"]').on('click', e => {
+        $(this.mediaView).find('button[data-podcast-options-id]').on('click', e => {
             const $btn = $(e.currentTarget),
-                id = $btn.attr('data-item-id'),
-                title = 'Delete podcast',
-                message = 'Are you sure you want to remove this podcast?',
-                formData = new FormData(),
-                callback = () => {
-                    LoadingModal.showLoading();
-                    formData.set('id', id);
-                    fetch_post('Podcast/RemovePodcast', formData)
-                        .then(_ => this.loadView(() => LoadingModal.hideLoading()));
+                id = $btn.attr('data-podcast-options-id'),
+                modal = new BlankDismissableModal(),
+                error = (status) => {
+                    LoadingModal.hideLoading();
+                    MessageBox.showError('Error', status);
                 };
 
-            MessageBox.confirm(title, message, MessageBoxConfirmType.YesNo, callback);
+            LoadingModal.showLoading();
+            modal.loadBodyHTML('Podcast/GetPodcastOptions/'.concat(id))
+                .then(_ => {
+                    const htmlElement = modal.getHTMLElement();
+
+                    $(htmlElement).find('*[data-podcast-action="delete"]').on('click', e => {
+                        const $btn = $(e.currentTarget),
+                            id = $btn.attr('data-item-id'),
+                            title = 'Delete podcast',
+                            message = 'Are you sure you want to remove this podcast?',
+                            formData = new FormData(),
+                            callback = () => {
+                                LoadingModal.showLoading();
+                                formData.set('id', id);
+                                fetch_post('Podcast/RemovePodcast', formData)
+                                    .then(_ => this.loadView(() => LoadingModal.hideLoading()));
+                            };
+
+                        modal.hide();
+                        MessageBox.confirm(title, message, MessageBoxConfirmType.YesNo, callback);
+                    });
+
+                    $(htmlElement).find('*[data-podcast-action="auto-download"]').on('change', e => {
+                        const $switch = $(e.currentTarget),
+                            id = $switch.attr('data-item-id'),
+                            enabled = $switch.is(':checked'),
+                            formData = new FormData();
+
+                        formData.set('id', id);
+                        formData.set('enabled', enabled ? 'true' : 'false');
+                        modal.hide();
+                        LoadingModal.showLoading();
+
+                        fetch_post('Podcast/AutoDownloadEpisodes', formData)
+                            .then(_ => LoadingModal.hideLoading());
+                    });
+
+                    LoadingModal.hideLoading();
+                    this.toggleDarkMode(htmlElement)
+                    modal.show();
+                }).catch((response: Response) => response.text().then(message => error(message)));
         });
     }
 

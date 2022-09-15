@@ -290,13 +290,14 @@ namespace MediaLibrary.WebUI.Controllers
 
                 if (configuration == null)
                 {
-                    configuration = new Configuration() { Type = ConfigurationTypes.Music, JsonData = JsonConvert.SerializeObject(musicConfiguration) };
+                    configuration = new Configuration() { Type = ConfigurationTypes.Music };
+                    configuration.SetConfigurationObject(musicConfiguration);
                     await dataService.Insert(configuration);
                 }
                 else
                 {
                     musicConfiguration.MusicPaths = ValidateMusicPaths(musicConfiguration.MusicPaths);
-                    configuration.JsonData = JsonConvert.SerializeObject(musicConfiguration);
+                    configuration.SetConfigurationObject(musicConfiguration);
                     await dataService.Update(configuration);
                 }
             }

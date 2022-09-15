@@ -26,6 +26,7 @@ namespace MediaLibrary.DAL.Models
         public string ImageUrl { get; set; }
         public string Description { get; set; }
         public string Author { get; set; }
+        public bool DownloadNewEpisodes { get; set; }
         public DateTime LastUpdateDate { get; set; }
         public DateTime CreateDate { get; set; }
         public DateTime ModifyDate { get; set; }

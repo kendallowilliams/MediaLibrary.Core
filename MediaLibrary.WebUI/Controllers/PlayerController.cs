@@ -54,12 +54,13 @@ namespace MediaLibrary.WebUI.Controllers
 
                 if (configuration == null)
                 {
-                    configuration = new Configuration() { Type = ConfigurationTypes.Player, JsonData = JsonConvert.SerializeObject(playerConfiguration) };
+                    configuration = new Configuration() { Type = ConfigurationTypes.Player };
+                    configuration.SetConfigurationObject(playerConfiguration);
                     await dataService.Insert(configuration);
                 }
                 else
                 {
-                    configuration.JsonData = JsonConvert.SerializeObject(playerConfiguration);
+                    configuration.SetConfigurationObject(playerConfiguration);
                     await dataService.Update(configuration);
                 }
             }
