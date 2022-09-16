@@ -12,8 +12,9 @@ import AddNewSongModal from "../../assets/modals/add-song-modal";
 import { getMusicTabEnumString, getMusicTabEnum } from "../../assets/enums/enum-functions";
 import Search from "./search";
 import * as MessageBox from "../../assets/utilities/message-box";
-import { loadHTML } from "../../assets/utilities/fetch_service";
+import { fetch_post, loadHTML } from "../../assets/utilities/fetch_service";
 import { Tab } from "bootstrap";
+import BlankDismissableModal from "../../assets/modals/blank-dismissable-modal";
 
 export default class Music extends BaseClass implements IView {
     private readonly mediaView: HTMLElement;
@@ -49,6 +50,7 @@ export default class Music extends BaseClass implements IView {
                 .each((index, tab) => Tab.getOrCreateInstance(tab).show());
             if (this.musicConfiguration.properties.SelectedMusicPage === MusicPages.Search) /*then*/ this.search.search();
             this.initContinuePlaybackBtns();
+            this.initializeSongOptions(this.mediaView);
             this.toggleDarkMode(this.mediaView);
             this.updateActiveMediaFunc();
             callback();
@@ -65,8 +67,13 @@ export default class Music extends BaseClass implements IView {
     }
 
     loadAlbum(id: number, callback: () => void): void {
+        const albumCallback = () => {
+            callback();
+            this.initializeSongOptions(this.mediaView);
+        };
+
         if (Number.isInteger(id)) {
-            this.album.loadAlbum.call(this.album, id, callback);
+            this.album.loadAlbum.call(this.album, id, albumCallback);
         }
     }
 
@@ -90,7 +97,8 @@ export default class Music extends BaseClass implements IView {
                     $('[data-group-url]').on('click', _e => {
                         const $btn = $(_e.currentTarget),
                             url = $btn.attr('data-group-url'),
-                            $container = $($btn.attr('data-bs-target'));
+                            $container = $($btn.attr('data-bs-target')),
+                            container = $container[0];
                         if (url) {
                             LoadingModal.showLoading();
                             hideTooltips($container[0]);
@@ -99,6 +107,7 @@ export default class Music extends BaseClass implements IView {
                                     if (this.tooltipsEnabled()) /*then*/ loadTooltips($container[0]);
                                     $container.find('*[data-play-id]')
                                         .on('click', __e => this.playFunc(__e.currentTarget as HTMLButtonElement, true));
+                                    this.initializeSongOptions(container);
                                     this.initializeAlbumAndArtistControls($container[0]);
                                     LoadingModal.hideLoading();
                                     $btn.attr('data-group-url', '');
@@ -127,6 +136,29 @@ export default class Music extends BaseClass implements IView {
         this.search.initializeControls();
         this.album.initializeControls();
         this.artist.initializeControls();
+    }
+
+    private initializeSongOptions(container: HTMLElement): void {
+        const $container = $(container);
+
+        $container.find('button[data-song-options-id]').on('click', e => {
+            const $btn = $(e.currentTarget),
+                id = $btn.attr('data-song-options-id'),
+                modal = new BlankDismissableModal(),
+                error = (status) => {
+                    LoadingModal.hideLoading();
+                    MessageBox.showError('Error', status);
+                };
+
+            LoadingModal.showLoading();
+            modal.loadBodyHTML('Music/GetSongOptions/'.concat(id))
+                .then(() => {
+                    this.toggleDarkMode(modal.getHTMLElement());
+                    modal.show();
+                    LoadingModal.hideLoading();
+                })
+                .catch(response => error(response));
+        });
     }
 
     private initializeAlbumAndArtistControls(container: HTMLElement): void {

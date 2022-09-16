@@ -20,18 +20,9 @@
                         <button type="button" class="btn btn-sm btn-outline-secondary" data-play-id="@(song.Id)" data-bs-tooltip="tooltip" data-bs-title="Play">
                             <i class="fa fa-play"></i>
                         </button>
-                        <button type="button" class="btn btn-sm btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#@(HtmlControlsRepository.EditSongModalId)" data-item-id="@(song.Id)" data-bs-tooltip="tooltip"
-                            data-bs-title="Edit">
-                            <i class="fa fa-edit"></i>
+                        <button type="button" class="btn btn-sm btn-outline-secondary" data-song-options-id="@(song.Id)" data-bs-tooltip="tooltip" data-bs-title="Options">
+                            <i class="fa fa-ellipsis-v"></i>
                         </button>
-                        @if (Model.HasPlaylists)
-                        {
-                            <button type="button" class="btn btn-sm btn-outline-secondary" data-playlist-url="@(Url.Action("AddTrackToPlaylist", "Music"))" data-item-id="@(song.Id)"
-                            data-bs-toggle="modal" data-bs-target="#@(HtmlControlsRepository.AddToPlaylistModalId)" data-bs-tooltip="tooltip" data-bs-title="Add to playlist"
-                            data-playlist-type="@(nameof(Enums.PlaylistTypes.Music))">
-                                <i class="fa fa-plus"></i>
-                            </button>
-                        }
                     </div>
                 </div>
             </li>

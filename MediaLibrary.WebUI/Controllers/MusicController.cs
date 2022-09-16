@@ -100,6 +100,13 @@ namespace MediaLibrary.WebUI.Controllers
             return PartialView("~/Views/Music/SongGroup.cshtml", (Group: group, PlaylistCount: hasPlaylists));
         }
 
+        public async Task<IActionResult> GetSongOptions(int id)
+        {
+            var song = await dataService.Get<Track>(item => item.Id == id);
+
+            return PartialView("Controls/SongOptions", song);
+        }
+
         [AllowAnonymous]
         public async Task<IActionResult> File(int id)
         {
