@@ -1,0 +1,36 @@
+﻿@model Playlist
+
+@{
+    bool hasItems = Model.PlaylistTracks.Any() || Model.PlaylistEpisodes.Any() || Model.PlaylistPodcastItems.Any(),
+         isUserPlaylist = Model.Id > 0;
+}
+
+<div class="d-flex flex-column" data-playlist-id="@(Model.Id)">
+    <div class="row">
+        <div class="col-auto border-end">
+            <h6 style="width: 100px">Actions</h6>
+        </div>
+        <div class="col mb-3">
+            @if (isUserPlaylist)
+            {
+                <button class="btn btn-sm btn-outline-secondary" data-bs-title="Edit playlist" data-bs-toggle="modal" data-bs-target="#@(HtmlControlsRepository.EdiPlaylistModalId)" data-item-id="@(Model.Id)"
+                        data-item-name="@(Model.Name)" data-bs-tooltip="tooltip">
+                    <i class="fa fa-edit"></i>
+                </button>
+            }
+            @if (hasItems)
+            {
+                <button class="btn btn-sm btn-outline-secondary" data-playlist-id="@Model.Id" data-playlist-action="download"
+                        data-bs-tooltip="tooltip" data-bs-title="Download M3U playlist" data-playlist-name="@(Model.Name)">
+                    <i class="fa fa-download"></i>
+                </button>
+            }
+            @if (isUserPlaylist)
+            {
+                <button class="btn btn-sm btn-outline-danger" data-playlist-action="delete" data-item-id="@(Model.Id)" data-bs-tooltip="tooltip" data-bs-title="Delete playlist">
+                    <i class="fa fa-trash"></i>
+                </button>
+            }
+        </div>
+    </div>
+</div>

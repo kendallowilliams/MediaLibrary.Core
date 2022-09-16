@@ -13,26 +13,6 @@
         </div>
         <div class="p-1">
             <button class="btn btn-sm btn-outline-secondary" data-back-button="playlist" data-bs-tooltip="tooltip" data-bs-title="Go back"><i class="fa fa-arrow-circle-left"></i></button>
-            @if (Model.SelectedPlaylist.Id > 0)
-            {
-                <button class="btn btn-sm btn-outline-secondary" data-bs-title="Edit playlist" data-bs-toggle="modal" data-bs-target="#@(HtmlControlsRepository.EdiPlaylistModalId)" data-item-id="@(Model.SelectedPlaylist.Id)"
-                    data-item-name="@(Model.SelectedPlaylist.Name)" data-bs-tooltip="tooltip">
-                    <i class="fa fa-edit"></i>
-                </button>
-            }
-            @if (hasItems)
-            {
-                <button class="btn btn-sm btn-outline-secondary" data-playlist-id="@Model.SelectedPlaylist.Id" data-playlist-action="download"
-                    data-bs-tooltip="tooltip" data-bs-title="Download M3U playlist" data-playlist-name="@(Model.SelectedPlaylist.Name)">
-                    <i class="fa fa-download"></i>
-                </button>
-            }
-            @if (Model.SelectedPlaylist.Id > 0)
-            {
-                <button class="btn btn-sm btn-outline-danger" data-playlist-action="delete" data-item-id="@(Model.SelectedPlaylist.Id)" data-bs-tooltip="tooltip" data-bs-title="Delete playlist">
-                    <i class="fa fa-trash"></i>
-                </button>
-            }
         </div>
         <hr />
     </div>
@@ -174,5 +154,3 @@
         }
     }
 </div>
-
-<partial name="~/Views/Shared/Modals/EditPlaylistModal.cshtml" />

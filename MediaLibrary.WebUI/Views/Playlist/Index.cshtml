@@ -70,8 +70,8 @@
                                                         <button class="btn btn-sm btn-outline-secondary" data-playlist-id="@(playlist.Id)" data-bs-tooltip="tooltip" data-bs-title="View playlist">
                                                             <i class="fa fa-list"></i>
                                                         </button>
-                                                        <button class="btn btn-sm btn-outline-danger @(playlist.Id < 0 ? "d-none" : string.Empty)" data-item-id="@(playlist.Id)" data-playlist-action="delete" data-bs-tooltip="tooltip" data-bs-title="Delete playlist">
-                                                            <i class="fa fa-trash"></i>
+                                                        <button type="button" class="btn btn-sm btn-outline-secondary" data-playlist-options-id="@(playlist.Id)" data-bs-tooltip="tooltip" data-bs-title="Options">
+                                                            <i class="fa fa-ellipsis-v"></i>
                                                         </button>
                                                     </div>
                                                 </div>
@@ -122,8 +122,8 @@
                                                         <button class="btn btn-sm btn-outline-secondary" data-playlist-id="@(playlist.Id)" data-bs-tooltip="tooltip" data-bs-title="View playlist">
                                                             <i class="fa fa-list"></i>
                                                         </button>
-                                                        <button class="btn btn-sm btn-outline-danger @(playlist.Id < 0 ? "d-none" : string.Empty)" data-item-id="@(playlist.Id)" data-playlist-action="delete" data-bs-tooltip="tooltip" data-bs-title="Delete playlist">
-                                                            <i class="fa fa-trash"></i>
+                                                        <button type="button" class="btn btn-sm btn-outline-secondary" data-playlist-options-id="@(playlist.Id)" data-bs-tooltip="tooltip" data-bs-title="Options">
+                                                            <i class="fa fa-ellipsis-v"></i>
                                                         </button>
                                                     </div>
                                                 </div>
@@ -175,8 +175,8 @@
                                                         <button class="btn btn-sm btn-outline-secondary" data-playlist-id="@(playlist.Id)" data-bs-tooltip="tooltip" data-bs-title="View playlist">
                                                             <i class="fa fa-list"></i>
                                                         </button>
-                                                        <button class="btn btn-sm btn-outline-danger @(playlist.Id < 0 ? "d-none" : string.Empty)" data-item-id="@(playlist.Id)" data-playlist-action="delete" data-bs-tooltip="tooltip" data-bs-title="Delete playlist">
-                                                            <i class="fa fa-trash"></i>
+                                                        <button type="button" class="btn btn-sm btn-outline-secondary" data-playlist-options-id="@(playlist.Id)" data-bs-tooltip="tooltip" data-bs-title="Options">
+                                                            <i class="fa fa-ellipsis-v"></i>
                                                         </button>
                                                     </div>
                                                 </div>
@@ -199,3 +199,4 @@
 </div>
 
 <partial name="~/Views/Shared/Modals/AddNewPlaylistModal.cshtml" />
+<partial name="~/Views/Shared/Modals/EditPlaylistModal.cshtml" />
