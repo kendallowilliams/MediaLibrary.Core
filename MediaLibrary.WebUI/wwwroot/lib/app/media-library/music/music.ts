@@ -67,13 +67,8 @@ export default class Music extends BaseClass implements IView {
     }
 
     loadAlbum(id: number, callback: () => void): void {
-        const albumCallback = () => {
-            callback();
-            this.initializeSongOptions(this.mediaView);
-        };
-
         if (Number.isInteger(id)) {
-            this.album.loadAlbum.call(this.album, id, albumCallback);
+            this.album.loadAlbum.call(this.album, id, callback);
         }
     }
 
@@ -138,7 +133,7 @@ export default class Music extends BaseClass implements IView {
         this.artist.initializeControls();
     }
 
-    private initializeSongOptions(container: HTMLElement): void {
+    public initializeSongOptions(container: HTMLElement): void {
         const $container = $(container);
 
         $container.find('button[data-song-options-id]').on('click', e => {

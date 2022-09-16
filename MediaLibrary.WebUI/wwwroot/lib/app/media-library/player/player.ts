@@ -46,7 +46,7 @@ export default class Player extends BaseClass implements IView {
 
     constructor(private playerConfiguration: PlayerConfiguration, private loadFunctions: IPlayerLoadFunctions, private updateActiveMedia: () => void = () => null,
         private mediaLibraryConfiguration: MediaLibraryConfiguration, private tooltipsEnabled: () => boolean = () => false,
-        private toggleDarkMode: (container) => void) {
+        private toggleDarkMode: (container) => void, private initializeMusicOptions: (container) => void) {
         super();
 
         this.players = HtmlControls.Players();
@@ -373,6 +373,7 @@ export default class Player extends BaseClass implements IView {
 
                     this.loadItem(item, true);
                 });
+                this.initializeMusicOptions(containers.PlayerItemsContainer);
 
                 if (typeof callback === 'function') /*then*/ callback();
             };
