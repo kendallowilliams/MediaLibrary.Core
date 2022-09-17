@@ -6,8 +6,9 @@ import { TelevisionPages } from "../../assets/enums/enums";
 import ITelevisionConfiguration from "../../assets/interfaces/television-configuration-interface";
 import LoadingModal from '../../assets/modals/loading-modal';
 import { loadTooltips, hideTooltips } from "../../assets/utilities/bootstrap-helper";
-import { getSeriesSortEnum } from "../../assets/enums/enum-functions";
 import { loadHTML } from "../../assets/utilities/fetch_service";
+import BlankDismissableModal from "../../assets/modals/blank-dismissable-modal";
+import * as MessageBox from '../../assets/utilities/message-box';
 
 export default class Television extends BaseClass implements IView {
     private readonly mediaView: HTMLElement;
@@ -51,13 +52,6 @@ export default class Television extends BaseClass implements IView {
                 .then(() => this.loadView(() => LoadingModal.hideLoading()));
         });
 
-        $(this.mediaView).find('*[data-series-action="playlist"]').on('click', e => {
-            const season = this.televisionConfiguration.properties.SelectedSeason,
-                series = this.televisionConfiguration.properties.SelectedSeriesId;
-
-            window.location.href = 'Television/GetM3UPlaylist?seriesId=' + series + '&season=' + season;
-        });
-
         $(this.mediaView).find('*[data-season-id]').on('click', e => {
             const item = e.currentTarget,
                 success = () => {
@@ -85,6 +79,35 @@ export default class Television extends BaseClass implements IView {
                 loadHTML(this.seasonView, 'Television/GetSeason', { series: series, season: id })
                     .then(_ => success());
             }
+        });
+
+        $(this.mediaView).find('button[data-series-options-id]').on('click', e => {
+            const $btn = $(e.currentTarget),
+                id = $btn.attr('data-series-options-id'),
+                modal = new BlankDismissableModal(),
+                error = (status) => {
+                    LoadingModal.hideLoading();
+                    MessageBox.showError('Error', status);
+                };
+
+            LoadingModal.showLoading();
+            modal.loadBodyHTML('Television/GetSeriesOptions/'.concat(id))
+                .then(_ => {
+                    const htmlElement = modal.getHTMLElement(),
+                        $playlistControl = $(htmlElement).find('*[data-series-action="playlist"]'),
+                        seriesId = $(htmlElement).find('[data-series-id]').attr('data-series-id');
+
+                    $playlistControl.find('button').on('click', e => {
+                        const season = $playlistControl.find('select').prop('value');
+
+                        modal.hide();
+                        window.location.href = 'Television/GetM3UPlaylist?seriesId=' + seriesId + '&season=' + season;
+                    });
+
+                    LoadingModal.hideLoading();
+                    this.toggleDarkMode(htmlElement)
+                    modal.show();
+                }).catch((response: Response) => response.text().then(message => error(message)));
         });
     }
 

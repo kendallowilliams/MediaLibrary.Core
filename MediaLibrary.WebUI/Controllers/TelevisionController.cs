@@ -69,6 +69,13 @@ namespace MediaLibrary.WebUI.Controllers
             return PartialView("Series", televisionViewModel);
         }
 
+        public async Task<IActionResult> GetSeriesOptions(int id)
+        {
+            var series = await dataService.Get<Series>(item => item.Id == id, default, item => item.Episodes);
+
+            return PartialView("Controls/SeriesOptions", series);
+        }
+
         public async Task<IActionResult> UpdateConfiguration([FromBody] TelevisionConfiguration televisionConfiguration)
         {
             if (ModelState.IsValid)
