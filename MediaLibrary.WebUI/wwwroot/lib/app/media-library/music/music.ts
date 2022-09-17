@@ -38,7 +38,10 @@ export default class Music extends BaseClass implements IView {
             this.loadAlbum.bind(this),
             this.loadArtist.bind(this),
             this.updateActiveMediaFunc.bind(this),
-            this.toggleDarkMode.bind(this, this.mediaView)
+            this.toggleDarkMode.bind(this, this.mediaView),
+            this.initializeSongOptions.bind(this),
+            this.initializeAlbumOptions.bind(this),
+            this.initializeArtistOptions.bind(this)
         );
     }
 
@@ -156,11 +159,59 @@ export default class Music extends BaseClass implements IView {
         });
     }
 
+    public initializeAlbumOptions(container: HTMLElement): void {
+        const $container = $(container);
+
+        $container.find('button[data-album-options-id]').on('click', e => {
+            const $btn = $(e.currentTarget),
+                id = $btn.attr('data-album-options-id'),
+                modal = new BlankDismissableModal(),
+                error = (status) => {
+                    LoadingModal.hideLoading();
+                    MessageBox.showError('Error', status);
+                };
+
+            LoadingModal.showLoading();
+            modal.loadBodyHTML('Music/GetAlbumOptions/'.concat(id))
+                .then(() => {
+                    this.toggleDarkMode(modal.getHTMLElement());
+                    modal.show();
+                    LoadingModal.hideLoading();
+                })
+                .catch(response => error(response));
+        });
+    }
+
+    public initializeArtistOptions(container: HTMLElement): void {
+        const $container = $(container);
+
+        $container.find('button[data-artist-options-id]').on('click', e => {
+            const $btn = $(e.currentTarget),
+                id = $btn.attr('data-artist-options-id'),
+                modal = new BlankDismissableModal(),
+                error = (status) => {
+                    LoadingModal.hideLoading();
+                    MessageBox.showError('Error', status);
+                };
+
+            LoadingModal.showLoading();
+            modal.loadBodyHTML('Music/GetArtistOptions/'.concat(id))
+                .then(() => {
+                    this.toggleDarkMode(modal.getHTMLElement());
+                    modal.show();
+                    LoadingModal.hideLoading();
+                })
+                .catch(response => error(response));
+        });
+    }
+
     private initializeAlbumAndArtistControls(container: HTMLElement): void {
         const getAlbumId = btn => parseInt($(btn).attr('data-album-id')),
             getArtistId = btn => parseInt($(btn).attr('data-artist-id'))
 
         $(container).find('[data-album-id]').on('click', _e => this.album.loadAlbum(getAlbumId(_e.currentTarget), () => this.loadView()));
         $(container).find('[data-artist-id]').on('click', _e => this.artist.loadArtist(getArtistId(_e.currentTarget), () => this.loadView()));
+        this.initializeArtistOptions(container);
+        this.initializeAlbumOptions(container);
     }
 }
