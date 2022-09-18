@@ -422,5 +422,7 @@ export default class SettingsModal {
             .not('[data-podcast-item-options] .btn')
             .toggleClass('btn-outline-light', darkModeEnabled)
             .toggleClass('btn-outline-secondary', !darkModeEnabled);
+        $container.find('input:not([type="checkbox"]), .input-group-text, select')
+            .toggleClass('bg-transparent text-light', darkModeEnabled);
     }
 }
