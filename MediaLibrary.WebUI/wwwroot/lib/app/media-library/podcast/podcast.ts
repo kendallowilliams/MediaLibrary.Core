@@ -114,6 +114,19 @@ export default class Podcast extends BaseClass implements IView {
                             .then(_ => LoadingModal.hideLoading());
                     });
 
+                    $(htmlElement).find('*[data-podcast-action="refresh"]').on('click', e => {
+                        const $btn = $(e.currentTarget),
+                            id = $btn.attr('data-item-id'),
+                            formData = new FormData();
+
+                        formData.set('id', id);
+                        modal.hide();
+                        LoadingModal.showLoading();
+
+                        fetch_post('Podcast/Refresh', formData)
+                            .then(_ => LoadingModal.hideLoading());
+                    }); 
+
                     LoadingModal.hideLoading();
                     this.toggleDarkMode(htmlElement)
                     modal.show();
@@ -179,16 +192,18 @@ export default class Podcast extends BaseClass implements IView {
                                 id = $switch.attr('data-item-id'),
                                 isChecked = $switch.is(':checked'),
                                 url = isChecked ? 'Podcast/MarkPodcastItemPlayed' : 'Podcast/MarkPodcastItemUnplayed',
-                                formData = new FormData();
+                                formData = new FormData(),
+                                $badge = $(this.podcastView).find('.badge[data-podcast-playback-id=' + id + ']');
 
                             formData.set('id', id);
                             LoadingModal.showLoading();
                             fetch_post(url, formData)
                                 .then(_ => {
                                     modal.hide();
+                                    $badge.toggleClass('d-none', !isChecked).text('PLAYED');
                                     LoadingModal.hideLoading();
-                                    $('[data-podcast-year="' + this.getSelectedYear() + '"]').click();
-                                });
+                                })
+                                .catch(response => $badge.addClass('d-none'));
                         });
                         $(htmlElement).find('*[data-podcast-action="show-description"]').on('click', e => {
                             const $btn = $(e.currentTarget),

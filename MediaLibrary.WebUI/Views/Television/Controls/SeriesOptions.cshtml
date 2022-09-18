@@ -1,0 +1,27 @@
+﻿@model Series
+
+@{
+    var seasons = Model.Episodes.Select(episode => episode.Season)
+        .Distinct()
+        .OrderBy(season => season)
+        .Select(season => new { Value = season, Text = $"Season {season}" });
+}
+
+<div class="d-flex flex-column" data-series-id="@(Model.Id)">
+    <div class="row">
+        <div class="col-auto border-end">
+            <h6 style="width: 100px">Actions</h6>
+        </div>
+        <div class="col mb-3">
+            <div class="input-group input-group-sm" data-bs-tooltip="tooltip" data-bs-title="Download M3U playlist" data-series-action="playlist">
+                <select class="form-select form-select-sm">
+                    @foreach(var season in seasons)
+                    {
+                        <option value="@season.Value">@season.Text</option>
+                    }
+                </select>
+                <button class="btn btn-sm btn-outline-secondary"><i class="fa fa-download"></i></button>
+            </div>
+        </div>
+    </div>
+</div>

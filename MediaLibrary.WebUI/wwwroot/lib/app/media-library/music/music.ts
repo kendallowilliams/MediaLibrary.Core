@@ -12,8 +12,9 @@ import AddNewSongModal from "../../assets/modals/add-song-modal";
 import { getMusicTabEnumString, getMusicTabEnum } from "../../assets/enums/enum-functions";
 import Search from "./search";
 import * as MessageBox from "../../assets/utilities/message-box";
-import { loadHTML } from "../../assets/utilities/fetch_service";
+import { fetch_post, loadHTML } from "../../assets/utilities/fetch_service";
 import { Tab } from "bootstrap";
+import BlankDismissableModal from "../../assets/modals/blank-dismissable-modal";
 
 export default class Music extends BaseClass implements IView {
     private readonly mediaView: HTMLElement;
@@ -37,7 +38,10 @@ export default class Music extends BaseClass implements IView {
             this.loadAlbum.bind(this),
             this.loadArtist.bind(this),
             this.updateActiveMediaFunc.bind(this),
-            this.toggleDarkMode.bind(this, this.mediaView)
+            this.toggleDarkMode.bind(this, this.mediaView),
+            this.initializeSongOptions.bind(this),
+            this.initializeAlbumOptions.bind(this),
+            this.initializeArtistOptions.bind(this)
         );
     }
 
@@ -49,6 +53,7 @@ export default class Music extends BaseClass implements IView {
                 .each((index, tab) => Tab.getOrCreateInstance(tab).show());
             if (this.musicConfiguration.properties.SelectedMusicPage === MusicPages.Search) /*then*/ this.search.search();
             this.initContinuePlaybackBtns();
+            this.initializeSongOptions(this.mediaView);
             this.toggleDarkMode(this.mediaView);
             this.updateActiveMediaFunc();
             callback();
@@ -90,7 +95,8 @@ export default class Music extends BaseClass implements IView {
                     $('[data-group-url]').on('click', _e => {
                         const $btn = $(_e.currentTarget),
                             url = $btn.attr('data-group-url'),
-                            $container = $($btn.attr('data-bs-target'));
+                            $container = $($btn.attr('data-bs-target')),
+                            container = $container[0];
                         if (url) {
                             LoadingModal.showLoading();
                             hideTooltips($container[0]);
@@ -99,6 +105,7 @@ export default class Music extends BaseClass implements IView {
                                     if (this.tooltipsEnabled()) /*then*/ loadTooltips($container[0]);
                                     $container.find('*[data-play-id]')
                                         .on('click', __e => this.playFunc(__e.currentTarget as HTMLButtonElement, true));
+                                    this.initializeSongOptions(container);
                                     this.initializeAlbumAndArtistControls($container[0]);
                                     LoadingModal.hideLoading();
                                     $btn.attr('data-group-url', '');
@@ -129,11 +136,82 @@ export default class Music extends BaseClass implements IView {
         this.artist.initializeControls();
     }
 
+    public initializeSongOptions(container: HTMLElement): void {
+        const $container = $(container);
+
+        $container.find('button[data-song-options-id]').on('click', e => {
+            const $btn = $(e.currentTarget),
+                id = $btn.attr('data-song-options-id'),
+                modal = new BlankDismissableModal(),
+                error = (status) => {
+                    LoadingModal.hideLoading();
+                    MessageBox.showError('Error', status);
+                };
+
+            LoadingModal.showLoading();
+            modal.loadBodyHTML('Music/GetSongOptions/'.concat(id))
+                .then(() => {
+                    this.toggleDarkMode(modal.getHTMLElement());
+                    modal.show();
+                    LoadingModal.hideLoading();
+                })
+                .catch(response => error(response));
+        });
+    }
+
+    public initializeAlbumOptions(container: HTMLElement): void {
+        const $container = $(container);
+
+        $container.find('button[data-album-options-id]').on('click', e => {
+            const $btn = $(e.currentTarget),
+                id = $btn.attr('data-album-options-id'),
+                modal = new BlankDismissableModal(),
+                error = (status) => {
+                    LoadingModal.hideLoading();
+                    MessageBox.showError('Error', status);
+                };
+
+            LoadingModal.showLoading();
+            modal.loadBodyHTML('Music/GetAlbumOptions/'.concat(id))
+                .then(() => {
+                    this.toggleDarkMode(modal.getHTMLElement());
+                    modal.show();
+                    LoadingModal.hideLoading();
+                })
+                .catch(response => error(response));
+        });
+    }
+
+    public initializeArtistOptions(container: HTMLElement): void {
+        const $container = $(container);
+
+        $container.find('button[data-artist-options-id]').on('click', e => {
+            const $btn = $(e.currentTarget),
+                id = $btn.attr('data-artist-options-id'),
+                modal = new BlankDismissableModal(),
+                error = (status) => {
+                    LoadingModal.hideLoading();
+                    MessageBox.showError('Error', status);
+                };
+
+            LoadingModal.showLoading();
+            modal.loadBodyHTML('Music/GetArtistOptions/'.concat(id))
+                .then(() => {
+                    this.toggleDarkMode(modal.getHTMLElement());
+                    modal.show();
+                    LoadingModal.hideLoading();
+                })
+                .catch(response => error(response));
+        });
+    }
+
     private initializeAlbumAndArtistControls(container: HTMLElement): void {
         const getAlbumId = btn => parseInt($(btn).attr('data-album-id')),
             getArtistId = btn => parseInt($(btn).attr('data-artist-id'))
 
         $(container).find('[data-album-id]').on('click', _e => this.album.loadAlbum(getAlbumId(_e.currentTarget), () => this.loadView()));
         $(container).find('[data-artist-id]').on('click', _e => this.artist.loadArtist(getArtistId(_e.currentTarget), () => this.loadView()));
+        this.initializeArtistOptions(container);
+        this.initializeAlbumOptions(container);
     }
 }

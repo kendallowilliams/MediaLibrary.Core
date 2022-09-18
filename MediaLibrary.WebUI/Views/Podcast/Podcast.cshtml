@@ -10,9 +10,6 @@
         <div class="d-flex flex-row p-1">
             <div class="flex-fill">
                 <button class="btn btn-sm btn-outline-secondary" data-back-button="podcast" data-bs-tooltip="tooltip" data-bs-title="Go back"><i class="fa fa-arrow-circle-left"></i></button>
-                <button class="btn btn-sm btn-outline-danger" data-podcast-action="delete" data-bs-tooltip="tooltip" data-bs-title="Delete podcast" data-item-id="@(Model.SelectedPodcast.Id)">
-                    <i class="fa fa-trash"></i>
-                </button>
             </div>
             <div>
                 <button class="btn btn-sm btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#@(HtmlControlsRepository.SettingsModalId)" data-bs-tooltip="tooltip" data-bs-title="Settings">

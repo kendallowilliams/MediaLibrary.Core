@@ -6,7 +6,7 @@ import LoadingModal from "./loading-modal";
 export default class AddToPlaylistModal {
     private modal: HTMLElement;
 
-    constructor(private loadFunc: (callback: () => void) => void = () => null) {
+    constructor(private toggleDarkMode: (container) => void) {
         this.modal = HtmlControls.Modals().AddToPlaylistModal;
         this.initializeControls();
     }
@@ -39,6 +39,8 @@ export default class AddToPlaylistModal {
                         fetch_post(url, formData)
                             .then(_ => LoadingModal.hideLoading());
                     });
+
+                    this.toggleDarkMode(this.modal);
                 });
         });
 

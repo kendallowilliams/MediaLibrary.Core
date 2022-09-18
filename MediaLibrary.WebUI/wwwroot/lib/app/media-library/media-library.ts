@@ -95,8 +95,8 @@ export default class MediaLibrary extends BaseClass {
                 this.loadStaticViews(() => {
                     LoadingModal.hideLoading();
                     this.editSongModal = new EditSongModal(this.mediaLibraryConfiguration, this.loadView.bind(this));
-                    this.addToPlaylistModal = new AddToPlaylistModal();
                     this.settingsModal = new SettingsModal(configurations, settingsLoadFunctions);
+                    this.addToPlaylistModal = new AddToPlaylistModal(this.settingsModal.toggleDarkMode.bind(this.settingsModal));
                     this.home = new Home(this.homeConfiguration);
                     this.music = new Music(this.musicConfiguration,
                         this.playWrapper.bind(this),
@@ -131,7 +131,8 @@ export default class MediaLibrary extends BaseClass {
                         this.updateActiveMedia.bind(this),
                         this.mediaLibraryConfiguration,
                         () => this.mediaLibraryConfiguration.properties.TooltipsEnabled,
-                        container => this.settingsModal.toggleDarkMode(container)
+                        container => this.settingsModal.toggleDarkMode(container),
+                        container => this.music.initializeSongOptions(container)
                     );
                     this.loadView(this.mediaLibraryConfiguration.properties.SelectedMediaPage);
                 });
