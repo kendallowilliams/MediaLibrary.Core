@@ -15,7 +15,10 @@ export default class Search extends BaseClass {
         private loadAlbum: (id: number, callback: () => void) => void,
         private loadArtist: (id: number, callback: () => void) => void,
         private updateActiveMediaFunc: () => void = () => null,
-        private toggleDarkMode: () => void = () => null) {
+        private toggleDarkMode: () => void = () => null,
+        private initializeSongOptions: (container) => void,
+        private initializeAlbumOptions: (container) => void,
+        private initializeArtistOptions: (container) => void) {
         super();
         this.searchDelay = 1; 
     }
@@ -104,6 +107,9 @@ export default class Search extends BaseClass {
 
                         $('[data-artist-id]').on('click', _e => this._loadArtist(parseInt($(_e.currentTarget).attr('data-artist-id'))));
                         $('[data-album-id]').on('click', _e => this._loadAlbum(parseInt($(_e.currentTarget).attr('data-album-id'))));
+                        this.initializeArtistOptions(containers.SearchArtistsContainer);
+                        this.initializeAlbumOptions(containers.SearchAlbumsContainer);
+                        this.initializeSongOptions(containers.SearchSongsContainer)
                         this.updateActiveMediaFunc();
                         this.toggleDarkMode();
                         showHideLoading(false);

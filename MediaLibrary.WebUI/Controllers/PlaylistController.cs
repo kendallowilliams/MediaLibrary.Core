@@ -17,6 +17,7 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using System.Web;
 using static MediaLibrary.Shared.Enums;
+using TagLib.Ape;
 
 namespace MediaLibrary.WebUI.Controllers
 {
@@ -132,6 +133,28 @@ namespace MediaLibrary.WebUI.Controllers
             }
 
             return PartialView("Playlist", playlistViewModel);
+        }
+
+        public async Task<IActionResult> GetPlaylistOptions(int id)
+        {
+            var playlist = default(Playlist);
+
+            if (id > 0)
+            {
+                playlist = await dataService.Get<Playlist>(item => item.Id == id,
+                    default,
+                    item => item.PlaylistTracks,
+                    item => item.PlaylistPodcastItems,
+                    item => item.PlaylistEpisodes);
+            }
+            else
+            {
+                IEnumerable<Playlist> systemPlaylists = await playlistService.GetSystemPlaylists(true, true);
+
+                playlist = systemPlaylists.FirstOrDefault(playlist => playlist.Id == id);
+            }
+
+            return PartialView("Controls/PlaylistOptions", playlist);
         }
 
         public async Task RemovePlaylistItem(int id, PlaylistTabs playlistType)

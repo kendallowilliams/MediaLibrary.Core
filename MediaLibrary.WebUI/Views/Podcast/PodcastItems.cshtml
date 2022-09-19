@@ -5,6 +5,9 @@
     <ul class="list-group list-group-flush">
         @foreach (var item in Model.PodcastItems.OrderByDescending(item => item.PublishDate))
         {
+            bool startedOrPlayed = item.IsPlayed || item.IsStarted;
+            string playbackStatus = startedOrPlayed && item.IsPlayed ? "PLAYED" : "STARTED";
+
             <li class="list-group-item" data-episode-id="@(item.Id)" data-active-download="@(Model.DownloadIds.Contains(item.Id) ? "true" : "false")">
                 <div class="media">
                     <img class="me-3 track-img" src="@(Url.Content("~/images/audio.png"))" data-bs-title="@(item.Title)">
@@ -13,15 +16,7 @@
                         <div class="d-flex">
                             <small class="badge text-bg-info text-truncate">@(item.PublishDate.ToShortDateString())</small>
                             <small class="badge text-bg-info ms-2 @(item.IsDownloaded ? string.Empty : "d-none")" data-podcast-download-id="@item.Id">DOWNLOADED</small>
-
-                            @if (item.IsPlayed)
-                            {
-                                <small class="badge text-bg-info ms-2">PLAYED</small>
-                            }
-                            else if (item.IsStarted)
-                            {
-                                <small class="badge text-bg-info ms-2">STARTED</small>
-                            }
+                            <small class="badge text-bg-info ms-2 @(startedOrPlayed ? string.Empty : "d-none")" data-podcast-playback-id="@item.Id">@playbackStatus</small>
                             <div class="flex-fill"></div>
                         </div>
                     </div>

@@ -275,23 +275,10 @@ export default class SettingsModal {
         });
 
         $('[data-podcast-settings-action="refresh"]').on('click', e => {
-            const isIndexPage = this.configurations.Podcast.properties.SelectedPodcastPage === PodcastPages.Index,
-                selectedPodcastId = this.configurations.Podcast.properties.SelectedPodcastId,
-                formData = new FormData(),
-                success = () => {
-                    LoadingModal.hideLoading();
-                };
+            const success = () => { LoadingModal.hideLoading(); };
 
             LoadingModal.showLoading();
-            if (isIndexPage) {
-                fetch_post('Podcast/Refresh')
-                    .then(_ => success());
-            } else if (selectedPodcastId > 0) {
-                formData.append('id', selectedPodcastId.toString());
-                fetch_post('Podcast/Refresh', formData)
-                    .then(_ => success());
-            }
-
+            fetch_post('Podcast/Refresh').then(_ => success());
             this.autoCloseModal();
         });
 
@@ -435,5 +422,8 @@ export default class SettingsModal {
             .not('[data-podcast-item-options] .btn')
             .toggleClass('btn-outline-light', darkModeEnabled)
             .toggleClass('btn-outline-secondary', !darkModeEnabled);
+        $container.find('input:not([type="checkbox"]), .input-group-text, select')
+            .toggleClass('bg-transparent text-light', darkModeEnabled);
+        $container.find('option').toggleClass('bg-dark', darkModeEnabled);
     }
 }

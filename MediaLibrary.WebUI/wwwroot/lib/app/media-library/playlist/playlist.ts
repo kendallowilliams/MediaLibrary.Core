@@ -12,6 +12,7 @@ import IPlayerLoadFunctions from "../../assets/interfaces/player-load-functions-
 import * as MessageBox from '../../assets/utilities/message-box';
 import { fetch_post, loadHTML } from "../../assets/utilities/fetch_service";
 import { Tab } from "bootstrap";
+import BlankDismissableModal from "../../assets/modals/blank-dismissable-modal";
 
 export default class Playlist extends BaseClass implements IView {
     private readonly mediaView: HTMLElement;
@@ -94,36 +95,7 @@ export default class Playlist extends BaseClass implements IView {
             });
         });
 
-        $(this.mediaView).find('[data-playlist-action="download"]').on('click', e => {
-            const $btn = $(e.currentTarget),
-                playlistId: string = $btn.attr('data-playlist-id'),
-                playlistName: string = $btn.attr('data-playlist-name'),
-                title = playlistName,
-                message = 'Randomize '.concat(playlistName).concat('?'),
-                path = 'Playlist/GetDynamicM3UPlaylist/'.concat(playlistId),
-                randomPath = 'Playlist/GetDynamicM3UPlaylist/'.concat(playlistId).concat('?random=true'),
-                $link = $('<a download></a>');
-
-            MessageBox.confirm(title, message, MessageBoxConfirmType.YesNo,
-                () => $link.attr('href', randomPath).each((index, link) => link.click()),
-                () => $link.attr('href', path).each((index, link) => link.click())
-            );
-        });
-
-        $(this.mediaView).find('*[data-playlist-action="delete"]').on('click', e => {
-            const $btn = $(e.currentTarget),
-                id = $btn.attr('data-item-id'),
-                title = 'Delete playlist',
-                message = 'Are you sure you want to delete this playlist?',
-                formData = new FormData();
-
-            MessageBox.confirm(title, message, MessageBoxConfirmType.YesNo, () => {
-                LoadingModal.showLoading();
-                formData.set('id', id);
-                fetch_post('Playlist/RemovePlaylist', formData)
-                    .then(_ => this.loadView(() => LoadingModal.hideLoading()));
-            });
-        });
+        
 
         $(HtmlControls.UIControls().PlaylistTabList).find('*[data-bs-toggle="tab"]').on('shown.bs.tab', e => {
             const $newTab = $(e.target),
@@ -139,6 +111,57 @@ export default class Playlist extends BaseClass implements IView {
                     $(_btn).removeClass('d-inline-block').addClass('d-none');
                 }
             });
+        }); 
+
+        $(this.mediaView).find('[data-playlist-options-id]').on('click', e => {
+            const $btn = $(e.currentTarget),
+                id = $btn.attr('data-playlist-options-id'),
+                modal = new BlankDismissableModal(),
+                error = (status) => {
+                    LoadingModal.hideLoading();
+                    MessageBox.showError('Error', status);
+                };
+
+            LoadingModal.showLoading();
+            modal.loadBodyHTML('Playlist/GetPlaylistOptions/'.concat(id))
+                .then(() => {
+                    $(modal.getHTMLElement()).find('[data-playlist-action="download"]').on('click', e => {
+                        const $btn = $(e.currentTarget),
+                            playlistId: string = $btn.attr('data-playlist-id'),
+                            playlistName: string = $btn.attr('data-playlist-name'),
+                            title = playlistName,
+                            message = 'Randomize '.concat(playlistName).concat('?'),
+                            path = 'Playlist/GetDynamicM3UPlaylist/'.concat(playlistId),
+                            randomPath = 'Playlist/GetDynamicM3UPlaylist/'.concat(playlistId).concat('?random=true'),
+                            $link = $('<a download></a>');
+
+                        modal.hide();
+                        MessageBox.confirm(title, message, MessageBoxConfirmType.YesNo,
+                            () => $link.attr('href', randomPath).each((index, link) => link.click()),
+                            () => $link.attr('href', path).each((index, link) => link.click())
+                        );
+                    });
+
+                    $(modal.getHTMLElement()).find('*[data-playlist-action="delete"]').on('click', e => {
+                        const $btn = $(e.currentTarget),
+                            id = $btn.attr('data-item-id'),
+                            title = 'Delete playlist',
+                            message = 'Are you sure you want to delete this playlist?',
+                            formData = new FormData();
+
+                        modal.hide();
+                        MessageBox.confirm(title, message, MessageBoxConfirmType.YesNo, () => {
+                            LoadingModal.showLoading();
+                            formData.set('id', id);
+                            fetch_post('Playlist/RemovePlaylist', formData)
+                                .then(_ => this.loadView(() => LoadingModal.hideLoading()));
+                        });
+                    });
+                    this.toggleDarkMode(modal.getHTMLElement());
+                    modal.show();
+                    LoadingModal.hideLoading();
+                })
+                .catch(response => error(response));
         });
     }
 

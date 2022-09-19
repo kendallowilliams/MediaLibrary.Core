@@ -21,9 +21,8 @@
                         <button type="button" class="btn btn-sm btn-outline-secondary" data-item-index="@(item.Index)" data-bs-tooltip="tooltip" data-bs-title="Play">
                             <i class="fa fa-play"></i>
                         </button>
-                        <button type="button" class="btn btn-sm btn-outline-secondary d-none d-lg-inline-block" data-bs-toggle="modal" data-bs-target="#@(HtmlControlsRepository.EditSongModalId)" data-item-id="@(item.Song.Id)" data-bs-tooltip="tooltip"
-                                data-bs-title="Edit">
-                            <i class="fa fa-edit"></i>
+                        <button type="button" class="btn btn-sm btn-outline-secondary" data-song-options-id="@(item.Song.Id)" data-bs-tooltip="tooltip" data-bs-title="Options">
+                            <i class="fa fa-ellipsis-v"></i>
                         </button>
                     </div>
                 </div>
