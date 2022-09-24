@@ -32,6 +32,8 @@ namespace MediaLibrary.WebUI.Repositories
             yield return new SYSTEM_PLAYLIST($"Top {count} Recently Played", items => items.Where(item => item.LastPlayedDate.HasValue)
                                                                                            .OrderByDescending(item => item.LastPlayedDate.Value)
                                                                                            .Take(count));
+            yield return new SYSTEM_PLAYLIST($"Top {count} Random", items => items.OrderByDescending(item => Guid.NewGuid())
+                                                                                  .Take(count));
         }
 
         public static IEnumerable<PLAYLIST_TYPE_SORT_MAPPING>GetPlaylistTypePlaylistSortMappings()
