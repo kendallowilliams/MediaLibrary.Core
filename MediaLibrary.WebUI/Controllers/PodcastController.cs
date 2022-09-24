@@ -273,6 +273,7 @@ namespace MediaLibrary.WebUI.Controllers
                 if (podcastItem != null)
                 {
                     bool cacheFound = memoryCache.TryGetValue(cacheKey, out byte[] itemData);
+                    var expiration = DateTimeOffset.Now.AddDays(1);
 
                     if (cacheFound && itemData != null)
                     {
@@ -282,8 +283,6 @@ namespace MediaLibrary.WebUI.Controllers
                     {
                         if (!cacheFound)
                         {
-                            var expiration = DateTimeOffset.Now.AddDays(1);
-
                             memoryCache.Set<byte[]>(cacheKey, null, expiration);
                             backgroundTaskQueue.QueueBackgroundWorkItem(async token =>
                                 await webService.DownloadData(podcastItem.Url)
@@ -295,6 +294,14 @@ namespace MediaLibrary.WebUI.Controllers
                     else
                     {
                         FileExtensionContentTypeProvider contentTypeProvider = new FileExtensionContentTypeProvider();
+
+                        if (!cacheFound)
+                        {
+                            memoryCache.Set<byte[]>(cacheKey, null, expiration);
+                            backgroundTaskQueue.QueueBackgroundWorkItem(async token =>
+                            await IO_File.ReadAllBytesAsync(podcastItem.File)
+                                            .ContinueWith(t => memoryCache.Set(cacheKey, t.Result, expiration)));
+                        }
 
                         contentTypeProvider.TryGetContentType(podcastItem.File, out string contentType);
                         result = File(IO_File.OpenRead(podcastItem.File), contentType, true);
