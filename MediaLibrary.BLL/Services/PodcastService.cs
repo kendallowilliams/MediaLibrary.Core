@@ -156,7 +156,7 @@ namespace MediaLibrary.BLL.Services
 
                 if (podcastItem != null)
                 {
-                    if (string.IsNullOrWhiteSpace(podcastItem.File))
+                    if (!podcastItem.IsDownloaded)
                     {
                         string title = podcastItem.Podcast.Title,
                                podcastFolder = fileService.PodcastFolder,
