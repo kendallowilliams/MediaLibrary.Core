@@ -156,12 +156,12 @@ namespace MediaLibrary.BLL.Services
 
                 if (podcastItem != null)
                 {
-                    if (string.IsNullOrWhiteSpace(podcastItem.File))
+                    if (!podcastItem.IsDownloaded)
                     {
                         string title = podcastItem.Podcast.Title,
                                podcastFolder = fileService.PodcastFolder,
                                path = string.Empty;
-                        bool cacheFound = memoryCache.TryGetValue<byte[]>(GetPodcastItemCacheKey(podcastItemId), out byte[] itemData);
+                        bool cacheFound = memoryCache.TryGetValue<byte[]>(GetPodcastItemFileCacheKey(podcastItemId), out byte[] itemData);
 
                         foreach (char c in Path.GetInvalidFileNameChars()) { title = title.Replace(c.ToString(), "_"); }
                         foreach (char c in Path.GetInvalidPathChars()) { path = path.Replace(c.ToString(), "_"); }
@@ -210,6 +210,6 @@ namespace MediaLibrary.BLL.Services
             }
         }
 
-        public string GetPodcastItemCacheKey(int id) => $"PodcastItemFile_{id}";
+        public string GetPodcastItemFileCacheKey(int id) => $"PodcastItemFile_{id}";
     }
 }

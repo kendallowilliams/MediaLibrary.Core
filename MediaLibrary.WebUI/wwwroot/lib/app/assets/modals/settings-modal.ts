@@ -424,5 +424,6 @@ export default class SettingsModal {
             .toggleClass('btn-outline-secondary', !darkModeEnabled);
         $container.find('input:not([type="checkbox"]), .input-group-text, select')
             .toggleClass('bg-transparent text-light', darkModeEnabled);
+        $container.find('option').toggleClass('bg-dark', darkModeEnabled);
     }
 }

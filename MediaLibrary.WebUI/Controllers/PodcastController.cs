@@ -195,38 +195,33 @@ namespace MediaLibrary.WebUI.Controllers
 
             try
             {
-                bool existingTransaction = podcastUIService.GetActiveDownloadIds().Contains(id);
+                bool isDownloading = podcastUIService.GetActiveDownloadIds().Contains(id);
                 PodcastItem podcastItem = await dataService.Get<PodcastItem>(item => item.Id == id);
+                string cacheKey = podcastService.GetPodcastItemFileCacheKey(podcastItem.Id);
 
-                transaction = await transactionService.GetNewTransaction(TransactionTypes.RemoveEpisodeDownload);
-
-                if (!existingTransaction)
+                if (!isDownloading)
                 {
-                    if (!string.IsNullOrWhiteSpace(podcastItem.File))
+                    if (podcastItem.IsDownloaded)
                     {
-                        if (System.IO.File.Exists(podcastItem.File))
-                        {
-                            System.IO.File.Delete(podcastItem.File);
-                        }
-
+                        System.IO.File.Delete(podcastItem.File);
                         podcastItem.File = null;
                         await dataService.Update(podcastItem);
+                        memoryCache.Remove(cacheKey);
                         podcastUIService.ClearPodcasts();
-                        await transactionService.UpdateTransactionCompleted(transaction);
                     }
                     else
                     {
-                        await transactionService.UpdateTransactionCompleted(transaction, $"Download not found or does not exist.");
+                        await logService.Warn($"Download not found or does not exist.");
                     }
                 }
                 else
                 {
-                    await transactionService.UpdateTransactionCompleted(transaction, $"Podcast episode ({id}) download in progress.");
+                    await logService.Warn($"Podcast episode ({id}) download in progress.");
                 }
             }
             catch (Exception ex)
             {
-                await transactionService.UpdateTransactionErrored(transaction, ex);
+                await logService.Error(ex);
             }
         }
 
@@ -273,35 +268,40 @@ namespace MediaLibrary.WebUI.Controllers
             try
             {
                 PodcastItem podcastItem = await dataService.Get<PodcastItem>(item => item.Id == id);
+                string cacheKey = podcastService.GetPodcastItemFileCacheKey(podcastItem.Id);
 
                 if (podcastItem != null)
                 {
-                    if (string.IsNullOrWhiteSpace(podcastItem.File))
+                    bool cacheFound = memoryCache.TryGetValue(cacheKey, out byte[] itemData);
+                    var expiration = DateTimeOffset.Now.AddDays(1);
+
+                    if (cacheFound && itemData != null)
                     {
-                        string cacheKey = podcastService.GetPodcastItemCacheKey(podcastItem.Id);
-                        bool cacheFound = memoryCache.TryGetValue(cacheKey, out byte[] itemData);
-
-                        if (cacheFound && itemData != null)
+                        result = File(itemData, "audio/mpeg", true);
+                    }
+                    else if (!podcastItem.IsDownloaded)
+                    {
+                        if (!cacheFound)
                         {
-                            result = File(itemData, "audio/mpeg", true);
+                            memoryCache.Set<byte[]>(cacheKey, null, expiration);
+                            backgroundTaskQueue.QueueBackgroundWorkItem(async token =>
+                                await webService.DownloadData(podcastItem.Url)
+                                                .ContinueWith(t => memoryCache.Set(cacheKey, t.Result, expiration)));
                         }
-                        else
-                        {
-                            if (!cacheFound)
-                            {
-                                var expiration = DateTimeOffset.Now.AddDays(1);
 
-                                memoryCache.Set<byte[]>(cacheKey, null, expiration);
-                                backgroundTaskQueue.QueueBackgroundWorkItem(async token =>
-                                    await webService.DownloadData(podcastItem.Url)
-                                                    .ContinueWith(t => memoryCache.Set(cacheKey, t.Result, expiration)));
-                            }
-                            result = new RedirectResult(podcastItem.Url);
-                        }
+                        result = new RedirectResult(podcastItem.Url);
                     }
                     else
                     {
                         FileExtensionContentTypeProvider contentTypeProvider = new FileExtensionContentTypeProvider();
+
+                        if (!cacheFound)
+                        {
+                            memoryCache.Set<byte[]>(cacheKey, null, expiration);
+                            backgroundTaskQueue.QueueBackgroundWorkItem(async token =>
+                            await IO_File.ReadAllBytesAsync(podcastItem.File)
+                                            .ContinueWith(t => memoryCache.Set(cacheKey, t.Result, expiration)));
+                        }
 
                         contentTypeProvider.TryGetContentType(podcastItem.File, out string contentType);
                         result = File(IO_File.OpenRead(podcastItem.File), contentType, true);
@@ -396,7 +396,7 @@ namespace MediaLibrary.WebUI.Controllers
             podcastItem.LastPlayedDate = DateTime.Now;
             await dataService.Update(podcastItem);
             podcastUIService.ClearPodcasts();
-            memoryCache.Remove(podcastService.GetPodcastItemCacheKey(id));
+            memoryCache.Remove(podcastService.GetPodcastItemFileCacheKey(id));
         }
 
         public async Task MarkPodcastItemUnplayed(int id)
