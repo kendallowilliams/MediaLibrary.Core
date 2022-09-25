@@ -344,6 +344,25 @@ export function getPlaylistTabEnum(tab: string): PlaylistTabs {
     return playlistTab;
 };
 
+export function getMediaTypeForPlaylistTab(tab: PlaylistTabs): MediaTypes {
+    let mediaType: MediaTypes;
+
+    switch (tab) {
+        case PlaylistTabs.Podcast:
+            mediaType = MediaTypes.Podcast;
+            break;
+        case PlaylistTabs.Television:
+            mediaType = MediaTypes.Television;
+            break;
+        case PlaylistTabs.Music:
+        default:
+            mediaType = MediaTypes.Song;
+            break;
+    }
+
+    return mediaType;
+}
+
 export function getAppWidthEnum(size: string): AppWidth {
     let appWidth: AppWidth;
 

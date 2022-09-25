@@ -2,7 +2,7 @@
 import IView from "../../assets/interfaces/view-interface";
 import PlayerConfiguration from "../../assets/models/configurations/player-configuration";
 import HtmlControls from '../../assets/controls/html-controls'
-import { MediaTypes, RepeatTypes, PlayerPages, MessageBoxConfirmType } from "../../assets/enums/enums";
+import { MediaTypes, RepeatTypes, PlayerPages } from "../../assets/enums/enums";
 import { getRandomInteger } from "../../assets/utilities/math";
 import AudioVisualizer from "../audio-visualizer/audio-visualizer";
 import { loadTooltips, hideTooltips } from "../../assets/utilities/bootstrap-helper";
@@ -431,7 +431,7 @@ export default class Player extends BaseClass implements IView {
                 this.playerControls.showHideMainControls(true);
                 LoadingModal.hideLoading();
             }),
-            isContinuePlayback = $continuePlaybackBtns.is(btn),
+            isContinuePlayback = $continuePlaybackBtns.is(btn), // resume playback btn may be a better name
             mediaType = isContinuePlayback ?
                 getMediaTypesEnum($(btn).data('page')) :
                 getMediaTypesEnum($(btn).attr('data-media-type'));
@@ -542,5 +542,16 @@ export default class Player extends BaseClass implements IView {
     public playOrPause(): void {
         if (this.isPlaying()) /*then*/ this.controlsFunctions.pause();
         else /*then*/ this.controlsFunctions.play();
+    }
+
+    public addItemToNowPlayingList(id: number, type: MediaTypes): void {
+        const nowPlayingList = this.playerConfiguration.properties.NowPlayingList;
+
+        if (this.playerConfiguration.properties.SelectedMediaType == type) {
+            nowPlayingList.push({ Id: nowPlayingList.length, Value: id, IsSelected: false });
+            this.playerConfiguration.updateNowPlayingLists();
+            this.playerConfiguration.updateConfiguration()
+                .then(_ => this.reload());
+        }
     }
 }
