@@ -197,7 +197,6 @@ namespace MediaLibrary.WebUI.Controllers
             {
                 bool isDownloading = podcastUIService.GetActiveDownloadIds().Contains(id);
                 PodcastItem podcastItem = await dataService.Get<PodcastItem>(item => item.Id == id);
-                string cacheKey = podcastService.GetPodcastItemFileCacheKey(podcastItem.Id);
 
                 if (!isDownloading)
                 {
@@ -206,7 +205,6 @@ namespace MediaLibrary.WebUI.Controllers
                         System.IO.File.Delete(podcastItem.File);
                         podcastItem.File = null;
                         await dataService.Update(podcastItem);
-                        memoryCache.Remove(cacheKey);
                         podcastUIService.ClearPodcasts();
                     }
                     else
