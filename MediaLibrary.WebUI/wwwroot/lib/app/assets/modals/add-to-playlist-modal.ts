@@ -50,7 +50,7 @@ export default class AddToPlaylistModal {
                             .then(_ => LoadingModal.hideLoading());
                     });
 
-                    $nowPlayingBtn.on('click', () => {
+                    $nowPlayingBtn.on('click', () => { // TODO: fix to add multiple items at once -> add albums/artists 
                         this.addItemToNowPlayingList(parseInt(id), mediaType);
                         bsModal.hide();
                     });
