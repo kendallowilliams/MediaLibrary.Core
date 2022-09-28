@@ -20,6 +20,6 @@ namespace MediaLibrary.BLL.Services.Interfaces
 
         Task CleanMissingPodcastFiles();
 
-        string GetPodcastItemCacheKey(int id);
+        string GetPodcastItemFileCacheKey(int id);
     }
 }
