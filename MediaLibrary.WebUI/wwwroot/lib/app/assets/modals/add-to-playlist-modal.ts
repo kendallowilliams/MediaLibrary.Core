@@ -20,20 +20,23 @@ export default class AddToPlaylistModal {
             const $btn = $(e["relatedTarget"]),
                 url = $btn.attr('data-playlist-url'),
                 id = $btn.attr('data-item-id'),
-                type = $btn.attr('data-playlist-type');
+                playlistType = $btn.attr('data-playlist-type'),
+                itemType = $btn.attr('data-item-type')?.toLowerCase();
 
-            loadHTML(HtmlControls.Containers().PlaylistListContainer, 'Playlist/PlaylistList', { type: type })
+            loadHTML(HtmlControls.Containers().PlaylistListContainer, 'Playlist/PlaylistList', { type: playlistType })
                 .then(_ => {
                     const bsModal = Modal.getOrCreateInstance(this.modal),
                         $nowPlayingBtn = $('[data-playlist-type="now-playing"]'),
-                        playlistTab = getPlaylistTabEnum(type),
+                        playlistTab = getPlaylistTabEnum(playlistType),
                         mediaType = getMediaTypeForPlaylistTab(playlistTab),
-                        mediaTypeMismatch = mediaType != this.getSelectedMediaType();
+                        mediaTypeMismatch = mediaType != this.getSelectedMediaType(),
+                        isAlbumOrArtist = itemType === 'album' || itemType === 'artist',
+                        hideNowPlayingOption = mediaTypeMismatch || isAlbumOrArtist;
 
                     $('[data-playlist-item="enabled"]').attr('data-playlist-url', url)
                         .attr('data-item-id', id);
-                    $nowPlayingBtn.attr('data-playlist-type', type);
-                    $('[data-validate-media-type="true"]').toggleClass('d-none', mediaTypeMismatch);
+                    $nowPlayingBtn.attr('data-playlist-type', playlistType);
+                    $('[data-validate-media-type="true"]').toggleClass('d-none', hideNowPlayingOption);
 
                     $('[data-playlist-action="add"]').on('click', e => {
                         const $btn = $(e.currentTarget),
