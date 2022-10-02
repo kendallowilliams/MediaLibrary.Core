@@ -46,7 +46,8 @@ export default class Player extends BaseClass implements IView {
 
     constructor(private playerConfiguration: PlayerConfiguration, private loadFunctions: IPlayerLoadFunctions, private updateActiveMedia: () => void = () => null,
         private mediaLibraryConfiguration: MediaLibraryConfiguration, private tooltipsEnabled: () => boolean = () => false,
-        private toggleDarkMode: (container) => void, private initializeMusicOptions: (container) => void) {
+        private toggleDarkMode: (container) => void, private initializeMusicOptions: (container) => void,
+        private updatePlaybackStatus: (id: number, status: string) => void) {
         super();
 
         this.players = HtmlControls.Players();
@@ -89,10 +90,14 @@ export default class Player extends BaseClass implements IView {
             }
         });
         $(this.getPlayers()).on('ended', e => {
-            if (!this.canPlayNext()) /*then*/ (e.currentTarget as HTMLMediaElement).currentTime = 0;
+            const player = e.currentTarget as HTMLMediaElement,
+                id = parseInt($(player).attr('data-item-id'));
+
+            this.updatePlaybackStatus(id, 'PLAYED');
+            if (!this.canPlayNext()) /*then*/ player.currentTime = 0;
             this.audioVisualizer.stop();
 
-            this.updatePlayCount(e.currentTarget as HTMLMediaElement)
+            this.updatePlayCount(player)
                 .then(() => this.updatePlayerProgress(0))
                 .then(() => this.loadNext());
         });

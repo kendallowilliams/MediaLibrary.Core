@@ -16,7 +16,7 @@
                         <div class="d-flex">
                             <small class="badge text-bg-info text-truncate">@(item.PublishDate.ToShortDateString())</small>
                             <small class="badge text-bg-info ms-2 @(item.IsDownloaded ? string.Empty : "d-none")" data-podcast-download-id="@item.Id">DOWNLOADED</small>
-                            <small class="badge text-bg-info ms-2 @(startedOrPlayed ? string.Empty : "d-none")" data-podcast-playback-id="@item.Id">@playbackStatus</small>
+                            <small class="badge text-bg-info ms-2 @(startedOrPlayed ? string.Empty : "d-none")" data-playback-status-id="@item.Id">@playbackStatus</small>
                             <div class="flex-fill"></div>
                         </div>
                     </div>
