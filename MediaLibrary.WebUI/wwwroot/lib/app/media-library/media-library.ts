@@ -134,7 +134,8 @@ export default class MediaLibrary extends BaseClass {
                         this.mediaLibraryConfiguration,
                         () => this.mediaLibraryConfiguration.properties.TooltipsEnabled,
                         container => this.settingsModal.toggleDarkMode(container),
-                        container => this.music.initializeSongOptions(container)
+                        container => this.music.initializeSongOptions(container),
+                        (id, status) => this.updatePlaybackStatus(id, status)
                     );
                     this.loadView(this.mediaLibraryConfiguration.properties.SelectedMediaPage);
                 });
@@ -314,6 +315,11 @@ export default class MediaLibrary extends BaseClass {
                 }
             }
         }
+    }
+
+    private updatePlaybackStatus(id: number, status: string): void {
+        $('[data-playback-status-id="' + id + '"]').removeClass('d-none')
+            .text(status);
     }
 }
 
