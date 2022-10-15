@@ -299,11 +299,9 @@ export default class SettingsModal {
         $(buttons.PlayerClearButton).on('click', e => {
             const title = 'Clear now playing',
                 message = 'Are you sure you want to clear now playing?',
-                yesCallback = () => {
-                    this.settingsLoadFunctions.clearNowPlaying();
-                    this.autoCloseModal();
-                };
+                yesCallback = () => this.settingsLoadFunctions.clearNowPlaying();
 
+            this.autoCloseModal();
             MessageBox.confirm(title, message, MessageBoxConfirmType.YesNo, yesCallback);
         });
     }
