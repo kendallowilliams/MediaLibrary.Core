@@ -6,7 +6,7 @@
         @foreach (var item in Model.Songs.Select((song, index) => new { Song = song, Index = index }))
         {
             <li class="list-group-item list-group-item-action @(item.Index == Model.Configuration.CurrentItemIndex ? "active" : string.Empty)" data-play-url="@Url.Action("File", "Music", new { item.Song.Id })"
-                data-play-index="@(item.Index)" data-item-id="@(item.Song.Id)" data-data-bs-title="@(item.Song.Title)" data-current-time="@(item.Song.Progress)">
+                data-play-index="@(item.Index)" data-item-id="@(item.Song.Id)" data-title="@(item.Song.Title)" data-current-time="@(item.Song.Progress)">
                 <div class="media">
                     <div class="media-body d-flex flex-column" style="overflow-x: auto">
                         <span class="mt-0 text-truncate font-weight-bold">@(item.Song.Title)</span>
