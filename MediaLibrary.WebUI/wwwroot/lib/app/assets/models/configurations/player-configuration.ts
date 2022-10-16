@@ -3,6 +3,7 @@ import IPlayerConfiguration from '../../interfaces/player-configuration-interfac
 import { MediaTypes } from '../../enums/enums';
 import IKeyValuePair from '../../interfaces/keyvaluepair-interface';
 import { getMediaTypesEnum } from '../../enums/enum-functions';
+import IListItem from '../../interfaces/list-item-interface';
 
 export default class PlayerConfiguration extends BaseConfiguration<IPlayerConfiguration> {
     constructor(properties: IPlayerConfiguration) {
@@ -16,8 +17,10 @@ export default class PlayerConfiguration extends BaseConfiguration<IPlayerConfig
 
     public updateNowPlayingLists(): void {
         const mediaType = this.properties.SelectedMediaType,
-            ids = this.properties.NowPlayingList.map((item, index) => item.Value),
-            newItem: IKeyValuePair<MediaTypes, number[]> = { Key: mediaType, Value: ids };
+            isSelected = index => index === this.properties.CurrentItemIndex,
+            ids = this.properties.NowPlayingList.map((item, index) => item.Value)
+                .map((id, index) => ({ Id: index, Value: id, IsSelected: isSelected(index) })),
+            newItem: IKeyValuePair<MediaTypes, IListItem<number, number>[]> = { Key: mediaType, Value: ids };
 
         if (ids) {
             if (this.properties.NowPlayingLists.findIndex((item, index) => item.Key === mediaType) !== -1) {

@@ -131,7 +131,7 @@ export default class Playlist extends BaseClass implements IView {
                             playlistName: string = $btn.attr('data-playlist-name'),
                             title = playlistName,
                             message = 'Randomize '.concat(playlistName).concat('?'),
-                            path = 'Playlist/GetDynamicM3UPlaylist/'.concat(playlistId),
+                            path = 'Playlist/GetM3UPlaylist/'.concat(playlistId),
                             randomPath = 'Playlist/GetDynamicM3UPlaylist/'.concat(playlistId).concat('?random=true'),
                             $link = $('<a download></a>');
 

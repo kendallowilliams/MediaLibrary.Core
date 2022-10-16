@@ -2,7 +2,7 @@
 import IView from "../../assets/interfaces/view-interface";
 import PlayerConfiguration from "../../assets/models/configurations/player-configuration";
 import HtmlControls from '../../assets/controls/html-controls'
-import { MediaTypes, RepeatTypes, PlayerPages, MessageBoxConfirmType } from "../../assets/enums/enums";
+import { MediaTypes, RepeatTypes, PlayerPages } from "../../assets/enums/enums";
 import { getRandomInteger } from "../../assets/utilities/math";
 import AudioVisualizer from "../audio-visualizer/audio-visualizer";
 import { loadTooltips, hideTooltips } from "../../assets/utilities/bootstrap-helper";
@@ -46,7 +46,8 @@ export default class Player extends BaseClass implements IView {
 
     constructor(private playerConfiguration: PlayerConfiguration, private loadFunctions: IPlayerLoadFunctions, private updateActiveMedia: () => void = () => null,
         private mediaLibraryConfiguration: MediaLibraryConfiguration, private tooltipsEnabled: () => boolean = () => false,
-        private toggleDarkMode: (container) => void, private initializeMusicOptions: (container) => void) {
+        private toggleDarkMode: (container) => void, private initializeMusicOptions: (container) => void,
+        private updatePlaybackStatus: (id: number, status: string) => void) {
         super();
 
         this.players = HtmlControls.Players();
@@ -89,10 +90,14 @@ export default class Player extends BaseClass implements IView {
             }
         });
         $(this.getPlayers()).on('ended', e => {
-            if (!this.canPlayNext()) /*then*/ (e.currentTarget as HTMLMediaElement).currentTime = 0;
+            const player = e.currentTarget as HTMLMediaElement,
+                id = parseInt($(player).attr('data-item-id'));
+
+            this.updatePlaybackStatus(id, 'PLAYED');
+            if (!this.canPlayNext()) /*then*/ player.currentTime = 0;
             this.audioVisualizer.stop();
 
-            this.updatePlayCount(e.currentTarget as HTMLMediaElement)
+            this.updatePlayCount(player)
                 .then(() => this.updatePlayerProgress(0))
                 .then(() => this.loadNext());
         });
@@ -220,6 +225,7 @@ export default class Player extends BaseClass implements IView {
                 mediaType = this.playerConfiguration.properties.SelectedMediaType;
 
             this.playerConfiguration.properties.CurrentItemIndex = index;
+            this.playerConfiguration.updateNowPlayingLists();
             this.playerConfiguration.updateConfiguration()
                 .then(() => {
                     $player.attr('data-item-id', id);
@@ -431,7 +437,7 @@ export default class Player extends BaseClass implements IView {
                 this.playerControls.showHideMainControls(true);
                 LoadingModal.hideLoading();
             }),
-            isContinuePlayback = $continuePlaybackBtns.is(btn),
+            isContinuePlayback = $continuePlaybackBtns.is(btn), // resume playback btn may be a better name
             mediaType = isContinuePlayback ?
                 getMediaTypesEnum($(btn).data('page')) :
                 getMediaTypesEnum($(btn).attr('data-media-type'));
@@ -444,7 +450,7 @@ export default class Player extends BaseClass implements IView {
             const listItem = this.playerConfiguration.properties.NowPlayingLists.find((item, index) => item.Key === mediaType),
                 ids = (listItem || {}).Value || [];
 
-            playData = ids.map((id, index) => ({ Id: index, Value: id, IsSelected: index == 0 }));
+            playData = ids;
         }
         else if (playSingleItem) {
             playData = [{ Id: 0, Value: parseInt($(btn).attr('data-play-id')), IsSelected: true }];
@@ -542,5 +548,16 @@ export default class Player extends BaseClass implements IView {
     public playOrPause(): void {
         if (this.isPlaying()) /*then*/ this.controlsFunctions.pause();
         else /*then*/ this.controlsFunctions.play();
+    }
+
+    public addItemToNowPlayingList(id: number, type: MediaTypes): void {
+        const nowPlayingList = this.playerConfiguration.properties.NowPlayingList;
+
+        if (this.playerConfiguration.properties.SelectedMediaType == type) {
+            nowPlayingList.push({ Id: nowPlayingList.length, Value: id, IsSelected: false });
+            this.playerConfiguration.updateNowPlayingLists();
+            this.playerConfiguration.updateConfiguration()
+                .then(_ => this.reload());
+        }
     }
 }

@@ -96,7 +96,9 @@ export default class MediaLibrary extends BaseClass {
                     LoadingModal.hideLoading();
                     this.editSongModal = new EditSongModal(this.mediaLibraryConfiguration, this.loadView.bind(this));
                     this.settingsModal = new SettingsModal(configurations, settingsLoadFunctions);
-                    this.addToPlaylistModal = new AddToPlaylistModal(this.settingsModal.toggleDarkMode.bind(this.settingsModal));
+                    this.addToPlaylistModal = new AddToPlaylistModal(this.settingsModal.toggleDarkMode.bind(this.settingsModal),
+                        (id, type) => this.player.addItemToNowPlayingList(id, type),
+                        () => this.playerConfiguration.properties.SelectedMediaType);
                     this.home = new Home(this.homeConfiguration);
                     this.music = new Music(this.musicConfiguration,
                         this.playWrapper.bind(this),
@@ -132,7 +134,8 @@ export default class MediaLibrary extends BaseClass {
                         this.mediaLibraryConfiguration,
                         () => this.mediaLibraryConfiguration.properties.TooltipsEnabled,
                         container => this.settingsModal.toggleDarkMode(container),
-                        container => this.music.initializeSongOptions(container)
+                        container => this.music.initializeSongOptions(container),
+                        (id, status) => this.updatePlaybackStatus(id, status)
                     );
                     this.loadView(this.mediaLibraryConfiguration.properties.SelectedMediaPage);
                 });
@@ -312,6 +315,11 @@ export default class MediaLibrary extends BaseClass {
                 }
             }
         }
+    }
+
+    private updatePlaybackStatus(id: number, status: string): void {
+        $('[data-playback-status-id="' + id + '"]').removeClass('d-none')
+            .text(status);
     }
 }
 
