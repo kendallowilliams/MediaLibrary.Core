@@ -18,5 +18,5 @@ export default interface IPlayerConfiguration extends IConfiguration {
     NowPlayingList: IListItem<number, number>[];
     ProgressUpdateInterval: number;
     AudioVisualizerBarCount: number;
-    NowPlayingLists: Array<IKeyValuePair<MediaTypes, number[]>>;
+    NowPlayingLists: Array<IKeyValuePair<MediaTypes, IListItem<number, number>[]>>;
 }

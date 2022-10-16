@@ -225,6 +225,7 @@ export default class Player extends BaseClass implements IView {
                 mediaType = this.playerConfiguration.properties.SelectedMediaType;
 
             this.playerConfiguration.properties.CurrentItemIndex = index;
+            this.playerConfiguration.updateNowPlayingLists();
             this.playerConfiguration.updateConfiguration()
                 .then(() => {
                     $player.attr('data-item-id', id);
@@ -449,7 +450,7 @@ export default class Player extends BaseClass implements IView {
             const listItem = this.playerConfiguration.properties.NowPlayingLists.find((item, index) => item.Key === mediaType),
                 ids = (listItem || {}).Value || [];
 
-            playData = ids.map((id, index) => ({ Id: index, Value: id, IsSelected: index == 0 }));
+            playData = ids;
         }
         else if (playSingleItem) {
             playData = [{ Id: 0, Value: parseInt($(btn).attr('data-play-id')), IsSelected: true }];
