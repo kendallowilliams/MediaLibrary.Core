@@ -53,9 +53,9 @@ namespace MediaLibrary.BLL.Services
         public async Task Error(Exception ex)
         {
             Transaction transaction = await transactionService.GetNewTransaction(TransactionTypes.LogError);
-            string errorMessage = ex.Message;
+            string errorMessage = $"{ex.Message} [Stack Trace: {ex.StackTrace}]";
 
-            if (ex.InnerException != null) /*then*/ errorMessage = $"{transaction.ErrorMessage} [{ex.InnerException.Message}]";
+            if (ex.InnerException != null) /*then*/ errorMessage = $"{errorMessage} [Inner: {ex.InnerException.Message}]";
             await transactionService.UpdateTransactionCompleted(transaction, errorMessage);
         }
 
