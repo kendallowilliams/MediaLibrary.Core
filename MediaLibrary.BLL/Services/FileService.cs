@@ -167,10 +167,7 @@ namespace MediaLibrary.BLL.Services
                                 await transactionService.UpdateTransactionErrored(deleteTransaction, ex);
                             }
                         }
-                    }
 
-                    if (transaction.Type == TransactionTypes.RefreshMusicWithDelete)
-                    {
                         foreach (var _path in invalidPaths) { await dataService.Delete<TrackPath>(_path.Id); }
                     }
 
