@@ -15,13 +15,16 @@ RUN dotnet restore "MediaLibrary.WebUI/MediaLibrary.WebUI.csproj"
 COPY . .
 WORKDIR "/src/MediaLibrary.WebUI"
 RUN apt-get update && apt-get -y install nodejs && apt-get -y install npm
+RUN npm install typescript@4.5.4 -g
 RUN npm install
-RUN dotnet build "MediaLibrary.WebUI.csproj" -c Release -o /app/build
+RUN tsc --project "wwwroot/lib/app/tsconfig.json"
+RUN dotnet build "MediaLibrary.WebUI.csproj" -c Debug -o /app/build
 
 FROM build AS publish
-RUN dotnet publish "MediaLibrary.WebUI.csproj" -c Release -o /app/publish /p:UseAppHost=false
+RUN dotnet publish "MediaLibrary.WebUI.csproj" -c Debug -o /app/publish /p:UseAppHost=false
 
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
+COPY "/MediaLibrary.WebUI/wwwroot/lib/app/app.js" "wwwroot/lib/app/"
 ENTRYPOINT ["dotnet", "MediaLibrary.WebUI.dll"]
