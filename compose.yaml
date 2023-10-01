@@ -1,8 +1,13 @@
 ﻿services:
   web:
-    build: .
+    build:
+      context: .
+      args:
+        BUILD_CONFIG: Development
     ports:
-      - "80:8080"
-      - "443:8001"
+      - "8080:80"
+      - "8081:443"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
   redis:
     image: "redis:alpine"
