@@ -3,11 +3,13 @@
     build:
       context: .
       args:
-        BUILD_CONFIGURAION: Development
+        BUILD_CONFIGURATION: Development
     ports:
       - "80:80"
       - "443:443"
     environment:
       ASPNETCORE_ENVIRONMENT: "Development"
-  redis:
-    image: "redis:alpine"
+    volumes:
+      - "//x/Music:/var/music"
+  #redis:
+    #image: "redis:alpine"
