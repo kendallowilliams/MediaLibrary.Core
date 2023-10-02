@@ -5,9 +5,9 @@
       args:
         BUILD_CONFIG: Development
     ports:
-      - "8080:80"
-      - "8081:443"
+      - "80:80"
+      - "443:443"
     environment:
-      - ASPNETCORE_ENVIRONMENT=Development
+      ASPNETCORE_ENVIRONMENT: "Development"
   redis:
     image: "redis:alpine"
