@@ -3,7 +3,7 @@
     build:
       context: .
       args:
-        BUILD_CONFIG: Development
+        BUILD_CONFIGURAION: Development
     ports:
       - "80:80"
       - "443:443"

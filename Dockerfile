@@ -6,7 +6,7 @@ EXPOSE 80
 EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/sdk:3.1 AS build
-ARG BUILD_CONFIG
+ARG BUILD_CONFIGURAION
 WORKDIR /src
 COPY ["MediaLibrary.WebUI/MediaLibrary.WebUI.csproj", "MediaLibrary.WebUI/"]
 COPY ["MediaLibrary.BLL/MediaLibrary.BLL.csproj", "MediaLibrary.BLL/"]
@@ -19,10 +19,10 @@ RUN apt-get update && apt-get -y install nodejs && apt-get -y install npm
 RUN npm install typescript@4.5.4 -g
 RUN npm install
 RUN tsc --project "wwwroot/lib/app/tsconfig.json"
-RUN dotnet build "MediaLibrary.WebUI.csproj" -c $BUILD_CONFIG -o /app/build
+RUN dotnet build "MediaLibrary.WebUI.csproj" -c $BUILD_CONFIGURAION -o /app/build
 
 FROM build AS publish
-RUN dotnet publish "MediaLibrary.WebUI.csproj" -c $BUILD_CONFIG -o /app/publish /p:UseAppHost=false
+RUN dotnet publish "MediaLibrary.WebUI.csproj" -c $BUILD_CONFIGURAION -o /app/publish /p:UseAppHost=false
 
 FROM base AS final
 WORKDIR /app
