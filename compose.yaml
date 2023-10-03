@@ -11,3 +11,4 @@
       ASPNETCORE_ENVIRONMENT: "Development"
     volumes:
       - "x:\\Music:/var/music"
+    container_name: media-library
