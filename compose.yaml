@@ -3,7 +3,7 @@
     build:
       context: .
       args:
-        BUILD_CONFIGURATION: Development
+        BUILD_CONFIGURATION: Debug
     ports:
       - "80:80"
       - "443:443"
