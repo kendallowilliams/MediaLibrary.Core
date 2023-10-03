@@ -1,0 +1,14 @@
+﻿services:
+  web:
+    build:
+      context: .
+      args:
+        BUILD_CONFIGURATION: Debug
+    ports:
+      - "80:80"
+      - "443:443"
+    environment:
+      ASPNETCORE_ENVIRONMENT: "Development"
+    volumes:
+      - "x:\\Music:/var/music"
+    container_name: media-library
