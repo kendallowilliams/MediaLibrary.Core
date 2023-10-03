@@ -10,6 +10,4 @@
     environment:
       ASPNETCORE_ENVIRONMENT: "Development"
     volumes:
-      - "//x/Music:/var/music"
-  #redis:
-    #image: "redis:alpine"
+      - "x:\\Music:/var/music"
