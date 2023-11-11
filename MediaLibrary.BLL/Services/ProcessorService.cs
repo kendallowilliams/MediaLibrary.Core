@@ -16,6 +16,7 @@ using Newtonsoft.Json;
 using System.IO;
 using Microsoft.Extensions.Configuration;
 using System.Runtime.CompilerServices;
+using System.Diagnostics;
 
 namespace MediaLibrary.BLL.Services
 {
@@ -108,6 +109,7 @@ namespace MediaLibrary.BLL.Services
 
         public async Task MonitorMusicPaths(CancellationToken token = default)
         {
+            Trace.WriteLine($"{nameof(MonitorMusicPaths)}: Started...");
             while (!token.IsCancellationRequested)
             {
                 var paths = await GetMusicPaths();
@@ -132,6 +134,7 @@ namespace MediaLibrary.BLL.Services
                 dbTask.Start();
                 await Task.WhenAll(paths.Select(path => MonitorMusicPath(path, dbCTS.Token)).Append(dbTask));
             }
+            Trace.WriteLine($"{nameof(MonitorMusicPaths)}: Started...");
         }
 
         private async Task<IEnumerable<string>> GetMusicPaths()
@@ -146,21 +149,32 @@ namespace MediaLibrary.BLL.Services
         private async Task MonitorMusicPath(string path, CancellationToken token = default)
         {
             var tcs = new TaskCompletionSource();
-            
-            using (var watcher = new FileSystemWatcher(path))
+            var transaction = await transactionService.GetNewTransaction(TransactionTypes.MonitorMusicPath);
+
+            transaction.Message = path;
+
+            try
             {
-                watcher.EnableRaisingEvents = true;
-                watcher.IncludeSubdirectories = true;
+                using (var watcher = new FileSystemWatcher(path))
+                {
+                    watcher.EnableRaisingEvents = true;
+                    watcher.IncludeSubdirectories = true;
 
-                watcher.Changed += async (obj, args) => await HandleMusicChange(args.FullPath);
-                watcher.Renamed += async (obj, args) => await HandleMusicChange(args.FullPath);
-                watcher.Created += async (obj, args) => await HandleMusicChange(args.FullPath, args.ChangeType);
-                watcher.Deleted += async (obj, args) => await HandleMusicChange(args.FullPath);
-                watcher.Disposed += (obj, args) => { if (!token.IsCancellationRequested) tcs.SetResult(); };
-                watcher.Error += (obj, args) => tcs.SetException(args.GetException());
-                token.Register(() => tcs.SetResult());
+                    watcher.Changed += async (obj, args) => await HandleMusicChange(args.FullPath);
+                    watcher.Renamed += async (obj, args) => await HandleMusicChange(args.FullPath);
+                    watcher.Created += async (obj, args) => await HandleMusicChange(args.FullPath, args.ChangeType);
+                    watcher.Deleted += async (obj, args) => await HandleMusicChange(args.FullPath);
+                    watcher.Disposed += (obj, args) => { if (!token.IsCancellationRequested) tcs.SetResult(); };
+                    watcher.Error += (obj, args) => tcs.SetException(args.GetException());
+                    token.Register(() => tcs.SetResult());
 
-                await tcs.Task;
+                    await transactionService.UpdateTransactionInProcess(transaction);
+                    await tcs.Task;
+                }
+            }
+            catch (Exception ex)
+            {
+                await transactionService.UpdateTransactionErrored(transaction, ex);
             }
         }
 
