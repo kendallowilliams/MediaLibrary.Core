@@ -9,6 +9,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -31,7 +32,9 @@ namespace MediaLibrary.Console.HostedServices
 
         public async Task StartAsync(CancellationToken cancellationToken)
         {
-            while (true) /*then*/ await RunAsync();
+            Trace.WriteLine($"{nameof(StartAsync)}: Started...");
+            await Task.WhenAll(processorService.MonitorMusicPaths(cancellationToken), RepeatAsync(cancellationToken));
+            Trace.WriteLine($"{nameof(StartAsync)}: Finished.");
         }
 
         public async Task StopAsync(CancellationToken cancellationToken)
@@ -39,41 +42,41 @@ namespace MediaLibrary.Console.HostedServices
             await Task.CompletedTask;
         }
 
-        private async Task RunAsync()
+        private async Task RepeatAsync(CancellationToken cancellationToken)
         {
-            var config = await dataService.Get<Configuration>(item => item.Type == ConfigurationTypes.MediaLibrary);
-            var mediaLibraryConfig = config.GetConfigurationObject<MediaLibraryConfiguration>();
-            var tasksToRun = new List<Func<Task>>()
+            while (!cancellationToken.IsCancellationRequested)
             {
-                () => processorService.RefreshMusic(), 
-                () => processorService.RefreshPodcasts(), 
-                () => processorService.PerformCleanup()
-            };
-            DateTime nextRunTime = mediaLibraryConfig.ConsoleAppLastRunTimeStamp.AddMinutes(mediaLibraryConfig.ConsoleAppRunInterval),
-                     dtNow = DateTime.Now;
+                var config = await dataService.Get<Configuration>(item => item.Type == ConfigurationTypes.MediaLibrary);
+                var mediaLibraryConfig = config.GetConfigurationObject<MediaLibraryConfiguration>();
+                var tasksToRun = new List<Func<Task>>()
+                {
+                    () => processorService.RefreshMusic(),
+                    () => processorService.RefreshPodcasts(),
+                    () => processorService.PerformCleanup()
+                };
+                DateTime nextRunTime = mediaLibraryConfig.ConsoleAppLastRunTimeStamp.AddMinutes(mediaLibraryConfig.ConsoleAppRunInterval),
+                         dtNow = DateTime.Now;
 
-            dtNow = dtNow.AddMilliseconds(-dtNow.Millisecond);
-            nextRunTime = nextRunTime.AddMilliseconds(-nextRunTime.Millisecond);
-            Trace.WriteLine($"{nameof(RunAsync)}: Now [{dtNow}], Next [{nextRunTime}]");
+                dtNow = dtNow.AddMilliseconds(-dtNow.Millisecond);
+                nextRunTime = nextRunTime.AddMilliseconds(-nextRunTime.Millisecond);
+                Trace.WriteLine($"{nameof(RepeatAsync)}: Now [{dtNow}], Next [{nextRunTime}]");
 
-            if (Math.Floor(nextRunTime.Subtract(dtNow).TotalSeconds) <= 0.0)
-            {
-                mediaLibraryConfig.ConsoleAppLastRunTimeStamp = dtNow;
-                config.SetConfigurationObject(mediaLibraryConfig);
-                ;
-                tasksToRun.Add(() => dataService.Update(config));
+                if (Math.Floor(nextRunTime.Subtract(dtNow).TotalSeconds) <= 0.0)
+                {
+                    mediaLibraryConfig.ConsoleAppLastRunTimeStamp = dtNow;
+                    config.SetConfigurationObject(mediaLibraryConfig);
+                    tasksToRun.Add(() => dataService.Update(config));
 
-                Trace.WriteLine($"{nameof(RunAsync)}: Started...");
-                await Task.WhenAll(tasksToRun.Select(task => task()));
-                Trace.WriteLine($"{nameof(RunAsync)}: Finished.");
-            }
-            else
-            {
-                int delayMs = (nextRunTime.Subtract(dtNow).Minutes * 60 + nextRunTime.Subtract(dtNow).Seconds) * 1000;
+                    await Task.WhenAll(tasksToRun.Select(task => task()));
+                }
+                else
+                {
+                    int delayMs = (nextRunTime.Subtract(dtNow).Minutes * 60 + nextRunTime.Subtract(dtNow).Seconds) * 1000;
 
-                Trace.WriteLine($"{nameof(RunAsync)}: Delay started: {delayMs} milliseconds...");
-                await Task.Delay(delayMs);
-                Trace.WriteLine($"{nameof(RunAsync)}: Delay completed.");
+                    Trace.WriteLine($"{nameof(RepeatAsync)}: Delay started: {delayMs} milliseconds...");
+                    await Task.Delay(delayMs);
+                    Trace.WriteLine($"{nameof(RepeatAsync)}: Delay completed.");
+                }
             }
         }
     }

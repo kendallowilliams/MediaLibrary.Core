@@ -2,6 +2,7 @@
   web:
     build:
       context: .
+      dockerfile: ./MediaLibrary.WebUI/Dockerfile
       args:
         BUILD_CONFIGURATION: Debug
     ports:
