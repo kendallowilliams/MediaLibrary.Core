@@ -160,10 +160,10 @@ namespace MediaLibrary.BLL.Services
                     watcher.EnableRaisingEvents = true;
                     watcher.IncludeSubdirectories = true;
 
-                    watcher.Changed += async (obj, args) => await HandleMusicChange(args.FullPath);
-                    watcher.Renamed += async (obj, args) => await HandleMusicChange(args.FullPath);
+                    watcher.Changed += async (obj, args) => await HandleMusicChange(args.FullPath, args.ChangeType);
+                    watcher.Renamed += async (obj, args) => await HandleMusicChange(args.FullPath, args.ChangeType);
                     watcher.Created += async (obj, args) => await HandleMusicChange(args.FullPath, args.ChangeType);
-                    watcher.Deleted += async (obj, args) => await HandleMusicChange(args.FullPath);
+                    watcher.Deleted += async (obj, args) => await HandleMusicChange(args.FullPath, args.ChangeType);
                     watcher.Disposed += (obj, args) => { if (!token.IsCancellationRequested) tcs.SetResult(); };
                     watcher.Error += (obj, args) => tcs.SetException(args.GetException());
                     token.Register(() => tcs.SetResult());
