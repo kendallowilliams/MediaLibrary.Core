@@ -50,6 +50,7 @@ namespace MediaLibrary.Console.HostedServices
                 var mediaLibraryConfig = config.GetConfigurationObject<MediaLibraryConfiguration>();
                 var tasksToRun = new List<Func<Task>>()
                 {
+                    () => processorService.RefreshMusic(),
                     () => processorService.RefreshPodcasts(),
                     () => processorService.PerformCleanup()
                 };

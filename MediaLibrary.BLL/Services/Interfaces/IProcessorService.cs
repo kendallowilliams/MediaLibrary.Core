@@ -12,5 +12,6 @@ namespace MediaLibrary.BLL.Services.Interfaces
         Task RefreshPodcasts();
         Task MonitorMusicPaths(CancellationToken token = default);
         Task PerformCleanup();
+        Task RefreshMusic(bool refreshWithDelete = false);
     }
 }
