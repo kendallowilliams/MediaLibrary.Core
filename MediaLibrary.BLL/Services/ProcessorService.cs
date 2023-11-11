@@ -116,7 +116,7 @@ namespace MediaLibrary.BLL.Services
                 {
                     while (!dbCTS.IsCancellationRequested)
                     {
-                        if (await GetMusicPaths().ContinueWith(task => task.Result.Except(paths).Any()))
+                        if (await GetMusicPaths().ContinueWith(task => task.Result.Except(paths, StringComparer.OrdinalIgnoreCase).Any()))
                         {
                             dbCTS.Cancel();
                         }
@@ -152,7 +152,7 @@ namespace MediaLibrary.BLL.Services
 
                 watcher.Changed += async (obj, args) => await HandleMusicChange(args.FullPath);
                 watcher.Renamed += async (obj, args) => await HandleMusicChange(args.FullPath);
-                watcher.Created += async (obj, args) => await HandleMusicChange(args.FullPath);
+                watcher.Created += async (obj, args) => await HandleMusicChange(args.FullPath, args.ChangeType);
                 watcher.Deleted += async (obj, args) => await HandleMusicChange(args.FullPath);
                 watcher.Disposed += (obj, args) => { if (!token.IsCancellationRequested) tcs.SetResult(); };
                 watcher.Error += (obj, args) => tcs.SetException(args.GetException());
@@ -162,7 +162,7 @@ namespace MediaLibrary.BLL.Services
             }
         }
 
-        private async Task HandleMusicChange(string file)
+        private async Task HandleMusicChange(string file, WatcherChangeTypes changeType = WatcherChangeTypes.All)
         {
             var fileTypes = configuration["FileTypes"].Split(",".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
 
@@ -172,7 +172,10 @@ namespace MediaLibrary.BLL.Services
             {
                 try
                 {
-                    transaction = await transactionService.GetNewTransaction(TransactionTypes.RefreshMusic);
+                    var transactionType = changeType == WatcherChangeTypes.Deleted ? 
+                        TransactionTypes.RefreshMusicWithDelete : 
+                        TransactionTypes.RefreshMusic;
+                    transaction = await transactionService.GetNewTransaction(transactionType);
                     await fileService.CheckForMusicUpdates(transaction);
                 }
                 catch (Exception ex)
