@@ -184,7 +184,8 @@ namespace MediaLibrary.BLL.Services
 
             if (fileTypes.Contains(Path.GetExtension(file), StringComparer.OrdinalIgnoreCase))
             {
-                await RefreshMusic(changeType == WatcherChangeTypes.Deleted);
+                await Task.WhenAll(logService.Info($"{nameof(HandleMusicChange)}, Change Type: {changeType}"),
+                                   RefreshMusic(changeType == WatcherChangeTypes.Deleted));
             }
         }
 
