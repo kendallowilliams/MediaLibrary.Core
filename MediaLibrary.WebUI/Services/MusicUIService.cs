@@ -46,7 +46,7 @@ namespace MediaLibrary.WebUI.Services
             var maxCreateDate = await dataService.Max<Track, DateTime>(track => track.CreateDate);
 
             if (!memoryCache.TryGetValue(nameof(CacheKeys.Tracks), out IEnumerable<Track> songs) ||
-                songs.Max(song => song.CreateDate) < maxCreateDate)
+                songs.Max(song => song.CreateDate) != maxCreateDate)
             {
                 songs = (await dataService.GetList<Track>(default, default,
                                                           song => song.Album,
