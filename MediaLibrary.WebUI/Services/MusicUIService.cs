@@ -43,8 +43,10 @@ namespace MediaLibrary.WebUI.Services
         public async Task<IEnumerable<IGrouping<string, Track>>> GetSongGroups(SongSort sort)
         {
             IEnumerable<IGrouping<string, Track>> groups = null;
+            var maxCreateDate = await dataService.Max<Track, DateTime>(track => track.CreateDate);
 
-            if (!memoryCache.TryGetValue(nameof(CacheKeys.Tracks), out IEnumerable<Track> songs))
+            if (!memoryCache.TryGetValue(nameof(CacheKeys.Tracks), out IEnumerable<Track> songs) ||
+                songs.Max(song => song.CreateDate) < maxCreateDate)
             {
                 songs = (await dataService.GetList<Track>(default, default,
                                                           song => song.Album,
