@@ -192,7 +192,7 @@ namespace MediaLibrary.BLL.Services
                 }
                 else if (changeType == WatcherChangeTypes.Deleted)
                 {
-                    var track = await dataService.Get<Track>(t => t.Path.Equals(file));
+                    var track = await dataService.Get<Track>(t => t.Path.Location.Equals(file));
                     if (track != null) /*then*/ await dataService.Delete(track);
                 }
             }
