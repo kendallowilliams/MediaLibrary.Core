@@ -403,7 +403,7 @@ namespace MediaLibrary.WebUI.Controllers
                     if (isSafePath)
                     {
                         using (Stream stream = IO_File.OpenWrite(filePath)) { await viewModel.MusicFile.CopyToAsync(stream); }
-                        await fileService.ReadMediaFile(filePath);
+                        await fileService.AddMediaFile(filePath);
                         musicService.ClearData();
                         result = NoContent();
                     }

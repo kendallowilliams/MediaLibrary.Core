@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace MediaLibrary.BLL.Services.Interfaces
@@ -19,9 +20,9 @@ namespace MediaLibrary.BLL.Services.Interfaces
 
         Task ReadDirectory(Transaction transaction, string path, bool recursive = false);
 
-        Task CheckForMusicUpdates(Transaction transaction);
+        Task CheckForMusicUpdates(Transaction transaction, CancellationToken token = default);
 
-        Task ReadMediaFile(string path);
+        Task AddMediaFile(string path);
 
         void Delete(string path);
 

@@ -9,6 +9,7 @@ using MediaLibrary.DAL.Services.Interfaces;
 using System.Linq.Expressions;
 using MediaLibrary.BLL.Services.Interfaces;
 using MediaLibrary.DAL.Models;
+using System.Threading;
 
 namespace MediaLibrary.BLL.Services
 {
@@ -21,7 +22,7 @@ namespace MediaLibrary.BLL.Services
             this.dataService = dataService;
         }
 
-        public async Task<int?> AddArtist(string strArtists)
+        public async Task<int?> AddArtist(string strArtists, CancellationToken token = default)
         {
             int? id = default(int?);
 
@@ -29,12 +30,12 @@ namespace MediaLibrary.BLL.Services
             {
                 object parameters = new { name = strArtists };
                 Artist artist = new Artist(strArtists);
-                Artist dbArtist = await dataService.Get<Artist>(item => item.Name == strArtists);
+                Artist dbArtist = await dataService.Get<Artist>(item => item.Name == strArtists, token);
 
                 if (dbArtist != null) { id = dbArtist.Id; }
                 else
                 {
-                    await dataService.Insert(artist);
+                    await dataService.Insert(artist, token);
                     id = artist.Id;
                 }
             }

@@ -9,6 +9,7 @@ using MediaLibrary.BLL.Services.Interfaces;
 using MediaLibrary.DAL.Services.Interfaces;
 using System.Linq.Expressions;
 using MediaLibrary.DAL.Models;
+using System.Threading;
 
 namespace MediaLibrary.BLL.Services
 {
@@ -21,7 +22,7 @@ namespace MediaLibrary.BLL.Services
             this.dataService = dataService;
         }
 
-        public async Task<int?> AddPath(string location)
+        public async Task<int?> AddPath(string location, CancellationToken token = default)
         {
 
             int? id = default(int?);
@@ -30,12 +31,12 @@ namespace MediaLibrary.BLL.Services
             {
                 object parameters = new { location };
                 TrackPath path = new TrackPath(location),
-                          dbPath = await dataService.Get<TrackPath>(item => item.Location.Trim() == location.Trim());
+                          dbPath = await dataService.Get<TrackPath>(item => item.Location.Trim() == location.Trim(), token);
 
                 if (dbPath != null) { id = dbPath.Id; }
                 else
                 {
-                    await dataService.Insert(path);
+                    await dataService.Insert(path, token);
                     id = path.Id;
                 }
             }

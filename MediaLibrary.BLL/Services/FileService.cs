@@ -91,7 +91,7 @@ namespace MediaLibrary.BLL.Services
 
                 foreach (var group in fileGroups.Where(item => Directory.Exists(item.Key)))
                 {
-                    foreach (string file in group) { await ReadMediaFile(file); }
+                    foreach (string file in group) { await AddMediaFile(file); }
                 }
 
                 await transactionService.UpdateTransactionCompleted(transaction);
@@ -102,28 +102,28 @@ namespace MediaLibrary.BLL.Services
             }
         }
 
-        public async Task ReadMediaFile(string path)
+        public async Task AddMediaFile(string path, CancellationToken token = default)
         {
-            MediaData data = await id3Service.ProcessFile(path);
-            int? genreId = await genreService.AddGenre(data.Genres),
-                artistId = await artistService.AddArtist(data.Artists),
-                albumId = await albumService.AddAlbum(new Album(data, artistId, genreId)),
-                pathId = await trackService.AddPath(Path.GetDirectoryName(path));
+            MediaData data = id3Service.ProcessFile(path);
+            int? genreId = await genreService.AddGenre(data.Genres, token),
+                artistId = await artistService.AddArtist(data.Artists, token),
+                albumId = await albumService.AddAlbum(new Album(data, artistId, genreId), token),
+                pathId = await trackService.AddPath(Path.GetDirectoryName(path), token);
             Track track = new Track(data, pathId, genreId, albumId, artistId);
 
-            await dataService.Insert(track);
+            await dataService.Insert(track, token);
         }
 
-        public async Task CheckForMusicUpdates(Transaction transaction)
+        public async Task CheckForMusicUpdates(Transaction transaction, CancellationToken token = default)
         {
             try
             {
-                var musicConfiguration = await dataService.Get<Configuration>(item => item.Type == ConfigurationTypes.Music)
+                var musicConfiguration = await dataService.Get<Configuration>(item => item.Type == ConfigurationTypes.Music, token)
                                                           .ContinueWith(task => task.Result.GetConfigurationObject<MusicConfiguration>() ?? 
                                                                                 new MusicConfiguration());
                 IEnumerable<string> fileTypes = configuration["FileTypes"].Split(",".ToCharArray(), StringSplitOptions.RemoveEmptyEntries),
                                     configPaths = musicConfiguration.MusicPaths;
-                IEnumerable<TrackPath> savedPaths = await dataService.GetList<TrackPath>(includes: path => path.Tracks),
+                IEnumerable<TrackPath> savedPaths = await dataService.GetList<TrackPath>(token: token, includes: path => path.Tracks),
                                        validPaths = savedPaths.Where(_path => _path.Tracks.Any()),
                                        emptyPaths = savedPaths.Where(_path => !_path.Tracks.Any()),
                                        invalidPaths = savedPaths.Where(_path => !configPaths.Any(p => _path.Location.StartsWith(p, StringComparison.OrdinalIgnoreCase)));
@@ -136,15 +136,9 @@ namespace MediaLibrary.BLL.Services
                     IEnumerable<string> existingFiles = tracks.Select(track => Path.Combine(path.Location, track.FileName)),
                                         files = EnumerateFiles(path.Location).Where(file => fileTypes.Contains(Path.GetExtension(file), StringComparer.OrdinalIgnoreCase)),
                                         deletedFiles = existingFiles.Where(file => !File.Exists(file)),
-                                        newFiles = files.Except(existingFiles),
                                         existingDirectories = savedPaths.Where(_path => !path.Equals(_path) && 
                                                                                         _path.Location.StartsWith(path.Location))
                                                                         .Select(_path => _path.Location);
-
-                    foreach (string file in newFiles)
-                    {
-                        await ReadMediaFile(file);
-                    }
 
                     if (transaction.Type == TransactionTypes.RefreshMusicWithDelete)
                     {
@@ -158,8 +152,8 @@ namespace MediaLibrary.BLL.Services
 
                                 deleteTransaction = await transactionService.GetNewTransaction(TransactionTypes.RemoveTrack);
                                 deleteTransaction.Message = $"Attempting to remove song [ID: {song?.Id}]...";
-                                await dataService.Update(deleteTransaction);
-                                await dataService.Delete(song);
+                                await dataService.Update(deleteTransaction, token);
+                                await dataService.Delete(song, token);
                                 await transactionService.UpdateTransactionCompleted(deleteTransaction, $"Song [ID: {song?.Id}] removed.");
                             }
                             catch (Exception ex)
@@ -168,18 +162,18 @@ namespace MediaLibrary.BLL.Services
                             }
                         }
 
-                        foreach (var _path in invalidPaths) { await dataService.Delete<TrackPath>(_path.Id); }
+                        foreach (var _path in invalidPaths) { await dataService.Delete<TrackPath>(_path.Id, token); }
                     }
 
                     path.LastScanDate = DateTime.Now;
-                    await dataService.Update(path);
+                    await dataService.Update(path, token);
                 }
 
-                foreach (TrackPath path in emptyPaths) { await dataService.Delete<TrackPath>(path.Id); }
-                albumsToDelete = await dataService.GetList<Album>(album => album.Tracks.Count() == 0, default, album => album.Tracks);
-                artistsToDelete = await dataService.GetList<Artist>(artist => artist.Tracks.Count() == 0, default, artist => artist.Tracks);
-                foreach (Album album in albumsToDelete) { await dataService.Delete<Album>(album.Id); }
-                foreach (Artist artist in artistsToDelete) { await dataService.Delete<Artist>(artist.Id); }
+                foreach (TrackPath path in emptyPaths) { await dataService.Delete<TrackPath>(path.Id, token); }
+                albumsToDelete = await dataService.GetList<Album>(album => album.Tracks.Count() == 0, token, album => album.Tracks);
+                artistsToDelete = await dataService.GetList<Artist>(artist => artist.Tracks.Count() == 0, token, artist => artist.Tracks);
+                foreach (Album album in albumsToDelete) { await dataService.Delete<Album>(album.Id, token); }
+                foreach (Artist artist in artistsToDelete) { await dataService.Delete<Artist>(artist.Id, token); }
                 await transactionService.UpdateTransactionCompleted(transaction);
             }
             catch (Exception ex)

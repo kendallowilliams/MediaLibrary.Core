@@ -15,13 +15,13 @@ namespace MediaLibrary.BLL.Services
         {
         }
 
-        public async Task<MediaData> ProcessFile(string path)
+        public MediaData ProcessFile(string path)
         {
             MediaData mediaData = default(MediaData);
 
             try
             {
-                File file = await Task.Run(() => File.Create(path));
+                File file = File.Create(path);
                 Tag tag = file.Tag;
                 string fileName = System.IO.Path.GetFileName(file.Name);
                 MediaData data = new MediaData
