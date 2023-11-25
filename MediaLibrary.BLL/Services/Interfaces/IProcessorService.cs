@@ -10,7 +10,6 @@ namespace MediaLibrary.BLL.Services.Interfaces
     public interface IProcessorService
     {
         Task RefreshPodcasts();
-        Task MonitorMusicPaths(CancellationToken token = default);
         Task PerformCleanup();
         Task RefreshMusic();
     }

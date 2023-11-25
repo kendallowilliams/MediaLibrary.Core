@@ -105,7 +105,7 @@ namespace MediaLibrary.BLL.Services
         public async Task AddMediaFile(string path, CancellationToken token = default)
         {
             MediaData data = id3Service.ProcessFile(path);
-            int? genreId = await genreService.AddGenre(data?.Genres, token),
+            int? genreId = await genreService.AddGenre(data.Genres, token),
                 artistId = await artistService.AddArtist(data.Artists, token),
                 albumId = await albumService.AddAlbum(new Album(data, artistId, genreId), token),
                 pathId = await trackService.AddPath(Path.GetDirectoryName(path), token);
@@ -136,9 +136,15 @@ namespace MediaLibrary.BLL.Services
                     IEnumerable<string> existingFiles = tracks.Select(track => Path.Combine(path.Location, track.FileName)),
                                         files = EnumerateFiles(path.Location).Where(file => fileTypes.Contains(Path.GetExtension(file), StringComparer.OrdinalIgnoreCase)),
                                         deletedFiles = existingFiles.Where(file => !File.Exists(file)),
+                                        newFiles = files.Except(existingFiles),
                                         existingDirectories = savedPaths.Where(_path => !path.Equals(_path) && 
                                                                                         _path.Location.StartsWith(path.Location))
                                                                         .Select(_path => _path.Location);
+
+                    foreach (string file in newFiles)
+                    {
+                        await AddMediaFile(file);
+                    }
 
                     if (transaction.Type == TransactionTypes.RefreshMusicWithDelete)
                     {

@@ -33,7 +33,7 @@ namespace MediaLibrary.Console.HostedServices
         public async Task StartAsync(CancellationToken cancellationToken)
         {
             Trace.WriteLine($"{nameof(StartAsync)}: Started...");
-            await Task.WhenAll(processorService.MonitorMusicPaths(cancellationToken), RepeatAsync(cancellationToken));
+            await RepeatAsync(cancellationToken);
             Trace.WriteLine($"{nameof(StartAsync)}: Finished.");
         }
 
