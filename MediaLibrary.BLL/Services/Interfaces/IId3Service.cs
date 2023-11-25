@@ -10,6 +10,6 @@ namespace MediaLibrary.BLL.Services.Interfaces
 {
     public interface IId3Service
     {
-        Task<MediaData> ProcessFile(string path);
+        MediaData ProcessFile(string path);
     }
 }

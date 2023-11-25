@@ -8,6 +8,7 @@ using MediaLibrary.DAL.Models;
 using MediaLibrary.BLL.Services.Interfaces;
 using MediaLibrary.DAL.Services.Interfaces;
 using System.Linq.Expressions;
+using System.Threading;
 
 namespace MediaLibrary.BLL.Services
 {
@@ -20,20 +21,20 @@ namespace MediaLibrary.BLL.Services
             this.dataService = dataService;
         }
 
-        public async Task<int?> AddGenre(string strGenres)
+        public async Task<int?> AddGenre(string strGenres, CancellationToken token = default)
         {
             int? id = default(int?);
 
             if (!string.IsNullOrWhiteSpace(strGenres))
             {
                 object parameters = new { name = strGenres };
-                Genre dbGenre = await dataService.Get<Genre>(item => item.Name == strGenres),
+                Genre dbGenre = await dataService.Get<Genre>(item => item.Name == strGenres, token),
                       genre = new Genre(strGenres);
 
                 if (dbGenre != null) { id = dbGenre.Id; }
                 else
                 {
-                    await dataService.Insert(genre);
+                    await dataService.Insert(genre, token);
                     id = genre.Id;
                 }
             }

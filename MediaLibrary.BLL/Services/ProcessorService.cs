@@ -134,7 +134,7 @@ namespace MediaLibrary.BLL.Services
                 dbTask.Start();
                 await Task.WhenAll(paths.Select(path => MonitorMusicPath(path, dbCTS.Token)).Append(dbTask));
             }
-            Trace.WriteLine($"{nameof(MonitorMusicPaths)}: Started...");
+            Trace.WriteLine($"{nameof(MonitorMusicPaths)}: Completed...");
         }
 
         private async Task<IEnumerable<string>> GetMusicPaths()
@@ -184,21 +184,27 @@ namespace MediaLibrary.BLL.Services
 
             if (fileTypes.Contains(Path.GetExtension(file), StringComparer.OrdinalIgnoreCase))
             {
-                await Task.WhenAll(logService.Info($"{nameof(HandleMusicChange)}, Change Type: {changeType}"),
-                                   RefreshMusic(changeType == WatcherChangeTypes.Deleted));
+                await logService.Info($"{nameof(HandleMusicChange)}, Change Type: {changeType}");
+
+                if (changeType == WatcherChangeTypes.Created)
+                {
+                    await fileService.AddMediaFile(file);
+                }
+                else if (changeType == WatcherChangeTypes.Deleted)
+                {
+                    var track = await dataService.Get<Track>(t => t.Path.Equals(file));
+                    if (track != null) /*then*/ await dataService.Delete(track);
+                }
             }
         }
 
-        public async Task RefreshMusic(bool refreshWithDelete = false)
+        public async Task RefreshMusic()
         {
             Transaction transaction = null;
 
             try
             {
-                var transactionType = refreshWithDelete ?
-                    TransactionTypes.RefreshMusicWithDelete :
-                    TransactionTypes.RefreshMusic;
-                transaction = await transactionService.GetNewTransaction(transactionType);
+                transaction = await transactionService.GetNewTransaction(TransactionTypes.RefreshMusic);
                 await fileService.CheckForMusicUpdates(transaction);
             }
             catch (Exception ex)

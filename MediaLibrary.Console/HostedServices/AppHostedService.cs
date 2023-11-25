@@ -74,7 +74,7 @@ namespace MediaLibrary.Console.HostedServices
                     int delayMs = (nextRunTime.Subtract(dtNow).Minutes * 60 + nextRunTime.Subtract(dtNow).Seconds) * 1000;
 
                     Trace.WriteLine($"{nameof(RepeatAsync)}: Delay started: {delayMs} milliseconds...");
-                    await Task.Delay(delayMs);
+                    await Task.Delay(delayMs, cancellationToken);
                     Trace.WriteLine($"{nameof(RepeatAsync)}: Delay completed.");
                 }
             }
