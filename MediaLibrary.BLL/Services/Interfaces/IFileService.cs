@@ -22,7 +22,7 @@ namespace MediaLibrary.BLL.Services.Interfaces
 
         Task CheckForMusicUpdates(Transaction transaction, CancellationToken token = default);
 
-        Task AddMediaFile(string path);
+        Task AddMediaFile(string path, CancellationToken token = default);
 
         void Delete(string path);
 
