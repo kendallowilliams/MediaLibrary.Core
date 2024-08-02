@@ -164,7 +164,7 @@ export default class Playlist extends BaseClass implements IView {
                             $link = $(`<a download target="_blank" href="${path}"></a>`);
 
                         modal.hide();
-                        $link.trigger('click');
+                        $link.each((_, link) => link.click());
                     });
                     this.toggleDarkMode(modal.getHTMLElement());
                     modal.show();
