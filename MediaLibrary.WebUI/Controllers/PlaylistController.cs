@@ -255,7 +255,6 @@ namespace MediaLibrary.WebUI.Controllers
             return lines;
         }
 
-        [AllowAnonymous]
         public async Task<IActionResult> GetM3UPlaylistArchive(int id)
         {
             IEnumerable<Playlist> systemPlaylists = id < 0 ? await playlistService.GetSystemPlaylists(true, true) : Enumerable.Empty<Playlist>();

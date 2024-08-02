@@ -160,7 +160,7 @@ export default class Playlist extends BaseClass implements IView {
                     $(modal.getHTMLElement()).find('[data-playlist-action="download-archive"]').on('click', e => {
                         const $btn = $(e.currentTarget),
                             playlistId: string = $btn.attr('data-playlist-id'),
-                            path = 'Playlist/GetM3UPlaylistArchive/'.concat(playlistId),
+                            path = `Playlist/GetM3UPlaylistArchive/${playlistId}`,
                             $link = $(`<a download target="_blank" href="${path}"></a>`);
 
                         modal.hide();
