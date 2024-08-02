@@ -157,6 +157,15 @@ export default class Playlist extends BaseClass implements IView {
                                 .then(_ => this.loadView(() => LoadingModal.hideLoading()));
                         });
                     });
+                    $(modal.getHTMLElement()).find('[data-playlist-action="download-archive"]').on('click', e => {
+                        const $btn = $(e.currentTarget),
+                            playlistId: string = $btn.attr('data-playlist-id'),
+                            path = 'Playlist/GetM3UPlaylistArchive/'.concat(playlistId),
+                            $link = $(`<a download target="_blank" href="${path}"></a>`);
+
+                        modal.hide();
+                        $link.trigger('click');
+                    });
                     this.toggleDarkMode(modal.getHTMLElement());
                     modal.show();
                     LoadingModal.hideLoading();

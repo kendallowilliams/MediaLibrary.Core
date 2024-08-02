@@ -34,7 +34,7 @@ namespace MediaLibrary.WebUI.Services
             if (!memoryCache.TryGetValue(nameof(CacheKeys.Podcasts), out IEnumerable<Podcast> podcasts))
             {
                 podcasts = await dataService.GetList<Podcast>(default, default, podcast => podcast.PodcastItems);
-                memoryCache.Set(nameof(CacheKeys.Podcasts), podcasts);
+                if (podcasts.Any()) /*then*/ memoryCache.Set(nameof(CacheKeys.Podcasts), podcasts);
             }
 
             switch (sort)

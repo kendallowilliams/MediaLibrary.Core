@@ -18,6 +18,9 @@ using System.Threading.Tasks;
 using System.Web;
 using static MediaLibrary.Shared.Enums;
 using TagLib.Ape;
+using System.IO.Compression;
+using System.IO;
+using NuGet.Common;
 
 namespace MediaLibrary.WebUI.Controllers
 {
@@ -28,15 +31,17 @@ namespace MediaLibrary.WebUI.Controllers
         private readonly PlaylistViewModel playlistViewModel;
         private readonly ITransactionService transactionService;
         private readonly ILogService logService;
+        private readonly ICompressionService compressionService;
 
         public PlaylistController(IPlaylistUIService playlistService, IDataService dataService, PlaylistViewModel playlistViewModel,
-                                  ITransactionService transactionService, ILogService logService)
+                                  ITransactionService transactionService, ILogService logService, ICompressionService compressionService)
         {
             this.playlistService = playlistService;
             this.dataService = dataService;
             this.playlistViewModel = playlistViewModel;
             this.transactionService = transactionService;
             this.logService = logService;
+            this.compressionService = compressionService;
         }
 
         public async Task<IActionResult> Index()
@@ -248,6 +253,22 @@ namespace MediaLibrary.WebUI.Controllers
             }
 
             return lines;
+        }
+
+        [AllowAnonymous]
+        public async Task<IActionResult> GetM3UPlaylistArchive(int id)
+        {
+            IEnumerable<Playlist> systemPlaylists = id < 0 ? await playlistService.GetSystemPlaylists(true, true) : Enumerable.Empty<Playlist>();
+            Playlist playlist = id > 0 ? await dataService.GetAlt<Playlist>(list => list.Id == id, default, "PlaylistTracks.Track.Path") :
+                                         systemPlaylists.FirstOrDefault(item => item.Id == id);
+            IEnumerable<PlaylistTrack> playlistTracks = playlist.PlaylistTracks.OrderBy(item => item.CreateDate);
+            IEnumerable<Track> tracks = playlistTracks.Select(list => list.Track);
+            string timestamp = DateTime.Now.ToString("yyyyMMddHHmmss"),
+                   fileName = $"{playlist.Name.Trim()}_{timestamp}.zip";
+            var data = await compressionService.CreateArchive(tracks.Select(track => Path.Combine(track.Path.Location, track.FileName)));
+            await logService.Info($"{nameof(PlaylistController)} -> {nameof(GetM3UPlaylistArchive)} -> File: {fileName}");
+
+            return File(data, "application/zip", fileName);
         }
 
         public async Task<IActionResult> UpdateConfiguration([FromBody] PlaylistConfiguration playlistConfiguration)

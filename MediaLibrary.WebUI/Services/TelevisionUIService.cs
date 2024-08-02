@@ -30,7 +30,7 @@ namespace MediaLibrary.WebUI.Services
             if (!memoryCache.TryGetValue(nameof(CacheKeys.Series), out IEnumerable<Series> series))
             {
                 series = await dataService.GetList<Series>(default, default, s => s.Episodes);
-                memoryCache.Set(nameof(CacheKeys.Series), series);
+                if (series.Any()) /*then*/ memoryCache.Set(nameof(CacheKeys.Series), series);
             }
 
             switch (sort)

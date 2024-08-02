@@ -47,6 +47,7 @@ namespace MediaLibrary.BLL.Extensions
             services.AddTransient<ITransactionService, TransactionService>();
             services.AddTransient<IWebService, WebService>();
             services.AddTransient<IProcessorService, ProcessorService>();
+            services.AddTransient<ICompressionService, CompressionService>();
         }
     }
 }

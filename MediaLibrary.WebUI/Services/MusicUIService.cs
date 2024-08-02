@@ -52,7 +52,7 @@ namespace MediaLibrary.WebUI.Services
                                                           song => song.Album,
                                                           song => song.Artist,
                                                           song => song.Genre))?.OrderBy(song => song.Title);
-                memoryCache.Set(nameof(CacheKeys.Tracks), songs);
+                if (songs.Any()) /*then*/ memoryCache.Set(nameof(CacheKeys.Tracks), songs);
             }
 
             switch(sort)
