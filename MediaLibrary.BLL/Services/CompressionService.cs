@@ -14,7 +14,7 @@ namespace MediaLibrary.BLL.Services
 
             using (var stream = new MemoryStream())
             {
-                using (ZipArchive archive = new ZipArchive(stream, ZipArchiveMode.Create))
+                using (var archive = new ZipArchive(stream, ZipArchiveMode.Create))
                 {
                     foreach (var file in files)
                     {

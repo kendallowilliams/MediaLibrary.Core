@@ -257,14 +257,18 @@ namespace MediaLibrary.WebUI.Controllers
 
         public async Task<IActionResult> GetM3UPlaylistArchive(int id)
         {
-            IEnumerable<Playlist> systemPlaylists = id < 0 ? await playlistService.GetSystemPlaylists(true, true) : Enumerable.Empty<Playlist>();
-            Playlist playlist = id > 0 ? await dataService.GetAlt<Playlist>(list => list.Id == id, default, "PlaylistTracks.Track.Path") :
+            var systemPlaylists = id < 0 ? await playlistService.GetSystemPlaylists(true, true) : Enumerable.Empty<Playlist>();
+            var playlist = id > 0 ? await dataService.GetAlt<Playlist>(list => list.Id == id, default, "PlaylistTracks.Track.Path") :
                                          systemPlaylists.FirstOrDefault(item => item.Id == id);
-            IEnumerable<PlaylistTrack> playlistTracks = playlist.PlaylistTracks.OrderBy(item => item.CreateDate);
-            IEnumerable<Track> tracks = playlistTracks.Select(list => list.Track);
+            var playlistTracks = playlist.PlaylistTracks.OrderBy(item => item.CreateDate);
+            var tracks = playlistTracks.Select(list => list.Track);
+            var paths = id <= 0 ? await dataService.GetList<TrackPath>() : Enumerable.Empty<TrackPath>();
+            var files = id > 0 ? 
+                tracks.Select(track => Path.Combine(track.Path.Location, track.FileName)) : 
+                tracks.Join(paths, t => t.PathId, p => p.Id, (track, path) => Path.Combine(path.Location, track.FileName));
             string timestamp = DateTime.Now.ToString("yyyyMMddHHmmss"),
                    fileName = $"{playlist.Name.Trim()}_{timestamp}.zip";
-            var data = await compressionService.CreateArchive(tracks.Select(track => Path.Combine(track.Path.Location, track.FileName)));
+            var data = await compressionService.CreateArchive(files);
             await logService.Info($"{nameof(PlaylistController)} -> {nameof(GetM3UPlaylistArchive)} -> File: {fileName}");
 
             return File(data, "application/zip", fileName);

@@ -24,13 +24,10 @@
                         data-bs-tooltip="tooltip" data-bs-title="Download M3U playlist" data-playlist-name="@(Model.Name)">
                     <i class="fa fa-download"></i>
                 </button>
-                @if (isUserPlaylist)
-                {
-                    <button class="btn btn-sm btn-outline-secondary" data-playlist-id="@Model.Id" data-playlist-action="download-archive"
-                            data-bs-tooltip="tooltip" data-bs-title="Download M3U playlist archive" data-playlist-name="@(Model.Name)">
-                        <i class="fa fa-file-zipper"></i>
-                    </button>
-                }
+                <button class="btn btn-sm btn-outline-secondary" data-playlist-id="@Model.Id" data-playlist-action="download-archive"
+                        data-bs-tooltip="tooltip" data-bs-title="Download M3U playlist archive" data-playlist-name="@(Model.Name)">
+                    <i class="fa fa-file-zipper"></i>
+                </button>
             }
             @if (isUserPlaylist)
             {
