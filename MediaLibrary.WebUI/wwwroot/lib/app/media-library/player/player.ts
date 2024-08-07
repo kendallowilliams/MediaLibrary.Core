@@ -267,7 +267,7 @@ export default class Player extends BaseClass implements IView {
                 this.getPlayer().play()
                     .then(() => null)
                     .catch(() => null);
-        } else if (shuffle && shuffleEmpty) {
+        } else if (shuffle && shuffleEmpty && $('li[data-play-index]').length > 0) {
             this.setUnPlayedShuffleIds(shuffle);
             this.loadNext();
         } else if (repeat === RepeatTypes.RepeatAll) {
@@ -300,12 +300,10 @@ export default class Player extends BaseClass implements IView {
 
         if (repeat === RepeatTypes.RepeatOne || player.currentTime > 5) {
             player.currentTime = 0;
-        }
-        else if (shuffle && shuffleEmpty) {
+        } else if (shuffle && shuffleEmpty && $('li[data-play-index]').length > 0) {
             this.setUnPlayedShuffleIds(shuffle);
             this.loadPrevious();
-        }
-        else this.loadItem($item[0], this.isPlaying());
+        } else this.loadItem($item[0], this.isPlaying());
     }
 
     private canPlayNext(): boolean {
