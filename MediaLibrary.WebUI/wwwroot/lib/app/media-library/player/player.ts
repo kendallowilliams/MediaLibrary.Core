@@ -267,12 +267,11 @@ export default class Player extends BaseClass implements IView {
                 this.getPlayer().play()
                     .then(() => null)
                     .catch(() => null);
+        } else if (shuffle && shuffleEmpty) {
+            this.setUnPlayedShuffleIds(shuffle);
+            this.loadNext();
         } else if (repeat === RepeatTypes.RepeatAll) {
-            if (shuffle && shuffleEmpty) {
-                this.setUnPlayedShuffleIds(shuffle);
-                this.loadNext();
-            }
-            else if (nextIndex === $('li[data-play-index]').length) {
+            if (nextIndex === $('li[data-play-index]').length) {
                 $item = $('li[data-play-index="0"]');
                 this.loadItem($item[0], this.isPlaying());
             } else {
@@ -280,9 +279,8 @@ export default class Player extends BaseClass implements IView {
                 this.loadItem($item[0], this.isPlaying());
             }
         } else {
-            $item = $('li[data-play-index=' + nextIndex + ']');
-
             if ((shuffle && !shuffleEmpty) || (!shuffle && nextIndex < $('li[data-play-index]').length)) {
+                $item = $('li[data-play-index=' + nextIndex + ']');
                 this.loadItem($item[0], this.isPlaying());
             } else {
                 this.controlsFunctions.pause();
