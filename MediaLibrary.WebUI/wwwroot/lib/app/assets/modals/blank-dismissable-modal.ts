@@ -15,6 +15,7 @@ export default class BlankDismissableModal {
         this.modal.id = null;
         this.modalBody = $(this.modal).find('.modal-body').get(0);
         this.bsModal = new Modal(this.modal);
+        $(this.modal).on('hidden.bs.modal', () => this.dispose());
     }
 
     public loadBodyHTML(url: string): Promise<string> {
@@ -27,13 +28,16 @@ export default class BlankDismissableModal {
 
     public show(): void {
         this.bsModal.show();
+    
     }
 
     public hide(): void {
         this.bsModal.hide();
+        this.dispose();
     }
 
-    public dispose(): void {
+    private dispose(): void {
         this.bsModal.dispose();
+        $(this.modal).remove();
     }
 }
