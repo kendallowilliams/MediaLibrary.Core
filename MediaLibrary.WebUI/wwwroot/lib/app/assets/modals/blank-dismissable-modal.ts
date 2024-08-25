@@ -28,7 +28,6 @@ export default class BlankDismissableModal {
 
     public show(): void {
         this.bsModal.show();
-    
     }
 
     public hide(): void {
