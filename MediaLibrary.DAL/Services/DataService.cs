@@ -277,6 +277,23 @@ namespace MediaLibrary.DAL.Services
             return result;
         }
 
+        public async Task<IEnumerable<TReturn>> SelectWhere<T, TReturn>(Expression<Func<T, TReturn>> selector,
+            Expression<Func<T, bool>> predicate = default, 
+            CancellationToken token = default) 
+            where T : class, IDataModel
+        {
+            var result = default(IEnumerable<TReturn>);
+
+            using (var db = dbContextFactory.CreateDbContext())
+            {
+                db.Database.SetCommandTimeout(timeout);
+                predicate = predicate != default ? predicate : (t) => true;
+                result = await db.Set<T>().Where(predicate).Select(selector).ToListAsync();
+            }
+
+            return result;
+        }
+
         public SqlParameter CreateParameter(string name, object value) => new SqlParameter(name, value);
 
         public async Task<TResult> Max<TEntity, TResult>(Expression<Func<TEntity, TResult>> expression,

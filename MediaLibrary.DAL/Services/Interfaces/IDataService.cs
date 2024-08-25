@@ -44,6 +44,11 @@ namespace MediaLibrary.DAL.Services.Interfaces
 
         Task<int> Execute(string sql, CancellationToken token = default(CancellationToken), params object[] parameters);
 
+        Task<IEnumerable<TReturn>> SelectWhere<T, TReturn>(Expression<Func<T, TReturn>> selector,
+            Expression<Func<T, bool>> predicate = default,
+            CancellationToken token = default)
+            where T : class, IDataModel;
+
         SqlParameter CreateParameter(string name, object value);
 
         Task<TResult> Max<TEntity, TResult>(Expression<Func<TEntity, TResult>> expression, CancellationToken token = default(CancellationToken)) where TEntity : class;

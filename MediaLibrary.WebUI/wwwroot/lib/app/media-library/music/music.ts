@@ -174,6 +174,10 @@ export default class Music extends BaseClass implements IView {
             LoadingModal.showLoading();
             modal.loadBodyHTML('Music/GetAlbumOptions/'.concat(id))
                 .then(() => {
+                    $(modal.getHTMLElement()).find('[data-play-id]').on('click', e => {
+                        this.playFunc(e.currentTarget as HTMLButtonElement, false);
+                        modal.hide();
+                    });
                     this.toggleDarkMode(modal.getHTMLElement());
                     modal.show();
                     LoadingModal.hideLoading();

@@ -4,6 +4,7 @@
 
 @{
     bool hasPlaylists = await dataService.Exists<Playlist>(item => item.Type == Enums.PlaylistTypes.Music);
+    var songIds = await dataService.SelectWhere<Track, string>(track => $"{track.Id}", track => track.AlbumId == Model.Id);
 }
 
 <div class="d-flex flex-column" data-song-id="@(Model.Id)">
@@ -11,7 +12,10 @@
         <div class="col-auto border-end">
             <h6 style="width: 100px">Actions</h6>
         </div>
-        <div class="col mb-3">
+        <div class="col mb-3" data-play-ids="@(string.Join(",", songIds))">
+            <button type="button" class="btn btn-sm btn-outline-secondary" data-play-id="@(Model.Id)" data-bs-tooltip="tooltip" data-bs-title="Play">
+                <i class="fa fa-play"></i>
+            </button>
             @if (hasPlaylists)
             {
                 <button type="button" class="btn btn-sm btn-outline-secondary" data-playlist-url="@(Url.Action("AddAlbumToPlaylist", "Music"))" data-item-id="@(Model.Id)"
