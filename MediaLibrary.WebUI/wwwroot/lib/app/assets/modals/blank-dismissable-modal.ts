@@ -32,7 +32,6 @@ export default class BlankDismissableModal {
 
     public hide(): void {
         this.bsModal.hide();
-        this.dispose();
     }
 
     private dispose(): void {
