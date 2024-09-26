@@ -3,6 +3,7 @@ import HtmlControls from './assets/controls/html-controls';
 import * as MessageBox from './assets/utilities/message-box';
 import Error from './assets/data/error';
 import * as signalR from '@microsoft/signalr';
+import { isFullScreen } from './assets/utilities/element';
 
 export default class App {
     private mediaLibrary: MediaLibrary;
@@ -16,7 +17,7 @@ export default class App {
         document.onfullscreenchange = () => {
             const players = HtmlControls.Players();
 
-            $([players.MusicPlayer, players.VideoPlayer]).prop('controls', document.fullscreen);
+            $([players.MusicPlayer, players.VideoPlayer]).prop('controls', isFullScreen());
         };
         window.onerror = (message: Event | string, source?: string, lineno?: number, colno?: number, error?: Error) => {
             if (!Error.Ignored.includes(message as string)) {
