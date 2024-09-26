@@ -32,3 +32,7 @@ export function scrollToTop(container: HTMLElement, scrollToTopElement: HTMLElem
         $container.scrollTop($(container).scrollTop() - $item.position().top * -1);
     }
 }
+
+export function isFullScreen(): boolean {
+    return !!document.fullscreenElement;
+}
