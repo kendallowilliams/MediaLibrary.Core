@@ -114,19 +114,20 @@ export default class Search extends BaseClass {
                         this.toggleDarkMode();
                         showHideLoading(false);
                         LoadingModal.hideLoading();
-                        $(HtmlControls.UIControls().SearchQuery).focus();
-                    });
+                        $(HtmlControls.UIControls().SearchQuery).trigger('focus');
+                });
             });
         } else {
             LoadingModal.showLoading();
             this.musicConfiguration.properties.PreviousSearchQuery = '';
             this.musicConfiguration.updateConfiguration()
                 .then(() => {
-                $(containers.SearchAlbumsContainer).html('<div>No albums.</div>');
-                $(containers.SearchArtistsContainer).html('<div>No artists.</div>');
-                $(containers.SearchSongsContainer).html('<div>No songs.</div>');
-                showHideLoading(false);
-                LoadingModal.hideLoading();
+                    $(containers.SearchAlbumsContainer).html('<div>No albums.</div>');
+                    $(containers.SearchArtistsContainer).html('<div>No artists.</div>');
+                    $(containers.SearchSongsContainer).html('<div>No songs.</div>');
+                    showHideLoading(false);
+                    LoadingModal.hideLoading();
+                    $(HtmlControls.UIControls().SearchQuery).trigger('focus');
             });
         }
     }
