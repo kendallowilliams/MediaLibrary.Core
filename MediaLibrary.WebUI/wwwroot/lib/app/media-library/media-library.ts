@@ -136,7 +136,7 @@ export default class MediaLibrary extends BaseClass {
                         () => this.mediaLibraryConfiguration.properties.TooltipsEnabled,
                         container => this.settingsModal.toggleDarkMode(container),
                         container => this.music.initializeSongOptions(container),
-                        (id, status) => this.updatePlaybackStatus(id, status)
+                        (id: number, status: string) => this.updatePlaybackStatus(id, status)
                     );
                     this.loadView(this.mediaLibraryConfiguration.properties.SelectedMediaPage);
                 });
