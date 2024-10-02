@@ -112,7 +112,7 @@ export function confirm(title: string, message: string,
     bsModal.show();
 }
 
-export function askQuestion(title: string, question: string, callback: (answer: string) => void = _ => null): void {
+export function askQuestion(title: string, question: string, callback: MlCallback<string> = _ => null): void {
     const $modal = $(HtmlControls.Modals().QuestionModal),
         bsModal = Modal.getOrCreateInstance(HtmlControls.Modals().QuestionModal),
         $title = $modal.find('.modal-title'),

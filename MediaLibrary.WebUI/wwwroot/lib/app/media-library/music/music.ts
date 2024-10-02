@@ -24,11 +24,11 @@ export default class Music extends BaseClass implements IView {
     private search: Search;
 
     constructor(private musicConfiguration: MusicConfiguration,
-        private playFunc: (btn: HTMLButtonElement, single: boolean) => void,
+        private playFunc: MlCallback<HTMLButtonElement | boolean>,
         private updateActiveMediaFunc: MlCallback,
         private tooltipsEnabled: MlCallback<void, boolean> = () => false,
         private initContinuePlaybackBtns: MlCallback,
-        private toggleDarkMode: (container) => void) {
+        private toggleDarkMode: MlCallback<HTMLElement>) {
         super();
         this.mediaView = HtmlControls.Views().MediaView;
         this.artist = new Artist(musicConfiguration, this.loadView.bind(this));

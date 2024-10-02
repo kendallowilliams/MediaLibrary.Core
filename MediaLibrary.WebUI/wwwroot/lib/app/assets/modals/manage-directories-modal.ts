@@ -11,7 +11,7 @@ import { MlCallback } from '../types/callback.type';
 export default class ManageDirectoriesModal {
     private modal: HTMLElement;
 
-    constructor(private loadFunc: (callback: MlCallback) => void = () => null,
+    constructor(private loadFunc: MlCallback<MlCallback> = () => null,
         private tooltipsEnabled: MlCallback<void, boolean> = () => false,
         private showCallback: MlCallback = () => null) {
         this.modal = HtmlControls.Modals().ManageDirectoriesModal;

@@ -7,7 +7,7 @@ import LoadingModal from "./loading-modal";
 export default class EditPlaylistModal {
     private modal: HTMLElement;
 
-    constructor(private loadFunc: (callback: MlCallback) => void = () => null) {
+    constructor(private loadFunc: MlCallback<MlCallback> = () => null) {
         this.modal = HtmlControls.Modals().EdiPlaylistModal;
         this.initializeControls();
     }

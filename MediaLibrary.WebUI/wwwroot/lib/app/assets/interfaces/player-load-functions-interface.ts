@@ -1,6 +1,8 @@
-﻿export default interface IPlayerLoadFunctions {
-    loadArtist: (id) => void,
-    loadAlbum: (id) => void,
-    loadPodcast: (id) => void,
-    loadSeries: (id) => void
+﻿import { MlCallback } from "../types/callback.type";
+
+export default interface IPlayerLoadFunctions {
+    loadArtist: MlCallback<number>,
+    loadAlbum: MlCallback<number>,
+    loadPodcast: MlCallback<number>,
+    loadSeries: MlCallback<number>
 }

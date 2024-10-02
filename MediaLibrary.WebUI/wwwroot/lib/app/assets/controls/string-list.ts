@@ -1,4 +1,5 @@
-﻿import HtmlControls from "./html-controls";
+﻿import { MlCallback } from "../types/callback.type";
+import HtmlControls from "./html-controls";
 
 export default class StringList {
     private $itemsContainer: JQuery<HTMLElement>;
@@ -6,10 +7,10 @@ export default class StringList {
 
     constructor(private stringListElement: HTMLElement,
         private items: string[] = [],
-        private addCallback: (list: string[], hasChanged: boolean) => void = _ => null,
-        private removeCallback: (list: string[], hasChanged: boolean) => void = _ => null,
-        private addValidator: (item: string) => Promise<boolean> = _ => Promise.resolve(true),
-        private removeValidator: (item: string) => Promise<boolean> = _ => Promise.resolve(true)) {
+        private addCallback: MlCallback<string[] | boolean> = _ => null,
+        private removeCallback: MlCallback<string[] | boolean> = _ => null,
+        private addValidator: MlCallback<string, Promise<boolean>> = _ => Promise.resolve(true),
+        private removeValidator: MlCallback<string, Promise<boolean>> = _ => Promise.resolve(true)) {
         this.initialize();
     }
 
@@ -28,7 +29,7 @@ export default class StringList {
         }
     }
 
-    private addItem(callback: (list: string[], hasChanged: boolean) => void = _ => null): void {
+    private addItem(callback: MlCallback<string[] | boolean> = _ => null): void {
         const $itemTemplate = this.$itemsContainer.find('[data-template="StringListItem"]').clone(true),
             $itemField = $itemTemplate.find('[data-field]'),
             item = this.$pathInput.val() as string;
@@ -57,7 +58,7 @@ export default class StringList {
         });
     }
 
-    private removeItem(btn: HTMLButtonElement, callback: (list: string[], hasChanged: boolean) => void = _ => null): void {
+    private removeItem(btn: HTMLButtonElement, callback: MlCallback<string[] | boolean> = _ => null): void {
         const $item = $(btn.parentNode.parentNode),
             item: string = $item.find('[data-field]').text();
         let items: string[] = [];

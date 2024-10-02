@@ -9,7 +9,7 @@ import { MlCallback } from "../types/callback.type";
 export default class AddNewPlaylistModal {
     private modal: HTMLElement;
 
-    constructor(private loadFunc: (callback: MlCallback) => void = () => null, private playlistConfiguration: PlaylistConfiguration) {
+    constructor(private loadFunc: MlCallback<MlCallback> = () => null, private playlistConfiguration: PlaylistConfiguration) {
         this.modal = htmlControls.Modals().NewPlaylistModal;
         this.initializeControls();
     }

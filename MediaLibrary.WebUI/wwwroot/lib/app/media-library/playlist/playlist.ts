@@ -22,11 +22,11 @@ export default class Playlist extends BaseClass implements IView {
     private playlistView: HTMLElement;
 
     constructor(private playlistConfiguration: PlaylistConfiguration,
-        private playFunc: (btn: HTMLButtonElement) => void,
+        private playFunc: MlCallback<HTMLButtonElement>,
         private updateActiveMediaFunc: MlCallback,
         private loadFunctions: IPlayerLoadFunctions,
         private tooltipsEnabled: MlCallback<void, boolean> = () => false,
-        private toggleDarkMode: (container) => void) {
+        private toggleDarkMode: MlCallback<HTMLElement>) {
         super();
         this.playlistView = HtmlControls.Views().MediaView;
         this.mediaView = HtmlControls.Views().MediaView;
