@@ -17,6 +17,7 @@ import Error from "../../assets/data/error";
 import * as LocalStorage from '../../assets/utilities/local_storage';
 import { fetch_get, fetch_post, loadHTML } from "../../assets/utilities/fetch_service";
 import MediaLibraryConfiguration from "../../assets/models/configurations/media-library-configuration";
+import { MlCallback } from "../../assets/types/callback.type";
 
 export default class Player extends BaseClass implements IView {
     private players: { VideoPlayer: HTMLMediaElement, MusicPlayer: HTMLMediaElement };
@@ -44,8 +45,8 @@ export default class Player extends BaseClass implements IView {
         toggleAudioVisualizer: this.toggleAudioVisualizer.bind(this)
     };
 
-    constructor(private playerConfiguration: PlayerConfiguration, private loadFunctions: IPlayerLoadFunctions, private updateActiveMedia: () => void = () => null,
-        private mediaLibraryConfiguration: MediaLibraryConfiguration, private tooltipsEnabled: () => boolean = () => false,
+    constructor(private playerConfiguration: PlayerConfiguration, private loadFunctions: IPlayerLoadFunctions, private updateActiveMedia: MlCallback = () => null,
+        private mediaLibraryConfiguration: MediaLibraryConfiguration, private tooltipsEnabled: MlCallback<void, boolean> = () => false,
         private toggleDarkMode: (container) => void, private initializeMusicOptions: (container) => void,
         private updatePlaybackStatus: (id: number, status: string) => void) {
         super();
@@ -58,7 +59,7 @@ export default class Player extends BaseClass implements IView {
         this.playerControls = new PlayerControls(this.controlsFunctions, this.playerConfiguration, this.mediaLibraryConfiguration);
     }
 
-    loadView(callback: () => void = () => null): void {
+    loadView(callback: MlCallback = () => null): void {
         this.audioVisualizer.prepareCanvas();
         this.playerControls.showHideAudioVisualizer();
         this.playerControls.showHideFullScreen(true);
@@ -363,7 +364,7 @@ export default class Player extends BaseClass implements IView {
         return fetch_post('Player/UpdatePlayCount', formData);
     }
 
-    private reload(callback: () => void = () => null): void {
+    private reload(callback: MlCallback = () => null): void {
         const containers = HtmlControls.Containers(),
             success = () => {
                 if (this.tooltipsEnabled()) /*then*/ loadTooltips(containers.PlayerItemsContainer);
@@ -423,7 +424,7 @@ export default class Player extends BaseClass implements IView {
         }
     }
 
-    public play(btn: HTMLButtonElement, playSingleItem: boolean = false, loadPlayer: () => void = () => null): void {
+    public play(btn: HTMLButtonElement, playSingleItem: boolean = false, loadPlayer: MlCallback = () => null): void {
         const $continuePlaybackBtns = $(HtmlControls.Buttons().PlaybackContinueButtons),
             $playButtons = $('button[data-play-id]'),
             $playGroups = $('div[data-play-ids]'),

@@ -9,6 +9,7 @@ import PlayerControlsModal from '../modals/player-controls-modal';
 import MediaLibraryConfiguration from '../models/configurations/media-library-configuration';
 import { openFullscreen } from '../utilities/element';
 import { Popover } from 'bootstrap';
+import { MlCallback } from '../types/callback.type';
 
 export default class PlayerControls {
     private volumeSliders: HTMLElement[];
@@ -200,7 +201,7 @@ export default class PlayerControls {
         $(controls.PlayerTimes).text(playbackTime);
     }
 
-    public timeUpdated(currentTime: number, playbackTime: string, callback: () => void = () => null): void {
+    public timeUpdated(currentTime: number, playbackTime: string, callback: MlCallback = () => null): void {
         const controls = HtmlControls.UIControls();
 
         this.enableDisablePreviousNext();

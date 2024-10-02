@@ -2,15 +2,16 @@
 import HtmlControls from "../controls/html-controls";
 import { getMediaTypeForPlaylistTab, getPlaylistTabEnum } from "../enums/enum-functions";
 import { PlaylistTabs, MediaTypes } from "../enums/enums";
+import { MlCallback } from "../types/callback.type";
 import { fetch_post, loadHTML } from "../utilities/fetch_service";
 import LoadingModal from "./loading-modal";
 
 export default class AddToPlaylistModal {
     private modal: HTMLElement;
 
-    constructor(private toggleDarkMode: (container) => void,
-        private addItemToNowPlayingList: (id: number, type: MediaTypes) => void,
-        private getSelectedMediaType: () => MediaTypes) {
+    constructor(private toggleDarkMode: MlCallback<HTMLElement>,
+        private addItemToNowPlayingList: MlCallback<number | MediaTypes>,
+        private getSelectedMediaType: MlCallback<void, MediaTypes>) {
         this.modal = HtmlControls.Modals().AddToPlaylistModal;
         this.initializeControls();
     }

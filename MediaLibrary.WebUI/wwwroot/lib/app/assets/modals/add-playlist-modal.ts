@@ -4,11 +4,12 @@ import LoadingModal from "./loading-modal";
 import { getPlaylistTabEnumString } from "../enums/enum-functions";
 import { fetch_post } from "../utilities/fetch_service";
 import { Modal } from "bootstrap";
+import { MlCallback } from "../types/callback.type";
 
 export default class AddNewPlaylistModal {
     private modal: HTMLElement;
 
-    constructor(private loadFunc: (callback: () => void) => void = () => null, private playlistConfiguration: PlaylistConfiguration) {
+    constructor(private loadFunc: (callback: MlCallback) => void = () => null, private playlistConfiguration: PlaylistConfiguration) {
         this.modal = htmlControls.Modals().NewPlaylistModal;
         this.initializeControls();
     }
