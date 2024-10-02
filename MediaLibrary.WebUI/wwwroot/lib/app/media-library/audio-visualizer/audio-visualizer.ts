@@ -1,6 +1,7 @@
 ﻿import BaseClass from "../../assets/models/base-class";
 import PlayerConfiguration from "../../assets/models/configurations/player-configuration";
 import HtmlControls from "../../assets/controls/html-controls";
+import { MlCallback } from "../../assets/types/callback.type";
 
 export default class AudioVisualizer extends BaseClass {
     private canvas: HTMLCanvasElement;
@@ -13,8 +14,8 @@ export default class AudioVisualizer extends BaseClass {
     private previousDataArray: Uint8Array;
     private audioSourceNode: MediaElementAudioSourceNode;
     private fftSize: number;
-    private getHeight: () => number;
-    private getWidth: () => number;
+    private getHeight: MlCallback<void, number>;
+    private getWidth: MlCallback<void, number>;
     private initialized: boolean;
     private enabled: boolean;
     private drawId: number;

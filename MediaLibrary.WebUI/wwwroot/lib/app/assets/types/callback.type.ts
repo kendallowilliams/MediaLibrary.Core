@@ -1,0 +1,1 @@
+﻿export type MlCallback<TInput = void, TOutput = void> = (...input: TInput[]) => TOutput;

@@ -10,6 +10,7 @@ import { getPodcastSortEnum, getPodcastFilterEnum } from "../../assets/enums/enu
 import * as MessageBox from '../../assets/utilities/message-box'
 import { fetch_get, fetch_post, loadHTML } from "../../assets/utilities/fetch_service";
 import BlankDismissableModal from "../../assets/modals/blank-dismissable-modal";
+import { MlCallback } from "../../assets/types/callback.type";
 
 export default class Podcast extends BaseClass implements IView {
     private readonly mediaView: HTMLElement;
@@ -17,17 +18,17 @@ export default class Podcast extends BaseClass implements IView {
 
     constructor(private podcastConfiguration: PodcastConfiguration,
         private playFunc: (btn: HTMLButtonElement, single: boolean) => void,
-        private updateActiveMediaFunc: () => void,
-        private tooltipsEnabled: () => boolean = () => false,
-        private initContinuePlaybackBtns: () => void,
+        private updateActiveMediaFunc: MlCallback,
+        private tooltipsEnabled: MlCallback<void, boolean> = () => false,
+        private initContinuePlaybackBtns: MlCallback,
         private toggleDarkMode: (container) => void) {
         super();
         this.mediaView = HtmlControls.Views().MediaView;
     }
 
-    loadView(callback: () => void = () => null): void {
+    loadView(callback: MlCallback = () => null): void {
         const properties: IPodcastConfiguration = this.podcastConfiguration.properties,
-            success: () => void = () => {
+            success: MlCallback = () => {
                 this.podcastView = HtmlControls.Views().PodcastView;
                 this.initializeControls();
                 if (this.tooltipsEnabled()) /*then*/ loadTooltips(this.mediaView);
@@ -134,7 +135,7 @@ export default class Podcast extends BaseClass implements IView {
         });
     }
 
-    loadPodcast(id: number, callback: () => void = () => null): void {
+    loadPodcast(id: number, callback: MlCallback = () => null): void {
         if (Number.isInteger(id)) {
             this.podcastConfiguration.properties.SelectedPodcastPage = PodcastPages.Podcast;
             this.podcastConfiguration.properties.SelectedPodcastId = id;

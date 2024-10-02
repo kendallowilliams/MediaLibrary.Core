@@ -2,6 +2,7 @@
 import HtmlControls from '../controls/html-controls';
 import { getMessageBoxConfirmTypeEnumString } from '../enums/enum-functions';
 import { MessageBoxConfirmType } from '../enums/enums';
+import { MlCallback } from '../types/callback.type';
 
 function initialize(): void {
     const $alertModal = $(HtmlControls.Modals().AlertModal),
@@ -80,8 +81,8 @@ export function showWarning(title: string, message: string): void {
 
 export function confirm(title: string, message: string,
     type: MessageBoxConfirmType = MessageBoxConfirmType.OkCancel,
-    positiveCallback: () => void,
-    negativeCallback: () => void = () => null): void {
+    positiveCallback: MlCallback,
+    negativeCallback: MlCallback = () => null): void {
     const $modal = $(HtmlControls.Modals().ConfirmModal),
         bsModal = Modal.getOrCreateInstance(HtmlControls.Modals().ConfirmModal),
         $title = $modal.find('.modal-title'),

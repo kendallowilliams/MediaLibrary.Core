@@ -15,6 +15,7 @@ import * as MessageBox from "../../assets/utilities/message-box";
 import { fetch_post, loadHTML } from "../../assets/utilities/fetch_service";
 import { Tab } from "bootstrap";
 import BlankDismissableModal from "../../assets/modals/blank-dismissable-modal";
+import { MlCallback } from "../../assets/types/callback.type";
 
 export default class Music extends BaseClass implements IView {
     private readonly mediaView: HTMLElement;
@@ -24,9 +25,9 @@ export default class Music extends BaseClass implements IView {
 
     constructor(private musicConfiguration: MusicConfiguration,
         private playFunc: (btn: HTMLButtonElement, single: boolean) => void,
-        private updateActiveMediaFunc: () => void,
-        private tooltipsEnabled: () => boolean = () => false,
-        private initContinuePlaybackBtns: () => void,
+        private updateActiveMediaFunc: MlCallback,
+        private tooltipsEnabled: MlCallback<void, boolean> = () => false,
+        private initContinuePlaybackBtns: MlCallback,
         private toggleDarkMode: (container) => void) {
         super();
         this.mediaView = HtmlControls.Views().MediaView;
@@ -45,8 +46,8 @@ export default class Music extends BaseClass implements IView {
         );
     }
 
-    loadView(callback: () => void = () => null): void {
-        const success: () => void = () => {
+    loadView(callback: MlCallback = () => null): void {
+        const success: MlCallback = () => {
             this.initializeControls();
             if (this.tooltipsEnabled()) /*then*/ loadTooltips(this.mediaView);
             $('[data-music-tab="' + getMusicTabEnumString(this.musicConfiguration.properties.SelectedMusicTab) + '"]')
@@ -63,13 +64,13 @@ export default class Music extends BaseClass implements IView {
         loadHTML(this.mediaView, 'Music/Index', null).then(_ => success());
     }
 
-    loadArtist(id: number, callback: () => void): void {
+    loadArtist(id: number, callback: MlCallback): void {
         if (Number.isInteger(id)) {
             this.artist.loadArtist.call(this.artist, id, callback);
         }
     }
 
-    loadAlbum(id: number, callback: () => void): void {
+    loadAlbum(id: number, callback: MlCallback): void {
         if (Number.isInteger(id)) {
             this.album.loadAlbum.call(this.album, id, callback);
         }

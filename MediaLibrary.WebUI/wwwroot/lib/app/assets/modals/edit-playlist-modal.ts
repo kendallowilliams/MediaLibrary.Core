@@ -1,12 +1,13 @@
 ﻿import { Modal } from "bootstrap";
 import HtmlControls from "../controls/html-controls";
+import { MlCallback } from "../types/callback.type";
 import { fetch_post } from "../utilities/fetch_service";
 import LoadingModal from "./loading-modal";
 
 export default class EditPlaylistModal {
     private modal: HTMLElement;
 
-    constructor(private loadFunc: (callback: () => void) => void = () => null) {
+    constructor(private loadFunc: (callback: MlCallback) => void = () => null) {
         this.modal = HtmlControls.Modals().EdiPlaylistModal;
         this.initializeControls();
     }

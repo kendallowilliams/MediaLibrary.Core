@@ -4,18 +4,19 @@ import { MusicPages } from "../../assets/enums/enums";
 import HtmlControls from "../../assets/controls/html-controls";
 import LoadingModal from "../../assets/modals/loading-modal";
 import { loadHTML } from "../../assets/utilities/fetch_service";
+import { MlCallback } from "../../assets/types/callback.type";
 
 export default class Search extends BaseClass {
     private searchTimeout: number;
     private searchDelay: number;
 
     constructor(private musicConfiguration: MusicConfiguration,
-        private reload: () => void,
+        private reload: MlCallback,
         private playFunc: (btn: HTMLButtonElement, single: boolean) => void,
-        private loadAlbum: (id: number, callback: () => void) => void,
-        private loadArtist: (id: number, callback: () => void) => void,
-        private updateActiveMediaFunc: () => void = () => null,
-        private toggleDarkMode: () => void = () => null,
+        private loadAlbum: (id: number, callback: MlCallback) => void,
+        private loadArtist: (id: number, callback: MlCallback) => void,
+        private updateActiveMediaFunc: MlCallback = () => null,
+        private toggleDarkMode: MlCallback = () => null,
         private initializeSongOptions: (container) => void,
         private initializeAlbumOptions: (container) => void,
         private initializeArtistOptions: (container) => void) {
@@ -41,13 +42,13 @@ export default class Search extends BaseClass {
         $(HtmlControls.UIControls().SearchQuery).val(this.musicConfiguration.properties.PreviousSearchQuery);
     }
 
-    loadSearch(callback: () => void = () => null): void {
+    loadSearch(callback: MlCallback = () => null): void {
         this.musicConfiguration.properties.SelectedMusicPage = MusicPages.Search;
         this.musicConfiguration.updateConfiguration()
             .then(() => callback());
     }
 
-    private goBack(callback: () => void = () => null): void {
+    private goBack(callback: MlCallback = () => null): void {
         this.musicConfiguration.properties.SelectedMusicPage = MusicPages.Index;
         this.musicConfiguration.updateConfiguration()
             .then(() => callback());

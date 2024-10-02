@@ -1,19 +1,21 @@
-﻿export default interface IPlayerControlsFunctions {
-    next: () => void,
-    previous: () => void,
-    skipForward: () => void,
-    skipBackward: () => void,
-    play: () => void,
-    pause: () => void,
-    setUnPlayedShuffleIds: (shuffle: boolean) => void,
-    canPlayNext: () => boolean,
-    canPlayPrevious: () => boolean,
-    mutePlayers: (muted: boolean) => void,
-    setPlayerVolume: (volume: number) => void,
-    setCurrentTime: (time: number) => void,
-    getPlaybackTime: (time: number, duration: number) => string,
-    updatePlayerProgress: (time: number) => void,
-    nowPlayingEmpty: () => boolean,
-    getPlayer: () => HTMLMediaElement,
-    toggleAudioVisualizer: () => void
+﻿import { MlCallback } from "../types/callback.type";
+
+export default interface IPlayerControlsFunctions {
+    next: MlCallback,
+    previous: MlCallback,
+    skipForward: MlCallback,
+    skipBackward: MlCallback,
+    play: MlCallback,
+    pause: MlCallback,
+    setUnPlayedShuffleIds: MlCallback<boolean>,
+    canPlayNext: MlCallback<void, boolean>,
+    canPlayPrevious: MlCallback<void, boolean>,
+    mutePlayers: MlCallback<boolean>,
+    setPlayerVolume: MlCallback<number>,
+    setCurrentTime: MlCallback<number>,
+    getPlaybackTime: MlCallback<number, string>,
+    updatePlayerProgress: MlCallback<number>,
+    nowPlayingEmpty: MlCallback<void, boolean>,
+    getPlayer: MlCallback<void, HTMLMediaElement>,
+    toggleAudioVisualizer: MlCallback
 }

@@ -26,6 +26,7 @@ import { fetch_get, loadHTML } from '../assets/utilities/fetch_service';
 import SettingsModal from '../assets/modals/settings-modal';
 import ISettingsReloadFunctions from '../assets/interfaces/settings-reload-functions';
 import { Collapse } from 'bootstrap';
+import { MlCallback } from '../assets/types/callback.type';
 
 export default class MediaLibrary extends BaseClass {
     private home: Home;
@@ -80,7 +81,7 @@ export default class MediaLibrary extends BaseClass {
                 clearNowPlaying: () => this.player.clearNowPlaying(),
                 toggleAudioVisualizer: () => this.player.toggleAudioVisualizer()
             },
-            success: () => void = () => {
+            success: MlCallback = () => {
                 const configurations: IConfigurations = {
                     MediaLibrary: this.mediaLibraryConfiguration,
                     Music: this.musicConfiguration,
@@ -174,7 +175,7 @@ export default class MediaLibrary extends BaseClass {
         $playerView.find('.list-group-item[data-item-id="' + currentId + '"]').addClass('active');
     }
 
-    private loadConfigurations(callback: () => void = () => null): void {
+    private loadConfigurations(callback: MlCallback = () => null): void {
         Promise.all([
             fetch_get('Home/HomeConfiguration', null).then(response => response.json().then(data => this.homeConfiguration = Configurations.Home(data))),
             fetch_get('MediaLibrary/MediaLibraryConfiguration', null).then(response => response.json().then(data => this.mediaLibraryConfiguration = Configurations.MediaLibrary(data))),
@@ -186,7 +187,7 @@ export default class MediaLibrary extends BaseClass {
         ]).then(_ => callback());
     }
 
-    private loadStaticViews(callback: () => void = () => null) {
+    private loadStaticViews(callback: MlCallback = () => null) {
         Promise.all([
             loadHTML(this.mainViews.PlayerView, $(this.mainViews.PlayerView).attr('data-action-url'), null),
             loadHTML(this.mainViews.HomeView, $(this.mainViews.HomeView).attr('data-action-url'), null)

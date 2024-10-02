@@ -13,6 +13,7 @@ import * as MessageBox from '../../assets/utilities/message-box';
 import { fetch_post, loadHTML } from "../../assets/utilities/fetch_service";
 import { Tab } from "bootstrap";
 import BlankDismissableModal from "../../assets/modals/blank-dismissable-modal";
+import { MlCallback } from "../../assets/types/callback.type";
 
 export default class Playlist extends BaseClass implements IView {
     private readonly mediaView: HTMLElement;
@@ -22,17 +23,17 @@ export default class Playlist extends BaseClass implements IView {
 
     constructor(private playlistConfiguration: PlaylistConfiguration,
         private playFunc: (btn: HTMLButtonElement) => void,
-        private updateActiveMediaFunc: () => void,
+        private updateActiveMediaFunc: MlCallback,
         private loadFunctions: IPlayerLoadFunctions,
-        private tooltipsEnabled: () => boolean = () => false,
+        private tooltipsEnabled: MlCallback<void, boolean> = () => false,
         private toggleDarkMode: (container) => void) {
         super();
         this.playlistView = HtmlControls.Views().MediaView;
         this.mediaView = HtmlControls.Views().MediaView;
     }
 
-    loadView(callback: () => void = () => null): void {
-        const success: () => void = () => {
+    loadView(callback: MlCallback = () => null): void {
+        const success: MlCallback = () => {
             this.addPlaylistModal = new AddNewPlaylistModal(this.loadView.bind(this), this.playlistConfiguration);
             this.editPlaylistModal = new EditPlaylistModal(this.loadView.bind(this));
             this.initializeControls();
@@ -174,7 +175,7 @@ export default class Playlist extends BaseClass implements IView {
         });
     }
 
-    private goBack(callback: () => void = () => null): void {
+    private goBack(callback: MlCallback = () => null): void {
         this.playlistConfiguration.properties.SelectedPlaylistId = 0;
         this.playlistConfiguration.properties.SelectedPlaylistPage = PlaylistPages.Index;
         this.playlistConfiguration.updateConfiguration()

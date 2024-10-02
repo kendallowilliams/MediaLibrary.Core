@@ -6,13 +6,14 @@ import * as MessageBox from '../../assets/utilities/message-box';
 import { MessageBoxConfirmType } from '../enums/enums';
 import { fetch_get, fetch_post, loadHTML } from '../utilities/fetch_service';
 import { Modal } from 'bootstrap';
+import { MlCallback } from '../types/callback.type';
 
 export default class ManageDirectoriesModal {
     private modal: HTMLElement;
 
-    constructor(private loadFunc: (callback: () => void) => void = () => null,
-        private tooltipsEnabled: () => boolean = () => false,
-        private showCallback: () => void = () => null) {
+    constructor(private loadFunc: (callback: MlCallback) => void = () => null,
+        private tooltipsEnabled: MlCallback<void, boolean> = () => false,
+        private showCallback: MlCallback = () => null) {
         this.modal = HtmlControls.Modals().ManageDirectoriesModal;
         this.initializeControls();
     }
@@ -34,7 +35,7 @@ export default class ManageDirectoriesModal {
         });
     }
 
-    private loadMusicDirectory(_path: string = null, callback: () => void = () => null): void {
+    private loadMusicDirectory(_path: string = null, callback: MlCallback = () => null): void {
         const $modal = $(this.modal);
 
         LoadingModal.showLoading();

@@ -9,6 +9,7 @@ import { loadTooltips, hideTooltips } from "../../assets/utilities/bootstrap-hel
 import { loadHTML } from "../../assets/utilities/fetch_service";
 import BlankDismissableModal from "../../assets/modals/blank-dismissable-modal";
 import * as MessageBox from '../../assets/utilities/message-box';
+import { MlCallback } from "../../assets/types/callback.type";
 
 export default class Television extends BaseClass implements IView {
     private readonly mediaView: HTMLElement;
@@ -16,17 +17,17 @@ export default class Television extends BaseClass implements IView {
 
     constructor(private televisionConfiguration: TelevisionConfiguration,
         private playFunc: (btn: HTMLButtonElement) => void,
-        private updateActiveMediaFunc: () => void,
-        private tooltipsEnabled: () => boolean = () => false,
-        private initContinuePlaybackBtns: () => void,
+        private updateActiveMediaFunc: MlCallback,
+        private tooltipsEnabled: MlCallback<void, boolean> = () => false,
+        private initContinuePlaybackBtns: MlCallback,
         private toggleDarkMode: (container) => void) {
         super();
         this.mediaView = HtmlControls.Views().MediaView;
     }
 
-    loadView(callback: () => void = () => null): void {
+    loadView(callback: MlCallback = () => null): void {
         const properties: ITelevisionConfiguration = this.televisionConfiguration.properties,
-            success: () => void = () => {
+            success: MlCallback = () => {
                 this.seasonView = HtmlControls.Views().SeasonView;
                 this.initializeControls();
                 if (this.tooltipsEnabled()) /*then*/ loadTooltips(this.mediaView);
@@ -111,7 +112,7 @@ export default class Television extends BaseClass implements IView {
         });
     }
 
-    loadSeries(id: number, callback: () => void = () => null): void {
+    loadSeries(id: number, callback: MlCallback = () => null): void {
         if (Number.isInteger(id)) {
             this.televisionConfiguration.properties.SelectedTelevisionPage = TelevisionPages.Series;
             this.televisionConfiguration.properties.SelectedSeriesId = id;
@@ -144,7 +145,7 @@ export default class Television extends BaseClass implements IView {
         }
     }
 
-    private goBack(callback: () => void = () => null): void {
+    private goBack(callback: MlCallback = () => null): void {
         this.televisionConfiguration.properties.SelectedSeriesId = 0;
         this.televisionConfiguration.properties.SelectedTelevisionPage = TelevisionPages.Index;
         this.televisionConfiguration.updateConfiguration()
