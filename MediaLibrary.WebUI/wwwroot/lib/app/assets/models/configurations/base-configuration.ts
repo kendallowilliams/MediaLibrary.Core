@@ -1,4 +1,5 @@
-﻿import { fetch_get, fetch_post } from "../../utilities/fetch_service";
+﻿import { MlCallback } from "../../types/callback.type";
+import { fetch_get, fetch_post } from "../../utilities/fetch_service";
 import BaseClass from "../base-class";
 
 export default abstract class BaseConfiguration<T> extends BaseClass {
@@ -16,9 +17,9 @@ export default abstract class BaseConfiguration<T> extends BaseClass {
 
     public refresh(): Promise<void> {
         const url = this.controller.concat('/').concat(this.controller).concat('Configuration'),
-             success: (data) => void = (data) => {
-                 this.properties = data;
-             };
+            success: MlCallback<T> = (data) => {
+                this.properties = data;
+            };
 
         return fetch_get(url, null)
             .then(response => response.json())

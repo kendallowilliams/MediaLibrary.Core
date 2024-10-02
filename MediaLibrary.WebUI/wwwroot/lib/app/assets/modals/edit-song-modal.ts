@@ -4,11 +4,12 @@ import MediaLibraryConfiguration from '../models/configurations/media-library-co
 import { MediaPages } from '../enums/enums';
 import { fetch_get, fetch_post } from '../utilities/fetch_service';
 import { Modal } from 'bootstrap';
+import { MlCallback } from '../types/callback.type';
 
 export default class EditSongModal {
     private modal: HTMLElement;
 
-    constructor(private mediaLibraryConfiguration: MediaLibraryConfiguration, private loadFunc: (mediaPage: MediaPages) => void = () => null) {
+    constructor(private mediaLibraryConfiguration: MediaLibraryConfiguration, private loadFunc: MlCallback<MediaPages> = () => null) {
         this.modal = HtmlControls.Modals().EditSongModal;
         this.initializeControls();
     }

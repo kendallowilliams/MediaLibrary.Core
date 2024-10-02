@@ -12,14 +12,14 @@ export default class Search extends BaseClass {
 
     constructor(private musicConfiguration: MusicConfiguration,
         private reload: MlCallback,
-        private playFunc: (btn: HTMLButtonElement, single: boolean) => void,
-        private loadAlbum: (id: number, callback: MlCallback) => void,
-        private loadArtist: (id: number, callback: MlCallback) => void,
+        private playFunc: MlCallback<HTMLButtonElement | boolean>,
+        private loadAlbum: MlCallback<number | MlCallback>,
+        private loadArtist: MlCallback<number | MlCallback>,
         private updateActiveMediaFunc: MlCallback = () => null,
         private toggleDarkMode: MlCallback = () => null,
-        private initializeSongOptions: (container) => void,
-        private initializeAlbumOptions: (container) => void,
-        private initializeArtistOptions: (container) => void) {
+        private initializeSongOptions: MlCallback<HTMLElement>,
+        private initializeAlbumOptions: MlCallback<HTMLElement>,
+        private initializeArtistOptions: MlCallback<HTMLElement>) {
         super();
         this.searchDelay = 1; 
     }

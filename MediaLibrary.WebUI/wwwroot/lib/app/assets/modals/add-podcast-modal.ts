@@ -8,7 +8,7 @@ import { MlCallback } from "../types/callback.type";
 export default class AddNewPodcastModal {
     private modal: HTMLElement;
 
-    constructor(private loadFunc: (callback: MlCallback) => void = () => null) {
+    constructor(private loadFunc: MlCallback<MlCallback> = () => null) {
         this.modal = HtmlControls.Modals().NewPodcastModal;
         this.initializeControls();
     }

@@ -10,7 +10,7 @@ export default class AddNewSongModal {
     private modal: HTMLElement;
     private directorySelector: DirectorySelector;
 
-    constructor(private loadFunc: (callback: MlCallback) => void = () => null,
+    constructor(private loadFunc: MlCallback<MlCallback> = () => null,
         private tooltipsEnabled: MlCallback<void, boolean> = () => false,
         private showCallback: MlCallback = () => null) {
         this.modal = HtmlControls.Modals().NewSongModal;

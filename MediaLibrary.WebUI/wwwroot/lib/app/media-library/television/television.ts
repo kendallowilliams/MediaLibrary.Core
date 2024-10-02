@@ -16,11 +16,11 @@ export default class Television extends BaseClass implements IView {
     private seasonView: HTMLElement;
 
     constructor(private televisionConfiguration: TelevisionConfiguration,
-        private playFunc: (btn: HTMLButtonElement) => void,
+        private playFunc: MlCallback<HTMLButtonElement>,
         private updateActiveMediaFunc: MlCallback,
         private tooltipsEnabled: MlCallback<void, boolean> = () => false,
         private initContinuePlaybackBtns: MlCallback,
-        private toggleDarkMode: (container) => void) {
+        private toggleDarkMode: MlCallback<HTMLElement>) {
         super();
         this.mediaView = HtmlControls.Views().MediaView;
     }

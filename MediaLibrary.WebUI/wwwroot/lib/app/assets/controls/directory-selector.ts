@@ -4,7 +4,7 @@ import { loadHTML } from "../utilities/fetch_service";
 import { MlCallback } from "../types/callback.type";
 
 export default class DirectorySelector {
-    constructor(private container: HTMLElement, private onSelectionChanged: (value: string) => any, private tooltipsEnabled: MlCallback<void, boolean> = () => false) {
+    constructor(private container: HTMLElement, private onSelectionChanged: MlCallback<string, any>, private tooltipsEnabled: MlCallback<void, boolean> = () => false) {
     }
 
     public loadMusicDirectory(_path: string = null): void {
