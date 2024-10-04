@@ -20,7 +20,7 @@
 
     @if (Model.PodcastGroups.Any())
     {
-        <div id="accordion-podcasts" style="overflow-y: auto" class="accordion flex-fill">
+        <div style="overflow-y: auto" class="accordion flex-fill accordion-podcasts">
             @foreach (var item in Model.PodcastGroups.Select((group, index) => new { Index = index, Group = group }))
             {
                 <div class="accordion-item">
@@ -32,7 +32,7 @@
                         </h5>
                     </div>
 
-                    <div id="collapse-podcasts-@(item.Index)" class="accordion-collapse collapse @(item.Index == 0 ? "show" : "")" data-bs-parent="#accordion-podcasts">
+                    <div id="collapse-podcasts-@(item.Index)" class="accordion-collapse collapse @(item.Index == 0 ? "show" : "")" data-bs-parent=".accordion-podcasts">
                         <div class=" accordion-body p-0 pb-1">
                             <ul class="list-group list-group-flush">
                                 @foreach (var podcast in item.Group)

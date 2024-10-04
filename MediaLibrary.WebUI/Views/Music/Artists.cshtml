@@ -2,7 +2,7 @@
 
 @if (Model.ArtistGroups.Any())
 {
-    <div id="accordion-artists" class="accordion">
+    <div class="accordion accordion-artists">
         @foreach (var item in Model.ArtistGroups.Select((group, index) => new { Index = index, Group = group }))
         {
             <div class="accordion-item">
@@ -22,7 +22,7 @@
                     </h5>
                 </div>
 
-                <div id="collapse-artists-@(item.Index)" class="accordion-collapse collapse @(item.Index == 0 ? "show" : "")" aria-labelledby="heading-artists-@(item.Index)" data-bs-parent="#accordion-artists">
+                <div id="collapse-artists-@(item.Index)" class="accordion-collapse collapse @(item.Index == 0 ? "show" : "")" aria-labelledby="heading-artists-@(item.Index)" data-bs-parent=".accordion-artists">
                     <div class=" accordion-body p-0 pb-1">
                         <ul class="list-group list-group-flush">
                             @foreach (var artist in item.Group.OrderBy(a => a.Name))
