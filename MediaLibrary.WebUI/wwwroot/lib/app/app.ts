@@ -27,7 +27,6 @@ export default class App {
         window.onbeforeunload = (evt: Event) => {
             if (this.mediaLibrary.getPromptBeforeUnload()) {
                 evt.preventDefault();
-                evt.returnValue = false;
             }
         };
         window.onkeydown = (evt: KeyboardEvent) => this.mediaLibrary.handleKeyDown(evt);
