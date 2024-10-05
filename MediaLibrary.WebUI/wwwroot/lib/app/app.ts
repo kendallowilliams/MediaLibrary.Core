@@ -21,7 +21,15 @@ export default class App {
         };
         window.onerror = (message: Event | string, source?: string, lineno?: number, colno?: number, error?: Error) => {
             if (!Error.Ignored.includes(message as string)) {
-                MessageBox.showError('Error', error ? error.message : message as string);
+                const formattedMessage = `
+                    Message: ${JSON.stringify(message)}
+                    Source: ${source}
+                    Line No: ${lineno}
+                    Col No: ${colno}
+                    Error: ${JSON.stringify(error)}
+                `;
+
+                MessageBox.showError('Error', formattedMessage);
             }
         };
         window.onbeforeunload = (evt: Event) => {
