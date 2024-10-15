@@ -62,7 +62,7 @@ export default class StringList {
         const $item = $(btn.parentNode),
             item: string = $item.find('[data-field]').text();
         let items: string[] = [];
-        debugger;
+
         this.removeValidator(item).then(valid => {
             if (valid) {
                 $(btn.parentNode).remove();
