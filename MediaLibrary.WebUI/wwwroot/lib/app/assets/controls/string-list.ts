@@ -59,13 +59,13 @@ export default class StringList {
     }
 
     private removeItem(btn: HTMLButtonElement, callback: MlCallback<string[] | boolean> = _ => null): void {
-        const $item = $(btn.parentNode.parentNode),
+        const $item = $(btn.parentNode),
             item: string = $item.find('[data-field]').text();
         let items: string[] = [];
-
+        debugger;
         this.removeValidator(item).then(valid => {
             if (valid) {
-                $(btn.parentNode.parentNode).remove();
+                $(btn.parentNode).remove();
                 items = this.$itemsContainer.find('[data-field]')
                     .map((index, element) => $(element).text())
                     .filter((index, element) => !!element)
