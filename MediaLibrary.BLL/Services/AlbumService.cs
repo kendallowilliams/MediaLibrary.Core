@@ -25,7 +25,7 @@ namespace MediaLibrary.BLL.Services
         {
             int? id = default(int?);
 
-            if (album != null)
+            if (album != null && !string.IsNullOrWhiteSpace(album.Title))
             {
                 Album dbAlbum = await dataService.Get<Album>(item => item.Title == album.Title, token);
 
