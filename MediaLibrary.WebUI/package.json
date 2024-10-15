@@ -9,7 +9,7 @@
     "@types/jquery": "latest",
     "@types/bootstrap": "5.2.0",
     "@microsoft/signalr": "5.0.17",
-    "@types/node": "18.7.13"
+    "@types/node": "latest"
   },
   "dependencies": {
     "gulp": "latest",
@@ -18,6 +18,6 @@
     "@types/jquery": "latest",
     "@types/bootstrap": "5.2.0",
     "@microsoft/signalr": "5.0.17",
-    "@types/node": "18.7.13"
+    "@types/node": "latest"
   }
 }

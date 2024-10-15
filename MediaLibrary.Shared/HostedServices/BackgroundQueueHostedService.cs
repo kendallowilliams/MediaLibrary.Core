@@ -1,8 +1,6 @@
 ﻿using MediaLibrary.Shared.Services.Interfaces;
 using Microsoft.Extensions.Hosting;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -27,7 +25,7 @@ namespace MediaLibrary.Shared.HostedServices
                 {
                     await workItem(cancellationToken);
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                 }
             }

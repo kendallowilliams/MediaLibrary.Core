@@ -42,7 +42,7 @@
         <div class="tab-pane fade" id="@(HtmlControlsRepository.MusicPlaylistContainerId)" role="tabpanel">
             @if (musicPlaylistGroups.Any())
             {
-                <div id="accordion-playlists-@(Enums.PlaylistTabs.Music)" style="overflow-y: auto" class="accordion flex-fill">
+                <div style="overflow-y: auto" class="accordion flex-fill accordion-playlists-@(Enums.PlaylistTabs.Music)">
                     @foreach (var item in musicPlaylistGroups.Select((group, index) => new { Index = index, Group = group }))
                     {
                         <div class="accordion-item">
@@ -54,7 +54,7 @@
                                 </h5>
                             </div>
 
-                            <div id="collapse-playlists-@(item.Index)" class="accordion-collapse collapse @(item.Index == 0 ? "show" : "")" data-bs-parent="#accordion-playlists-@(Enums.PlaylistTabs.Music)">
+                            <div id="collapse-playlists-@(item.Index)" class="accordion-collapse collapse @(item.Index == 0 ? "show" : "")" data-bs-parent=".accordion-playlists-@(Enums.PlaylistTabs.Music)">
                                 <div class="accordion-body p-0 pb-1">
                                     <ul class="list-group list-group-flush">
                                         @foreach (var playlist in item.Group.Where(playlist => playlist.Type == Enums.PlaylistTypes.Music))
@@ -92,7 +92,7 @@
         <div class="tab-pane fade" id="@(HtmlControlsRepository.PodcastPlaylistContainerId)" role="tabpanel">
             @if (podcastPlaylistGroups.Any())
             {
-                <div id="accordion-playlists-@(Enums.PlaylistTabs.Podcast)" style="overflow-y: auto" class="accordion flex-fill">
+                <div style="overflow-y: auto" class="accordion flex-fill accordion-playlists-@(Enums.PlaylistTabs.Podcast)">
                     @foreach (var item in podcastPlaylistGroups.Select((group, index) => new { Index = index + musicPlaylistGroups.Count(), Group = group }))
                     {
                         bool isFirstIndex = item.Index == musicPlaylistGroups.Count();
@@ -106,7 +106,7 @@
                                 </h5>
                             </div>
 
-                            <div id="collapse-playlists-@(item.Index)" class="accordion-collapse collapse @(isFirstIndex ? "show" : "")" data-bs-parent="#accordion-playlists-@(Enums.PlaylistTabs.Podcast)">
+                            <div id="collapse-playlists-@(item.Index)" class="accordion-collapse collapse @(isFirstIndex ? "show" : "")" data-bs-parent=".accordion-playlists-@(Enums.PlaylistTabs.Podcast)">
                                 <div class="accordion-body p-0 pb-1">
                                     <ul class="list-group list-group-flush">
                                         @foreach (var playlist in item.Group.Where(playlist => playlist.Type == Enums.PlaylistTypes.Podcast))
@@ -144,7 +144,7 @@
         <div class="tab-pane fade" id="@(HtmlControlsRepository.EpisodePlaylistContainerId)" role="tabpanel">
             @if (episodePlaylistGroups.Any())
             {
-                <div id="accordion-playlists-@(Enums.PlaylistTabs.Television)" style="overflow-y: auto" class="accordion flex-fill">
+                <div style="overflow-y: auto" class="accordion flex-fill accordion-playlists-@(Enums.PlaylistTabs.Television)">
                     @foreach (var item in episodePlaylistGroups.Select((group, index) => new { Index = index + musicPlaylistGroups.Count() + podcastPlaylistGroups.Count(), Group = group }))
                     {
                         bool isFirstIndex = item.Index == musicPlaylistGroups.Count() + podcastPlaylistGroups.Count();
@@ -152,14 +152,13 @@
                         <div class="accordion-item">
                             <div class="accordion-header p-0" id="heading-playlists-@(item.Index)">
                                 <h5 class="mb-0">
-                                    <button class="accordion-button w-100 text-start p-1 @(isFirstIndex ? string.Empty : "collapsed")" data-bs-toggle="collapse" data-bs-target="#collapse-playlists-@(item.Index)">
+                                    <button class="accordion-button w-100 text-start p-1 @(isFirstIndex ? string.Empty : "collapsed")" data-bs-toggle="collapse" data-bs-target=".collapse-playlists-@(item.Index)">
                                         @(item.Group.Key)
                                     </button>
                                 </h5>
                             </div>
 
-                            <div id="collapse-playlists-@(item.Index)" class="accordion-collapse collapse @(isFirstIndex  ? "show" : "")"
-                         data-bs-parent="#accordion-playlists-@(Enums.PlaylistTabs.Television)">
+                            <div id="collapse-playlists-@(item.Index)" class="accordion-collapse collapse @(isFirstIndex  ? "show" : "")" data-bs-parent="#accordion-playlists-@(Enums.PlaylistTabs.Television)">
                                 <div class="accordion-body p-0 pb-1">
                                     <ul class="list-group list-group-flush">
                                         @foreach (var playlist in item.Group.Where(playlist => playlist.Type == Enums.PlaylistTypes.Television))

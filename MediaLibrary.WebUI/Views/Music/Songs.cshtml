@@ -2,7 +2,7 @@
 
 @if (Model.SongGroups.Any())
 {
-    <div id="accordion-songs" class="accordion">
+    <div class="accordion accordion-songs">
         @foreach (var item in Model.SongGroups.Select((group, index) => new { Index = index, Group = group }))
         {
             <div class="accordion-item">
@@ -22,7 +22,7 @@
                     </h5>
                 </div>
 
-                <div id="collapse-songs-@(item.Index)" class="accordion-collapse @(Model.IsSearchResponse ? string.Empty : "collapse")" data-bs-parent="#accordion-songs"
+                <div id="collapse-songs-@(item.Index)" class="accordion-collapse @(Model.IsSearchResponse ? string.Empty : "collapse")" data-bs-parent=".accordion-songs"
                      data-play-ids="@(string.Join(",", item.Group.Select(song => song.Id)))">
                     @if (Model.IsSearchResponse)
                     {
