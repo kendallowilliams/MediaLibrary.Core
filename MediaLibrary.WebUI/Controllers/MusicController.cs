@@ -11,7 +11,6 @@ using System.Threading.Tasks;
 using Newtonsoft.Json;
 using static MediaLibrary.Shared.Enums;
 using MediaLibrary.Shared.Models.Configurations;
-using System.Web;
 using System.IO;
 using IO_File = System.IO.File;
 using Microsoft.AspNetCore.Mvc;
@@ -503,8 +502,10 @@ namespace MediaLibrary.WebUI.Controllers
 
         public async Task<IActionResult> SearchSongs(string query)
         {
+            var songFn = (Track song) => song.Title.Contains(query, StringComparison.OrdinalIgnoreCase) ||
+                song.FileName.Contains(query, StringComparison.OrdinalIgnoreCase);
             IEnumerable<IGrouping<string, Track>> songGroups = await musicService.GetSongGroups(SongSort.None);
-            IEnumerable<Track> songs = songGroups.SelectMany(group => group).AsParallel().Where(song => song.Title.Contains(query, StringComparison.OrdinalIgnoreCase));
+            IEnumerable<Track> songs = songGroups.SelectMany(group => group).AsParallel().Where(song => songFn(song));
 
             musicViewModel.IsSearchResponse = true;
             musicViewModel.SongGroups = songs.OrderBy(song => song.Title).GroupBy(song => "Songs");
