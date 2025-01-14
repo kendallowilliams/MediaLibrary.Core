@@ -1,7 +1,6 @@
 ﻿using MediaLibrary.BLL.Services.Interfaces;
 using MediaLibrary.DAL.Models;
 using MediaLibrary.DAL.Services.Interfaces;
-using MediaLibrary.Shared.Services.Interfaces;
 using MediaLibrary.Shared.Models.Configurations;
 using MediaLibrary.WebUI.Services.Interfaces;
 using Microsoft.Extensions.Configuration;
@@ -11,7 +10,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Web;
 using static MediaLibrary.Shared.Enums;
 using MediaLibrary.Shared.Models;
 using Microsoft.Extensions.Caching.Memory;
