@@ -122,7 +122,7 @@ namespace MediaLibrary.BLL.Services
                                                           .ContinueWith(task => task.Result.GetConfigurationObject<MusicConfiguration>() ?? 
                                                                                 new MusicConfiguration());
                 IEnumerable<string> fileTypes = configuration["FileTypes"].Split(",".ToCharArray(), StringSplitOptions.RemoveEmptyEntries),
-                                    configPaths = musicConfiguration.MusicPaths;
+                                    configPaths = musicConfiguration.MusicPaths.Select(p => Path.GetFullPath(p));
                 IEnumerable<TrackPath> savedPaths = await dataService.GetList<TrackPath>(token: token, includes: path => path.Tracks),
                                        validPaths = savedPaths.Where(_path => _path.Tracks.Any()),
                                        emptyPaths = savedPaths.Where(_path => !_path.Tracks.Any()),
