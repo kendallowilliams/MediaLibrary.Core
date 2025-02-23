@@ -231,7 +231,7 @@ namespace MediaLibrary.DAL.Services
             {
                 db.Database.SetCommandTimeout(timeout);
                 entity.ModifyDate = DateTime.Now;
-                db.Entry(entity).State = EntityState.Modified;
+                db.Set<T>().Update(entity);
                 result = await db.SaveChangesAsync(token);
             }
 
