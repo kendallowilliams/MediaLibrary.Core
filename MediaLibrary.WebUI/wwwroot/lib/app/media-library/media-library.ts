@@ -211,7 +211,7 @@ export default class MediaLibrary extends BaseClass {
             this.updateActiveMedia();
             LoadingModal.hideLoading();
         };
-        let showHideMainControls: boolean = true;
+        const showHideMainControls: boolean = mediaPage !== MediaPages.Home && mediaPage !== MediaPages.Player;
 
         LoadingModal.showLoading();
         Collapse.getOrCreateInstance(HtmlControls.Containers().NavBarContainer, { toggle: false }).hide();
@@ -221,13 +221,13 @@ export default class MediaLibrary extends BaseClass {
             .then(() => {
             this.prepareViews();
             this.showMainView(mediaPage);
+            this.player.getPlayerControls().showHideMainControls(showHideMainControls);
 
             switch (mediaPage) {
                 case MediaPages.Music:
                     this.music.loadView(() => success());
                     break;
                 case MediaPages.Player:
-                    showHideMainControls = false;
                     this.player.loadView(() => success());
                     break;
                 case MediaPages.Playlist:
@@ -241,12 +241,9 @@ export default class MediaLibrary extends BaseClass {
                     break;
                 case MediaPages.Home:
                 default:
-                    showHideMainControls = false;
                     this.home.loadView(() => success());
                     break;
             }
-
-            this.player.getPlayerControls().showHideMainControls(showHideMainControls);
         });
     }
 
