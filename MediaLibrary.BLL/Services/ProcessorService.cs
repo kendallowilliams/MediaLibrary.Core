@@ -62,24 +62,16 @@ namespace MediaLibrary.BLL.Services
 
                             var newItems = Enumerable.Empty<PodcastItem>();
 
-                            await logService.Trace($"{message} [{podcast.Title}] started...");
                             await podcastService.RefreshPodcast(podcast);
                             newItems = podcast.PodcastItems.Where(item => item.PublishDate > lastAutoDownloadDate && !item.IsDownloaded);
 
                             if (podcast.DownloadNewEpisodes && newItems.Any())
                             {
-                                await logService.Trace($"Podcast [{podcast.Title}] auto-download started...");
-
                                 foreach (var item in newItems) 
                                 { 
                                     await podcastService.AddPodcastFile(item.Id);
-                                    await logService.Info($"File [{item.Url}] downloaded.");
                                 }
-
-                                await logService.Trace($"Podcast [{podcast.Title}] auto-download completed.");
                             }
-
-                            await logService.Trace($"{message} [{podcast.Title}] completed.");
                         }
                         catch(AggregateException ex)
                         {
