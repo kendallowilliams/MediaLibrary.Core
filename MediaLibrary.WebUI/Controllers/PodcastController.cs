@@ -239,7 +239,6 @@ namespace MediaLibrary.WebUI.Controllers
 
                 if (podcast != null)
                 {
-                    await logService.Info($"Refreshing podcast: {podcast.Title}");
                     await podcastService.RefreshPodcast(podcast);
                 }
                 else
@@ -251,7 +250,6 @@ namespace MediaLibrary.WebUI.Controllers
             {
                 IEnumerable<Podcast> podcasts = await dataService.GetList<Podcast>();
 
-                await logService.Info($"Refreshing podcasts: {string.Join(", ", podcasts.Select(p => p.Title))}");
                 await tplService.ConcurrentAsync(async podcast => await podcastService.RefreshPodcast(podcast), podcasts, 4, default(CancellationToken));
             }
 
@@ -304,7 +302,6 @@ namespace MediaLibrary.WebUI.Controllers
                         contentTypeProvider.TryGetContentType(podcastItem.File, out string contentType);
                         result = File(IO_File.OpenRead(podcastItem.File), contentType, true);
                     }
-                    await logService.Info($"{nameof(PodcastController)} -> {nameof(File)} -> Id: {podcastItem.Id}");
                 }
                 else
                 {

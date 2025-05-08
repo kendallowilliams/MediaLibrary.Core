@@ -191,8 +191,6 @@ namespace MediaLibrary.WebUI.Controllers
             data = $"#EXTM3U{Environment.NewLine}{$"#EXTINF:0,{playlist.Name}{Environment.NewLine}{line}"}";
             content = Encoding.UTF8.GetBytes(data);
 
-            await logService.Info($"{nameof(PlaylistController)} -> {nameof(GetDynamicM3UPlaylist)} -> File: {fileName}");
-
             return File(content, "audio/mpegurl", fileName);
         }
 
@@ -223,8 +221,6 @@ namespace MediaLibrary.WebUI.Controllers
 
             data = $"#EXTM3U{Environment.NewLine}{string.Join(Environment.NewLine, lines)}";
             content = Encoding.UTF8.GetBytes(data);
-
-            await logService.Info($"{nameof(PlaylistController)} -> {nameof(GetM3UPlaylist)} -> File: {fileName}");
 
             return File(content, "audio/mpegurl", fileName);
         }
@@ -263,7 +259,6 @@ namespace MediaLibrary.WebUI.Controllers
             string timestamp = DateTime.Now.ToString("yyyyMMddHHmmss"),
                    fileName = $"{playlist.Name.Trim()}_{timestamp}.zip";
             var data = await compressionService.CreateArchive(files);
-            await logService.Info($"{nameof(PlaylistController)} -> {nameof(GetM3UPlaylistArchive)} -> File: {fileName}");
 
             return File(data, "application/zip", fileName);
         }

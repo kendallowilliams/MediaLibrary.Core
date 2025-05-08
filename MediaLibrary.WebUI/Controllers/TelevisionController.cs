@@ -117,7 +117,6 @@ namespace MediaLibrary.WebUI.Controllers
 
                 contentTypeProvider.TryGetContentType(filePath, out string contentType);
                 result = File(IO_File.OpenRead(filePath), contentType, true);
-                await logService.Info($"{nameof(TelevisionController)} -> {nameof(File)} -> Id: {episode.Id}");
             }
             else
             {
@@ -166,7 +165,6 @@ namespace MediaLibrary.WebUI.Controllers
             try
             {
                 await dataService.Insert(item);
-                await logService.Info($"Action: {nameof(TransactionTypes.AddPlaylistEpisode)}, Playlist: {playlistId}, Track: {itemId}");
             }
             catch (Exception ex)
             {
