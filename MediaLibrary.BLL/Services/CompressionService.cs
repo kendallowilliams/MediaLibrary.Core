@@ -31,5 +31,29 @@ namespace MediaLibrary.BLL.Services
 
             return data;
         }
+
+        public async Task<byte[]> CreateArchive(IDictionary<string, byte[]> files)
+        {
+            byte[] data = null;
+
+            using (var stream = new MemoryStream())
+            {
+                using (var archive = new ZipArchive(stream, ZipArchiveMode.Create))
+                {
+                    foreach (var file in files)
+                    {
+                        var entry = archive.CreateEntry(file.Key);
+                        using (var writer = new StreamWriter(entry.Open()))
+                        {
+                            await writer.BaseStream.WriteAsync(file.Value);
+                        }
+                    }
+                }
+
+                data = stream.ToArray();
+            }
+
+            return data;
+        }
     }
 }
