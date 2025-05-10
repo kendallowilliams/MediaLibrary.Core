@@ -263,6 +263,37 @@ namespace MediaLibrary.WebUI.Controllers
             return File(data, "application/zip", fileName);
         }
 
+        public async Task<IActionResult> GetTelevisionM3UPlaylistsArchive()
+        {
+            var series = await dataService.GetList<Series>(null, default, s => s.Episodes);
+            string timestamp = DateTime.Now.ToString("yyyyMMddHHmmss"),
+                   fileName = $"Series_{timestamp}.zip",
+                   path = $"{Request.Scheme}://{Request.Host}{Request.PathBase}";
+            var entries = series
+                .SelectMany(s => s.Episodes)
+                .GroupBy(e => $"{e.Series.Title}/{e.Season:00}.m3u")
+                .Select(grp => new
+                {
+                    Path = grp.Key,
+                    Lines = GetM3UPlaylistLines(PlaylistTabs.Television, path, null, null, grp)
+                })
+                .Select(grp => new
+                { 
+                    grp.Path,
+                    Data = $"#EXTM3U{Environment.NewLine}{string.Join(Environment.NewLine, grp.Lines)}"
+                })
+                .Select(grp => new
+                {
+                    grp.Path,
+                    Data = Encoding.UTF8.GetBytes(grp.Data)
+                })
+                .ToDictionary(grp => grp.Path, grp => grp.Data);
+
+            var data = await compressionService.CreateArchive(entries);
+
+            return File(data, "application/zip", fileName);
+        }
+
         public async Task<IActionResult> UpdateConfiguration([FromBody] PlaylistConfiguration playlistConfiguration)
         {
             if (ModelState.IsValid)
