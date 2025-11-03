@@ -1,6 +1,6 @@
 ﻿import HtmlControls from "../controls/html-controls";
 import { getAlbumSortEnum, getAppWidthEnum, getArtistSortEnum, getPlaylistSortEnum, getPodcastFilterEnum, getPodcastSortEnum, getSeriesSortEnum, getSongSortEnum } from "../enums/enum-functions";
-import { MediaPages, MediaTypes, MessageBoxConfirmType, PodcastPages } from "../enums/enums";
+import { MediaPages, MediaTypes, MessageBoxConfirmType } from "../enums/enums";
 import IConfigurations from "../interfaces/configurations-interface";
 import ISettingsReloadFunctions from "../interfaces/settings-reload-functions";
 import { fetch_get, fetch_post } from "../utilities/fetch_service";
@@ -292,7 +292,8 @@ export default class SettingsModal {
             if (this.configurations.Player.properties.SelectedMediaType === MediaTypes.Television) /*then*/ this.settingsLoadFunctions.clearNowPlaying();
             fetch_post('Television/Refresh')
                 .then(_ => this.settingsLoadFunctions.loadTelevision())
-                .then(() => LoadingModal.hideLoading());
+                .then(() => LoadingModal.hideLoading())
+                .then(() => MessageBox.showWarning("Warning", "Existing M3U8 files may no longer be valid. You may need to generate new M3U8 files."));
             this.autoCloseModal();
         });
 
