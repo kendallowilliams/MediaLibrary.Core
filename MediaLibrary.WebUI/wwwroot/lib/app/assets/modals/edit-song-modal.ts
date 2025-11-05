@@ -5,6 +5,7 @@ import { MediaPages } from '../enums/enums';
 import { fetch_get, fetch_post } from '../utilities/fetch_service';
 import { Modal } from 'bootstrap';
 import { MlCallback } from '../types/callback.type';
+import { MediaData } from '../models/music.model';
 
 export default class EditSongModal {
     private modal: HTMLElement;
@@ -50,6 +51,19 @@ export default class EditSongModal {
                     .then(_ => this.loadFunc(this.mediaLibraryConfiguration.properties.SelectedMediaPage));
             });
             bsModal.hide();
+        });
+        $('[data-song-action="reload"]').on('click', e => {
+            LoadingModal.showLoading();
+            fetch_get('Music/GetMediaData', { id: $('#txtEditId').val() as string })
+                .then(response => response.json())
+                .then((data: MediaData) => {
+                    $('#txtEditTitle').val(data.Title);
+                    $('#txtEditAlbum').val(data.Album);
+                    $('#txtEditArtist').val(data.Artists);
+                    $('#txtEditGenre').val(data.Genres);
+                    $('#txtEditPosition').val(data.Track);
+                    LoadingModal.hideLoading();
+                });
         });
     }
 

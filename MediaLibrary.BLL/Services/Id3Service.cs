@@ -1,9 +1,5 @@
 ﻿using MediaLibrary.BLL.Services.Interfaces;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Web;
 using TagLib;
 using MediaLibrary.DAL.Models;
 
@@ -17,7 +13,7 @@ namespace MediaLibrary.BLL.Services
 
         public MediaData ProcessFile(string path)
         {
-            MediaData mediaData = default(MediaData);
+            MediaData mediaData = default;
 
             try
             {

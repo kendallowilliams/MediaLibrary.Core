@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-
-namespace MediaLibrary.Shared.Models
+﻿namespace MediaLibrary.Shared.Models
 {
     public class Song
     {
