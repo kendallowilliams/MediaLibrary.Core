@@ -21,6 +21,7 @@ using Microsoft.AspNetCore.Authorization;
 using MediaLibrary.Shared.Services.Interfaces;
 using Microsoft.AspNetCore.StaticFiles;
 using MediaLibrary.Shared.Models;
+using MediaLibrary.BLL.Services;
 
 namespace MediaLibrary.WebUI.Controllers
 {
@@ -35,10 +36,12 @@ namespace MediaLibrary.WebUI.Controllers
         private readonly IFileService fileService;
         private readonly ITransactionService transactionService;
         private readonly ILogService logService;
+        private readonly IId3Service id3Service;
 
         public MusicController(IDataService dataService, IBackgroundTaskQueueService backgroundTaskQueue, IConfiguration configuration,
                                IMusicUIService musicService, MusicViewModel musicViewModel, ITrackService trackService,
-                               IFileService fileService, ITransactionService transactionService, ILogService logService)
+                               IFileService fileService, ITransactionService transactionService, ILogService logService,
+                               IId3Service id3Service)
         {
             this.dataService = dataService;
             this.musicService = musicService;
@@ -49,6 +52,7 @@ namespace MediaLibrary.WebUI.Controllers
             this.configuration = configuration;
             this.backgroundTaskQueue = backgroundTaskQueue;
             this.logService = logService;
+            this.id3Service = id3Service;
         }
 
         public async Task<IActionResult> Index()
@@ -623,6 +627,17 @@ namespace MediaLibrary.WebUI.Controllers
                                              .Any(_path => path.StartsWith(_path, StringComparison.OrdinalIgnoreCase)))
                         .OrderBy(path => path)
                         .Distinct();
+        }
+
+        public async Task<IActionResult> GetMediaData(int id)
+        {
+            Track track = await dataService.Get<Track>(item => item.Id == id, default, item => item.Path);
+            string path = Path.Combine(track.Path.Location, track.FileName);
+
+            if (track == null) /*then*/ throw new KeyNotFoundException();
+            if (!IO_File.Exists(path)) /*then*/ throw new FileNotFoundException(path);
+
+            return Json(id3Service.ProcessFile(path), new JsonSerializerOptions { PropertyNamingPolicy = null });
         }
     }
 }
