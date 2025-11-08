@@ -1,15 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace MediaLibrary.DAL.Models
+﻿namespace MediaLibrary.DAL.Models
 {
     public class MediaData
     {
         public MediaData() { }
-        
+
         public string FileName { get; set; }
         public string Artists { get; set; }
         public string Copyright { get; set; }

@@ -8,7 +8,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Web;
 using static MediaLibrary.Shared.Enums;
 
 namespace MediaLibrary.WebUI.Services

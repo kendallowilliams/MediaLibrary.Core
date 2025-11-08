@@ -1,7 +1,7 @@
 ﻿using MediaLibrary.BLL.Services.Interfaces;
+using MediaLibrary.DAL.Models;
 using System;
 using TagLib;
-using MediaLibrary.DAL.Models;
 
 namespace MediaLibrary.BLL.Services
 {

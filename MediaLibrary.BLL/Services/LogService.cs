@@ -1,12 +1,9 @@
 ﻿using MediaLibrary.BLL.Services.Interfaces;
 using MediaLibrary.DAL.Models;
-using MediaLibrary.DAL.Services.Interfaces;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using static MediaLibrary.Shared.Enums;
 using Diagnostics = System.Diagnostics;
@@ -30,8 +27,8 @@ namespace MediaLibrary.BLL.Services
             await transactionService.UpdateTransactionCompleted(transaction, JsonConvert.SerializeObject(data));
         }
 
-        public async Task Log<TOld, TNew>(TOld oldEntity, TNew newEntity, string message) 
-            where TOld : class 
+        public async Task Log<TOld, TNew>(TOld oldEntity, TNew newEntity, string message)
+            where TOld : class
             where TNew : class
         {
             if (oldEntity != newEntity)

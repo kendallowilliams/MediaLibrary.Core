@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace MediaLibrary.Shared
+﻿namespace MediaLibrary.Shared
 {
     public class Enums
     {
@@ -82,7 +78,7 @@ namespace MediaLibrary.Shared
 
         public enum RepeatTypes { None = 0, RepeatOne, RepeatAll }
 
-        public enum AppWidth { Normal = 0, Wide}
+        public enum AppWidth { Normal = 0, Wide }
 
         public enum SettingsTabs { General = 0, Music, Podcast, Television, Playlist, Player }
 

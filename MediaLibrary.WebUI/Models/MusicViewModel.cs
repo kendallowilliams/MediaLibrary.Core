@@ -1,14 +1,9 @@
-﻿using MediaLibrary.Shared.Models.Interfaces;
-using MediaLibrary.DAL.Models;
+﻿using MediaLibrary.DAL.Models;
 using MediaLibrary.Shared.Models.Configurations;
 using MediaLibrary.WebUI.Repositories;
-using MediaLibrary.WebUI.Services;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
-using static MediaLibrary.Shared.Enums;
 
 namespace MediaLibrary.WebUI.Models
 {

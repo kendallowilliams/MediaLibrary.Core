@@ -1,16 +1,14 @@
 ﻿using MediaLibrary.DAL.Models;
 using MediaLibrary.DAL.Services.Interfaces;
+using MediaLibrary.Shared.Models.Configurations;
+using MediaLibrary.WebUI.Repositories;
 using MediaLibrary.WebUI.Services.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
-using System.Web;
-using static MediaLibrary.Shared.Enums;
-using MediaLibrary.WebUI.Models;
-using MediaLibrary.WebUI.Repositories;
-using MediaLibrary.Shared.Models.Configurations;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
+using static MediaLibrary.Shared.Enums;
 
 namespace MediaLibrary.WebUI.Services
 {
@@ -32,8 +30,8 @@ namespace MediaLibrary.WebUI.Services
             var playlistTypeSortMappings = PlaylistRepository.GetPlaylistTypePlaylistSortMappings();
 
             playlists = playlists.Concat(await GetSystemPlaylists(true));
-           
-            foreach(var group in playlists.GroupBy(playlist => playlist.Type))
+
+            foreach (var group in playlists.GroupBy(playlist => playlist.Type))
             {
                 var mapping = playlistTypeSortMappings.FirstOrDefault(item => item.Key == (PlaylistTabs)group.Key);
 

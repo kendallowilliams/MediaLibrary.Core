@@ -1,18 +1,16 @@
-﻿using MediaLibrary.Shared.Models;
-using MediaLibrary.Shared.Models.Interfaces;
-using MediaLibrary.DAL.DbContexts;
-using MediaLibrary.DAL.Models.Interfaces;
+﻿using MediaLibrary.DAL.Models.Interfaces;
+using MediaLibrary.Shared.Models;
 using MediaLibrary.Shared.Models.Configurations;
+using MediaLibrary.Shared.Models.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using static MediaLibrary.Shared.Enums;
 
 namespace MediaLibrary.WebUI.Repositories
 {
-    using SYSTEM_PLAYLIST = KeyValuePair<string, Func<IEnumerable<IPlayableItem>, IEnumerable<IPlayableItem>>>;
     using PLAYLIST_TYPE_SORT_MAPPING = KeyValuePair<PlaylistTabs, Func<PlaylistConfiguration, PlaylistSort>>;
+    using SYSTEM_PLAYLIST = KeyValuePair<string, Func<IEnumerable<IPlayableItem>, IEnumerable<IPlayableItem>>>;
 
     public static class PlaylistRepository
     {
@@ -36,7 +34,7 @@ namespace MediaLibrary.WebUI.Repositories
                                                                                   .Take(count));
         }
 
-        public static IEnumerable<PLAYLIST_TYPE_SORT_MAPPING>GetPlaylistTypePlaylistSortMappings()
+        public static IEnumerable<PLAYLIST_TYPE_SORT_MAPPING> GetPlaylistTypePlaylistSortMappings()
         {
             yield return new PLAYLIST_TYPE_SORT_MAPPING(PlaylistTabs.Music, configuration => configuration.SelectedMusicPlaylistSort);
             yield return new PLAYLIST_TYPE_SORT_MAPPING(PlaylistTabs.Podcast, configuration => configuration.SelectedPodcastPlaylistSort);

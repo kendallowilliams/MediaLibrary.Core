@@ -1,16 +1,16 @@
-﻿using MediaLibrary.DAL.Services.Interfaces;
+﻿using MediaLibrary.DAL.DbContexts;
+using MediaLibrary.DAL.Models.Interfaces;
+using MediaLibrary.DAL.Services.Interfaces;
+using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Data;
-using System.Threading.Tasks;
+using System.Linq;
 using System.Linq.Expressions;
-using MediaLibrary.DAL.Models.Interfaces;
 using System.Threading;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Data.SqlClient;
-using MediaLibrary.DAL.DbContexts;
-using Microsoft.Extensions.Configuration;
+using System.Threading.Tasks;
 
 namespace MediaLibrary.DAL.Services
 {
@@ -41,7 +41,7 @@ namespace MediaLibrary.DAL.Services
             return builder.InitialCatalog;
         }
 
-        public async Task<IEnumerable<T>> GetList<T>(Expression<Func<T, bool>> expression = null, 
+        public async Task<IEnumerable<T>> GetList<T>(Expression<Func<T, bool>> expression = null,
                                                      CancellationToken token = default(CancellationToken),
                                                      params Expression<Func<T, object>>[] includes) where T : class, IDataModel
         {
@@ -64,7 +64,7 @@ namespace MediaLibrary.DAL.Services
             return results;
         }
 
-        public async Task<T> Get<T>(Expression<Func<T, bool>> expression = null, 
+        public async Task<T> Get<T>(Expression<Func<T, bool>> expression = null,
                                     CancellationToken token = default(CancellationToken),
                                     params Expression<Func<T, object>>[] includes) where T : class, IDataModel
         {
@@ -233,7 +233,7 @@ namespace MediaLibrary.DAL.Services
             return result;
         }
 
-        public async Task<int> Count<T>(Expression<Func<T,bool>> expression = null, CancellationToken token = default(CancellationToken)) where T : class, IDataModel
+        public async Task<int> Count<T>(Expression<Func<T, bool>> expression = null, CancellationToken token = default(CancellationToken)) where T : class, IDataModel
         {
             int result = default(int);
 
@@ -245,7 +245,7 @@ namespace MediaLibrary.DAL.Services
 
             return result;
         }
-        
+
         public async Task<bool> Exists<T>(Expression<Func<T, bool>> expression = null, CancellationToken token = default(CancellationToken)) where T : class, IDataModel
         {
             bool result = default(bool);
@@ -273,8 +273,8 @@ namespace MediaLibrary.DAL.Services
         }
 
         public async Task<IEnumerable<TReturn>> SelectWhere<T, TReturn>(Expression<Func<T, TReturn>> selector,
-            Expression<Func<T, bool>> predicate = default, 
-            CancellationToken token = default) 
+            Expression<Func<T, bool>> predicate = default,
+            CancellationToken token = default)
             where T : class, IDataModel
         {
             var result = default(IEnumerable<TReturn>);

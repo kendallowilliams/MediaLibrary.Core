@@ -5,9 +5,9 @@ using MediaLibrary.DAL.Services;
 using MediaLibrary.DAL.Services.Interfaces;
 using MediaLibrary.Shared.Services;
 using MediaLibrary.Shared.Services.Interfaces;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.EntityFrameworkCore;
 using System.Net.Http;
 using System.Net.Http.Headers;
 

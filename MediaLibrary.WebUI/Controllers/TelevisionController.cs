@@ -1,25 +1,21 @@
-﻿using MediaLibrary.Shared.Models;
-using MediaLibrary.BLL.Services.Interfaces;
+﻿using MediaLibrary.BLL.Services.Interfaces;
 using MediaLibrary.DAL.Models;
 using MediaLibrary.DAL.Services.Interfaces;
-using MediaLibrary.Shared.Services.Interfaces;
-using MediaLibrary.WebUI.Models;
 using MediaLibrary.Shared.Models.Configurations;
+using MediaLibrary.WebUI.Models;
 using MediaLibrary.WebUI.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.StaticFiles;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using IO_File = System.IO.File;
 using System.Linq;
 using System.Net;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
-using System.Web;
 using static MediaLibrary.Shared.Enums;
+using IO_File = System.IO.File;
 
 namespace MediaLibrary.WebUI.Controllers
 {
@@ -148,7 +144,7 @@ namespace MediaLibrary.WebUI.Controllers
 
             return File(content, "audio/mpegurl", $"{series.Title.Trim()}_S{season}_{timestamp}.m3u");
         }
-        
+
         public async Task<IActionResult> TelevisionConfiguration()
         {
             Configuration configuration = await dataService.Get<Configuration>(item => item.Type == ConfigurationTypes.Television);
