@@ -1,27 +1,26 @@
 ﻿using MediaLibrary.BLL.Services.Interfaces;
 using MediaLibrary.DAL.Models;
 using MediaLibrary.DAL.Services.Interfaces;
+using MediaLibrary.Shared.Models;
+using MediaLibrary.Shared.Models.Configurations;
+using MediaLibrary.Shared.Services.Interfaces;
 using MediaLibrary.WebUI.Models;
 using MediaLibrary.WebUI.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.StaticFiles;
+using Microsoft.Extensions.Configuration;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net;
-using System.Threading.Tasks;
-using Newtonsoft.Json;
-using static MediaLibrary.Shared.Enums;
-using MediaLibrary.Shared.Models.Configurations;
-using System.IO;
-using IO_File = System.IO.File;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Http;
 using System.Text.Json;
-using Microsoft.Extensions.Configuration;
-using Microsoft.AspNetCore.Authorization;
-using MediaLibrary.Shared.Services.Interfaces;
-using Microsoft.AspNetCore.StaticFiles;
-using MediaLibrary.Shared.Models;
-using MediaLibrary.BLL.Services;
+using System.Threading.Tasks;
+using static MediaLibrary.Shared.Enums;
+using IO_File = System.IO.File;
 
 namespace MediaLibrary.WebUI.Controllers
 {
@@ -85,7 +84,7 @@ namespace MediaLibrary.WebUI.Controllers
                      songsTask = musicService.Songs().ContinueWith(task => musicViewModel.Songs = task.Result),
                      albumsTask = musicService.Albums().ContinueWith(task => musicViewModel.Albums = task.Result),
                      artistsTask = musicService.Artists().ContinueWith(task => musicViewModel.Artists = task.Result);
-                
+
                 await Task.WhenAll(songGroupTask, albumGroupTask, artistGroupTask, songsTask, albumsTask, artistsTask);
                 result = PartialView(musicViewModel);
             }
@@ -277,7 +276,7 @@ namespace MediaLibrary.WebUI.Controllers
                     await transactionService.UpdateTransactionErrored(transaction, new Exception(message));
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 await transactionService.UpdateTransactionErrored(transaction, ex);
                 result = new StatusCodeResult((int)HttpStatusCode.InternalServerError);
@@ -324,7 +323,7 @@ namespace MediaLibrary.WebUI.Controllers
                     await dataService.Update(configuration);
                 }
             }
-            
+
             return NoContent();
         }
 
@@ -352,7 +351,7 @@ namespace MediaLibrary.WebUI.Controllers
                 Album album = await dataService.Get<Album>(item => item.Title == song.Album.Trim());
                 Artist artist = await dataService.Get<Artist>(item => item.Name == song.Artist.Trim());
                 Genre genre = await dataService.Get<Genre>(item => item.Name == song.Genre.Trim());
-                
+
                 if (track != null)
                 {
                     if (artist == null)
@@ -372,7 +371,7 @@ namespace MediaLibrary.WebUI.Controllers
                         album = new Album(song.Album.Trim()) { ArtistId = artist.Id, GenreId = genre.Id };
                         await dataService.Insert(album);
                     }
-                    
+
                     track.Title = song.Title;
                     track.AlbumId = album.Id;
                     track.ArtistId = artist.Id;
@@ -551,7 +550,7 @@ namespace MediaLibrary.WebUI.Controllers
         {
             if (fileService.CanUseDirectory(path))
             {
-                var directoryInfo =  new DirectoryInfo(path);
+                var directoryInfo = new DirectoryInfo(path);
                 var request = new ScanDirectoryRequest(directoryInfo.FullName);
                 bool pathExists = await dataService.Exists<TrackPath>(item => item.Location == directoryInfo.FullName);
 
@@ -592,7 +591,7 @@ namespace MediaLibrary.WebUI.Controllers
             else if (dirInfos.Any(i => i.FullName.Equals(dirInfo.FullName, StringComparison.OrdinalIgnoreCase)))
             {
                 result = Ok("Path already added.");
-            } 
+            }
             else if (dirInfos.Any(i => dirInfo.FullName.StartsWith(i.FullName, StringComparison.OrdinalIgnoreCase)))
             {
                 string parentPath = dirInfos.FirstOrDefault(i => dirInfo.FullName.StartsWith(i.FullName, StringComparison.OrdinalIgnoreCase))?.FullName;
@@ -637,7 +636,17 @@ namespace MediaLibrary.WebUI.Controllers
             if (track == null) /*then*/ throw new KeyNotFoundException();
             if (!IO_File.Exists(path)) /*then*/ throw new FileNotFoundException(path);
 
-            return Json(id3Service.ProcessFile(path), new JsonSerializerOptions { PropertyNamingPolicy = null });
+            return Json(id3Service.ReadFromFile(path), new JsonSerializerOptions { PropertyNamingPolicy = null });
+        }
+
+        public async Task UpdateTag(Song song)
+        {
+            Track track = await dataService.Get<Track>(item => item.Id == song.Id, default, item => item.Path);
+            string path = Path.Combine(track.Path.Location, track.FileName);
+
+            if (track == null) /*then*/ throw new KeyNotFoundException();
+            if (!IO_File.Exists(path)) /*then*/ throw new FileNotFoundException(path);
+            this.id3Service.WriteToFile(song, path);
         }
     }
 }

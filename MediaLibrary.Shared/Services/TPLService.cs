@@ -2,7 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Threading.Tasks.Dataflow;
@@ -16,7 +15,7 @@ namespace MediaLibrary.Shared.Services
 
         }
 
-        public async Task<IEnumerable<TOutput>> ConcurrentAsync<TInput, TOutput>(Func<TInput, Task<TOutput>> action, IEnumerable<TInput> inputs, int concurrency, 
+        public async Task<IEnumerable<TOutput>> ConcurrentAsync<TInput, TOutput>(Func<TInput, Task<TOutput>> action, IEnumerable<TInput> inputs, int concurrency,
                                                                                  CancellationToken token = default(CancellationToken))
         {
             IEnumerable<TOutput> output = Enumerable.Empty<TOutput>();

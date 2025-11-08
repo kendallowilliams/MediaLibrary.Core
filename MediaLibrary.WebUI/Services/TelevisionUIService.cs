@@ -1,14 +1,11 @@
 ﻿using MediaLibrary.DAL.Models;
 using MediaLibrary.DAL.Services.Interfaces;
 using MediaLibrary.WebUI.Services.Interfaces;
-using System;
+using Microsoft.Extensions.Caching.Memory;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Web;
 using static MediaLibrary.Shared.Enums;
-using MediaLibrary.WebUI.Models;
-using Microsoft.Extensions.Caching.Memory;
 
 namespace MediaLibrary.WebUI.Services
 {

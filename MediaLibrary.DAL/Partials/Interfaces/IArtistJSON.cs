@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using MediaLibrary.DAL.Models;
+﻿using MediaLibrary.DAL.Models;
 using Newtonsoft.Json;
+using System.Collections.Generic;
 
 namespace MediaLibrary.DAL.Partials.Interfaces
 {

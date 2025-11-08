@@ -87,7 +87,7 @@ namespace MediaLibrary.WebUI.Controllers
 
         public async Task AddPodcast(string rssFeed)
         {
-            Podcast podcast = await dataService.Get<Podcast>(item => item.Url.Trim() == rssFeed.Trim()) ?? 
+            Podcast podcast = await dataService.Get<Podcast>(item => item.Url.Trim() == rssFeed.Trim()) ??
                               await podcastService.AddPodcast(rssFeed);
             Configuration configuration = await dataService.Get<Configuration>(item => item.Type == ConfigurationTypes.Podcast);
 
@@ -179,7 +179,7 @@ namespace MediaLibrary.WebUI.Controllers
                     await logService.Warn($"Podcast episode ({id}) download in progress.");
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 await logService.Error(ex);
             }
@@ -309,7 +309,7 @@ namespace MediaLibrary.WebUI.Controllers
                     await logService.Warn($"{nameof(PodcastController)} -> {nameof(File)} -> Id: {id} -> Not Found");
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 await logService.Error(ex);
                 result = new StatusCodeResult((int)HttpStatusCode.InternalServerError);

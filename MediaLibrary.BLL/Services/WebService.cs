@@ -1,12 +1,9 @@
-﻿using System;
-using System.Threading.Tasks;
-using MediaLibrary.BLL.Services.Interfaces;
-using System.Net.Http;
-using System.Net.Http.Headers;
-using Newtonsoft.Json;
-using System.Text;
-using System.Threading;
+﻿using MediaLibrary.BLL.Services.Interfaces;
+using System;
 using System.IO;
+using System.Net.Http;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace MediaLibrary.BLL.Services
 {

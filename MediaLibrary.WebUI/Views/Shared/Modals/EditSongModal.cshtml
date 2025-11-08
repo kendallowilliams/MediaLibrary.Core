@@ -29,8 +29,14 @@
                 @Html.Hidden(nameof(Song.Id), string.Empty, new { id = $"txtEdit{nameof(Song.Id)}" })
             </div>
             <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary" data-song-action="import" data-bs-tooltip="tooltip" data-bs-title="Import">
+                    <i class="fa fa-file-import"></i>
+                </button>
+                <button type="button" class="btn btn-outline-secondary" data-song-action="export" data-bs-tooltip="tooltip" data-bs-title="Export">
+                    <i class="fa fa-file-export"></i>
+                </button>
+                <div class="flex-grow-1"></div>
                 <button type="button" class="btn btn-outline-primary" data-song-action="save" data-bs-tooltip="tooltip" data-bs-title="Save song">Save</button>
-                <button type="button" class="btn btn-outline-secondary" data-song-action="reload" data-bs-tooltip="tooltip" data-bs-title="Reload song">Reload</button>
                 <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal" data-bs-tooltip="tooltip" data-bs-title="Cancel">Cancel</button>
             </div>
         </div>

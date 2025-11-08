@@ -3,12 +3,9 @@ using MediaLibrary.DAL.Models;
 using MediaLibrary.DAL.Services.Interfaces;
 using MediaLibrary.Shared.Models.Configurations;
 using MediaLibrary.Shared.Models.Interfaces;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using static MediaLibrary.Shared.Enums;
 
@@ -117,7 +114,7 @@ namespace MediaLibrary.BLL.Services
         {
             IEnumerable<int> ids = Enumerable.Empty<int>();
             IEnumerable<Track> songs = Enumerable.Empty<Track>();
-            IEnumerable<IListItem<int, int>> items = Enumerable.Empty<IListItem<int, int>>(); 
+            IEnumerable<IListItem<int, int>> items = Enumerable.Empty<IListItem<int, int>>();
             Configuration configuration = await dataService.Get<Configuration>(item => item.Type == ConfigurationTypes.Player);
 
             if (configuration != null)

@@ -1,20 +1,20 @@
 ﻿using MediaLibrary.BLL.Services.Interfaces;
 using MediaLibrary.DAL.Models;
 using MediaLibrary.DAL.Services.Interfaces;
-using MediaLibrary.WebUI.Models;
 using MediaLibrary.Shared.Models.Configurations;
+using MediaLibrary.WebUI.Models;
 using MediaLibrary.WebUI.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 using static MediaLibrary.Shared.Enums;
-using System.IO;
 
 namespace MediaLibrary.WebUI.Controllers
 {
@@ -93,7 +93,7 @@ namespace MediaLibrary.WebUI.Controllers
         public async Task RemovePlaylist(int id)
         {
             Configuration configuration = await dataService.Get<Configuration>(item => item.Type == ConfigurationTypes.Playlist);
-            
+
             await dataService.Delete<Playlist>(id);
 
             if (configuration != null)
@@ -158,7 +158,7 @@ namespace MediaLibrary.WebUI.Controllers
 
         public async Task RemovePlaylistItem(int id, PlaylistTabs playlistType)
         {
-            switch(playlistType)
+            switch (playlistType)
             {
                 case PlaylistTabs.Music:
                     await dataService.Delete<PlaylistTrack>(id);
@@ -199,7 +199,7 @@ namespace MediaLibrary.WebUI.Controllers
         {
             Random rand = new Random(DateTime.Now.Millisecond);
             IEnumerable<Playlist> systemPlaylists = id < 0 ? await playlistService.GetSystemPlaylists(true, true) : Enumerable.Empty<Playlist>();
-            Playlist playlist = id > 0 ? await dataService.GetAlt<Playlist>(list => list.Id == id, default, "PlaylistTracks.Track", 
+            Playlist playlist = id > 0 ? await dataService.GetAlt<Playlist>(list => list.Id == id, default, "PlaylistTracks.Track",
                                                                                                             "PlaylistPodcastItems.PodcastItem",
                                                                                                             "PlaylistEpisodes.Episode") :
                                          systemPlaylists.FirstOrDefault(item => item.Id == id);
@@ -253,8 +253,8 @@ namespace MediaLibrary.WebUI.Controllers
             var playlistTracks = playlist.PlaylistTracks.OrderBy(item => item.CreateDate);
             var tracks = playlistTracks.Select(list => list.Track);
             var paths = id <= 0 ? await dataService.GetList<TrackPath>() : Enumerable.Empty<TrackPath>();
-            var files = id > 0 ? 
-                tracks.Select(track => Path.Combine(track.Path.Location, track.FileName)) : 
+            var files = id > 0 ?
+                tracks.Select(track => Path.Combine(track.Path.Location, track.FileName)) :
                 tracks.Join(paths, t => t.PathId, p => p.Id, (track, path) => Path.Combine(path.Location, track.FileName));
             string timestamp = DateTime.Now.ToString("yyyyMMddHHmmss"),
                    fileName = $"{playlist.Name.Trim()}_{timestamp}.zip";
@@ -278,7 +278,7 @@ namespace MediaLibrary.WebUI.Controllers
                     Lines = GetM3UPlaylistLines(PlaylistTabs.Television, path, null, null, grp)
                 })
                 .Select(grp => new
-                { 
+                {
                     grp.Path,
                     Data = $"#EXTM3U{Environment.NewLine}{string.Join(Environment.NewLine, grp.Lines)}"
                 })

@@ -1,14 +1,10 @@
-﻿using MediaLibrary.DAL.Models;
-using MediaLibrary.DAL.Models.Interfaces;
+﻿using MediaLibrary.DAL.Models.Interfaces;
+using Microsoft.Data.SqlClient;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Data;
 using System.Linq.Expressions;
 using System.Threading;
-using Microsoft.Data.SqlClient;
+using System.Threading.Tasks;
 
 namespace MediaLibrary.DAL.Services.Interfaces
 {
@@ -38,7 +34,7 @@ namespace MediaLibrary.DAL.Services.Interfaces
 
         Task<int> Update<T>(T entity, CancellationToken token = default(CancellationToken)) where T : class, IDataModel;
 
-        Task<int> Count<T>(Expression<Func<T,bool>> expression = null, CancellationToken token = default(CancellationToken)) where T : class, IDataModel;
+        Task<int> Count<T>(Expression<Func<T, bool>> expression = null, CancellationToken token = default(CancellationToken)) where T : class, IDataModel;
 
         Task<bool> Exists<T>(Expression<Func<T, bool>> expression = null, CancellationToken token = default(CancellationToken)) where T : class, IDataModel;
 

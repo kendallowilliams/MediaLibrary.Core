@@ -1,15 +1,11 @@
 ﻿using MediaLibrary.DAL.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using TagLib;
+using MediaLibrary.Shared.Models;
 
 namespace MediaLibrary.BLL.Services.Interfaces
 {
     public interface IId3Service
     {
-        MediaData ProcessFile(string path);
+        MediaData ReadFromFile(string path);
+        void WriteToFile(Song song, string path);
     }
 }

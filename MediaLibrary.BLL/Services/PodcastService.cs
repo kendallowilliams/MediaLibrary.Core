@@ -1,18 +1,16 @@
-﻿using System;
+﻿using MediaLibrary.BLL.Services.Interfaces;
+using MediaLibrary.DAL.Models;
+using MediaLibrary.DAL.Services.Interfaces;
+using Microsoft.Extensions.Caching.Memory;
+using Microsoft.SyndicationFeed;
+using Microsoft.SyndicationFeed.Rss;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Web;
 using System.Xml;
-using Microsoft.SyndicationFeed;
-using Microsoft.SyndicationFeed.Rss;
-using MediaLibrary.BLL.Services.Interfaces;
-using MediaLibrary.DAL.Services.Interfaces;
-using System.Linq.Expressions;
-using MediaLibrary.DAL.Models;
-using Microsoft.Extensions.Caching.Memory;
 
 namespace MediaLibrary.BLL.Services
 {
@@ -70,7 +68,7 @@ namespace MediaLibrary.BLL.Services
 
                 while (await feedReader.Read())
                 {
-                    switch(feedReader.ElementType)
+                    switch (feedReader.ElementType)
                     {
                         case SyndicationElementType.Category:
                             ISyndicationCategory category = await feedReader.ReadCategory();
@@ -100,7 +98,7 @@ namespace MediaLibrary.BLL.Services
                             break;
                     }
                 }
-                
+
                 pubDate = items.Max(item => item.Published.DateTime);
 
                 if (isUpdate)
@@ -121,19 +119,19 @@ namespace MediaLibrary.BLL.Services
                 }
 
                 podcastItems = items.Select(item => new
-                                        {
-                                            item.Title,
-                                            item.Description,
-                                            Enclosure = item.Links.FirstOrDefault(linkItem => linkItem.RelationshipType == "enclosure"),
-                                            PublishDate = item.Published.DateTime
+                {
+                    item.Title,
+                    item.Description,
+                    Enclosure = item.Links.FirstOrDefault(linkItem => linkItem.RelationshipType == "enclosure"),
+                    PublishDate = item.Published.DateTime
 
-                                        })
+                })
                                     .Where(item => item.Enclosure != null)
                                     .Select(data => new PodcastItem(data.Title, data.Description, data.Enclosure.Uri.OriginalString,
                                                                     data.Enclosure.Length, data.PublishDate, podcast.Id))
                                     .Where(item => item.PublishDate > lastUpdateDate)
                                     .ToList();
-                
+
                 await dataService.Insert(podcastItems);
                 podcast.PodcastItems = podcast.PodcastItems.Concat(podcastItems).ToList();
                 await dataService.Update(podcast);
@@ -191,7 +189,7 @@ namespace MediaLibrary.BLL.Services
                     await logService.Warn($"No podcast item found with id: {podcastItemId}.");
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 await logService.Error(ex);
             }
@@ -203,7 +201,7 @@ namespace MediaLibrary.BLL.Services
         {
             IEnumerable<PodcastItem> podcastItems = await dataService.GetList<PodcastItem>(item => item.File != null && item.File != "");
 
-            foreach(var item in podcastItems.Where(item => !File.Exists(item.File)))
+            foreach (var item in podcastItems.Where(item => !File.Exists(item.File)))
             {
                 item.File = null;
                 await dataService.Update(item);

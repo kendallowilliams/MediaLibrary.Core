@@ -1,6 +1,4 @@
-﻿using MediaLibrary.Shared.Services.Interfaces;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.IO;
 using System.Security.Cryptography;
 using System.Text;

@@ -11,14 +11,9 @@ using MediaLibrary.WebUI.Services.Interfaces;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace MediaLibrary.WebUI
 {
@@ -52,7 +47,8 @@ namespace MediaLibrary.WebUI
             services.AddScoped<IPodcastUIService, PodcastUIService>();
             services.AddScoped<ITelevisionUIService, TelevisionUIService>();
             services.AddSingleton<IBackgroundTaskQueueService, BackgroundTaskQueueService>();
-            services.AddAuth0WebAppAuthentication(options => {
+            services.AddAuth0WebAppAuthentication(options =>
+            {
                 options.Domain = Configuration["Auth0:Domain"];
                 options.ClientId = Configuration["Auth0:ClientId"];
             });

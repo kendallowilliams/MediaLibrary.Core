@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace MediaLibrary.Shared.Models.Interfaces
+﻿namespace MediaLibrary.Shared.Models.Interfaces
 {
     public interface ITrackPath
     {

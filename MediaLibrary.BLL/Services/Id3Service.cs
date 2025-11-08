@@ -1,7 +1,8 @@
 ﻿using MediaLibrary.BLL.Services.Interfaces;
+using MediaLibrary.DAL.Models;
+using MediaLibrary.Shared.Models;
 using System;
 using TagLib;
-using MediaLibrary.DAL.Models;
 
 namespace MediaLibrary.BLL.Services
 {
@@ -11,7 +12,7 @@ namespace MediaLibrary.BLL.Services
         {
         }
 
-        public MediaData ProcessFile(string path)
+        public MediaData ReadFromFile(string path)
         {
             MediaData mediaData = default;
 
@@ -49,6 +50,28 @@ namespace MediaLibrary.BLL.Services
             return mediaData;
         }
 
+        public void WriteToFile(Song song, string path)
+        {
+            try
+            {
+                File file = File.Create(path);
+                Tag tag = file.Tag;
 
+                tag.Album = song.Album?.Trim();
+                tag.Performers = [song.Artist];
+                tag.Title = song.Title;
+                tag.Track = song.Position.HasValue ? (uint)song.Position.Value : 0;
+                tag.Genres = [song.Genre];
+
+                file.Save();
+            }
+            catch (Exception ex)
+            {
+                if (ex is UnsupportedFormatException)
+                {
+
+                }
+            }
+        }
     }
 }

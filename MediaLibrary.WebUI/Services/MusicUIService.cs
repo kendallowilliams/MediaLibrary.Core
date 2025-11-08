@@ -1,8 +1,10 @@
 ﻿using MediaLibrary.BLL.Services.Interfaces;
 using MediaLibrary.DAL.Models;
 using MediaLibrary.DAL.Services.Interfaces;
+using MediaLibrary.Shared.Models;
 using MediaLibrary.Shared.Models.Configurations;
 using MediaLibrary.WebUI.Services.Interfaces;
+using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using System;
@@ -11,8 +13,6 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using static MediaLibrary.Shared.Enums;
-using MediaLibrary.Shared.Models;
-using Microsoft.Extensions.Caching.Memory;
 
 namespace MediaLibrary.WebUI.Services
 {
@@ -53,7 +53,7 @@ namespace MediaLibrary.WebUI.Services
                 if (songs.Any()) /*then*/ memoryCache.Set(nameof(CacheKeys.Tracks), songs);
             }
 
-            switch(sort)
+            switch (sort)
             {
                 case SongSort.Album:
                     groups = songs.GroupBy(song => song.Album.Title).OrderBy(group => group.Key);

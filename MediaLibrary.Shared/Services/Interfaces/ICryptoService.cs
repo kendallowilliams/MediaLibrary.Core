@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace MediaLibrary.Shared.Services.Interfaces
+﻿namespace MediaLibrary.Shared.Services.Interfaces
 {
     public interface ICryptoService
     {

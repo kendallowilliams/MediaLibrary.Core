@@ -1,10 +1,7 @@
 ﻿using MediaLibrary.DAL.Models;
-using MediaLibrary.Shared.Models.Configurations;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
-using System.Web;
 using static MediaLibrary.Shared.Enums;
 
 namespace MediaLibrary.WebUI.Models
@@ -24,13 +21,19 @@ namespace MediaLibrary.WebUI.Models
 
         public TransactionTypes[] SelectedTransactionTypes { get; set; }
 
-        public IEnumerable<string> TransactionTypes { get => Enum.GetNames(typeof(TransactionTypes))
-                                                                 .OrderBy(name => name); }
+        public IEnumerable<string> TransactionTypes
+        {
+            get => Enum.GetNames(typeof(TransactionTypes))
+                                                                 .OrderBy(name => name);
+        }
 
         public TransactionStatus[] SelectedTransactionStatuses { get; set; }
 
-        public IEnumerable<string> TransactionStatuses { get => Enum.GetNames(typeof(TransactionStatus))
-                                                                    .OrderBy(name => name); }
+        public IEnumerable<string> TransactionStatuses
+        {
+            get => Enum.GetNames(typeof(TransactionStatus))
+                                                                    .OrderBy(name => name);
+        }
 
         public IEnumerable<Transaction> Transactions { get; set; }
     }

@@ -1,15 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Data;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Web;
-using MediaLibrary.DAL.Services.Interfaces;
-using System.Linq.Expressions;
-using MediaLibrary.BLL.Services.Interfaces;
+﻿using MediaLibrary.BLL.Services.Interfaces;
 using MediaLibrary.DAL.Models;
+using MediaLibrary.DAL.Services.Interfaces;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace MediaLibrary.BLL.Services
 {

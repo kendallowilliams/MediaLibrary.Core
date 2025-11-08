@@ -1,13 +1,12 @@
-﻿using MediaLibrary.DAL.Models;
-using MediaLibrary.DAL.Models.Interfaces;
+﻿using MediaLibrary.DAL.Models.Interfaces;
 using MediaLibrary.DAL.Partials.Interfaces;
 using System;
-using IO_File = System.IO.File;
 using System.ComponentModel.DataAnnotations.Schema;
+using IO_File = System.IO.File;
 
 namespace MediaLibrary.DAL.Models
 {
-    public partial class PodcastItem: IPlayableItem, IPodcastItemJSON
+    public partial class PodcastItem : IPlayableItem, IPodcastItemJSON
     {
         public PodcastItem(string title, string description, string url, long length, DateTime publishDate, int podcastId) : base()
         {

@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using MediaLibrary.BLL.Services.Interfaces;
-using MediaLibrary.DAL.Services.Interfaces;
+﻿using MediaLibrary.BLL.Services.Interfaces;
 using MediaLibrary.DAL.Models;
-using static MediaLibrary.Shared.Enums;
+using MediaLibrary.DAL.Services.Interfaces;
 using Microsoft.Extensions.Configuration;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using static MediaLibrary.Shared.Enums;
 
 namespace MediaLibrary.BLL.Services
 {

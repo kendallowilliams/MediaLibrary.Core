@@ -1,11 +1,12 @@
 ﻿import HtmlControls from '../controls/html-controls';
 import LoadingModal from '../modals/loading-modal';
 import MediaLibraryConfiguration from '../models/configurations/media-library-configuration';
-import { MediaPages } from '../enums/enums';
+import { MediaPages, MessageBoxConfirmType } from '../enums/enums';
 import { fetch_get, fetch_post } from '../utilities/fetch_service';
 import { Modal } from 'bootstrap';
 import { MlCallback } from '../types/callback.type';
 import { MediaData } from '../models/music.model';
+import * as MessageBox from '../utilities/message-box';
 
 export default class EditSongModal {
     private modal: HTMLElement;
@@ -52,7 +53,7 @@ export default class EditSongModal {
             });
             bsModal.hide();
         });
-        $('[data-song-action="reload"]').on('click', e => {
+        $('[data-song-action="import"]').on('click', e => {
             LoadingModal.showLoading();
             fetch_get('Music/GetMediaData', { id: $('#txtEditId').val() as string })
                 .then(response => response.json())
@@ -64,6 +65,26 @@ export default class EditSongModal {
                     $('#txtEditPosition').val(data.Track);
                     LoadingModal.hideLoading();
                 });
+        });
+        $('[data-song-action="export"]').on('click', e => {
+            const formData = new FormData();
+
+            formData.set('Id', $('#txtEditId').val() as string);
+            formData.set('Title', $('#txtEditTitle').val() as string);
+            formData.set('Album', $('#txtEditAlbum').val() as string);
+            formData.set('Artist', $('#txtEditArtist').val() as string);
+            formData.set('Genre', $('#txtEditGenre').val() as string);
+            formData.set('Position', $('#txtEditPosition').val() as string);
+
+            MessageBox.confirm(
+                'Export To File',
+                'Are you sure you want to save this data to the file?',
+                MessageBoxConfirmType.YesNo,
+                () => {
+                    LoadingModal.showLoading();
+                    fetch_post('Music/UpdateTag', formData).then(_ => LoadingModal.hideLoading());
+                }
+            );
         });
     }
 

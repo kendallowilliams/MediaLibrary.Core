@@ -1,22 +1,16 @@
-﻿using System;
+﻿using MediaLibrary.BLL.Services.Interfaces;
+using MediaLibrary.DAL.Models;
+using MediaLibrary.DAL.Services.Interfaces;
+using MediaLibrary.Shared.Models.Configurations;
+using MediaLibrary.Shared.Services.Interfaces;
+using Microsoft.Extensions.Configuration;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
-using System.Threading.Tasks;
-using System.Web;
-using MediaLibrary.DAL.Models;
-using MediaLibrary.BLL.Services.Interfaces;
-using MediaLibrary.DAL.Services.Interfaces;
-using System.Linq.Expressions;
-using static MediaLibrary.Shared.Enums;
 using System.Threading;
-using MediaLibrary.Shared.Services.Interfaces;
-using MediaLibrary.Shared.Models.Configurations;
-using Newtonsoft.Json;
-using System.IO;
-using Microsoft.Extensions.Configuration;
-using System.Runtime.CompilerServices;
-using System.Diagnostics;
+using System.Threading.Tasks;
+using static MediaLibrary.Shared.Enums;
 
 namespace MediaLibrary.BLL.Services
 {
@@ -67,18 +61,18 @@ namespace MediaLibrary.BLL.Services
 
                             if (podcast.DownloadNewEpisodes && newItems.Any())
                             {
-                                foreach (var item in newItems) 
-                                { 
+                                foreach (var item in newItems)
+                                {
                                     await podcastService.AddPodcastFile(item.Id);
                                 }
                             }
                         }
-                        catch(AggregateException ex)
+                        catch (AggregateException ex)
                         {
                             await logService.Warn($"{message} [{podcast.Title}] failed.");
                             await logService.Error(ex);
                         }
-                        catch(Exception ex)
+                        catch (Exception ex)
                         {
                             await logService.Warn($"{message} [{podcast.Title}] failed.");
                             await logService.Error(ex);

@@ -1,18 +1,15 @@
 ﻿using MediaLibrary.BLL.Services.Interfaces;
+using MediaLibrary.DAL.Models;
+using MediaLibrary.DAL.Services.Interfaces;
+using MediaLibrary.Shared.Models.Configurations;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Web;
-using MediaLibrary.DAL.Models;
-using MediaLibrary.DAL.Services.Interfaces;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using Microsoft.Extensions.Configuration;
 using static MediaLibrary.Shared.Enums;
-using MediaLibrary.Shared.Models.Configurations;
 
 namespace MediaLibrary.BLL.Services
 {
@@ -65,7 +62,7 @@ namespace MediaLibrary.BLL.Services
                                                           (dirInfo.Attributes & FileAttributes.System) != FileAttributes.System;
 
             return directoryInfo != null && canUse(directoryInfo) ?
-                Directory.EnumerateFiles(path, searchPattern, searchOption) : 
+                Directory.EnumerateFiles(path, searchPattern, searchOption) :
                 Enumerable.Empty<string>();
         }
 
@@ -96,7 +93,7 @@ namespace MediaLibrary.BLL.Services
 
                 await transactionService.UpdateTransactionCompleted(transaction);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 await transactionService.UpdateTransactionErrored(transaction, ex);
             }
@@ -104,7 +101,7 @@ namespace MediaLibrary.BLL.Services
 
         public async Task AddMediaFile(string path, CancellationToken token = default)
         {
-            MediaData data = id3Service.ProcessFile(path);
+            MediaData data = id3Service.ReadFromFile(path);
             int? genreId = await genreService.AddGenre(data.Genres, token),
                 artistId = await artistService.AddArtist(data.Artists, token),
                 albumId = await albumService.AddAlbum(new Album(data, artistId, genreId), token),
@@ -119,7 +116,7 @@ namespace MediaLibrary.BLL.Services
             try
             {
                 var musicConfiguration = await dataService.Get<Configuration>(item => item.Type == ConfigurationTypes.Music, token)
-                                                          .ContinueWith(task => task.Result.GetConfigurationObject<MusicConfiguration>() ?? 
+                                                          .ContinueWith(task => task.Result.GetConfigurationObject<MusicConfiguration>() ??
                                                                                 new MusicConfiguration());
                 IEnumerable<string> fileTypes = configuration["FileTypes"].Split(",".ToCharArray(), StringSplitOptions.RemoveEmptyEntries),
                                     configPaths = musicConfiguration.MusicPaths.Select(p => Path.GetFullPath(p));
@@ -137,7 +134,7 @@ namespace MediaLibrary.BLL.Services
                                         files = EnumerateFiles(path.Location).Where(file => fileTypes.Contains(Path.GetExtension(file), StringComparer.OrdinalIgnoreCase)),
                                         deletedFiles = existingFiles.Where(file => !File.Exists(file)),
                                         newFiles = files.Except(existingFiles),
-                                        existingDirectories = savedPaths.Where(_path => !path.Equals(_path) && 
+                                        existingDirectories = savedPaths.Where(_path => !path.Equals(_path) &&
                                                                                         _path.Location.StartsWith(path.Location))
                                                                         .Select(_path => _path.Location);
 

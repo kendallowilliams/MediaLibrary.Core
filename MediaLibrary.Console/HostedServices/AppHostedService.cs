@@ -2,14 +2,10 @@
 using MediaLibrary.DAL.Models;
 using MediaLibrary.DAL.Services.Interfaces;
 using MediaLibrary.Shared.Models.Configurations;
-using MediaLibrary.Shared.Services.Interfaces;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
