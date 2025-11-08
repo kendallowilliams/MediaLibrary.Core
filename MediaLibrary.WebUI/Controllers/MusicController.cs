@@ -636,7 +636,17 @@ namespace MediaLibrary.WebUI.Controllers
             if (track == null) /*then*/ throw new KeyNotFoundException();
             if (!IO_File.Exists(path)) /*then*/ throw new FileNotFoundException(path);
 
-            return Json(id3Service.ProcessFile(path), new JsonSerializerOptions { PropertyNamingPolicy = null });
+            return Json(id3Service.ReadFromFile(path), new JsonSerializerOptions { PropertyNamingPolicy = null });
+        }
+
+        public async Task UpdateTag(Song song)
+        {
+            Track track = await dataService.Get<Track>(item => item.Id == song.Id, default, item => item.Path);
+            string path = Path.Combine(track.Path.Location, track.FileName);
+
+            if (track == null) /*then*/ throw new KeyNotFoundException();
+            if (!IO_File.Exists(path)) /*then*/ throw new FileNotFoundException(path);
+            this.id3Service.WriteToFile(song, path);
         }
     }
 }

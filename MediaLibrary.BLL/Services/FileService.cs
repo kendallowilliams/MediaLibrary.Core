@@ -101,7 +101,7 @@ namespace MediaLibrary.BLL.Services
 
         public async Task AddMediaFile(string path, CancellationToken token = default)
         {
-            MediaData data = id3Service.ProcessFile(path);
+            MediaData data = id3Service.ReadFromFile(path);
             int? genreId = await genreService.AddGenre(data.Genres, token),
                 artistId = await artistService.AddArtist(data.Artists, token),
                 albumId = await albumService.AddAlbum(new Album(data, artistId, genreId), token),
