@@ -1,9 +1,8 @@
 ﻿import { Modal } from 'bootstrap';
 import HtmlControls from '../controls/html-controls';
 import PlayerControls from '../controls/player-controls';
-import { MediaPages, MediaTypes } from '../enums/enums';
+import { MediaPages } from '../enums/enums';
 import MediaLibraryConfiguration from '../models/configurations/media-library-configuration';
-import PlayerConfiguration from '../models/configurations/player-configuration';
 
 export default class PlayerControlsModal {
     private modal: HTMLElement;
