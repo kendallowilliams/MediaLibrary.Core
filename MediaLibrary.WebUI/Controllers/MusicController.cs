@@ -337,7 +337,8 @@ namespace MediaLibrary.WebUI.Controllers
                 Album = track.Album?.Title,
                 Artist = track.Artist?.Name,
                 Genre = track.Genre?.Name,
-                Position = track.Position
+                Position = track.Position,
+                FileName = track.FileName
             };
 
             return Json(song, new JsonSerializerOptions { PropertyNamingPolicy = null });
