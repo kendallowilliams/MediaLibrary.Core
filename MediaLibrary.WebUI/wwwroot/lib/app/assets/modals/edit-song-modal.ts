@@ -28,6 +28,7 @@ export default class EditSongModal {
                     $('#txtEditArtist').val(data.Artist);
                     $('#txtEditGenre').val(data.Genre);
                     $('#txtEditPosition').val(data.Position);
+                    $('#txtEditFileName').val(data.FileName);
                 };
 
             fetch_get('Music/GetSong', { id: id })

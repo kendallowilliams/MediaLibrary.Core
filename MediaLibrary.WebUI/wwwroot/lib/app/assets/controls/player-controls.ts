@@ -185,13 +185,12 @@ export default class PlayerControls {
         const mediaType = this.playerConfiguration.properties.SelectedMediaType,
             buttons = HtmlControls.Buttons(),
             audioVisualizerEnabled = this.playerConfiguration.properties.AudioVisualizerEnabled,
-            mediaPage = this.mediaLibraryConfiguration.properties.SelectedMediaPage;
+            mediaPage = this.mediaLibraryConfiguration.properties.SelectedMediaPage,
+            playerPage = this.playerConfiguration.properties.SelectedPlayerPage;
 
-        if (mediaType === MediaTypes.Song && mediaPage == MediaPages.Player) /*then*/ $(buttons.PlayerAudioVisualizerButtons).removeClass('d-none');
-        else /*then*/ $(buttons.PlayerAudioVisualizerButtons).addClass('d-none');
-
-        if (audioVisualizerEnabled) /*then*/ $(buttons.PlayerAudioVisualizerButtons).addClass('active');
-        else /*then*/ $(buttons.PlayerAudioVisualizerButtons).removeClass('active');
+        $(buttons.PlayerAudioVisualizerButtons)
+            .toggleClass('d-none', !(mediaType === MediaTypes.Song && mediaPage === MediaPages.Player && playerPage == PlayerPages.Audio))
+            .toggleClass('active', audioVisualizerEnabled);
     }
 
     public durationChanged(duration: number, playbackTime: string): void {

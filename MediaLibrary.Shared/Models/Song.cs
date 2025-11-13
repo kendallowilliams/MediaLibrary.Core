@@ -10,5 +10,6 @@
         public string Artist { get; set; }
         public string Genre { get; set; }
         public int? Position { get; set; }
+        public string FileName { get; set; }
     }
 }

@@ -165,7 +165,10 @@ export default class Player extends BaseClass implements IView {
                 $(buttons.PlayerPlaylistToggleButtons).addClass('active');
             }
             this.playerConfiguration.updateConfiguration()
-                .then(() => this.playerControls.playerControlsModalChanged());
+                .then(() => {
+                    this.playerControls.showHideAudioVisualizer();
+                    this.playerControls.playerControlsModalChanged();
+                });
         });
     }
 
