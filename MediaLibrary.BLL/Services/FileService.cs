@@ -121,8 +121,7 @@ namespace MediaLibrary.BLL.Services
                 IEnumerable<string> fileTypes = configuration["FileTypes"].Split(",".ToCharArray(), StringSplitOptions.RemoveEmptyEntries),
                                     configPaths = musicConfiguration.MusicPaths.Select(p => Path.GetFullPath(p));
                 IEnumerable<TrackPath> savedPaths = await dataService.GetList<TrackPath>(token: token, includes: path => path.Tracks),
-                                       validPaths = savedPaths.Where(_path => _path.Tracks.Any()),
-                                       emptyPaths = savedPaths.Where(_path => !_path.Tracks.Any()),
+                                       validPaths = savedPaths.Where(_path => _path.Tracks.Any() && Directory.Exists(_path.Location)),
                                        invalidPaths = savedPaths.Where(_path => !configPaths.Any(p => _path.Location.StartsWith(p, StringComparison.OrdinalIgnoreCase)));
                 IEnumerable<Album> albumsToDelete = Enumerable.Empty<Album>();
                 IEnumerable<Artist> artistsToDelete = Enumerable.Empty<Artist>();
@@ -165,14 +164,14 @@ namespace MediaLibrary.BLL.Services
                             }
                         }
 
-                        foreach (var _path in invalidPaths) { await dataService.Delete<TrackPath>(_path.Id, token); }
                     }
 
+                    path.Tracks = null;
                     path.LastScanDate = DateTime.Now;
                     await dataService.Update(path, token);
                 }
 
-                foreach (TrackPath path in emptyPaths) { await dataService.Delete<TrackPath>(path.Id, token); }
+                foreach (var path in invalidPaths) { await dataService.Delete<TrackPath>(path.Id, token); }
                 albumsToDelete = await dataService.GetList<Album>(album => album.Tracks.Count() == 0, token, album => album.Tracks);
                 artistsToDelete = await dataService.GetList<Artist>(artist => artist.Tracks.Count() == 0, token, artist => artist.Tracks);
                 foreach (Album album in albumsToDelete) { await dataService.Delete<Album>(album.Id, token); }
