@@ -122,7 +122,9 @@ namespace MediaLibrary.BLL.Services
                                     configPaths = musicConfiguration.MusicPaths.Select(p => Path.GetFullPath(p));
                 IEnumerable<TrackPath> savedPaths = await dataService.GetList<TrackPath>(token: token, includes: path => path.Tracks),
                                        validPaths = savedPaths.Where(_path => _path.Tracks.Any() && Directory.Exists(_path.Location)),
-                                       invalidPaths = savedPaths.Where(_path => !configPaths.Any(p => _path.Location.StartsWith(p, StringComparison.OrdinalIgnoreCase)));
+                                       invalidPaths = savedPaths.Where(_path => 
+                                           !configPaths.Any(p => _path.Location.StartsWith(p, StringComparison.OrdinalIgnoreCase)) ||
+                                           !Directory.Exists(_path.Location));
                 IEnumerable<Album> albumsToDelete = Enumerable.Empty<Album>();
                 IEnumerable<Artist> artistsToDelete = Enumerable.Empty<Artist>();
 
