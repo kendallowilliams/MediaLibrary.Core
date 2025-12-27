@@ -139,11 +139,15 @@ namespace MediaLibrary.DAL.Services
 
             using (var db = dbContextFactory.CreateDbContext())
             {
-                db.Database.SetCommandTimeout(timeout);
-                entity.ModifyDate = DateTime.Now;
-                entity.CreateDate = DateTime.Now;
-                db.Set<T>().Add(entity);
-                result = await db.SaveChangesAsync(token);
+                using (var transaction = db.Database.BeginTransaction())
+                {
+                    db.Database.SetCommandTimeout(timeout);
+                    entity.ModifyDate = DateTime.Now;
+                    entity.CreateDate = DateTime.Now;
+                    db.Set<T>().Add(entity);
+                    result = await db.SaveChangesAsync(token);
+                    transaction.Commit();
+                }
             }
 
             return result;
@@ -156,15 +160,19 @@ namespace MediaLibrary.DAL.Services
 
             using (var db = dbContextFactory.CreateDbContext())
             {
-                foreach (var item in items)
+                using (var transaction = db.Database.BeginTransaction())
                 {
-                    item.CreateDate = DateTime.Now;
-                    item.ModifyDate = DateTime.Now;
-                }
+                    foreach (var item in items)
+                    {
+                        item.CreateDate = DateTime.Now;
+                        item.ModifyDate = DateTime.Now;
+                    }
 
-                db.Database.SetCommandTimeout(timeout);
-                db.Set<T>().AddRange(items);
-                result = await db.SaveChangesAsync(token);
+                    db.Database.SetCommandTimeout(timeout);
+                    db.Set<T>().AddRange(items);
+                    result = await db.SaveChangesAsync(token);
+                    transaction.Commit();
+                }
             }
 
             return result;
@@ -176,14 +184,18 @@ namespace MediaLibrary.DAL.Services
 
             using (var db = dbContextFactory.CreateDbContext())
             {
-                DbSet<T> set = null;
-                T entity = null;
+                using (var transaction = db.Database.BeginTransaction())
+                {
+                    DbSet<T> set = null;
+                    T entity = null;
 
-                db.Database.SetCommandTimeout(timeout);
-                set = db.Set<T>();
-                entity = await set.FindAsync(id);
-                set.Remove(entity);
-                result = await db.SaveChangesAsync(token);
+                    db.Database.SetCommandTimeout(timeout);
+                    set = db.Set<T>();
+                    entity = await set.FindAsync(id);
+                    set.Remove(entity);
+                    result = await db.SaveChangesAsync(token);
+                    transaction.Commit();
+                }
             }
 
             return result;
@@ -202,12 +214,16 @@ namespace MediaLibrary.DAL.Services
             {
                 using (var db = dbContextFactory.CreateDbContext())
                 {
-                    DbSet<T> set = null;
+                    using (var transaction = db.Database.BeginTransaction())
+                    {
+                        DbSet<T> set = null;
 
-                    db.Database.SetCommandTimeout(timeout);
-                    set = db.Set<T>();
-                    set.RemoveRange(set.Where(expression));
-                    result = await db.SaveChangesAsync(token);
+                        db.Database.SetCommandTimeout(timeout);
+                        set = db.Set<T>();
+                        set.RemoveRange(set.Where(expression));
+                        result = await db.SaveChangesAsync(token);
+                        transaction.Commit();
+                    }
                 }
             }
             else
@@ -224,10 +240,14 @@ namespace MediaLibrary.DAL.Services
 
             using (var db = dbContextFactory.CreateDbContext())
             {
-                db.Database.SetCommandTimeout(timeout);
-                entity.ModifyDate = DateTime.Now;
-                db.Set<T>().Update(entity);
-                result = await db.SaveChangesAsync(token);
+                using (var transaction = db.Database.BeginTransaction())
+                {
+                    db.Database.SetCommandTimeout(timeout);
+                    entity.ModifyDate = DateTime.Now;
+                    db.Set<T>().Update(entity);
+                    result = await db.SaveChangesAsync(token);
+                    transaction.Commit();
+                }
             }
 
             return result;
@@ -265,8 +285,12 @@ namespace MediaLibrary.DAL.Services
 
             using (var db = dbContextFactory.CreateDbContext())
             {
-                db.Database.SetCommandTimeout(timeout);
-                result = await db.Database.ExecuteSqlRawAsync(sql, parameters, token);
+                using (var transaction = db.Database.BeginTransaction())
+                {
+                    db.Database.SetCommandTimeout(timeout);
+                    result = await db.Database.ExecuteSqlRawAsync(sql, parameters, token);
+                    transaction.Commit();
+                }
             }
 
             return result;
