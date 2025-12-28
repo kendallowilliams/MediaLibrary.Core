@@ -124,7 +124,8 @@ namespace MediaLibrary.BLL.Services
                                        validPaths = savedPaths.Where(_path => _path.Tracks.Any() && Directory.Exists(_path.Location)),
                                        invalidPaths = savedPaths.Where(_path => 
                                            !configPaths.Any(p => _path.Location.StartsWith(p, StringComparison.OrdinalIgnoreCase)) ||
-                                           !Directory.Exists(_path.Location));
+                                           !Directory.Exists(_path.Location)),
+                                       emptyPaths = savedPaths.Where(_path => !_path.Tracks.Any()).ToList();
                 IEnumerable<Album> albumsToDelete = Enumerable.Empty<Album>();
                 IEnumerable<Artist> artistsToDelete = Enumerable.Empty<Artist>();
 
@@ -168,12 +169,11 @@ namespace MediaLibrary.BLL.Services
 
                     }
 
-                    path.Tracks = null;
                     path.LastScanDate = DateTime.Now;
                     await dataService.Update(path, token);
                 }
 
-                foreach (var path in invalidPaths) { await dataService.Delete<TrackPath>(path.Id, token); }
+                foreach (var path in invalidPaths.Concat(emptyPaths)) { await dataService.Delete<TrackPath>(path.Id, token); }
                 albumsToDelete = await dataService.GetList<Album>(album => album.Tracks.Count() == 0, token, album => album.Tracks);
                 artistsToDelete = await dataService.GetList<Artist>(artist => artist.Tracks.Count() == 0, token, artist => artist.Tracks);
                 foreach (Album album in albumsToDelete) { await dataService.Delete<Album>(album.Id, token); }
