@@ -168,7 +168,6 @@ namespace MediaLibrary.BLL.Services
 
                     }
 
-                    path.Tracks = null;
                     path.LastScanDate = DateTime.Now;
                     await dataService.Update(path, token);
                 }
