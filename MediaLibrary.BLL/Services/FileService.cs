@@ -121,10 +121,12 @@ namespace MediaLibrary.BLL.Services
                 IEnumerable<string> fileTypes = configuration["FileTypes"].Split(",".ToCharArray(), StringSplitOptions.RemoveEmptyEntries),
                                     configPaths = musicConfiguration.MusicPaths.Select(p => Path.GetFullPath(p));
                 IEnumerable<TrackPath> savedPaths = await dataService.GetList<TrackPath>(token: token, includes: path => path.Tracks),
-                                       validPaths = savedPaths.Where(_path => _path.Tracks.Any() && Directory.Exists(_path.Location)),
-                                       invalidPaths = savedPaths.Where(_path => 
-                                           !configPaths.Any(p => _path.Location.StartsWith(p, StringComparison.OrdinalIgnoreCase)) ||
-                                           !Directory.Exists(_path.Location));
+                                       validPaths = savedPaths
+                                        .Where(_path => _path.Tracks.Any() && 
+                                            Directory.Exists(_path.Location) &&
+                                            configPaths.Any(p => _path.Location.StartsWith(p, StringComparison.OrdinalIgnoreCase)))
+                                        .ToList(),
+                                       invalidPaths = savedPaths.Except(validPaths);
                 IEnumerable<Album> albumsToDelete = Enumerable.Empty<Album>();
                 IEnumerable<Artist> artistsToDelete = Enumerable.Empty<Artist>();
 
@@ -153,12 +155,13 @@ namespace MediaLibrary.BLL.Services
                             try
                             {
                                 Track song = tracks.FirstOrDefault(track => track.FileName.Equals(Path.GetFileName(file), StringComparison.OrdinalIgnoreCase));
+                                string songInfo = $"ID: {song?.Id}, File: {song?.FileName}";
 
                                 deleteTransaction = await transactionService.GetNewTransaction(TransactionTypes.RemoveTrack);
-                                deleteTransaction.Message = $"Attempting to remove song [ID: {song?.Id}]...";
+                                deleteTransaction.Message = $"Attempting to remove song [ID: {songInfo}]...";
                                 await dataService.Update(deleteTransaction, token);
                                 await dataService.Delete(song, token);
-                                await transactionService.UpdateTransactionCompleted(deleteTransaction, $"Song [ID: {song?.Id}] removed.");
+                                await transactionService.UpdateTransactionCompleted(deleteTransaction, $"Song [{songInfo}] removed.");
                             }
                             catch (Exception ex)
                             {
