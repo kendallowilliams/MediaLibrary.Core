@@ -46,7 +46,7 @@ namespace MediaLibrary.BLL.Services
 
             try
             {
-                podcasts = await dataService.GetList<Podcast>();
+                podcasts = await dataService.GetList<Podcast>(p => p.DownloadNewEpisodes);
                 await tplService.ConcurrentAsync(async podcast =>
                     {
                         string message = $"{nameof(ProcessorService)} -> {nameof(RefreshPodcasts)} -> {nameof(PodcastService.RefreshPodcast)}";
