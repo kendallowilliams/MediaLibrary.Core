@@ -1,6 +1,8 @@
 ﻿@model MediaLibraryConfiguration
+@using MediaLibrary.BLL.Services.Interfaces
 @using MediaLibrary.DAL.Services.Interfaces;
 @inject IDataService DataService;
+@inject IWebService WebService;
 
 <div class="d-flex flex-column flex-fill overflow-auto">
     @Html.HiddenFor(x => x.SelectedMediaPage)
@@ -22,6 +24,13 @@
                     <div class="mb-3">
                         <label class="form-label">Console App Last Run</label>
                         @Html.TextBoxFor(x => x.ConsoleAppLastRunTimeStamp, new { @class = "form-control form-control-sm", @readonly = "readonly" })
+                    </div>
+                    <div class="mb-3">
+                        @{
+                            var ipAddress = await WebService.GetIpAddress();
+                        }
+                        <label class="form-label">IP Address</label>
+                        @Html.TextBox("IpAddress", ipAddress, new { @class = "form-control form-control-sm", @readonly = "readonly" })
                     </div>
                 </div>
             </div>
