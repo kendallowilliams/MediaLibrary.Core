@@ -16,6 +16,22 @@ namespace MediaLibrary.BLL.Services
             this.httpClientFactory = httpClientFactory;
         }
 
+        public async Task<string> GetIpAddress()
+        {
+            string ip = string.Empty;
+
+            using (var client = httpClientFactory.CreateClient())
+            {
+                Uri uri = new Uri("http://api.ipify.org/");
+                var response = await client.GetAsync(uri);
+
+                response.EnsureSuccessStatusCode();
+                ip = await response.Content.ReadAsStringAsync();
+            }
+
+            return ip;
+        }
+
         public async Task<byte[]> DownloadData(string address, CancellationToken token = default)
         {
             var result = default(byte[]);
