@@ -256,7 +256,6 @@ namespace MediaLibrary.WebUI.Controllers
             podcastUIService.ClearPodcasts();
         }
 
-        [AllowAnonymous]
         public async Task<IActionResult> File(int id)
         {
             IActionResult result = null;
@@ -302,6 +301,7 @@ namespace MediaLibrary.WebUI.Controllers
                         contentTypeProvider.TryGetContentType(podcastItem.File, out string contentType);
                         result = File(IO_File.OpenRead(podcastItem.File), contentType, true);
                     }
+                    await logService.Info($"{nameof(PodcastController)} -> {nameof(File)} -> Title: {podcastItem.Title}");
                 }
                 else
                 {

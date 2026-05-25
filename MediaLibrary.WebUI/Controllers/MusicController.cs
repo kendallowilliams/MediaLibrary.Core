@@ -136,6 +136,7 @@ namespace MediaLibrary.WebUI.Controllers
 
                 contentTypeProvider.TryGetContentType(filePath, out string contentType);
                 result = File(IO_File.OpenRead(filePath), contentType, true);
+                await logService.Info($"{nameof(MusicController)} -> {nameof(File)} -> Title: {track.Title}");
             }
             else
             {
