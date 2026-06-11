@@ -128,6 +128,7 @@ namespace MediaLibrary.WebUI.Controllers
         {
             Track track = await dataService.Get<Track>(item => item.Id == id, default, item => item.Path);
             IActionResult result = null;
+            var ipAddress = HttpContext.Connection.RemoteIpAddress.MapToIPv4();
 
             if (track != null && IO_File.Exists(Path.Combine(track.Path.Location, track.FileName)))
             {
@@ -136,7 +137,7 @@ namespace MediaLibrary.WebUI.Controllers
 
                 contentTypeProvider.TryGetContentType(filePath, out string contentType);
                 result = File(IO_File.OpenRead(filePath), contentType, true);
-                await logService.Info($"{nameof(MusicController)} -> {nameof(File)} -> Title: {track.Title}");
+                await logService.Info($"{nameof(MusicController)} -> {nameof(File)} -> Title: {track.Title}, IP: {ipAddress}");
             }
             else
             {
