@@ -65,5 +65,10 @@ namespace MediaLibrary.WebUI.Controllers
 
             return Json(mediaLibraryViewModel.Configuration, new JsonSerializerOptions { PropertyNamingPolicy = null });
         }
+
+        public string GetRequestIp()
+        {
+            return HttpContext.Connection.RemoteIpAddress.MapToIPv4().ToString();
+        }
     }
 }
