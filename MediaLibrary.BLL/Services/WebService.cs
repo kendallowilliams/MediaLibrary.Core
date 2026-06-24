@@ -1,4 +1,5 @@
 ﻿using MediaLibrary.BLL.Services.Interfaces;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.IO;
 using System.Net.Http;
@@ -10,10 +11,12 @@ namespace MediaLibrary.BLL.Services
     public class WebService : IWebService
     {
         private readonly IHttpClientFactory httpClientFactory;
+        private readonly IConfiguration configuration;
 
-        public WebService(IHttpClientFactory httpClientFactory)
+        public WebService(IHttpClientFactory httpClientFactory, IConfiguration configuration)
         {
             this.httpClientFactory = httpClientFactory;
+            this.configuration = configuration;
         }
 
         public async Task<string> GetIpAddress()
@@ -22,7 +25,7 @@ namespace MediaLibrary.BLL.Services
 
             using (var client = httpClientFactory.CreateClient())
             {
-                Uri uri = new Uri("http://api.ipify.org/");
+                Uri uri = new Uri(configuration["PublicIpUrl"]);
                 var response = await client.GetAsync(uri);
 
                 response.EnsureSuccessStatusCode();
