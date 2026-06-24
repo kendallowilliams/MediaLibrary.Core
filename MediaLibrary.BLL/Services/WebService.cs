@@ -11,12 +11,12 @@ namespace MediaLibrary.BLL.Services
     public class WebService : IWebService
     {
         private readonly IHttpClientFactory httpClientFactory;
-        private readonly IConfiguration configuration;
+        private readonly string publicIpUrl;
 
         public WebService(IHttpClientFactory httpClientFactory, IConfiguration configuration)
         {
             this.httpClientFactory = httpClientFactory;
-            this.configuration = configuration;
+            this.publicIpUrl = configuration["PublicIpUrl"];
         }
 
         public async Task<string> GetIpAddress()
@@ -25,7 +25,7 @@ namespace MediaLibrary.BLL.Services
 
             using (var client = httpClientFactory.CreateClient())
             {
-                Uri uri = new Uri(configuration["PublicIpUrl"]);
+                Uri uri = new Uri(this.publicIpUrl);
                 var response = await client.GetAsync(uri);
 
                 response.EnsureSuccessStatusCode();
