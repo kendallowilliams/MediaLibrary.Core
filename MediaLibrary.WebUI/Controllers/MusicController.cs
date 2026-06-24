@@ -36,11 +36,12 @@ namespace MediaLibrary.WebUI.Controllers
         private readonly ITransactionService transactionService;
         private readonly ILogService logService;
         private readonly IId3Service id3Service;
+        private readonly IWebService webService;
 
         public MusicController(IDataService dataService, IBackgroundTaskQueueService backgroundTaskQueue, IConfiguration configuration,
                                IMusicUIService musicService, MusicViewModel musicViewModel, ITrackService trackService,
                                IFileService fileService, ITransactionService transactionService, ILogService logService,
-                               IId3Service id3Service)
+                               IId3Service id3Service, IWebService webService)
         {
             this.dataService = dataService;
             this.musicService = musicService;
@@ -52,6 +53,7 @@ namespace MediaLibrary.WebUI.Controllers
             this.backgroundTaskQueue = backgroundTaskQueue;
             this.logService = logService;
             this.id3Service = id3Service;
+            this.webService = webService;
         }
 
         public async Task<IActionResult> Index()
@@ -128,7 +130,8 @@ namespace MediaLibrary.WebUI.Controllers
         {
             Track track = await dataService.Get<Track>(item => item.Id == id, default, item => item.Path);
             IActionResult result = null;
-            var ipAddress = HttpContext.Connection.RemoteIpAddress.MapToIPv4();
+            string clientIp = HttpContext.Connection.RemoteIpAddress.MapToIPv4().ToString(),
+                serverIp = await webService.GetIpAddress();
 
             if (track != null && IO_File.Exists(Path.Combine(track.Path.Location, track.FileName)))
             {
@@ -137,7 +140,11 @@ namespace MediaLibrary.WebUI.Controllers
 
                 contentTypeProvider.TryGetContentType(filePath, out string contentType);
                 result = File(IO_File.OpenRead(filePath), contentType, true);
-                await logService.Info($"{nameof(MusicController)} -> {nameof(File)} -> Title: {track.Title}, IP: {ipAddress}");
+
+                if (!clientIp.Equals(serverIp))
+                {
+                    await logService.Info($"{nameof(MusicController)} -> {nameof(File)} -> Title: {track.Title}, IP: {clientIp}");
+                }
             }
             else
             {
