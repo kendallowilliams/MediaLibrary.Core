@@ -281,7 +281,12 @@ namespace MediaLibrary.WebUI.Controllers
                             memoryCache.Set<byte[]>(cacheKey, null, expiration);
                             backgroundTaskQueue.QueueBackgroundWorkItem(async token =>
                                 await webService.DownloadData(podcastItem.Url)
-                                                .ContinueWith(t => memoryCache.Set(cacheKey, t.Result, expiration)));
+                                                .ContinueWith(t => {
+                                                    if (t.IsCompletedSuccessfully)
+                                                    {
+                                                        memoryCache.Set(cacheKey, t.Result, expiration);
+                                                    }
+                                                }));
                         }
 
                         result = new RedirectResult(podcastItem.Url);
