@@ -3,6 +3,7 @@ using MediaLibrary.DAL.Models;
 using MediaLibrary.DAL.Services.Interfaces;
 using MediaLibrary.Shared.Models.Configurations;
 using MediaLibrary.WebUI.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -66,6 +67,7 @@ namespace MediaLibrary.WebUI.Controllers
             return Json(mediaLibraryViewModel.Configuration, new JsonSerializerOptions { PropertyNamingPolicy = null });
         }
 
+        [AllowAnonymous]
         public string GetRequestIp()
         {
             return HttpContext.Connection.RemoteIpAddress.MapToIPv4().ToString();
