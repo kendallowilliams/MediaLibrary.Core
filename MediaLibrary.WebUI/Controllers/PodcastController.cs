@@ -5,7 +5,6 @@ using MediaLibrary.Shared.Models.Configurations;
 using MediaLibrary.Shared.Services.Interfaces;
 using MediaLibrary.WebUI.Models;
 using MediaLibrary.WebUI.Services.Interfaces;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.StaticFiles;
 using Microsoft.Extensions.Caching.Memory;
@@ -299,8 +298,8 @@ namespace MediaLibrary.WebUI.Controllers
                         {
                             memoryCache.Set<byte[]>(cacheKey, null, expiration);
                             backgroundTaskQueue.QueueBackgroundWorkItem(async token =>
-                            await IO_File.ReadAllBytesAsync(podcastItem.File)
-                                            .ContinueWith(t => memoryCache.Set(cacheKey, t.Result, expiration)));
+                                await IO_File.ReadAllBytesAsync(podcastItem.File)
+                                             .ContinueWith(t => memoryCache.Set(cacheKey, t.Result, expiration)));
                         }
 
                         contentTypeProvider.TryGetContentType(podcastItem.File, out string contentType);
