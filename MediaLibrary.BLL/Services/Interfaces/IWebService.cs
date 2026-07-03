@@ -8,5 +8,6 @@ namespace MediaLibrary.BLL.Services.Interfaces
         Task<string> GetIpAddress();
         Task<byte[]> DownloadData(string address, CancellationToken token = default);
         Task<bool> DownloadFile(string address, string filename, CancellationToken token = default);
+        bool IsPrivateIp(string ipAddress);
     }
 }
