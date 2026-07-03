@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Configuration;
 using System;
 using System.IO;
+using System.Net;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
@@ -67,6 +68,16 @@ namespace MediaLibrary.BLL.Services
             }
 
             return result;
+        }
+
+        public bool IsPrivateIp(string ipAddress)
+        {
+            var ip = IPAddress.Parse(ipAddress);
+            var bytes = ip.GetAddressBytes();
+
+            return (bytes[0] == 10) || 
+                (bytes[0] == 172 && bytes[1] >= 16 && bytes[1] <= 31) || 
+                (bytes[0] == 192 && bytes[1] == 168);
         }
     }
 }
