@@ -37,7 +37,8 @@ export const enum MusicPages {
     Index = 0,
     Album,
     Artist,
-    Search
+    Search,
+    Favorites
 }
 export const enum PlayerPages {
     Index = 0,

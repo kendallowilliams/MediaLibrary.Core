@@ -22,6 +22,7 @@ namespace MediaLibrary.DAL.Models
         [Required]
         [StringLength(150)]
         public string Name { get; set; }
+        public bool IsFavorite { get; set; }
         public DateTime CreateDate { get; set; }
         public DateTime ModifyDate { get; set; }
 

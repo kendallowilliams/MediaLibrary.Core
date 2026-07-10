@@ -24,6 +24,7 @@ namespace MediaLibrary.DAL.Models
         public int? ArtistId { get; set; }
         public int? Year { get; set; }
         public int? GenreId { get; set; }
+        public bool IsFavorite { get; set; }
         public DateTime CreateDate { get; set; }
         public DateTime ModifyDate { get; set; }
 
