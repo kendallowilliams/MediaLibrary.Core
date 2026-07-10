@@ -46,17 +46,7 @@ export default class Music extends BaseClass implements IView {
             this.initializeAlbumOptions.bind(this),
             this.initializeArtistOptions.bind(this)
         );
-        this.favorites = new Favorites(musicConfiguration,
-            this.loadView.bind(this),
-            this.playFunc.bind(this),
-            this.loadAlbum.bind(this),
-            this.loadArtist.bind(this),
-            this.updateActiveMediaFunc.bind(this),
-            this.toggleDarkMode.bind(this, this.mediaView),
-            this.initializeSongOptions.bind(this),
-            this.initializeAlbumOptions.bind(this),
-            this.initializeArtistOptions.bind(this)
-        );
+        this.favorites = new Favorites(musicConfiguration, this.loadView.bind(this));
     }
 
     loadView(callback: MlCallback = () => null): void {
