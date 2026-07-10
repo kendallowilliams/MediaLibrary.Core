@@ -195,5 +195,17 @@ namespace MediaLibrary.WebUI.Services
 
             return musicDirectory;
         }
+
+        public async Task<IEnumerable<Album>> GetFavoriteAlbums()
+        {
+            if (!memoryCache.TryGetValue(nameof(CacheKeys.Albums), out IEnumerable<Album> albums))
+            {
+                albums = (await dataService.GetList<Album>(default, default, album => album.Artist, album => album.Tracks))
+                                                         .Where(album => album.Tracks.Any());
+                memoryCache.Set(nameof(CacheKeys.Albums), albums);
+            }
+
+            return albums.Where(album => album.IsFavorite);
+        }
     }
 }

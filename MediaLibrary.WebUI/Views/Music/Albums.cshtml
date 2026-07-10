@@ -1,6 +1,47 @@
 ﻿@model MediaLibrary.WebUI.Models.MusicViewModel
 
-@if (Model.AlbumGroups.Any())
+@if (Model.IsFavorites && Model.Albums.Any())
+{
+    <div class="accordion accordion-album-favorites">
+        <div class="accordion-item">
+            <div class="accordion-header m-0 p-0">
+                <h5 class="m-0">
+                    <button class="accordion-button ui-state-disabled p-1" disabled="disabled">Albums</button>
+                </h5>
+            </div>
+            <div class="accordion-collapse collapse show" data-bs-parent=".accordion-album-favorites">
+                <div class="accordion-body p-0 pb-1">
+                    <ul class="list-group list-group-flush">
+                        @foreach (var album in Model.Albums.Where(a => a.IsFavorite).OrderBy(a => a.Title))
+                        {
+                            <li class="list-group-item">
+                                <div class="media">
+                                    <img class="me-3 track-img" src="@(Url.Content("~/images/audio.png"))" data-bs-title="@(album.Title)">
+                                    <div class="media-body d-flex flex-column" style="overflow-x: auto">
+                                        <span class="mt-0 text-truncate font-weight-bold">@(album.Title)</span>
+                                        <div class="d-flex">
+                                            <small data-artist-id="@(album.Artist?.Id)" style="cursor: pointer">@(album.Artist?.Name ?? "Unknown Artist")</small>
+                                            <div class="flex-fill"></div>
+                                        </div>
+                                    </div>
+                                    <div class="text-nowrap">
+                                        <button class="btn btn-sm btn-outline-secondary" data-bs-tooltip="tooltip" data-bs-title="View album" data-album-id="@(album.Id)">
+                                            <i class="fa fa-list"></i>
+                                        </button>
+                                        <button type="button" class="btn btn-sm btn-outline-secondary" data-album-options-id="@(album.Id)" data-bs-tooltip="tooltip" data-bs-title="Options">
+                                            <i class="fa fa-ellipsis-v"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </li>
+                        }
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+else if (Model.AlbumGroups.Any())
 {
     <div class="accordion accordion-albums">
         @foreach (var item in Model.AlbumGroups.Select((group, index) => new { Index = index, Group = group }))

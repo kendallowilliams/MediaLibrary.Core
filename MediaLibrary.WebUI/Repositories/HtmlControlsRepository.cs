@@ -50,6 +50,7 @@
         public static string SearchSongsContainerId { get => "search-songs-container"; }
         public static string SearchArtistsContainerId { get => "search-artists-container"; }
         public static string SearchAlbumsContainerId { get => "search-albums-container"; }
+        public static string FavoritesContainerId { get => "favorites-container"; }
         public static string GeneralSettingsContainerId { get => "general-settings-container"; }
         public static string MusicSettingsContainerId { get => "music-settings-container"; }
         public static string PlaylistSettingsContainerId { get => "playlist-settings-container"; }

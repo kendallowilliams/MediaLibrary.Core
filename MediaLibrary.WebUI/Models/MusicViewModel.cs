@@ -36,5 +36,6 @@ namespace MediaLibrary.WebUI.Models
         public Artist SelectedArtist { get; set; }
         public Album SelectedAlbum { get; set; }
         public bool IsSearchResponse { get; set; }
+        public bool IsFavorites { get; set; }
     }
 }

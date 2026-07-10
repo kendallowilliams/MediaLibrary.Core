@@ -16,12 +16,14 @@ import { fetch_post, loadHTML } from "../../assets/utilities/fetch_service";
 import { Tab } from "bootstrap";
 import BlankDismissableModal from "../../assets/modals/blank-dismissable-modal";
 import { MlCallback } from "../../assets/types/callback.type";
+import Favorites from "./favorites";
 
 export default class Music extends BaseClass implements IView {
     private readonly mediaView: HTMLElement;
     private artist: Artist;
     private album: Album;
     private search: Search;
+    private favorites: Favorites
 
     constructor(private musicConfiguration: MusicConfiguration,
         private playFunc: MlCallback<HTMLButtonElement | boolean>,
@@ -34,6 +36,17 @@ export default class Music extends BaseClass implements IView {
         this.artist = new Artist(musicConfiguration, this.loadView.bind(this));
         this.album = new Album(musicConfiguration, this.loadView.bind(this));
         this.search = new Search(musicConfiguration,
+            this.loadView.bind(this),
+            this.playFunc.bind(this),
+            this.loadAlbum.bind(this),
+            this.loadArtist.bind(this),
+            this.updateActiveMediaFunc.bind(this),
+            this.toggleDarkMode.bind(this, this.mediaView),
+            this.initializeSongOptions.bind(this),
+            this.initializeAlbumOptions.bind(this),
+            this.initializeArtistOptions.bind(this)
+        );
+        this.favorites = new Favorites(musicConfiguration,
             this.loadView.bind(this),
             this.playFunc.bind(this),
             this.loadAlbum.bind(this),
@@ -90,8 +103,11 @@ export default class Music extends BaseClass implements IView {
                 $oldView = $($oldTab.attr('href')),
                 url = $newView.attr('data-load-url'),
                 success = () => {
+                    const favoritesTabs = [MusicTabs.Albums, MusicTabs.Artists];
+
                     LoadingModal.hideLoading();
                     if (this.tooltipsEnabled()) /*then*/ loadTooltips($newView[0]);
+                    this.showHideFavoritesButton(favoritesTabs.includes(properties.SelectedMusicTab));
 
                     $('[data-group-url]').on('click', _e => {
                         const $btn = $(_e.currentTarget),
@@ -132,7 +148,12 @@ export default class Music extends BaseClass implements IView {
             this.search.loadSearch(() => this.loadView());
         });
 
+        $('[data-music-action="favorites"]').on('click', e => {
+            this.favorites.loadFavorites(() => this.loadView());
+        });
+
         this.search.initializeControls();
+        this.favorites.initializeControls();
         this.album.initializeControls();
         this.artist.initializeControls();
     }
@@ -175,9 +196,27 @@ export default class Music extends BaseClass implements IView {
             LoadingModal.showLoading();
             modal.loadBodyHTML('Music/GetAlbumOptions/'.concat(id))
                 .then(() => {
+                    const htmlElement = modal.getHTMLElement();
+
                     $(modal.getHTMLElement()).find('[data-play-id]').on('click', e => {
                         this.playFunc(e.currentTarget as HTMLButtonElement, false);
                         modal.hide();
+                    });
+                    $(htmlElement).find('*[data-album-action="mark-favorite"]').on('input', e => {
+                        const $switch = $(e.currentTarget),
+                            id = $switch.attr('data-item-id'),
+                            isChecked = $switch.is(':checked'),
+                            url = 'Music/MarkAlbumFavorite',
+                            formData = new FormData();
+
+                        formData.set('id', id);
+                        formData.set('isFavorite', isChecked.toString());
+                        LoadingModal.showLoading();
+                        fetch_post(url, formData)
+                            .then(_ => {
+                                modal.hide();
+                                this.loadView(() => LoadingModal.hideLoading());
+                            });
                     });
                     this.toggleDarkMode(modal.getHTMLElement());
                     modal.show();
@@ -218,5 +257,9 @@ export default class Music extends BaseClass implements IView {
         $(container).find('[data-artist-id]').on('click', _e => this.artist.loadArtist(getArtistId(_e.currentTarget), () => this.loadView()));
         this.initializeArtistOptions(container);
         this.initializeAlbumOptions(container);
+    }
+
+    private showHideFavoritesButton(visible: boolean): void {
+        $('[data-music-action="favorites"]').toggleClass('d-none', !visible);
     }
 }

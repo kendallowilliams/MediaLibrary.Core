@@ -62,7 +62,7 @@
 
         public enum MusicTabs { Albums = 0, Artists, Songs }
 
-        public enum MusicPages { Index = 0, Album, Artist, Search }
+        public enum MusicPages { Index = 0, Album, Artist, Search, Favorites }
 
         public enum PlayerPages { Index = 0, Audio, Video }
 

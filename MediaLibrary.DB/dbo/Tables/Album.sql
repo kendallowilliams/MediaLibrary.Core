@@ -4,6 +4,7 @@
     [ArtistId]   INT           NULL,
     [Year]        INT           NULL,
     [GenreId]    INT           NULL,
+    [IsFavorite] BIT           DEFAULT 0 NOT NULL,
     [CreateDate] DATETIME2      DEFAULT (getdate()) NOT NULL,
     [ModifyDate] DATETIME2      DEFAULT (getdate()) NOT NULL,
     PRIMARY KEY NONCLUSTERED ([Id] ASC),

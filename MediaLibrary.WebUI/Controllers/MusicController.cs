@@ -78,6 +78,12 @@ namespace MediaLibrary.WebUI.Controllers
             {
                 result = PartialView("~/Views/Music/Search.cshtml", musicViewModel);
             }
+            else if (musicViewModel.Configuration.SelectedMusicPage == MusicPages.Favorites)
+            {
+                musicViewModel.IsFavorites = true;
+                musicViewModel.Albums = await musicService.GetFavoriteAlbums();
+                result = PartialView("~/Views/Music/Favorites.cshtml", musicViewModel);
+            }
             else
             {
                 Task songGroupTask = musicService.GetSongGroups(musicViewModel.Configuration.SelectedSongSort).ContinueWith(task => musicViewModel.SongGroups = task.Result),
@@ -647,6 +653,17 @@ namespace MediaLibrary.WebUI.Controllers
             if (!IO_File.Exists(path)) /*then*/ throw new FileNotFoundException(path);
 
             return Json(id3Service.ReadFromFile(path), new JsonSerializerOptions { PropertyNamingPolicy = null });
+        }
+
+        public async Task<IActionResult> MarkAlbumFavorite(int id, bool isFavorite)
+        {
+            Album album = await dataService.Get<Album>(item => item.Id == id);
+
+            if (album == null) /*then*/ throw new KeyNotFoundException();
+            album.IsFavorite = isFavorite;
+            musicService.ClearData();
+
+            return Json(await dataService.Update(album) > 0);
         }
 
         public async Task UpdateTag(Song song)

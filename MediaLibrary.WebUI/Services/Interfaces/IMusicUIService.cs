@@ -15,6 +15,7 @@ namespace MediaLibrary.WebUI.Services.Interfaces
         Task<IEnumerable<IGrouping<string, Track>>> GetSongGroups(SongSort sort = default(SongSort));
         Task<IEnumerable<IGrouping<string, Album>>> GetAlbumGroups(AlbumSort sort = default(AlbumSort));
         Task<IEnumerable<IGrouping<string, Artist>>> GetArtistGroups(ArtistSort sort = default(ArtistSort));
+        Task<IEnumerable<Album>> GetFavoriteAlbums();
         void ClearData();
         Task<MusicDirectory> GetMusicDirectory(string path);
     }
