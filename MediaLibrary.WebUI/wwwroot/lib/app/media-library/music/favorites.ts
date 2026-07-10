@@ -8,15 +8,7 @@ import { MlCallback } from "../../assets/types/callback.type";
 
 export default class Favorites extends BaseClass {
     constructor(private musicConfiguration: MusicConfiguration,
-        private reload: MlCallback,
-        private playFunc: MlCallback<HTMLButtonElement | boolean>,
-        private loadAlbum: MlCallback<number | MlCallback>,
-        private loadArtist: MlCallback<number | MlCallback>,
-        private updateActiveMediaFunc: MlCallback = () => null,
-        private toggleDarkMode: MlCallback = () => null,
-        private initializeSongOptions: MlCallback<HTMLElement>,
-        private initializeAlbumOptions: MlCallback<HTMLElement>,
-        private initializeArtistOptions: MlCallback<HTMLElement>) {
+        private reload: MlCallback) {
         super();
     }
 
@@ -37,25 +29,5 @@ export default class Favorites extends BaseClass {
         this.musicConfiguration.properties.SelectedMusicPage = MusicPages.Index;
         this.musicConfiguration.updateConfiguration()
             .then(() => callback());
-    }
-
-    private _loadAlbum(id: number) {
-        LoadingModal.showLoading();
-        this.musicConfiguration.properties.PreviousSearchQuery = '';
-        this.musicConfiguration.updateConfiguration()
-            .then(() => {
-            this.loadAlbum(id, this.reload);
-            LoadingModal.hideLoading();
-        });
-    }
-
-    private _loadArtist(id: number) {
-        LoadingModal.showLoading();
-        this.musicConfiguration.properties.PreviousSearchQuery = '';
-        this.musicConfiguration.updateConfiguration()
-            .then(() => {
-            this.loadArtist(id, this.reload);
-            LoadingModal.hideLoading();
-        });
     }
 };
