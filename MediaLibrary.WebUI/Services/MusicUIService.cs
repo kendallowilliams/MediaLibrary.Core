@@ -207,5 +207,17 @@ namespace MediaLibrary.WebUI.Services
 
             return albums.Where(album => album.IsFavorite);
         }
+
+        public async Task<IEnumerable<Artist>> GetFavoriteArtists()
+        {
+            if (!memoryCache.TryGetValue(nameof(CacheKeys.Artists), out IEnumerable<Artist> artists))
+            {
+                artists = (await dataService.GetList<Artist>(default, default, artist => artist.Albums))
+                                            .Where(artist => artist.Albums.Any());
+                memoryCache.Set(nameof(CacheKeys.Artists), artists);
+            }
+
+            return artists.Where(artist => artist.IsFavorite);
+        }
     }
 }

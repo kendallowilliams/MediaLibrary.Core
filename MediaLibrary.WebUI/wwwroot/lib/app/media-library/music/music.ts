@@ -241,6 +241,24 @@ export default class Music extends BaseClass implements IView {
             LoadingModal.showLoading();
             modal.loadBodyHTML('Music/GetArtistOptions/'.concat(id))
                 .then(() => {
+                    const htmlElement = modal.getHTMLElement();
+
+                    $(htmlElement).find('*[data-artist-action="mark-favorite"]').on('input', e => {
+                        const $switch = $(e.currentTarget),
+                            id = $switch.attr('data-item-id'),
+                            isChecked = $switch.is(':checked'),
+                            url = 'Music/MarkArtistFavorite',
+                            formData = new FormData();
+
+                        formData.set('id', id);
+                        formData.set('isFavorite', isChecked.toString());
+                        LoadingModal.showLoading();
+                        fetch_post(url, formData)
+                            .then(_ => {
+                                modal.hide();
+                                this.loadView(() => LoadingModal.hideLoading());
+                            });
+                    });
                     this.toggleDarkMode(modal.getHTMLElement());
                     modal.show();
                     LoadingModal.hideLoading();

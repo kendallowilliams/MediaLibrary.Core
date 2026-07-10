@@ -82,6 +82,7 @@ namespace MediaLibrary.WebUI.Controllers
             {
                 musicViewModel.IsFavorites = true;
                 musicViewModel.Albums = await musicService.GetFavoriteAlbums();
+                musicViewModel.Artists = await musicService.GetFavoriteArtists();
                 result = PartialView("~/Views/Music/Favorites.cshtml", musicViewModel);
             }
             else
@@ -664,6 +665,17 @@ namespace MediaLibrary.WebUI.Controllers
             musicService.ClearData();
 
             return Json(await dataService.Update(album) > 0);
+        }
+
+        public async Task<IActionResult> MarkArtistFavorite(int id, bool isFavorite)
+        {
+            Artist artist = await dataService.Get<Artist>(item => item.Id == id);
+
+            if (artist == null) /*then*/ throw new KeyNotFoundException();
+            artist.IsFavorite = isFavorite;
+            musicService.ClearData();
+
+            return Json(await dataService.Update(artist) > 0);
         }
 
         public async Task UpdateTag(Song song)
