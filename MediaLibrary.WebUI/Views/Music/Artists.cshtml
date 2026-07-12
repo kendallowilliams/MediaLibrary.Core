@@ -2,45 +2,41 @@
 
 @if (Model.IsFavorites && Model.Artists.Any())
 {
-    <div class="accordion accordion-artist-favorites">
-        <div class="accordion-item">
-            <div class="accordion-header m-0 p-0">
-                <h5 class="m-0">
-                    <button class="accordion-button ui-state-disabled p-1" disabled="disabled">Artists</button>
-                </h5>
-            </div>
-            <div class="accordion-collapse collapse show" data-bs-parent=".accordion-artist-favorites">
-                <div class="accordion-body p-0 pb-1">
-                    <ul class="list-group list-group-flush">
-                        @foreach (var artist in Model.Artists.Where(a => a.IsFavorite).OrderBy(a => a.Name))
-                        {
-                            int count = artist.Albums.Count();
-                            string txtAlbums = count == 1 ? $"{count} album" : $"{count} albums";
+    <div class="card" style="overflow-y: auto">
+        <div class="card-header p-0">
+            <h5 class="mb-0">
+                <button class="btn btn-sm btn-link w-100 text-start ui-state-disabled">Artists</button>
+            </h5>
+        </div>
+        <div class="card-body m-0 p-0 flex-fill">
+            <ul class="list-group list-group-flush">
+                @foreach (var artist in Model.Artists.Where(a => a.IsFavorite).OrderBy(a => a.Name))
+                {
+                    int count = artist.Albums.Count();
+                    string txtAlbums = count == 1 ? $"{count} album" : $"{count} albums";
 
-                            <li class="list-group-item">
-                                <div class="media">
-                                    <img class="me-3 track-img" src="@(Url.Content("~/images/audio.png"))" data-bs-title="@(artist.Name)">
-                                    <div class="media-body d-flex flex-column" style="overflow-x: auto">
-                                        <span class="mt-0 text-truncate font-weight-bold">@(artist.Name)</span>
-                                        <div class="d-flex">
-                                            <small style="cursor: pointer" data-artist-id="@artist.Id">@(txtAlbums)</small>
-                                            <div class="flex-fill"></div>
-                                        </div>
-                                    </div>
-                                    <div class="text-nowrap">
-                                        <button class="btn btn-sm btn-outline-secondary" data-bs-tooltip="tooltip" data-bs-title="View artist" data-artist-id="@(artist.Id)">
-                                            <i class="fa fa-list"></i>
-                                        </button>
-                                        <button type="button" class="btn btn-sm btn-outline-secondary" data-artist-options-id="@(artist.Id)" data-bs-tooltip="tooltip" data-bs-title="Options">
-                                            <i class="fa fa-ellipsis-v"></i>
-                                        </button>
-                                    </div>
+                    <li class="list-group-item">
+                        <div class="media">
+                            <img class="me-3 track-img" src="@(Url.Content("~/images/audio.png"))" data-bs-title="@(artist.Name)">
+                            <div class="media-body d-flex flex-column" style="overflow-x: auto">
+                                <span class="mt-0 text-truncate font-weight-bold">@(artist.Name)</span>
+                                <div class="d-flex">
+                                    <small style="cursor: pointer" data-artist-id="@artist.Id">@(txtAlbums)</small>
+                                    <div class="flex-fill"></div>
                                 </div>
-                            </li>
-                        }
-                    </ul>
-                </div>
-            </div>
+                            </div>
+                            <div class="text-nowrap">
+                                <button class="btn btn-sm btn-outline-secondary" data-bs-tooltip="tooltip" data-bs-title="View artist" data-artist-id="@(artist.Id)">
+                                    <i class="fa fa-list"></i>
+                                </button>
+                                <button type="button" class="btn btn-sm btn-outline-secondary" data-artist-options-id="@(artist.Id)" data-bs-tooltip="tooltip" data-bs-title="Options">
+                                    <i class="fa fa-ellipsis-v"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </li>
+                }
+            </ul>
         </div>
     </div>
 }
