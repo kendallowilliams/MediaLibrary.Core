@@ -127,6 +127,7 @@ export default class Music extends BaseClass implements IView {
                     this.toggleDarkMode(this.mediaView);
                 };
             LoadingModal.showLoading();
+            this.showHideFavoritesButton(false);
             this.musicConfiguration.properties.SelectedMusicTab = getMusicTabEnum($newTab.attr('data-music-tab'));
             hideTooltips($newView[0]);
             this.musicConfiguration.updateConfiguration()
