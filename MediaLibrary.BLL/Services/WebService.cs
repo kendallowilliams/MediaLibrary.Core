@@ -24,7 +24,7 @@ namespace MediaLibrary.BLL.Services
         {
             string ip = string.Empty;
 
-            using (var client = httpClientFactory.CreateClient())
+            using (var client = httpClientFactory.CreateClient(nameof(IWebService)))
             {
                 Uri uri = new Uri(this.publicIpUrl);
                 var response = await client.GetAsync(uri);
@@ -40,7 +40,7 @@ namespace MediaLibrary.BLL.Services
         {
             var result = default(byte[]);
 
-            using (var client = httpClientFactory.CreateClient())
+            using (var client = httpClientFactory.CreateClient(nameof(IWebService)))
             {
                 Uri uri = new Uri(address);
 
@@ -54,7 +54,7 @@ namespace MediaLibrary.BLL.Services
         {
             bool result = false;
 
-            using (var client = httpClientFactory.CreateClient())
+            using (var client = httpClientFactory.CreateClient(nameof(IWebService)))
             {
                 Uri uri = new Uri(address);
 
