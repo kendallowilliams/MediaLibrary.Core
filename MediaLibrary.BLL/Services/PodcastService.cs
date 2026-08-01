@@ -161,7 +161,7 @@ namespace MediaLibrary.BLL.Services
                                path = string.Empty;
                         bool cacheFound = memoryCache.TryGetValue<byte[]>(GetPodcastItemFileCacheKey(podcastItemId), out byte[] itemData);
 
-                        foreach (char c in Path.GetInvalidFileNameChars()) { title = title.Replace(c.ToString(), "_"); }
+                        foreach (char c in Path.GetInvalidFileNameChars()) { title = title.Replace(c.ToString(), "_").Trim(); }
                         foreach (char c in Path.GetInvalidPathChars()) { path = path.Replace(c.ToString(), "_"); }
                         path = Path.Combine(podcastFolder, title);
                         if (!Directory.Exists(path)) { Directory.CreateDirectory(path); }
