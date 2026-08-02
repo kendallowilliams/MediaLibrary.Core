@@ -277,9 +277,11 @@ namespace MediaLibrary.WebUI.Controllers
                     {
                         if (!cacheFound)
                         {
+                            memoryCache.Remove(cacheKey);
                             backgroundTaskQueue.QueueBackgroundWorkItem(async token =>
                                 await webService.DownloadData(podcastItem.Url)
-                                                .ContinueWith(t => {
+                                                .ContinueWith(t => 
+                                                {
                                                     if (t.IsCompletedSuccessfully)
                                                     {
                                                         memoryCache.Set(cacheKey, t.Result, expiration);
@@ -295,9 +297,16 @@ namespace MediaLibrary.WebUI.Controllers
 
                         if (!cacheFound)
                         {
+                            memoryCache.Remove(cacheKey);
                             backgroundTaskQueue.QueueBackgroundWorkItem(async token =>
                                 await IO_File.ReadAllBytesAsync(podcastItem.File)
-                                             .ContinueWith(t => memoryCache.Set(cacheKey, t.Result, expiration)));
+                                             .ContinueWith(t =>
+                                             {
+                                                 if (t.IsCompletedSuccessfully)
+                                                 {
+                                                     memoryCache.Set(cacheKey, t.Result, expiration);
+                                                 }
+                                             }));
                         }
 
                         contentTypeProvider.TryGetContentType(podcastItem.File, out string contentType);
