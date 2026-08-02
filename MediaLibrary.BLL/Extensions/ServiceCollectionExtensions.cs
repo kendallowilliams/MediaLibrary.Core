@@ -19,11 +19,6 @@ namespace MediaLibrary.BLL.Extensions
     {
         public static void ConfigureServices(this IServiceCollection services, IConfiguration configuration, IHostEnvironment environment)
         {
-            var httpClientHandler = new HttpClientHandler()
-            {
-                AutomaticDecompression = System.Net.DecompressionMethods.GZip | System.Net.DecompressionMethods.Deflate
-            };
-
             services.AddDbContextFactory<MediaLibraryEntities>(options =>
             {
                 options.UseSqlServer(configuration.GetConnectionString("MediaLibrary"));
@@ -36,7 +31,10 @@ namespace MediaLibrary.BLL.Extensions
                 client.DefaultRequestHeaders.AcceptEncoding.Add(new StringWithQualityHeaderValue("deflate"));
                 client.DefaultRequestHeaders.UserAgent.ParseAdd($"{environment.ApplicationName}/{assembly.GetName().Version}");
             })
-            .ConfigurePrimaryHttpMessageHandler(() => httpClientHandler);
+            .ConfigurePrimaryHttpMessageHandler(() => new HttpClientHandler
+            {
+                AutomaticDecompression = System.Net.DecompressionMethods.GZip | System.Net.DecompressionMethods.Deflate
+            });
             services.AddTransient<ITPLService, TPLService>();
             services.AddTransient<IDataService, DataService>();
             services.AddTransient<IAlbumService, AlbumService>();
