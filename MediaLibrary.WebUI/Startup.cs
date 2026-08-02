@@ -19,12 +19,14 @@ namespace MediaLibrary.WebUI
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
-        {
-            Configuration = configuration;
-        }
+        private IConfiguration configuration { get; }
+        private IHostEnvironment environment { get; }
 
-        public IConfiguration Configuration { get; }
+        public Startup(IConfiguration configuration, IWebHostEnvironment environment)
+        {
+            this.configuration = configuration;
+            this.environment = environment;
+        }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
@@ -32,7 +34,7 @@ namespace MediaLibrary.WebUI
             services.AddControllersWithViews();
             services.AddHostedService<BackgroundQueueHostedService>();
             services.AddMemoryCache();
-            services.ConfigureServices(Configuration);
+            services.ConfigureServices(configuration, environment);
             services.AddScoped<HomeViewModel>();
             services.AddScoped<MediaLibraryViewModel>();
             services.AddScoped<MusicViewModel>();
@@ -49,8 +51,8 @@ namespace MediaLibrary.WebUI
             services.AddSingleton<IBackgroundTaskQueueService, BackgroundTaskQueueService>();
             services.AddAuth0WebAppAuthentication(options =>
             {
-                options.Domain = Configuration["Auth0:Domain"];
-                options.ClientId = Configuration["Auth0:ClientId"];
+                options.Domain = configuration["Auth0:Domain"];
+                options.ClientId = configuration["Auth0:ClientId"];
             });
             services.AddAuthorization();
             services.AddResponseCompression();
