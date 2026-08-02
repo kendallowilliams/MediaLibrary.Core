@@ -8,14 +8,16 @@ using MediaLibrary.Shared.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Reflection;
 
 namespace MediaLibrary.BLL.Extensions
 {
     public static class ServiceCollectionExtensions
     {
-        public static void ConfigureServices(this IServiceCollection services, IConfiguration configuration)
+        public static void ConfigureServices(this IServiceCollection services, IConfiguration configuration, IHostEnvironment environment)
         {
             var httpClientHandler = new HttpClientHandler()
             {
@@ -28,9 +30,11 @@ namespace MediaLibrary.BLL.Extensions
             });
             services.AddHttpClient<IWebService>(client =>
             {
+                var assembly = Assembly.Load(new AssemblyName(environment.ApplicationName));
+
                 client.DefaultRequestHeaders.AcceptEncoding.Add(new StringWithQualityHeaderValue("gzip"));
                 client.DefaultRequestHeaders.AcceptEncoding.Add(new StringWithQualityHeaderValue("deflate"));
-                client.DefaultRequestHeaders.UserAgent.ParseAdd("MediaLibrary/1.0");
+                client.DefaultRequestHeaders.UserAgent.ParseAdd($"{environment.ApplicationName}/{assembly.GetName().Version}");
             })
             .ConfigurePrimaryHttpMessageHandler(() => httpClientHandler);
             services.AddTransient<ITPLService, TPLService>();
