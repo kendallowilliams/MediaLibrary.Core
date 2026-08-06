@@ -312,7 +312,6 @@ namespace MediaLibrary.WebUI.Controllers
                         contentTypeProvider.TryGetContentType(podcastItem.File, out string contentType);
                         result = File(IO_File.OpenRead(podcastItem.File), contentType, true);
                     }
-                    await logService.Info($"{nameof(PodcastController)} -> {nameof(File)} -> Title: {podcastItem.Title}");
                 }
                 else
                 {
