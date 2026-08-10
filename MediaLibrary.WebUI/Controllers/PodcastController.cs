@@ -277,7 +277,6 @@ namespace MediaLibrary.WebUI.Controllers
                     {
                         if (!cacheFound)
                         {
-                            memoryCache.Remove(cacheKey);
                             backgroundTaskQueue.QueueBackgroundWorkItem(async token =>
                                 await webService.DownloadData(podcastItem.Url)
                                                 .ContinueWith(t => 
@@ -297,7 +296,6 @@ namespace MediaLibrary.WebUI.Controllers
 
                         if (!cacheFound)
                         {
-                            memoryCache.Remove(cacheKey);
                             backgroundTaskQueue.QueueBackgroundWorkItem(async token =>
                                 await IO_File.ReadAllBytesAsync(podcastItem.File)
                                              .ContinueWith(t =>
