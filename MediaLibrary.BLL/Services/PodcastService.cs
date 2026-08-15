@@ -60,8 +60,6 @@ namespace MediaLibrary.BLL.Services
             IEnumerable<PodcastItem> podcastItems = Enumerable.Empty<PodcastItem>();
             Podcast podcast = null;
 
-            await logService.Trace($"{nameof(PodcastService)} -> {nameof(ParseRssFeed)} -> {podcastData?.Url} -> Started");
-
             using (var xmlReader = XmlReader.Create(podcastData.Url, new XmlReaderSettings { Async = true }))
             {
                 var feedReader = new RssFeedReader(xmlReader);
@@ -135,9 +133,8 @@ namespace MediaLibrary.BLL.Services
                 await dataService.Insert(podcastItems);
                 podcast.PodcastItems = podcast.PodcastItems.Concat(podcastItems).ToList();
                 await dataService.Update(podcast);
+                await logService.Trace($"{nameof(PodcastService)} -> {nameof(ParseRssFeed)} -> {podcastData?.Url} -> Updated");
             }
-
-            await logService.Trace($"{nameof(PodcastService)} -> {nameof(ParseRssFeed)} -> {podcastData?.Url} -> Completed");
 
             return podcast;
         }
