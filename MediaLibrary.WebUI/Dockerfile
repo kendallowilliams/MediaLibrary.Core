@@ -16,7 +16,7 @@ RUN dotnet restore "MediaLibrary.WebUI/MediaLibrary.WebUI.csproj"
 COPY . .
 WORKDIR "/src/MediaLibrary.WebUI"
 RUN apt-get update && apt-get -y install nodejs && apt-get -y install npm
-RUN npm install typescript@4.5.4 -g
+RUN npm install typescript@5.6.2 -g
 RUN npm install
 RUN tsc --project "wwwroot/lib/app/tsconfig.json"
 RUN dotnet build "MediaLibrary.WebUI.csproj" -c $BUILD_CONFIGURATION -o /app/build
