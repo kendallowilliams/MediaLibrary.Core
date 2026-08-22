@@ -11,6 +11,7 @@ import ManageDirectoriesModal from "./manage-directories-modal";
 import StringList from "../controls/string-list";
 import AddNewPodcastModal from "./add-podcast-modal";
 import { Modal } from "bootstrap";
+import * as DarkModeUtil from '../utilities/dark-mode';
 
 export default class SettingsModal {
     private modal: HTMLElement;
@@ -32,7 +33,7 @@ export default class SettingsModal {
             () => this.hide());
         this.addNewPodcastModal = new AddNewPodcastModal(() => this.settingsLoadFunctions.loadPodcast());
         this.initializeControls();
-        this.toggleGlobalDarkMode();
+        DarkModeUtil.toggleGlobalDarkMode(this.configurations.MediaLibrary.properties.DarkMode);
     }
 
     private initializeControls(): void {
@@ -179,11 +180,12 @@ export default class SettingsModal {
             this.autoCloseModal();
         });
         $modalBody.find('input[name="DarkMode"]').on('change', e => {
-            const enabled = (e.currentTarget as HTMLInputElement).checked;
+            const enabled = (e.currentTarget as HTMLInputElement).checked,
+                darkModeEnabled = this.configurations.MediaLibrary.properties.DarkMode;
 
             this.configurations.MediaLibrary.properties.DarkMode = enabled;
             this.configurations.MediaLibrary.updateConfiguration()
-                .then(() => this.toggleGlobalDarkMode());
+                .then(() => DarkModeUtil.toggleGlobalDarkMode(darkModeEnabled));
             this.autoCloseModal();
         });
         $modalBody.find('input[name="KeysEnabled"]').on('change', e => {
@@ -371,58 +373,4 @@ export default class SettingsModal {
         return promise;
     }
 
-    private toggleGlobalDarkMode(): void {
-        const body = document.body,
-            enabled = this.configurations.MediaLibrary.properties.DarkMode,
-            controls = HtmlControls.UIControls(),
-            playerTimes = Array.from(controls.PlayerTimes),
-            playerShortTimes = Array.from(controls.PlayerShortTimes),
-            views = HtmlControls.Views();
-
-        $(body).toggleClass('bg-black text-white', enabled);
-        $(views.HomeView).find('[data-container="HomeContent"]')
-            .toggleClass('bg-dark text-light', enabled)
-            .toggleClass('bg-light', !enabled);
-        $(body).find('.navbar')
-            .toggleClass('border rounded navbar-dark', enabled)
-            .toggleClass('navbar-light bg-light', !enabled)
-            .find('.nav-link')
-            .toggleClass('text-light', enabled)
-            .filter('.disabled')
-            .toggleClass('text-dark', !enabled);
-        $(body).find('.navbar-brand').toggleClass('border rounded', enabled);
-        $(HtmlControls.Containers().MainControlsContainers)
-            .children('[data-section="controls"]')
-            .toggleClass('bg-transparent', enabled)
-            .toggleClass('bg-light', !enabled);
-        $(playerTimes.concat(playerShortTimes))
-            .toggleClass('text-light', enabled)
-            .toggleClass('text-secondary', !enabled);
-        this.toggleDarkMode(body);
-    }
-
-    public toggleDarkMode(container: HTMLElement): void {
-        const $container = $(container),
-            darkModeEnabled = this.configurations.MediaLibrary.properties.DarkMode;
-
-        $container.find('.card').toggleClass('bg-transparent border', darkModeEnabled);
-        $container.find('.accordion-item, .accordion-button')
-            .toggleClass('bg-transparent', darkModeEnabled)
-            .find('.accordion-button')
-            .toggleClass('text-dark', !darkModeEnabled)
-            .toggleClass('text-light', darkModeEnabled);
-        $container.find('.list-group-item')
-            .toggleClass('bg-transparent border-top text-white', darkModeEnabled);
-        $container.find('.modal-content').toggleClass('bg-dark text-white', darkModeEnabled);
-        $container.find('.page-link, .btn-link')
-            .toggleClass('bg-transparent text-white', darkModeEnabled)
-        $container.find('hr').toggleClass('bg-white', darkModeEnabled);
-        $container.find('.btn-outline-secondary, .btn-outline-light')
-            .not('[data-podcast-item-options] .btn')
-            .toggleClass('btn-outline-light', darkModeEnabled)
-            .toggleClass('btn-outline-secondary', !darkModeEnabled);
-        $container.find('input:not([type="checkbox"]), .input-group-text, select')
-            .toggleClass('bg-transparent text-light', darkModeEnabled);
-        $container.find('option').toggleClass('bg-dark', darkModeEnabled);
-    }
 }
