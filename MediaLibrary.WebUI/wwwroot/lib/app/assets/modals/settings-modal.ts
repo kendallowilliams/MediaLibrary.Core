@@ -180,10 +180,9 @@ export default class SettingsModal {
             this.autoCloseModal();
         });
         $modalBody.find('input[name="DarkMode"]').on('change', e => {
-            const enabled = (e.currentTarget as HTMLInputElement).checked,
-                darkModeEnabled = this.configurations.MediaLibrary.properties.DarkMode;
+            const darkModeEnabled = (e.currentTarget as HTMLInputElement).checked;
 
-            this.configurations.MediaLibrary.properties.DarkMode = enabled;
+            this.configurations.MediaLibrary.properties.DarkMode = darkModeEnabled;
             this.configurations.MediaLibrary.updateConfiguration()
                 .then(() => DarkModeUtil.toggleGlobalDarkMode(darkModeEnabled));
             this.autoCloseModal();
