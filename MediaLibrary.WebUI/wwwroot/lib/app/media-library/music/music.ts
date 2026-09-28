@@ -29,8 +29,7 @@ export default class Music extends BaseClass implements IView {
         private playFunc: MlCallback<HTMLButtonElement | boolean>,
         private updateActiveMediaFunc: MlCallback,
         private tooltipsEnabled: MlCallback<void, boolean> = () => false,
-        private initContinuePlaybackBtns: MlCallback,
-        private toggleDarkMode: MlCallback<HTMLElement>) {
+        private initContinuePlaybackBtns: MlCallback) {
         super();
         this.mediaView = HtmlControls.Views().MediaView;
         this.artist = new Artist(musicConfiguration, this.loadView.bind(this));
@@ -41,7 +40,6 @@ export default class Music extends BaseClass implements IView {
             this.loadAlbum.bind(this),
             this.loadArtist.bind(this),
             this.updateActiveMediaFunc.bind(this),
-            this.toggleDarkMode.bind(this, this.mediaView),
             this.initializeSongOptions.bind(this),
             this.initializeAlbumOptions.bind(this),
             this.initializeArtistOptions.bind(this)
@@ -58,7 +56,6 @@ export default class Music extends BaseClass implements IView {
             if (this.musicConfiguration.properties.SelectedMusicPage === MusicPages.Search) /*then*/ this.search.search();
             this.initContinuePlaybackBtns();
             this.initializeSongOptions(this.mediaView);
-            this.toggleDarkMode(this.mediaView);
             this.updateActiveMediaFunc();
             callback();
         }; 
@@ -116,7 +113,6 @@ export default class Music extends BaseClass implements IView {
                                     this.initializeAlbumAndArtistControls($container[0]);
                                     LoadingModal.hideLoading();
                                     $btn.attr('data-group-url', '');
-                                    this.toggleDarkMode(this.mediaView);
                                     this.updateActiveMediaFunc();
                                 });
                         }
@@ -124,7 +120,6 @@ export default class Music extends BaseClass implements IView {
                     this.initializeAlbumAndArtistControls($newView[0]);
                     $('[data-group-url][data-bs-target="#collapse-songs-0"]').trigger('click');
                     this.updateActiveMediaFunc();
-                    this.toggleDarkMode(this.mediaView);
                 };
             LoadingModal.showLoading();
             this.showHideFavoritesButton(false);
@@ -164,7 +159,6 @@ export default class Music extends BaseClass implements IView {
             LoadingModal.showLoading();
             modal.loadBodyHTML('Music/GetSongOptions/'.concat(id))
                 .then(() => {
-                    this.toggleDarkMode(modal.getHTMLElement());
                     modal.show();
                     LoadingModal.hideLoading();
                 })
@@ -209,7 +203,6 @@ export default class Music extends BaseClass implements IView {
                                 this.loadView(() => LoadingModal.hideLoading());
                             });
                     });
-                    this.toggleDarkMode(modal.getHTMLElement());
                     modal.show();
                     LoadingModal.hideLoading();
                 })
@@ -250,7 +243,6 @@ export default class Music extends BaseClass implements IView {
                                 this.loadView(() => LoadingModal.hideLoading());
                             });
                     });
-                    this.toggleDarkMode(modal.getHTMLElement());
                     modal.show();
                     LoadingModal.hideLoading();
                 })

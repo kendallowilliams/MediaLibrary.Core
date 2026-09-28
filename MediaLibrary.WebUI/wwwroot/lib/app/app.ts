@@ -38,6 +38,7 @@ export default class App {
             }
         };
         window.onkeydown = (evt: KeyboardEvent) => this.mediaLibrary.handleKeyDown(evt);
+        this.setSystemTheme();
     }
 
     private testSignalR(): void {
@@ -53,5 +54,10 @@ export default class App {
         connection.start()
             .then(() => connection.send('test'))
             .catch((err) => MessageBox.showError('Error', err));
+    }
+
+    private setSystemTheme(): void {
+        const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+        $(document.documentElement).attr('data-bs-theme', mediaQuery.matches ? 'dark' : 'light');
     }
 }

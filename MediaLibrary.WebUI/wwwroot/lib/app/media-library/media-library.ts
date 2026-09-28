@@ -27,7 +27,6 @@ import SettingsModal from '../assets/modals/settings-modal';
 import ISettingsReloadFunctions from '../assets/interfaces/settings-reload-functions';
 import { Collapse } from 'bootstrap';
 import { MlCallback } from '../assets/types/callback.type';
-import * as DarkModeUtil from '../assets/utilities/dark-mode';
 
 export default class MediaLibrary extends BaseClass {
     private home: Home;
@@ -91,52 +90,45 @@ export default class MediaLibrary extends BaseClass {
                         Playlist: this.playlistConfiguration,
                         Television: this.televisionConfiguration,
                         Home: this.homeConfiguration
-                    },
-                    darkModeEnabled = this.mediaLibraryConfiguration.properties.DarkMode;
+                    };
 
                 LoadingModal.showLoading();
                 this.loadStaticViews(() => {
                     LoadingModal.hideLoading();
                     this.editSongModal = new EditSongModal(this.mediaLibraryConfiguration, this.loadView.bind(this));
                     this.settingsModal = new SettingsModal(configurations, settingsLoadFunctions);
-                    this.addToPlaylistModal = new AddToPlaylistModal(DarkModeUtil.toggleDarkMode.bind(this.settingsModal, darkModeEnabled),
-                        (id, type) => this.player.addItemToNowPlayingList(id, type),
+                    this.addToPlaylistModal = new AddToPlaylistModal((id, type) => this.player.addItemToNowPlayingList(id, type),
                         () => this.playerConfiguration.properties.SelectedMediaType);
                     this.home = new Home(this.homeConfiguration);
                     this.music = new Music(this.musicConfiguration,
                         this.playWrapper.bind(this),
                         this.updateActiveMedia.bind(this),
                         () => this.mediaLibraryConfiguration.properties.TooltipsEnabled,
-                        this.initializeContinuePlaybackBtns.bind(this),
-                        container => DarkModeUtil.toggleDarkMode(container, darkModeEnabled)
+                        this.initializeContinuePlaybackBtns.bind(this)
                     );
                     this.playlist = new Playlist(this.playlistConfiguration,
                         this.playWrapper.bind(this),
                         this.updateActiveMedia.bind(this),
                         loadFunctions,
-                        () => this.mediaLibraryConfiguration.properties.TooltipsEnabled,
-                        container => DarkModeUtil.toggleDarkMode(container, darkModeEnabled)
+                        () => this.mediaLibraryConfiguration.properties.TooltipsEnabled
                     );
                     this.podcast = new Podcast(this.podcastConfiguration,
                         this.playWrapper.bind(this),
                         this.updateActiveMedia.bind(this),
                         () => this.mediaLibraryConfiguration.properties.TooltipsEnabled,
-                        this.initializeContinuePlaybackBtns.bind(this),
-                        container => DarkModeUtil.toggleDarkMode(container, darkModeEnabled)
+                        this.initializeContinuePlaybackBtns.bind(this)
                     );
                     this.television = new Television(this.televisionConfiguration,
                         this.playWrapper.bind(this),
                         this.updateActiveMedia.bind(this),
                         () => this.mediaLibraryConfiguration.properties.TooltipsEnabled,
-                        this.initializeContinuePlaybackBtns.bind(this),
-                        container => DarkModeUtil.toggleDarkMode(container, darkModeEnabled)
+                        this.initializeContinuePlaybackBtns.bind(this)
                     );
                     this.player = new Player(this.playerConfiguration,
                         loadFunctions,
                         this.updateActiveMedia.bind(this),
                         this.mediaLibraryConfiguration,
                         () => this.mediaLibraryConfiguration.properties.TooltipsEnabled,
-                        container => DarkModeUtil.toggleDarkMode(container, darkModeEnabled),
                         container => this.music.initializeSongOptions(container),
                         (id: number, status: string) => this.updatePlaybackStatus(id, status)
                     );
@@ -155,8 +147,7 @@ export default class MediaLibrary extends BaseClass {
     private updateActiveMedia(): void {
         const $mediaView: JQuery<HTMLElement> = $(this.mainViews.MediaView),
             $playerView: JQuery<HTMLElement> = $(this.mainViews.PlayerView),
-            currentId: number = this.player.getCurrentlyLoadedId(),
-            darkModeEnabled = this.mediaLibraryConfiguration.properties.DarkMode;
+            currentId: number = this.player.getCurrentlyLoadedId();
 
         $mediaView.find('.list-group-item[data-song-id].active').removeClass('active');
         $mediaView.find('.list-group-item[data-episode-id].active').removeClass('active');
@@ -175,8 +166,6 @@ export default class MediaLibrary extends BaseClass {
         }
 
         $playerView.find('.list-group-item[data-item-id="' + currentId + '"]').addClass('active');
-        DarkModeUtil.toggleDarkMode($mediaView, darkModeEnabled);
-        DarkModeUtil.toggleDarkMode($playerView, darkModeEnabled);
     }
 
     private loadConfigurations(callback: MlCallback = () => null): void {
@@ -212,7 +201,6 @@ export default class MediaLibrary extends BaseClass {
             }
 
             this.initializeContinuePlaybackBtns();
-            DarkModeUtil.toggleDarkMode(this.mainViews.MediaView, darkModeEnabled);
             this.updateActiveMedia();
             LoadingModal.hideLoading();
         };
