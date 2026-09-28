@@ -58,6 +58,11 @@ export default class App {
 
     private setSystemTheme(): void {
         const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
-        $(document.documentElement).attr('data-bs-theme', mediaQuery.matches ? 'dark' : 'light');
+        const setDarkMode = () =>  $(document.documentElement).attr('data-bs-theme', mediaQuery.matches ? 'dark' : 'light');
+
+        setDarkMode();
+        $(mediaQuery).on('change', () => {
+            setDarkMode();
+        });
     }
 }
