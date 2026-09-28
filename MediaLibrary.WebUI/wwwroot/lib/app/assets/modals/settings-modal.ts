@@ -177,13 +177,6 @@ export default class SettingsModal {
             this.configurations.MediaLibrary.updateConfiguration();
             this.autoCloseModal();
         });
-        $modalBody.find('input[name="DarkMode"]').on('change', e => {
-            const darkModeEnabled = (e.currentTarget as HTMLInputElement).checked;
-
-            this.configurations.MediaLibrary.properties.DarkMode = darkModeEnabled;
-            this.configurations.MediaLibrary.updateConfiguration();
-            this.autoCloseModal();
-        });
         $modalBody.find('input[name="KeysEnabled"]').on('change', e => {
             const enabled = (e.currentTarget as HTMLInputElement).checked;
 

@@ -189,8 +189,7 @@ export default class MediaLibrary extends BaseClass {
 
     private loadView(mediaPage: MediaPages): void {
         const success = () => {
-            const $tooltips = $('*[data-bs-tooltip="tooltip"]'),
-                darkModeEnabled = this.mediaLibraryConfiguration.properties.DarkMode;
+            const $tooltips = $('*[data-bs-tooltip="tooltip"]');
 
             $tooltips.attr('data-disabled', 'true');
             hideAllTooltips();
