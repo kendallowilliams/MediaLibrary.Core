@@ -20,8 +20,7 @@ export default class Podcast extends BaseClass implements IView {
         private playFunc: MlCallback<HTMLButtonElement | boolean>,
         private updateActiveMediaFunc: MlCallback,
         private tooltipsEnabled: MlCallback<void, boolean> = () => false,
-        private initContinuePlaybackBtns: MlCallback,
-        private toggleDarkMode: MlCallback<HTMLElement>) {
+        private initContinuePlaybackBtns: MlCallback) {
         super();
         this.mediaView = HtmlControls.Views().MediaView;
     }
@@ -34,7 +33,6 @@ export default class Podcast extends BaseClass implements IView {
                 if (this.tooltipsEnabled()) /*then*/ loadTooltips(this.mediaView);
                 $('[data-podcast-year][data-item-index="1"]').trigger('click');
                 this.initContinuePlaybackBtns();
-                this.toggleDarkMode(this.mediaView);
                 callback();
             };
         
@@ -129,7 +127,6 @@ export default class Podcast extends BaseClass implements IView {
                     }); 
 
                     LoadingModal.hideLoading();
-                    this.toggleDarkMode(htmlElement)
                     modal.show();
                 }).catch((response: Response) => response.text().then(message => error(message)));
         });
@@ -216,13 +213,11 @@ export default class Podcast extends BaseClass implements IView {
                         });
 
                         LoadingModal.hideLoading();
-                        this.toggleDarkMode(htmlElement)
                         modal.show();
                     }).catch((response: Response) => response.text().then(message => error(message)));
             });
             $(this.mediaView).find('*[data-play-id]').on('click', e => this.playFunc(e.currentTarget as HTMLButtonElement, true));
             this.updateActiveMediaFunc();
-            this.toggleDarkMode(this.mediaView);
             LoadingModal.hideLoading();
         },
             id = this.podcastConfiguration.properties.SelectedPodcastId.toString(),

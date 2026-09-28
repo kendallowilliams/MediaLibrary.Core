@@ -11,7 +11,6 @@ import ManageDirectoriesModal from "./manage-directories-modal";
 import StringList from "../controls/string-list";
 import AddNewPodcastModal from "./add-podcast-modal";
 import { Modal } from "bootstrap";
-import * as DarkModeUtil from '../utilities/dark-mode';
 
 export default class SettingsModal {
     private modal: HTMLElement;
@@ -33,7 +32,6 @@ export default class SettingsModal {
             () => this.hide());
         this.addNewPodcastModal = new AddNewPodcastModal(() => this.settingsLoadFunctions.loadPodcast());
         this.initializeControls();
-        DarkModeUtil.toggleGlobalDarkMode(this.configurations.MediaLibrary.properties.DarkMode);
     }
 
     private initializeControls(): void {
@@ -177,14 +175,6 @@ export default class SettingsModal {
 
             this.configurations.MediaLibrary.properties.TooltipsEnabled = enabled;
             this.configurations.MediaLibrary.updateConfiguration();
-            this.autoCloseModal();
-        });
-        $modalBody.find('input[name="DarkMode"]').on('change', e => {
-            const darkModeEnabled = (e.currentTarget as HTMLInputElement).checked;
-
-            this.configurations.MediaLibrary.properties.DarkMode = darkModeEnabled;
-            this.configurations.MediaLibrary.updateConfiguration()
-                .then(() => DarkModeUtil.toggleGlobalDarkMode(darkModeEnabled));
             this.autoCloseModal();
         });
         $modalBody.find('input[name="KeysEnabled"]').on('change', e => {

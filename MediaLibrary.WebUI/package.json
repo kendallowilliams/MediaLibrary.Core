@@ -3,21 +3,20 @@
   "name": "asp.net",
   "private": true,
   "devDependencies": {
+    "@microsoft/signalr": "5.0.17",
+    "@types/jquery": "latest",
+    "@types/node": "latest",
     "gulp": "latest",
     "gulp-typescript": "latest",
-    "typescript": "latest",
-    "@types/jquery": "latest",
-    "@types/bootstrap": "5.2.0",
-    "@microsoft/signalr": "5.0.17",
-    "@types/node": "latest"
+    "typescript": "latest"
   },
   "dependencies": {
+    "@microsoft/signalr": "5.0.17",
+    "@types/jquery": "latest",
+    "@types/node": "latest",
+    "bootstrap": "^5.3.8",
     "gulp": "latest",
     "gulp-typescript": "latest",
-    "typescript": "latest",
-    "@types/jquery": "latest",
-    "@types/bootstrap": "5.2.0",
-    "@microsoft/signalr": "5.0.17",
-    "@types/node": "latest"
+    "typescript": "latest"
   }
 }

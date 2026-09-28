@@ -9,8 +9,7 @@ import LoadingModal from "./loading-modal";
 export default class AddToPlaylistModal {
     private modal: HTMLElement;
 
-    constructor(private toggleDarkMode: MlCallback<HTMLElement>,
-        private addItemToNowPlayingList: MlCallback<number | MediaTypes>,
+    constructor(private addItemToNowPlayingList: MlCallback<number | MediaTypes>,
         private getSelectedMediaType: MlCallback<void, MediaTypes>) {
         this.modal = HtmlControls.Modals().AddToPlaylistModal;
         this.initializeControls();
@@ -58,8 +57,6 @@ export default class AddToPlaylistModal {
                         this.addItemToNowPlayingList(parseInt(id), mediaType);
                         bsModal.hide();
                     });
-
-                    this.toggleDarkMode(this.modal);
                 });
         });
 

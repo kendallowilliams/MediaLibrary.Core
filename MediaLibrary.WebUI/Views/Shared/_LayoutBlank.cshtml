@@ -23,12 +23,12 @@
         </footer>
     </div>
 
-    @RenderSection("scripts", false)
+    @RenderSection("scripts", false);
     <script src="~/js/site.js" asp-append-version="true"></script>
     <partial name="~/Views/Shared/Modals/Reusable/AlertModal.cshtml" />
 
     <script type="text/javascript" defer="defer">
-        var MessageBox = null;
+        let MessageBox = null;
 
         requirejs.config({
             baseUrl: '@(Url.Content("~/lib/app"))',
@@ -46,7 +46,11 @@
         requirejs(['jquery', 'jquery-ui', 'bootstrap', 'assets/utilities/message-box'], function (jquery, jquery_ui, bootstrap, messageBox) {
             MessageBox = messageBox;
         });
+    </script>
+    <script type="text/javascript" defer="defer">
+        const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
 
+        document.documentElement.setAttribute('data-bs-theme', mediaQuery.matches ? 'dark' : 'light');
     </script>
 </body>
 </html>
