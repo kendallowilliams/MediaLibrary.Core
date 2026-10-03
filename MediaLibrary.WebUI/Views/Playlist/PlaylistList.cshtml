@@ -8,7 +8,7 @@
         <div class="row">
             <div class="col d-flex flex-row flex-wrap">
                 @foreach (var playlist in Model.Where(playlist => playlist.Id > 0)
-                .OrderBy(playlist => playlist.Name, StringComparer.OrdinalIgnoreCase))
+                    .OrderBy(playlist => playlist.Name, StringComparer.OrdinalIgnoreCase))
                 {
                     <div class="input-group input-group-sm w-auto m-1">
                         <span class="input-group-text">@(playlist.Name)</span>

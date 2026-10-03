@@ -23,12 +23,12 @@
         </footer>
     </div>
 
-    @RenderSection("scripts", false)
+    @RenderSection("scripts", false);
     <script src="~/js/site.js" asp-append-version="true"></script>
     <partial name="~/Views/Shared/Modals/Reusable/AlertModal.cshtml" />
 
     <script type="text/javascript" defer="defer">
-        var MessageBox = null;
+        let MessageBox = null;
 
         requirejs.config({
             baseUrl: '@(Url.Content("~/lib/app"))',
@@ -39,14 +39,14 @@
             },
             deps: ['jquery', 'jquery-ui', 'bootstrap'],
             bundles: {
-                'app': [ 'assets/utilities/message-box' ]
+                    'app': ['assets/utilities/message-box', 'assets/utilities/theme']
             }
         });
 
-        requirejs(['jquery', 'jquery-ui', 'bootstrap', 'assets/utilities/message-box'], function (jquery, jquery_ui, bootstrap, messageBox) {
+        requirejs(['jquery', 'jquery-ui', 'bootstrap', 'assets/utilities/message-box', 'assets/utilities/theme'], function (jquery, jquery_ui, bootstrap, messageBox, theme) {
             MessageBox = messageBox;
+            theme.setSystemTheme(true);
         });
-
     </script>
 </body>
 </html>

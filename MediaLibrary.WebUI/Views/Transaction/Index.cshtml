@@ -5,7 +5,7 @@
     ViewBag.Title = "Transactions";
 
     Func<string, string, string, string> getDetails = (status, error, message) =>
-        $"<div><pre>Status: {status}</pre><pre>Error: {error}</pre><pre>Message: {message}</pre></div>";
+        $"<div><pre>Status: {status}</pre><pre>Error: {error}</pre><pre class=\"text-wrap\">Message: {message}</pre></div>";
 }
 
 <div class="d-flex flex-column flex-fill overflow-auto">

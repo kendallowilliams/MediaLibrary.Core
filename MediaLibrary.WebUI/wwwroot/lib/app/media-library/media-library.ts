@@ -83,58 +83,52 @@ export default class MediaLibrary extends BaseClass {
             },
             success: MlCallback = () => {
                 const configurations: IConfigurations = {
-                    MediaLibrary: this.mediaLibraryConfiguration,
-                    Music: this.musicConfiguration,
-                    Player: this.playerConfiguration,
-                    Podcast: this.podcastConfiguration,
-                    Playlist: this.playlistConfiguration,
-                    Television: this.televisionConfiguration,
-                    Home: this.homeConfiguration
-                };
+                        MediaLibrary: this.mediaLibraryConfiguration,
+                        Music: this.musicConfiguration,
+                        Player: this.playerConfiguration,
+                        Podcast: this.podcastConfiguration,
+                        Playlist: this.playlistConfiguration,
+                        Television: this.televisionConfiguration,
+                        Home: this.homeConfiguration
+                    };
 
                 LoadingModal.showLoading();
                 this.loadStaticViews(() => {
                     LoadingModal.hideLoading();
                     this.editSongModal = new EditSongModal(this.mediaLibraryConfiguration, this.loadView.bind(this));
                     this.settingsModal = new SettingsModal(configurations, settingsLoadFunctions);
-                    this.addToPlaylistModal = new AddToPlaylistModal(this.settingsModal.toggleDarkMode.bind(this.settingsModal),
-                        (id, type) => this.player.addItemToNowPlayingList(id, type),
+                    this.addToPlaylistModal = new AddToPlaylistModal((id, type) => this.player.addItemToNowPlayingList(id, type),
                         () => this.playerConfiguration.properties.SelectedMediaType);
                     this.home = new Home(this.homeConfiguration);
                     this.music = new Music(this.musicConfiguration,
                         this.playWrapper.bind(this),
                         this.updateActiveMedia.bind(this),
                         () => this.mediaLibraryConfiguration.properties.TooltipsEnabled,
-                        this.initializeContinuePlaybackBtns.bind(this),
-                        container => this.settingsModal.toggleDarkMode(container)
+                        this.initializeContinuePlaybackBtns.bind(this)
                     );
                     this.playlist = new Playlist(this.playlistConfiguration,
                         this.playWrapper.bind(this),
                         this.updateActiveMedia.bind(this),
                         loadFunctions,
-                        () => this.mediaLibraryConfiguration.properties.TooltipsEnabled,
-                        container => this.settingsModal.toggleDarkMode(container)
+                        () => this.mediaLibraryConfiguration.properties.TooltipsEnabled
                     );
                     this.podcast = new Podcast(this.podcastConfiguration,
                         this.playWrapper.bind(this),
                         this.updateActiveMedia.bind(this),
                         () => this.mediaLibraryConfiguration.properties.TooltipsEnabled,
-                        this.initializeContinuePlaybackBtns.bind(this),
-                        container => this.settingsModal.toggleDarkMode(container)
+                        this.initializeContinuePlaybackBtns.bind(this)
                     );
                     this.television = new Television(this.televisionConfiguration,
                         this.playWrapper.bind(this),
                         this.updateActiveMedia.bind(this),
                         () => this.mediaLibraryConfiguration.properties.TooltipsEnabled,
-                        this.initializeContinuePlaybackBtns.bind(this),
-                        container => this.settingsModal.toggleDarkMode(container)
+                        this.initializeContinuePlaybackBtns.bind(this)
                     );
                     this.player = new Player(this.playerConfiguration,
                         loadFunctions,
                         this.updateActiveMedia.bind(this),
                         this.mediaLibraryConfiguration,
                         () => this.mediaLibraryConfiguration.properties.TooltipsEnabled,
-                        container => this.settingsModal.toggleDarkMode(container),
                         container => this.music.initializeSongOptions(container),
                         (id: number, status: string) => this.updatePlaybackStatus(id, status)
                     );
@@ -153,8 +147,7 @@ export default class MediaLibrary extends BaseClass {
     private updateActiveMedia(): void {
         const $mediaView: JQuery<HTMLElement> = $(this.mainViews.MediaView),
             $playerView: JQuery<HTMLElement> = $(this.mainViews.PlayerView),
-            currentId: number = this.player.getCurrentlyLoadedId(),
-            darkModeEnabled = this.mediaLibraryConfiguration.properties.DarkMode;
+            currentId: number = this.player.getCurrentlyLoadedId();
 
         $mediaView.find('.list-group-item[data-song-id].active').removeClass('active');
         $mediaView.find('.list-group-item[data-episode-id].active').removeClass('active');
@@ -207,7 +200,6 @@ export default class MediaLibrary extends BaseClass {
             }
 
             this.initializeContinuePlaybackBtns();
-            this.settingsModal.toggleDarkMode(this.mainViews.MediaView);
             this.updateActiveMedia();
             LoadingModal.hideLoading();
         };

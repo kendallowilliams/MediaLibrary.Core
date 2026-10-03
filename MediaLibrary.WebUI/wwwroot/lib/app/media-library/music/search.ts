@@ -16,7 +16,6 @@ export default class Search extends BaseClass {
         private loadAlbum: MlCallback<number | MlCallback>,
         private loadArtist: MlCallback<number | MlCallback>,
         private updateActiveMediaFunc: MlCallback = () => null,
-        private toggleDarkMode: MlCallback = () => null,
         private initializeSongOptions: MlCallback<HTMLElement>,
         private initializeAlbumOptions: MlCallback<HTMLElement>,
         private initializeArtistOptions: MlCallback<HTMLElement>) {
@@ -112,7 +111,6 @@ export default class Search extends BaseClass {
                         this.initializeAlbumOptions(containers.SearchAlbumsContainer);
                         this.initializeSongOptions(containers.SearchSongsContainer)
                         this.updateActiveMediaFunc();
-                        this.toggleDarkMode();
                         showHideLoading(false);
                         LoadingModal.hideLoading();
                         $(HtmlControls.UIControls().SearchQuery).trigger('focus');

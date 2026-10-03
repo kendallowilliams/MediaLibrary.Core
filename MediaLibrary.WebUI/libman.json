@@ -24,7 +24,7 @@
     },
     {
       "provider": "unpkg",
-      "library": "bootstrap@5.2.0",
+      "library": "bootstrap@5.3.8",
       "destination": "wwwroot/lib/bootstrap/",
       "files": [
         "dist/css/bootstrap.css",
