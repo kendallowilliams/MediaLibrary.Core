@@ -4,6 +4,7 @@ import * as MessageBox from './assets/utilities/message-box';
 import Error from './assets/data/error';
 import * as signalR from '@microsoft/signalr';
 import { isFullScreen } from './assets/utilities/element';
+import { setSystemTheme } from './assets/utilities/theme';
 
 export default class App {
     private mediaLibrary: MediaLibrary;
@@ -38,7 +39,7 @@ export default class App {
             }
         };
         window.onkeydown = (evt: KeyboardEvent) => this.mediaLibrary.handleKeyDown(evt);
-        this.setSystemTheme();
+        setSystemTheme(true);
     }
 
     private testSignalR(): void {
@@ -54,15 +55,5 @@ export default class App {
         connection.start()
             .then(() => connection.send('test'))
             .catch((err) => MessageBox.showError('Error', err));
-    }
-
-    private setSystemTheme(): void {
-        const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
-        const setDarkMode = () =>  $(document.documentElement).attr('data-bs-theme', mediaQuery.matches ? 'dark' : 'light');
-
-        setDarkMode();
-        $(mediaQuery).on('change', () => {
-            setDarkMode();
-        });
     }
 }
