@@ -6,6 +6,7 @@
     "@microsoft/signalr": "5.0.17",
     "@types/jquery": "latest",
     "@types/node": "latest",
+    "eslint": "^10.13.0",
     "gulp": "latest",
     "gulp-typescript": "latest",
     "typescript": "latest"
