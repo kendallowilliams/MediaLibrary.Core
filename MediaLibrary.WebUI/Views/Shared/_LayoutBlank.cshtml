@@ -39,18 +39,14 @@
             },
             deps: ['jquery', 'jquery-ui', 'bootstrap'],
             bundles: {
-                'app': [ 'assets/utilities/message-box' ]
+                    'app': ['assets/utilities/message-box', 'assets/utilities/theme']
             }
         });
 
-        requirejs(['jquery', 'jquery-ui', 'bootstrap', 'assets/utilities/message-box'], function (jquery, jquery_ui, bootstrap, messageBox) {
+        requirejs(['jquery', 'jquery-ui', 'bootstrap', 'assets/utilities/message-box', 'assets/utilities/theme'], function (jquery, jquery_ui, bootstrap, messageBox, theme) {
             MessageBox = messageBox;
+            theme.setSystemTheme(true);
         });
-    </script>
-    <script type="text/javascript" defer="defer">
-        const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
-
-        document.documentElement.setAttribute('data-bs-theme', mediaQuery.matches ? 'dark' : 'light');
     </script>
 </body>
 </html>

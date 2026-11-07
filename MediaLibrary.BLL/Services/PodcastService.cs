@@ -2,15 +2,15 @@
 using MediaLibrary.DAL.Models;
 using MediaLibrary.DAL.Services.Interfaces;
 using Microsoft.Extensions.Caching.Memory;
-using Microsoft.SyndicationFeed;
-using Microsoft.SyndicationFeed.Rss;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.IO;
 using System.Linq;
+using System.ServiceModel.Syndication;
+using System.Threading;
 using System.Threading.Tasks;
-using System.Xml;
+using System.Xml.Linq;
 
 namespace MediaLibrary.BLL.Services
 {
@@ -50,54 +50,29 @@ namespace MediaLibrary.BLL.Services
 
         public async Task<Podcast> ParseRssFeed(Podcast podcastData, bool isUpdate = false)
         {
-            string title = string.Empty,
-                   imageUrl = string.Empty,
-                   description = string.Empty,
-                   author = string.Empty;
-            DateTime pubDate = DateTime.MinValue,
-                     lastUpdateDate = DateTime.MinValue;
-            List<ISyndicationItem> items = new List<ISyndicationItem>();
             IEnumerable<PodcastItem> podcastItems = Enumerable.Empty<PodcastItem>();
             Podcast podcast = null;
+            var xmlBytes = await webService.DownloadData(podcastData.Url);
+            var xmlStream = new MemoryStream(xmlBytes, true);
+            var xmlDoc = await XDocument.LoadAsync(xmlStream, LoadOptions.None, CancellationToken.None);
 
-            using (var xmlReader = XmlReader.Create(podcastData.Url, new XmlReaderSettings { Async = true }))
+            // remove elements that cause validation errors
+            xmlDoc.Root.Elements()
+                .Where(el => el.Name.LocalName.Equals("script", StringComparison.OrdinalIgnoreCase))
+                .Remove();
+
+            using (var xmlReader = xmlDoc.CreateReader())
             {
-                var feedReader = new RssFeedReader(xmlReader);
-
-                while (await feedReader.Read())
-                {
-                    switch (feedReader.ElementType)
-                    {
-                        case SyndicationElementType.Category:
-                            ISyndicationCategory category = await feedReader.ReadCategory();
-                            break;
-                        case SyndicationElementType.Content:
-                            ISyndicationContent content = await feedReader.ReadContent();
-                            if (content.Name == "title") { title = content.Value; }
-                            if (content.Name == "description") { description = content.Value; }
-                            if (content.Name == "author") { author = content.Value; }
-                            break;
-                        case SyndicationElementType.Image:
-                            ISyndicationImage image = await feedReader.ReadImage();
-                            imageUrl = image.Url?.AbsoluteUri;
-                            break;
-                        case SyndicationElementType.Item:
-                            ISyndicationItem item = await feedReader.ReadItem();
-                            items.Add(item);
-                            break;
-                        case SyndicationElementType.Link:
-                            ISyndicationLink link = await feedReader.ReadLink();
-                            break;
-                        case SyndicationElementType.Person:
-                            ISyndicationPerson person = await feedReader.ReadPerson();
-                            break;
-                        case SyndicationElementType.None:
-                        default:
-                            break;
-                    }
-                }
-
-                pubDate = items.Max(item => item.Published.DateTime);
+                var feedReader = SyndicationFeed.Load(xmlReader);
+                string title = feedReader.Title.Text,
+                       imageUrl = feedReader.ImageUrl?.AbsolutePath,
+                       description = feedReader.Description.Text,
+                       author = string.Join(", ", feedReader.Authors.Select(a => a.Name));
+                DateTime pubDate = feedReader.Items
+                    .Select(item => item.PublishDate.DateTime)
+                    .DefaultIfEmpty(DateTime.MinValue)
+                    .Max(),
+                    lastUpdateDate = DateTime.MinValue;
 
                 if (isUpdate)
                 {
@@ -116,12 +91,14 @@ namespace MediaLibrary.BLL.Services
                     await dataService.Insert<Podcast>(podcast);
                 }
 
-                podcastItems = items.Select(item => new
+                podcastItems = feedReader.Items.Select(item => new
                 {
-                    item.Title,
-                    item.Description,
+                    Title = item.Title.Text,
+                    Description = item.Content.Type.Equals("text", StringComparison.OrdinalIgnoreCase)
+                        ? ((TextSyndicationContent)item.Content).Text
+                        : null,
                     Enclosure = item.Links.FirstOrDefault(linkItem => linkItem.RelationshipType == "enclosure"),
-                    PublishDate = item.Published.DateTime
+                    PublishDate = item.PublishDate.DateTime
 
                 })
                                     .Where(item => item.Enclosure != null)
