@@ -94,15 +94,16 @@ namespace MediaLibrary.BLL.Services
                 podcastItems = feedReader.Items.Select(item => new
                 {
                     Title = item.Title.Text,
-                    Description = item.Content.Type.Equals("text", StringComparison.OrdinalIgnoreCase)
+                    Description = item.Content?.Type.Equals("text", StringComparison.OrdinalIgnoreCase) == true
                         ? ((TextSyndicationContent)item.Content).Text
                         : null,
+                    Summary = item.Summary?.Text,
                     Enclosure = item.Links.FirstOrDefault(linkItem => linkItem.RelationshipType == "enclosure"),
                     PublishDate = item.PublishDate.DateTime
 
                 })
                                     .Where(item => item.Enclosure != null)
-                                    .Select(data => new PodcastItem(data.Title, data.Description, data.Enclosure.Uri.OriginalString,
+                                    .Select(data => new PodcastItem(data.Title, data.Description ?? data.Summary, data.Enclosure.Uri.OriginalString,
                                                                     data.Enclosure.Length, data.PublishDate, podcast.Id))
                                     .Where(item => item.PublishDate > lastUpdateDate)
                                     .ToList();
