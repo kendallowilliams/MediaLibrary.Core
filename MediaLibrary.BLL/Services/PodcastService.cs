@@ -94,7 +94,9 @@ namespace MediaLibrary.BLL.Services
                 podcastItems = feedReader.Items.Select(item => new
                 {
                     Title = item.Title.Text,
-                    Description = item.Summary?.Text,
+                    Description = item.Content.Type.Equals("text", StringComparison.OrdinalIgnoreCase)
+                        ? ((TextSyndicationContent)item.Content).Text
+                        : null,
                     Enclosure = item.Links.FirstOrDefault(linkItem => linkItem.RelationshipType == "enclosure"),
                     PublishDate = item.PublishDate.DateTime
 
