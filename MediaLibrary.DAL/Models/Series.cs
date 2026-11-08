@@ -6,24 +6,22 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 
-namespace MediaLibrary.DAL.Models
+namespace MediaLibrary.DAL.Models;
+
+public partial class Series
 {
-    public partial class Series
-    {
-        public Series()
-        {
-            Episodes = new HashSet<Episode>();
-        }
+    [Key]
+    public int Id { get; set; }
 
-        [Key]
-        public int Id { get; set; }
-        [Required]
-        [StringLength(256)]
-        public string Title { get; set; }
-        public DateTime CreateDate { get; set; }
-        public DateTime ModifyDate { get; set; }
+    [Required]
+    [StringLength(256)]
+    [Unicode(false)]
+    public string Title { get; set; }
 
-        [InverseProperty(nameof(Episode.Series))]
-        public virtual ICollection<Episode> Episodes { get; set; }
-    }
+    public DateTime CreateDate { get; set; }
+
+    public DateTime ModifyDate { get; set; }
+
+    [InverseProperty("Series")]
+    public virtual ICollection<Episode> Episodes { get; set; } = new List<Episode>();
 }

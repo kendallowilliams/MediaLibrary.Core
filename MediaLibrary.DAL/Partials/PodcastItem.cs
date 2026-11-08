@@ -8,16 +8,6 @@ namespace MediaLibrary.DAL.Models
 {
     public partial class PodcastItem : IPlayableItem, IPodcastItemJSON
     {
-        public PodcastItem(string title, string description, string url, long length, DateTime publishDate, int podcastId) : base()
-        {
-            Title = title;
-            Url = url;
-            Description = description;
-            Length = (int)length;
-            PublishDate = publishDate;
-            PodcastId = podcastId;
-        }
-
         public bool IsDownloaded { get => !string.IsNullOrWhiteSpace(this.File) && IO_File.Exists(this.File); }
 
         [NotMapped]

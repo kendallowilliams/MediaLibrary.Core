@@ -6,17 +6,21 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 
-namespace MediaLibrary.DAL.Models
+namespace MediaLibrary.DAL.Models;
+
+[Table("Transaction")]
+public partial class Transaction
 {
-    [Table("Transaction")]
-    public partial class Transaction
-    {
-        [Key]
-        public int Id { get; set; }
-        public string Message { get; set; }
-        public string StatusMessage { get; set; }
-        public string ErrorMessage { get; set; }
-        public DateTime CreateDate { get; set; }
-        public DateTime ModifyDate { get; set; }
-    }
+    [Key]
+    public int Id { get; set; }
+
+    public string Message { get; set; }
+
+    public string StatusMessage { get; set; }
+
+    public string ErrorMessage { get; set; }
+
+    public DateTime CreateDate { get; set; }
+
+    public DateTime ModifyDate { get; set; }
 }

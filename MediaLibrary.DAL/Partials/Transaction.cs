@@ -15,12 +15,5 @@ namespace MediaLibrary.DAL.Models
             StatusMessage = TransactionStatus.Created.ToString();
             Type = TransactionTypes.None;
         }
-
-        public Transaction(TransactionTypes transactionType) : base()
-        {
-            Status = TransactionStatus.Created;
-            StatusMessage = TransactionStatus.Created.ToString();
-            Type = transactionType;
-        }
     }
 }

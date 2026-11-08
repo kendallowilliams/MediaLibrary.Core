@@ -5,6 +5,7 @@
     [ImageUrl]        VARCHAR (MAX) NULL,
 	[Description]	   VARCHAR (MAX) NULL,
     [Author]		   VARCHAR (MAX) NULL,
+    [AutoRefresh] BIT NOT NULL DEFAULT 1,
     [DownloadNewEpisodes] BIT NOT NULL DEFAULT 0,
     [LastUpdateDate] DATETIME2      NOT NULL,
     [CreateDate]      DATETIME2      DEFAULT (getdate()) NOT NULL,

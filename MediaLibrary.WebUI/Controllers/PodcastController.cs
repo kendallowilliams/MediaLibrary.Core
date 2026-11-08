@@ -190,7 +190,7 @@ namespace MediaLibrary.WebUI.Controllers
 
         public async Task RemovePodcastItemDownload(int id)
         {
-            Transaction transaction = new Transaction(TransactionTypes.RemoveEpisodeDownload);
+            Transaction transaction = new Transaction { Type = TransactionTypes.RemoveEpisodeDownload };
 
             try
             {
@@ -228,6 +228,14 @@ namespace MediaLibrary.WebUI.Controllers
             var enabledParameter = dataService.CreateParameter("enabled", enabled);
 
             await dataService.Execute("UPDATE Podcast SET DownloadNewEpisodes = @enabled WHERE Id = @id", default, idParameter, enabledParameter);
+        }
+
+        public async Task AutoRefresh(int id, bool enabled)
+        {
+            var idParameter = dataService.CreateParameter("id", id);
+            var enabledParameter = dataService.CreateParameter("enabled", enabled);
+
+            await dataService.Execute("UPDATE Podcast SET AutoRefresh = @enabled WHERE Id = @id", default, idParameter, enabledParameter);
         }
 
         public async Task Refresh(int id = 0)

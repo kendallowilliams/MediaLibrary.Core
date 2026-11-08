@@ -6,36 +6,41 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 
-namespace MediaLibrary.DAL.Models
+namespace MediaLibrary.DAL.Models;
+
+[Table("Episode")]
+public partial class Episode
 {
-    [Table("Episode")]
-    public partial class Episode
-    {
-        public Episode()
-        {
-            PlaylistEpisodes = new HashSet<PlaylistEpisode>();
-        }
+    [Key]
+    public int Id { get; set; }
 
-        [Key]
-        public int Id { get; set; }
-        [Required]
-        [StringLength(256)]
-        public string Title { get; set; }
-        public int SeriesId { get; set; }
-        public int? Season { get; set; }
-        [Required]
-        [StringLength(256)]
-        public string Path { get; set; }
-        public int PlayCount { get; set; }
-        public int Progress { get; set; }
-        public DateTime? LastPlayedDate { get; set; }
-        public DateTime CreateDate { get; set; }
-        public DateTime ModifyDate { get; set; }
+    [Required]
+    [StringLength(256)]
+    public string Title { get; set; }
 
-        [ForeignKey(nameof(SeriesId))]
-        [InverseProperty("Episodes")]
-        public virtual Series Series { get; set; }
-        [InverseProperty(nameof(PlaylistEpisode.Episode))]
-        public virtual ICollection<PlaylistEpisode> PlaylistEpisodes { get; set; }
-    }
+    public int SeriesId { get; set; }
+
+    public int? Season { get; set; }
+
+    [Required]
+    [StringLength(256)]
+    [Unicode(false)]
+    public string Path { get; set; }
+
+    public int PlayCount { get; set; }
+
+    public int Progress { get; set; }
+
+    public DateTime? LastPlayedDate { get; set; }
+
+    public DateTime CreateDate { get; set; }
+
+    public DateTime ModifyDate { get; set; }
+
+    [InverseProperty("Episode")]
+    public virtual ICollection<PlaylistEpisode> PlaylistEpisodes { get; set; } = new List<PlaylistEpisode>();
+
+    [ForeignKey("SeriesId")]
+    [InverseProperty("Episodes")]
+    public virtual Series Series { get; set; }
 }

@@ -6,25 +6,24 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 
-namespace MediaLibrary.DAL.Models
+namespace MediaLibrary.DAL.Models;
+
+[Table("TrackPath")]
+public partial class TrackPath
 {
-    [Table("TrackPath")]
-    public partial class TrackPath
-    {
-        public TrackPath()
-        {
-            Tracks = new HashSet<Track>();
-        }
+    [Key]
+    public int Id { get; set; }
 
-        [Key]
-        public int Id { get; set; }
-        [Required]
-        public string Location { get; set; }
-        public DateTime LastScanDate { get; set; }
-        public DateTime CreateDate { get; set; }
-        public DateTime ModifyDate { get; set; }
+    [Required]
+    [Unicode(false)]
+    public string Location { get; set; }
 
-        [InverseProperty(nameof(Track.Path))]
-        public virtual ICollection<Track> Tracks { get; set; }
-    }
+    public DateTime LastScanDate { get; set; }
+
+    public DateTime CreateDate { get; set; }
+
+    public DateTime ModifyDate { get; set; }
+
+    [InverseProperty("Path")]
+    public virtual ICollection<Track> Tracks { get; set; } = new List<Track>();
 }

@@ -6,38 +6,49 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 
-namespace MediaLibrary.DAL.Models
+namespace MediaLibrary.DAL.Models;
+
+[Table("PodcastItem")]
+public partial class PodcastItem
 {
-    [Table("PodcastItem")]
-    public partial class PodcastItem
-    {
-        public PodcastItem()
-        {
-            PlaylistPodcastItems = new HashSet<PlaylistPodcastItem>();
-        }
+    [Key]
+    public int Id { get; set; }
 
-        [Key]
-        public int Id { get; set; }
-        [Required]
-        [StringLength(150)]
-        public string Title { get; set; }
-        public string Description { get; set; }
-        public int? Length { get; set; }
-        [Required]
-        public string Url { get; set; }
-        public string File { get; set; }
-        public int Progress { get; set; }
-        public int PodcastId { get; set; }
-        public DateTime PublishDate { get; set; }
-        public int PlayCount { get; set; }
-        public DateTime? LastPlayedDate { get; set; }
-        public DateTime CreateDate { get; set; }
-        public DateTime ModifyDate { get; set; }
+    [Required]
+    [StringLength(150)]
+    [Unicode(false)]
+    public string Title { get; set; }
 
-        [ForeignKey(nameof(PodcastId))]
-        [InverseProperty("PodcastItems")]
-        public virtual Podcast Podcast { get; set; }
-        [InverseProperty(nameof(PlaylistPodcastItem.PodcastItem))]
-        public virtual ICollection<PlaylistPodcastItem> PlaylistPodcastItems { get; set; }
-    }
+    [Unicode(false)]
+    public string Description { get; set; }
+
+    public int? Length { get; set; }
+
+    [Required]
+    [Unicode(false)]
+    public string Url { get; set; }
+
+    [Unicode(false)]
+    public string File { get; set; }
+
+    public int Progress { get; set; }
+
+    public int PodcastId { get; set; }
+
+    public DateTime PublishDate { get; set; }
+
+    public int PlayCount { get; set; }
+
+    public DateTime? LastPlayedDate { get; set; }
+
+    public DateTime CreateDate { get; set; }
+
+    public DateTime ModifyDate { get; set; }
+
+    [InverseProperty("PodcastItem")]
+    public virtual ICollection<PlaylistPodcastItem> PlaylistPodcastItems { get; set; } = new List<PlaylistPodcastItem>();
+
+    [ForeignKey("PodcastId")]
+    [InverseProperty("PodcastItems")]
+    public virtual Podcast Podcast { get; set; }
 }

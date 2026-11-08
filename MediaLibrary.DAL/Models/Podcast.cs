@@ -6,32 +6,42 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 
-namespace MediaLibrary.DAL.Models
+namespace MediaLibrary.DAL.Models;
+
+[Table("Podcast")]
+public partial class Podcast
 {
-    [Table("Podcast")]
-    public partial class Podcast
-    {
-        public Podcast()
-        {
-            PodcastItems = new HashSet<PodcastItem>();
-        }
+    [Key]
+    public int Id { get; set; }
 
-        [Key]
-        public int Id { get; set; }
-        [Required]
-        [StringLength(150)]
-        public string Title { get; set; }
-        [Required]
-        public string Url { get; set; }
-        public string ImageUrl { get; set; }
-        public string Description { get; set; }
-        public string Author { get; set; }
-        public bool DownloadNewEpisodes { get; set; }
-        public DateTime LastUpdateDate { get; set; }
-        public DateTime CreateDate { get; set; }
-        public DateTime ModifyDate { get; set; }
+    [Required]
+    [StringLength(150)]
+    [Unicode(false)]
+    public string Title { get; set; }
 
-        [InverseProperty(nameof(PodcastItem.Podcast))]
-        public virtual ICollection<PodcastItem> PodcastItems { get; set; }
-    }
+    [Required]
+    [Unicode(false)]
+    public string Url { get; set; }
+
+    [Unicode(false)]
+    public string ImageUrl { get; set; }
+
+    [Unicode(false)]
+    public string Description { get; set; }
+
+    [Unicode(false)]
+    public string Author { get; set; }
+
+    public bool AutoRefresh { get; set; }
+
+    public bool DownloadNewEpisodes { get; set; }
+
+    public DateTime LastUpdateDate { get; set; }
+
+    public DateTime CreateDate { get; set; }
+
+    public DateTime ModifyDate { get; set; }
+
+    [InverseProperty("Podcast")]
+    public virtual ICollection<PodcastItem> PodcastItems { get; set; } = new List<PodcastItem>();
 }

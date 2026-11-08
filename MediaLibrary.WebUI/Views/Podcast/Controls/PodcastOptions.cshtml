@@ -10,6 +10,10 @@
         </div>
         <div class="col mb-3">
             <div class="form-check form-switch" data-bs-tooltip="tooltip" data-bs-title="Auto download new episodes">
+                @Html.CheckBoxFor(x => x.AutoRefresh, new { @class = "form-check-input", role = "switch", data_podcast_action = "auto-refresh", data_item_id = Model.Id })
+                @Html.LabelFor(x => x.AutoRefresh, "Auto refresh", new { @class = "form-check-label" })
+            </div>
+            <div class="form-check form-switch" data-bs-tooltip="tooltip" data-bs-title="Auto download new episodes">
                 @Html.CheckBoxFor(x => x.DownloadNewEpisodes, new { @class = "form-check-input", role = "switch", data_podcast_action = "auto-download", data_item_id = Model.Id })
                 @Html.LabelFor(x => x.DownloadNewEpisodes, "Auto download new episodes", new { @class = "form-check-label" })
             </div>
