@@ -97,29 +97,30 @@ namespace MediaLibrary.BLL.Services
                     await dataService.Insert<Podcast>(podcast);
                 }
 
-                podcastItems = feedReader.Items.Select(item => new
-                {
-                    Title = item.Title.Text,
-                    Description = item.Content?.Type.Equals("text", StringComparison.OrdinalIgnoreCase) == true
-                        ? ((TextSyndicationContent)item.Content).Text
-                        : null,
-                    Summary = item.Summary?.Text,
-                    Enclosure = item.Links.FirstOrDefault(linkItem => linkItem.RelationshipType == "enclosure"),
-                    PublishDate = item.PublishDate.DateTime
+                podcastItems = feedReader.Items
+                    .Select(item => new
+                    {
+                        Title = item.Title.Text,
+                        Content = item.Content?.Type.Equals("text", StringComparison.OrdinalIgnoreCase) == true
+                            ? ((TextSyndicationContent)item.Content).Text
+                            : null,
+                        Summary = item.Summary?.Text,
+                        Enclosure = item.Links.FirstOrDefault(linkItem => linkItem.RelationshipType == "enclosure"),
+                        PublishDate = item.PublishDate.DateTime
 
-                })
-                                    .Where(item => item.Enclosure != null)
-                                    .Select(data => new PodcastItem
-                                    {
-                                        Title = data.Title,
-                                        Url = data.Enclosure.Uri.OriginalString,
-                                        Description = data.Description ?? data.Summary,
-                                        Length = (int)data.Enclosure.Length,
-                                        PublishDate = data.PublishDate,
-                                        PodcastId = podcast.Id
-                                    })
-                                    .Where(item => item.PublishDate > lastUpdateDate)
-                                    .ToList();
+                    })
+                    .Where(item => item.Enclosure != null)
+                    .Select(data => new PodcastItem
+                    {
+                        Title = data.Title,
+                        Url = data.Enclosure.Uri.OriginalString,
+                        Description = data.Content ?? data.Summary,
+                        Length = (int)data.Enclosure.Length,
+                        PublishDate = data.PublishDate,
+                        PodcastId = podcast.Id
+                    })
+                    .Where(item => item.PublishDate > lastUpdateDate)
+                    .ToList();
 
                 await dataService.Insert(podcastItems);
                 podcast.PodcastItems = podcast.PodcastItems.Concat(podcastItems).ToList();
