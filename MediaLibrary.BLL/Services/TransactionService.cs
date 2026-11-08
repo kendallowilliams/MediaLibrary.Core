@@ -22,7 +22,7 @@ namespace MediaLibrary.BLL.Services
 
         public async Task<Transaction> GetNewTransaction(TransactionTypes transactionType)
         {
-            Transaction transaction = new Transaction(transactionType);
+            Transaction transaction = new Transaction { Type = transactionType };
 
             transaction.Status = TransactionStatus.Created;
             transaction.StatusMessage = $"{TransactionStatus.Created} [{Enum.GetName(typeof(TransactionTypes), transaction.Type)}]";

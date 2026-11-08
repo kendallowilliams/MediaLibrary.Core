@@ -5,6 +5,5 @@ namespace MediaLibrary.DAL.Models
 {
     public partial class PlaylistEpisode : IDataModel, IPlaylistEpisodeJSON
     {
-        public PlaylistEpisode() { }
     }
 }

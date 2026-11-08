@@ -6,23 +6,27 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 
-namespace MediaLibrary.DAL.Models
-{
-    [Table("PlaylistPodcastItem")]
-    public partial class PlaylistPodcastItem
-    {
-        [Key]
-        public int Id { get; set; }
-        public int PlaylistId { get; set; }
-        public int PodcastItemId { get; set; }
-        public DateTime CreateDate { get; set; }
-        public DateTime ModifyDate { get; set; }
+namespace MediaLibrary.DAL.Models;
 
-        [ForeignKey(nameof(PlaylistId))]
-        [InverseProperty("PlaylistPodcastItems")]
-        public virtual Playlist Playlist { get; set; }
-        [ForeignKey(nameof(PodcastItemId))]
-        [InverseProperty("PlaylistPodcastItems")]
-        public virtual PodcastItem PodcastItem { get; set; }
-    }
+[Table("PlaylistPodcastItem")]
+public partial class PlaylistPodcastItem
+{
+    [Key]
+    public int Id { get; set; }
+
+    public int PlaylistId { get; set; }
+
+    public int PodcastItemId { get; set; }
+
+    public DateTime CreateDate { get; set; }
+
+    public DateTime ModifyDate { get; set; }
+
+    [ForeignKey("PlaylistId")]
+    [InverseProperty("PlaylistPodcastItems")]
+    public virtual Playlist Playlist { get; set; }
+
+    [ForeignKey("PodcastItemId")]
+    [InverseProperty("PlaylistPodcastItems")]
+    public virtual PodcastItem PodcastItem { get; set; }
 }

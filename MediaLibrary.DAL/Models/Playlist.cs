@@ -6,31 +6,29 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 
-namespace MediaLibrary.DAL.Models
+namespace MediaLibrary.DAL.Models;
+
+[Table("Playlist")]
+public partial class Playlist
 {
-    [Table("Playlist")]
-    public partial class Playlist
-    {
-        public Playlist()
-        {
-            PlaylistEpisodes = new HashSet<PlaylistEpisode>();
-            PlaylistPodcastItems = new HashSet<PlaylistPodcastItem>();
-            PlaylistTracks = new HashSet<PlaylistTrack>();
-        }
+    [Key]
+    public int Id { get; set; }
 
-        [Key]
-        public int Id { get; set; }
-        [Required]
-        [StringLength(150)]
-        public string Name { get; set; }
-        public DateTime CreateDate { get; set; }
-        public DateTime ModifyDate { get; set; }
+    [Required]
+    [StringLength(150)]
+    [Unicode(false)]
+    public string Name { get; set; }
 
-        [InverseProperty(nameof(PlaylistEpisode.Playlist))]
-        public virtual ICollection<PlaylistEpisode> PlaylistEpisodes { get; set; }
-        [InverseProperty(nameof(PlaylistPodcastItem.Playlist))]
-        public virtual ICollection<PlaylistPodcastItem> PlaylistPodcastItems { get; set; }
-        [InverseProperty(nameof(PlaylistTrack.Playlist))]
-        public virtual ICollection<PlaylistTrack> PlaylistTracks { get; set; }
-    }
+    public DateTime CreateDate { get; set; }
+
+    public DateTime ModifyDate { get; set; }
+
+    [InverseProperty("Playlist")]
+    public virtual ICollection<PlaylistEpisode> PlaylistEpisodes { get; set; } = new List<PlaylistEpisode>();
+
+    [InverseProperty("Playlist")]
+    public virtual ICollection<PlaylistPodcastItem> PlaylistPodcastItems { get; set; } = new List<PlaylistPodcastItem>();
+
+    [InverseProperty("Playlist")]
+    public virtual ICollection<PlaylistTrack> PlaylistTracks { get; set; } = new List<PlaylistTrack>();
 }

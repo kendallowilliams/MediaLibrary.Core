@@ -23,7 +23,7 @@ namespace MediaLibrary.BLL.Services
             if (!string.IsNullOrWhiteSpace(location))
             {
                 object parameters = new { location };
-                TrackPath path = new TrackPath(location),
+                TrackPath path = new TrackPath { Location = location },
                           dbPath = await dataService.Get<TrackPath>(item => item.Location.Trim() == location.Trim(), token);
 
                 if (dbPath != null) { id = dbPath.Id; }

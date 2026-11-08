@@ -22,7 +22,7 @@ namespace MediaLibrary.BLL.Services
             if (!string.IsNullOrWhiteSpace(strArtists))
             {
                 object parameters = new { name = strArtists };
-                Artist artist = new Artist(strArtists);
+                Artist artist = new Artist { Name = strArtists };
                 Artist dbArtist = await dataService.Get<Artist>(item => item.Name == strArtists, token);
 
                 if (dbArtist != null) { id = dbArtist.Id; }

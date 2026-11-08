@@ -6,35 +6,39 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 
-namespace MediaLibrary.DAL.Models
+namespace MediaLibrary.DAL.Models;
+
+[Table("Album")]
+public partial class Album
 {
-    [Table("Album")]
-    public partial class Album
-    {
-        public Album()
-        {
-            Tracks = new HashSet<Track>();
-        }
+    [Key]
+    public int Id { get; set; }
 
-        [Key]
-        public int Id { get; set; }
-        [Required]
-        [StringLength(150)]
-        public string Title { get; set; }
-        public int? ArtistId { get; set; }
-        public int? Year { get; set; }
-        public int? GenreId { get; set; }
-        public bool IsFavorite { get; set; }
-        public DateTime CreateDate { get; set; }
-        public DateTime ModifyDate { get; set; }
+    [Required]
+    [StringLength(150)]
+    [Unicode(false)]
+    public string Title { get; set; }
 
-        [ForeignKey(nameof(ArtistId))]
-        [InverseProperty("Albums")]
-        public virtual Artist Artist { get; set; }
-        [ForeignKey(nameof(GenreId))]
-        [InverseProperty("Albums")]
-        public virtual Genre Genre { get; set; }
-        [InverseProperty(nameof(Track.Album))]
-        public virtual ICollection<Track> Tracks { get; set; }
-    }
+    public int? ArtistId { get; set; }
+
+    public int? Year { get; set; }
+
+    public int? GenreId { get; set; }
+
+    public bool IsFavorite { get; set; }
+
+    public DateTime CreateDate { get; set; }
+
+    public DateTime ModifyDate { get; set; }
+
+    [ForeignKey("ArtistId")]
+    [InverseProperty("Albums")]
+    public virtual Artist Artist { get; set; }
+
+    [ForeignKey("GenreId")]
+    [InverseProperty("Albums")]
+    public virtual Genre Genre { get; set; }
+
+    [InverseProperty("Album")]
+    public virtual ICollection<Track> Tracks { get; set; } = new List<Track>();
 }

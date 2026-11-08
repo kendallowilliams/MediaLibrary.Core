@@ -373,19 +373,19 @@ namespace MediaLibrary.WebUI.Controllers
                 {
                     if (artist == null)
                     {
-                        artist = new Artist(song.Artist.Trim());
+                        artist = new Artist { Name = song.Artist.Trim() };
                         await dataService.Insert(artist);
                     }
 
                     if (genre == null)
                     {
-                        genre = new Genre(song.Genre.Trim());
+                        genre = new Genre { Name = song.Genre.Trim() };
                         await dataService.Insert(genre);
                     }
 
                     if (album == null)
                     {
-                        album = new Album(song.Album.Trim()) { ArtistId = artist.Id, GenreId = genre.Id };
+                        album = new Album { Title = song.Album.Trim(), ArtistId = artist.Id, GenreId = genre.Id };
                         await dataService.Insert(album);
                     }
 

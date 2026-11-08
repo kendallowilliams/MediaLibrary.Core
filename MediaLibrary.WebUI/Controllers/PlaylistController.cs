@@ -74,7 +74,7 @@ namespace MediaLibrary.WebUI.Controllers
             if (!string.IsNullOrWhiteSpace(playlistName))
             {
                 var existingPlaylist = await dataService.Get<Playlist>(item => item.Name.Equals(playlistName) && item.Type == playlistType);
-                Playlist playlist = existingPlaylist ?? new Playlist(playlistName) { Type = playlistType };
+                Playlist playlist = existingPlaylist ?? new Playlist { Name = playlistName, Type = playlistType };
                 Configuration configuration = await dataService.Get<Configuration>(item => item.Type == ConfigurationTypes.Playlist);
 
                 if (existingPlaylist == null) /*then*/ await dataService.Insert(playlist);

@@ -23,7 +23,7 @@ namespace MediaLibrary.BLL.Services
             {
                 object parameters = new { name = strGenres };
                 Genre dbGenre = await dataService.Get<Genre>(item => item.Name == strGenres, token),
-                      genre = new Genre(strGenres);
+                      genre = new Genre { Name = strGenres };
 
                 if (dbGenre != null) { id = dbGenre.Id; }
                 else

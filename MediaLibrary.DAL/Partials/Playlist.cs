@@ -8,11 +8,6 @@ namespace MediaLibrary.DAL.Models
 {
     public partial class Playlist : IDataModel
     {
-        public Playlist(string name) : base()
-        {
-            Name = name;
-        }
-
         public PlaylistTypes Type { get; set; }
 
         [JsonIgnore]

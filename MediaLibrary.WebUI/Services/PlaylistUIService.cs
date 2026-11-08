@@ -85,7 +85,7 @@ namespace MediaLibrary.WebUI.Services
                 await Task.WhenAll(trackTasks, podcastItemTask, episodeTask);
             }
 
-            playlists = PlaylistRepository.GetSystemPlaylists<Track>(maxPlaylistItems).Select((item, index) => new Playlist()
+            playlists = PlaylistRepository.GetSystemPlaylists<Track>(maxPlaylistItems).Select((item, index) => new Playlist
             {
                 Id = -(++index + count),
                 Name = $"{item.Key} [{PlaylistTypes.Music}]",

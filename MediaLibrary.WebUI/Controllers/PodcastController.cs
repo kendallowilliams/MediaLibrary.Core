@@ -190,7 +190,7 @@ namespace MediaLibrary.WebUI.Controllers
 
         public async Task RemovePodcastItemDownload(int id)
         {
-            Transaction transaction = new Transaction(TransactionTypes.RemoveEpisodeDownload);
+            Transaction transaction = new Transaction { Type = TransactionTypes.RemoveEpisodeDownload };
 
             try
             {
