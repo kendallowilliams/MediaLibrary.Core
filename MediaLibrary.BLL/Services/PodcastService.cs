@@ -8,7 +8,6 @@ using System.Data;
 using System.IO;
 using System.Linq;
 using System.ServiceModel.Syndication;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 
@@ -101,7 +100,7 @@ namespace MediaLibrary.BLL.Services
                     .Select(item => new
                     {
                         Title = item.Title.Text,
-                        Content = item.Content?.Type.Equals("text", StringComparison.OrdinalIgnoreCase) == true
+                        Content = item.Content.GetType() == typeof(TextSyndicationContent)
                             ? ((TextSyndicationContent)item.Content).Text
                             : null,
                         Summary = item.Summary?.Text,
