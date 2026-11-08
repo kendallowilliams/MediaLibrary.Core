@@ -230,6 +230,14 @@ namespace MediaLibrary.WebUI.Controllers
             await dataService.Execute("UPDATE Podcast SET DownloadNewEpisodes = @enabled WHERE Id = @id", default, idParameter, enabledParameter);
         }
 
+        public async Task AutoRefresh(int id, bool enabled)
+        {
+            var idParameter = dataService.CreateParameter("id", id);
+            var enabledParameter = dataService.CreateParameter("enabled", enabled);
+
+            await dataService.Execute("UPDATE Podcast SET AutoRefresh = @enabled WHERE Id = @id", default, idParameter, enabledParameter);
+        }
+
         public async Task Refresh(int id = 0)
         {
             if (id > 0)

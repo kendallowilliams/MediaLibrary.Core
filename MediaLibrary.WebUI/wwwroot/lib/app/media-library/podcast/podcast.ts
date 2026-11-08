@@ -113,6 +113,21 @@ export default class Podcast extends BaseClass implements IView {
                             .then(_ => LoadingModal.hideLoading());
                     });
 
+                    $(htmlElement).find('*[data-podcast-action="auto-refresh"]').on('change', e => {
+                        const $switch = $(e.currentTarget),
+                            id = $switch.attr('data-item-id'),
+                            enabled = $switch.is(':checked'),
+                            formData = new FormData();
+
+                        formData.set('id', id);
+                        formData.set('enabled', enabled ? 'true' : 'false');
+                        modal.hide();
+                        LoadingModal.showLoading();
+
+                        fetch_post('Podcast/AutoRefresh', formData)
+                            .then(_ => LoadingModal.hideLoading());
+                    });
+
                     $(htmlElement).find('*[data-podcast-action="refresh"]').on('click', e => {
                         const $btn = $(e.currentTarget),
                             id = $btn.attr('data-item-id'),
