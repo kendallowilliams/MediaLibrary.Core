@@ -50,11 +50,8 @@ namespace MediaLibrary.BLL.Services
 
         public async Task<Podcast> ParseRssFeed(Podcast podcastData, bool isUpdate = false)
         {
-            IEnumerable<PodcastItem> podcastItems = Enumerable.Empty<PodcastItem>();
             Podcast podcast = null;
-            var xmlBytes = await webService.DownloadData(podcastData.Url);
-            var xmlStream = new MemoryStream(xmlBytes, true);
-            var xmlDoc = await XDocument.LoadAsync(xmlStream, LoadOptions.None, CancellationToken.None);
+            var xmlDoc = XDocument.Load(podcastData.Url);
 
             // remove elements that cause validation errors
             xmlDoc.Root.Elements()
@@ -63,6 +60,7 @@ namespace MediaLibrary.BLL.Services
 
             using (var xmlReader = xmlDoc.CreateReader())
             {
+                var podcastItems = Enumerable.Empty<PodcastItem>();
                 var feedReader = SyndicationFeed.Load(xmlReader);
                 string title = feedReader.Title.Text,
                        imageUrl = feedReader.ImageUrl?.AbsolutePath,
