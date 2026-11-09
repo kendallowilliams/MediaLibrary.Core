@@ -100,7 +100,7 @@ namespace MediaLibrary.BLL.Services
                     .Select(item => new
                     {
                         Title = item.Title.Text,
-                        Content = item.Content.GetType() == typeof(TextSyndicationContent)
+                        Content = item.Content?.GetType() == typeof(TextSyndicationContent)
                             ? ((TextSyndicationContent)item.Content).Text
                             : null,
                         Summary = item.Summary?.Text,
