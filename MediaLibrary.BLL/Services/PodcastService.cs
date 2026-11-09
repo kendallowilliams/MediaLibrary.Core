@@ -91,7 +91,8 @@ namespace MediaLibrary.BLL.Services
                         ImageUrl = imageUrl,
                         Description = description,
                         Author = author,
-                        LastUpdateDate = pubDate == DateTime.MinValue ? DateTime.Now : pubDate 
+                        LastUpdateDate = pubDate == DateTime.MinValue ? DateTime.Now : pubDate,
+                        AutoRefresh = true
                     };
                     await dataService.Insert<Podcast>(podcast);
                 }
