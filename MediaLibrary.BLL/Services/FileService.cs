@@ -121,7 +121,7 @@ namespace MediaLibrary.BLL.Services
                 ArtistId = artistId,
                 Position = (int)data.Track,
                 Year = (int)data.Year,
-                Duration = (decimal)data.Duration,
+                Duration = data.Duration,
                 PlayCount = 0
             };
 

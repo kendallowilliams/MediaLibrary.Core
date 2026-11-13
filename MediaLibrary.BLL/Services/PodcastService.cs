@@ -33,7 +33,7 @@ namespace MediaLibrary.BLL.Services
             this.memoryCache = memoryCache;
         }
 
-        public async Task<Podcast> AddPodcast(string url) => await ParseRssFeed(new Podcast { Url = url });
+        public async Task<Podcast> AddPodcast(string url) => await ParseRssFeed(new Podcast { Url = url, AutoRefresh = true });
 
         public async Task RemovePodcast(int id)
         {

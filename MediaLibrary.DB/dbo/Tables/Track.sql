@@ -8,7 +8,7 @@
     [ArtistId]   INT           NULL,
     [Position]    INT           NULL,
     [Year]        INT           NULL,
-    [Duration]    DECIMAL (18)  NOT NULL,
+    [Duration]    FLOAT  NOT NULL,
     [Progress]    INT DEFAULT (0) NOT NULL,
     [PlayCount]  INT           DEFAULT (0) NOT NULL,
     [LastPlayedDate] DATETIME2      NULL,
