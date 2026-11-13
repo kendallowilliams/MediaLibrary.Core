@@ -36,8 +36,7 @@ public partial class Track
 
     public int? Year { get; set; }
 
-    [Column(TypeName = "decimal(18, 0)")]
-    public decimal Duration { get; set; }
+    public double Duration { get; set; }
 
     public int Progress { get; set; }
 
